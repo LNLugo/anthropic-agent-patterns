@@ -1,0 +1,5 @@
+.env
+agent_env/
+__pycache__/
+*.pyc
+ai_agent_project.py
