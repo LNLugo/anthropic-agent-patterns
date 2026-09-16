@@ -1,4 +1,4 @@
- # Anthropic Workflow Patterns
+# Anthropic Workflow Patterns
 
 Implementations of the workflow and agent patterns described in Anthropic's
 **Building effective agents**.
@@ -12,7 +12,7 @@ with predictable workflows and progressing toward dynamic agent behavior.
 
 ---
 
-# Architecture Progression
+## Architecture Progression
 
 | # | Anthropic Architecture | Status | Core Idea |
 |---|---|---|---|
@@ -26,7 +26,7 @@ with predictable workflows and progressing toward dynamic agent behavior.
 
 ---
 
-# Control Questions
+## Control Questions
 
 Each pattern answers a different architectural control question.
 
@@ -41,7 +41,7 @@ Each pattern answers a different architectural control question.
 
 ---
 
-# Conceptual Architecture
+## Conceptual Architecture
 
 ```text
                          AUGMENTED LLM
