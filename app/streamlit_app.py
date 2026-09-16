@@ -127,6 +127,24 @@ with col2:
                 "LangGraph Conditional Edge → Specialized Path"
             )
 
+    elif selected_pattern == "Parallelization":
+
+        graph_path = (
+            PROJECT_ROOT
+            / "03_parallelization"
+            / "parallelization_03_graph.png"
+        )
+
+        st.image(
+            str(graph_path),
+            width=400
+        )
+
+        st.caption(
+            "Independent analysis branches execute in parallel "
+            "and converge at synthesis."
+        )
+
     else:
 
         st.info(
@@ -184,12 +202,11 @@ if st.button(
             "Please enter a question or problem."
         )
 
-
-    # ==================================================
-    # PROMPT CHAINING
-    # ==================================================
-
     elif selected_pattern == "Prompt Chaining":
+
+        # --------------------------------------------------
+        # Prompt Chaining
+        # --------------------------------------------------
 
         module_path = (
             PROJECT_ROOT
@@ -202,13 +219,9 @@ if st.button(
             module_path
         )
 
-        module = importlib.util.module_from_spec(
-            spec
-        )
+        module = importlib.util.module_from_spec(spec)
 
-        spec.loader.exec_module(
-            module
-        )
+        spec.loader.exec_module(module)
 
         app = module.app
 
@@ -229,25 +242,19 @@ if st.button(
             "Prompt Chaining completed."
         )
 
-        st.subheader(
-            "Execution Result"
-        )
+        st.subheader("Execution Result")
 
         result_col1, result_col2 = st.columns(2)
 
         with result_col1:
 
-            st.markdown(
-                "### Classification"
-            )
+            st.markdown("### Classification")
 
             st.write(
                 result["classification"]
             )
 
-            st.markdown(
-                "### Entities"
-            )
+            st.markdown("### Entities")
 
             for entity in result["entities"]:
 
@@ -257,20 +264,17 @@ if st.button(
 
         with result_col2:
 
-            st.markdown(
-                "### Summary"
-            )
+            st.markdown("### Summary")
 
             st.write(
                 result["summary"]
             )
 
-
-    # ==================================================
-    # ROUTING V1
-    # ==================================================
-
     elif selected_pattern == "Routing":
+
+        # --------------------------------------------------
+        # Routing V1
+        # --------------------------------------------------
 
         module_path = (
             PROJECT_ROOT
@@ -283,18 +287,14 @@ if st.button(
             module_path
         )
 
-        module = importlib.util.module_from_spec(
-            spec
-        )
+        module = importlib.util.module_from_spec(spec)
 
-        spec.loader.exec_module(
-            module
-        )
+        spec.loader.exec_module(module)
 
         app = module.app
 
         with st.spinner(
-            "Running Routing..."
+            "Running Routing V1..."
         ):
 
             result = app.invoke(
@@ -307,28 +307,22 @@ if st.button(
             )
 
         st.success(
-            "Routing completed."
+            "Routing V1 completed."
         )
 
-        st.subheader(
-            "Execution Result"
-        )
+        st.subheader("Execution Result")
 
         result_col1, result_col2 = st.columns(2)
 
         with result_col1:
 
-            st.markdown(
-                "### Classification"
-            )
+            st.markdown("### Classification")
 
             st.write(
                 result["classification"]
             )
 
-            st.markdown(
-                "### Selected Path"
-            )
+            st.markdown("### Selected Path")
 
             st.write(
                 f"**{result['selected_path']}**"
@@ -336,20 +330,17 @@ if st.button(
 
         with result_col2:
 
-            st.markdown(
-                "### Response"
-            )
+            st.markdown("### Response")
 
             st.write(
                 result["response"]
             )
 
-
-    # ==================================================
-    # ROUTING V2
-    # ==================================================
-
     elif selected_pattern == "Routing V2":
+
+        # --------------------------------------------------
+        # Routing V2
+        # --------------------------------------------------
 
         module_path = (
             PROJECT_ROOT
@@ -362,13 +353,9 @@ if st.button(
             module_path
         )
 
-        module = importlib.util.module_from_spec(
-            spec
-        )
+        module = importlib.util.module_from_spec(spec)
 
-        spec.loader.exec_module(
-            module
-        )
+        spec.loader.exec_module(module)
 
         app = module.app
 
@@ -389,25 +376,19 @@ if st.button(
             "Routing V2 completed."
         )
 
-        st.subheader(
-            "Execution Result"
-        )
+        st.subheader("Execution Result")
 
         result_col1, result_col2 = st.columns(2)
 
         with result_col1:
 
-            st.markdown(
-                "### LLM Route"
-            )
+            st.markdown("### LLM Route")
 
             st.write(
                 f"**{result['route']}**"
             )
 
-            st.markdown(
-                "### LangGraph Selected Path"
-            )
+            st.markdown("### LangGraph Selected Path")
 
             st.write(
                 f"**{result['selected_path']}**"
@@ -415,20 +396,151 @@ if st.button(
 
         with result_col2:
 
-            st.markdown(
-                "### Response"
-            )
+            st.markdown("### Response")
 
             st.write(
                 result["response"]
             )
 
+    elif selected_pattern == "Parallelization":
 
-    # ==================================================
-    # FUTURE PATTERNS
-    # ==================================================
+        # --------------------------------------------------
+        # Parallelization
+        # --------------------------------------------------
+
+        module_path = (
+            PROJECT_ROOT
+            / "03_parallelization"
+            / "parallelization_03.py"
+        )
+
+        spec = importlib.util.spec_from_file_location(
+            "parallelization_03",
+            module_path
+        )
+
+        module = importlib.util.module_from_spec(spec)
+
+        spec.loader.exec_module(module)
+
+        app = module.app
+
+        with st.spinner(
+            "Running Parallelization..."
+        ):
+
+            result = app.invoke(
+                {
+                    "text": question,
+                    "technical_analysis": "",
+                    "business_analysis": "",
+                    "risk_analysis": "",
+                    "technical_duration": 0.0,
+                    "business_duration": 0.0,
+                    "risk_duration": 0.0,
+                    "synthesis": ""
+                }
+            )
+
+        st.success(
+            "Parallelization completed."
+        )
+
+        st.subheader("Execution Result")
+
+        # --------------------------------------------------
+        # Branch Metrics
+        # --------------------------------------------------
+
+        total_branch_time = (
+            result["technical_duration"]
+            + result["business_duration"]
+            + result["risk_duration"]
+        )
+
+        metric_col1, metric_col2, metric_col3, metric_col4 = st.columns(4)
+
+        with metric_col1:
+            st.metric(
+                "Technical",
+                f"{result['technical_duration']:.2f}s"
+            )
+
+        with metric_col2:
+            st.metric(
+                "Business",
+                f"{result['business_duration']:.2f}s"
+            )
+
+        with metric_col3:
+            st.metric(
+                "Risk",
+                f"{result['risk_duration']:.2f}s"
+            )
+
+        with metric_col4:
+            st.metric(
+                "Sum of Branch Times",
+                f"{total_branch_time:.2f}s"
+            )
+
+        st.divider()
+
+        # --------------------------------------------------
+        # Analysis Tabs
+        # --------------------------------------------------
+
+        technical_tab, business_tab, risk_tab, synthesis_tab = st.tabs(
+            [
+                "Technical Analysis",
+                "Business Analysis",
+                "Risk Analysis",
+                "Synthesis"
+            ]
+        )
+
+        with technical_tab:
+
+            st.markdown("### Technical Analysis")
+
+            st.write(
+                result["technical_analysis"]
+            )
+
+        with business_tab:
+
+            st.markdown("### Business Analysis")
+
+            st.write(
+                result["business_analysis"]
+            )
+
+        with risk_tab:
+
+            st.markdown("### Risk Analysis")
+
+            st.write(
+                result["risk_analysis"]
+            )
+
+        with synthesis_tab:
+
+            st.markdown("### Architectural Synthesis")
+
+            st.write(
+                result["synthesis"]
+            )
+
+        st.info(
+            "Three independent analysis branches execute in parallel "
+            "and converge at the synthesis node."
+        )
 
     else:
+
+        # --------------------------------------------------
+        # Future patterns
+        # --------------------------------------------------
 
         st.info(
             f"{selected_pattern} will be connected next."
