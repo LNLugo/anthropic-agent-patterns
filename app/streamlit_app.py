@@ -402,7 +402,7 @@ if st.button(
                 result["response"]
             )
 
-    elif selected_pattern == "Parallelization":
+elif selected_pattern == "Parallelization":
 
         # --------------------------------------------------
         # Parallelization
@@ -535,13 +535,117 @@ if st.button(
             "Three independent analysis branches execute in parallel "
             "and converge at the synthesis node."
         )
+    
+elif selected_pattern == "Orchestrator-Workers":
 
-    else:
+    # --------------------------------------------------
+    # Orchestrator-Workers V3
+    # --------------------------------------------------
 
-        # --------------------------------------------------
-        # Future patterns
-        # --------------------------------------------------
+    module_path = (
+        PROJECT_ROOT
+        / "04_orchestrator_workers"
+        / "orchestrator_workers_04_v3.py"
+    )
 
-        st.info(
-            f"{selected_pattern} will be connected next."
+    spec = importlib.util.spec_from_file_location(
+        "orchestrator_workers_04_v3",
+        module_path
+    )
+
+    module = importlib.util.module_from_spec(spec)
+
+    spec.loader.exec_module(module)
+
+    app = module.app
+
+    with st.spinner(
+        "Running Orchestrator-Workers..."
+    ):
+
+        result = app.invoke(
+            {
+                "text": question,
+                "tasks": [],
+                "worker_results": [],
+                "synthesis": ""
+            }
         )
+
+    st.success(
+        "Orchestrator-Workers completed."
+    )
+
+    st.subheader("Execution Result")
+
+    # --------------------------------------------------
+    # Dynamic Workstreams
+    # --------------------------------------------------
+
+    st.markdown("### Dynamic Workstreams")
+
+    st.caption(
+        "The orchestrator dynamically decomposed the problem "
+        "into the following independent workstreams."
+    )
+
+    for index, task in enumerate(
+        result["tasks"],
+        start=1
+    ):
+
+        st.write(
+            f"**{index}.** {task}"
+        )
+
+    st.divider()
+
+    # --------------------------------------------------
+    # Worker Results
+    # --------------------------------------------------
+
+    st.markdown("### Worker Assessments")
+
+    for index, worker_result in enumerate(
+        result["worker_results"],
+        start=1
+    ):
+
+        with st.expander(
+            f"Worker {index}",
+            expanded=False
+        ):
+
+            st.write(
+                worker_result
+            )
+
+    st.divider()
+
+    # --------------------------------------------------
+    # Synthesis
+    # --------------------------------------------------
+
+    st.markdown(
+        "### Architectural Synthesis"
+    )
+
+    st.write(
+        result["synthesis"]
+    )
+
+    st.info(
+        "The orchestrator dynamically decomposes the problem, "
+        "Send() fans the work out to workers, and the synthesis "
+        "node combines the worker assessments."
+    )
+
+else:
+
+    # --------------------------------------------------
+    # Future patterns
+    # --------------------------------------------------
+
+    st.info(
+        f"{selected_pattern} will be connected next."
+    )
