@@ -145,6 +145,24 @@ with col2:
             "and converge at synthesis."
         )
 
+    elif selected_pattern == "Orchestrator-Workers":
+
+        graph_path = (
+            PROJECT_ROOT
+            / "04_orchestrator_workers"
+            / "orchestrator_workers_04_v3_graph.png"
+        )
+
+        st.image(
+            str(graph_path),
+            width=400
+        )
+
+        st.caption(
+            "The orchestrator dynamically decomposes the problem "
+            "and uses Send() to fan out work to dynamically created workers."
+        )
+
     else:
 
         st.info(
