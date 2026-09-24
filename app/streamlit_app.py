@@ -163,6 +163,24 @@ with col2:
             "and uses Send() to fan out work to dynamically created workers."
         )
 
+    elif selected_pattern == "Evaluator-Optimizer":
+
+        graph_path = (
+            PROJECT_ROOT
+            / "05_evaluator_optimizer"
+            / "evaluator_optimizer_05_graph.png"
+        )
+
+        st.image(
+            str(graph_path),
+            width=400
+        )
+
+        st.caption(
+            "Generate → evaluate → optimize → evaluate "
+            "until the quality threshold or iteration limit."
+        )
+
     else:
 
         st.info(
@@ -553,7 +571,7 @@ elif selected_pattern == "Parallelization":
             "Three independent analysis branches execute in parallel "
             "and converge at the synthesis node."
         )
-    
+
 elif selected_pattern == "Orchestrator-Workers":
 
     # --------------------------------------------------
@@ -656,6 +674,85 @@ elif selected_pattern == "Orchestrator-Workers":
         "The orchestrator dynamically decomposes the problem, "
         "Send() fans the work out to workers, and the synthesis "
         "node combines the worker assessments."
+    )
+
+elif selected_pattern == "Evaluator-Optimizer":
+
+    # --------------------------------------------------
+    # Evaluator-Optimizer
+    # --------------------------------------------------
+
+    module_path = (
+        PROJECT_ROOT
+        / "05_evaluator_optimizer"
+        / "evaluator_optimizer_05.py"
+    )
+
+    spec = importlib.util.spec_from_file_location(
+        "evaluator_optimizer_05",
+        module_path
+    )
+
+    module = importlib.util.module_from_spec(spec)
+
+    spec.loader.exec_module(module)
+
+    app = module.app
+
+    with st.spinner(
+        "Running Evaluator-Optimizer..."
+    ):
+
+        result = app.invoke(
+            {
+                "question": question,
+                "draft": "",
+                "score": 0,
+                "feedback": "",
+                "iteration": 0
+            }
+        )
+
+    st.success(
+        "Evaluator-Optimizer completed."
+    )
+
+    st.subheader("Execution Result")
+
+    st.metric(
+        "Optimization Iterations",
+        result["iteration"]
+    )
+
+    st.metric(
+        "Final Evaluation Score",
+        f'{result["score"]}/10'
+    )
+
+    st.divider()
+
+    st.markdown(
+        "### Final Answer"
+    )
+
+    st.write(
+        result["draft"]
+    )
+
+    if result["feedback"]:
+
+        st.markdown(
+            "### Evaluator Feedback"
+        )
+
+        st.write(
+            result["feedback"]
+        )
+
+    st.info(
+        "The generator creates a draft, the evaluator scores it "
+        "and provides feedback, and the optimizer refines the answer "
+        "until the quality threshold is met or the iteration limit is reached."
     )
 
 else:
