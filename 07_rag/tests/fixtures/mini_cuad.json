@@ -1,0 +1,42 @@
+{
+ "data": [
+  {
+   "title": "TEST_SUPPLY_AGREEMENT",
+   "paragraphs": [
+    {
+     "context": "MASTER SUPPLY AGREEMENT\n\nThis Agreement is entered into by Acme Corp and Beta LLC.\n\n1. Term. This Agreement shall commence on the Effective Date and continue for five (5) years.\n\nFiller clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. Filler clause about deliveries and packaging standards. \n\n12. Governing Law. This Agreement shall be governed by the laws of the State of New York.\n\nAdditional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. Additional boilerplate on notices and counterparts. ",
+     "qas": [
+      {
+       "id": "Governing Law",
+       "question": "Highlight the parts (if any) of this contract related to \"Governing Law\" that should be reviewed by a lawyer. Details: Which state/country's law governs the interpretation of the contract?",
+       "answers": [
+        {
+         "text": "governed by the laws of the State of New York",
+         "answer_start": 2464
+        }
+       ],
+       "is_impossible": false
+      },
+      {
+       "id": "Expiration Date",
+       "question": "Highlight the parts (if any) of this contract related to \"Expiration Date\" that should be reviewed by a lawyer. Details: On what date will the contract's initial term expire?",
+       "answers": [
+        {
+         "text": "continue for five (5) years",
+         "answer_start": 149
+        }
+       ],
+       "is_impossible": false
+      },
+      {
+       "id": "Non-Compete",
+       "question": "Highlight the parts (if any) of this contract related to \"Non-Compete\" that should be reviewed by a lawyer. Details: Is there a restriction on the ability of a party to compete?",
+       "answers": [],
+       "is_impossible": true
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

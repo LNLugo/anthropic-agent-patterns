@@ -1,0 +1,13 @@
+name: 04_hybrid_rerank
+k: 5
+retriever:
+  type: rerank
+  candidate_k: 20
+  reranker: {type: cross_encoder, model: cross-encoder/ms-marco-MiniLM-L-6-v2}
+  base:
+    type: hybrid
+    rrf_k: 60
+    candidate_k: 50
+    members:
+      - {type: bm25}
+      - {type: dense, embedder: {type: sentence_transformer, model: BAAI/bge-small-en-v1.5, query_prefix: "Represent this sentence for searching relevant passages: "}}

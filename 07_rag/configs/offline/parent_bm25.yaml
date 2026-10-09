@@ -1,0 +1,4 @@
+# Smoke test only.
+name: offline_parent_bm25
+k: 3
+retriever: {type: parent, child_k: 20, base: {type: bm25}}

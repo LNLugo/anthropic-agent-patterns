@@ -1,0 +1,9 @@
+# Phase 2, 07_rag
+numpy>=1.26
+pyyaml>=6.0
+rank_bm25>=0.2.2
+scikit-learn>=1.4
+sentence-transformers>=3.0
+langgraph>=0.2
+langchain-anthropic>=0.3
+pytest>=8.0

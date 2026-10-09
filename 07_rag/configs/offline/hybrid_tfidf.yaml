@@ -1,0 +1,8 @@
+# Smoke test only: TF-IDF/SVD is a lexical stand-in, not a semantic embedding.
+name: offline_hybrid_tfidf
+k: 5
+retriever:
+  type: hybrid
+  members:
+    - {type: bm25}
+    - {type: dense, embedder: {type: tfidf_svd, n_components: 256}}
