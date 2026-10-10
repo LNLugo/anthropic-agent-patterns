@@ -2,3 +2,4 @@ data/
 results/
 .venv/
 .pytest_cache/
+results*/

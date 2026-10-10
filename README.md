@@ -113,13 +113,20 @@ measurable instead of anecdotal.
 * a context ledger recording what entered the model's context, the tokens it
   cost and how long it took
 
-Lexical baseline, 25 CUAD test contracts, 285 answerable queries:
+Results on all 102 CUAD test contracts, 1,244 answerable clause queries:
 
-| Strategy | k | Hit@k | Span recall@k | MRR | Est. context tokens / query |
-|---|---|---|---|---|---|
-| BM25 | 5 | 0.681 | 0.632 | 0.513 | 1,205 |
-| BM25 + parent windows | 3 | 0.730 | 0.682 | 0.594 | 2,748 |
+| Strategy | k | Hit@k | MRR |
+|---|---|---|---|
+| BM25 | 5 | 0.667 | 0.503 |
+| Dense embeddings | 5 | 0.612 | 0.438 |
+| Hybrid (BM25 + dense, RRF) | 5 | 0.652 | 0.511 |
+| BM25 + cross encoder rerank | 5 | 0.721 | 0.567 |
+| Hybrid + rerank | 5 | 0.719 | 0.564 |
+| Hybrid + rerank + parent windows | 3 | 0.774 | 0.638 |
 
-Parent windows buy about 5 points of hit rate for 2.3x the context. That
-trade-off is the reason the ledger exists. Dense, hybrid and reranked results
-are produced by `07_rag/run_eval.py`; see [07_rag/README.md](07_rag/README.md).
+The measured answer is not the fashionable one. On contract language, BM25
+beat a small dense embedder, hybrid fusion added nothing measurable, and the
+cross encoder reranker did the real work. Once reranking was in place, the
+dense model could be removed with no loss. That is the Phase 1 thesis applied
+to retrieval: the simplest pipeline that holds up under measurement wins.
+Details and costs are in [07_rag/README.md](07_rag/README.md).
