@@ -30,7 +30,7 @@ has no non-compete" as much as they need the clause itself.
                 │   bm25 ─┐
                 │   dense ─┴─► RRF fusion ─► cross encoder rerank ─► [parent windows]
                 ▼
-           generate (Claude)  ──►  JSON: answer + [{chunk_id, quote}]  or  abstain
+           generate (LLM)  ──►  JSON: answer + [{chunk_id, quote}]  or  abstain
                 ▼
            validate citations: chunk was shown? quote found in it? map to contract offsets
                 ▼
@@ -107,13 +107,46 @@ result.
 
 ### Answer quality
 
-`run_answer.py` reports, on a balanced sample of answerable and unanswerable
-queries:
+300 queries drawn from all 102 test contracts, half with the clause present and
+half without, answered by `gpt-4o-mini` over BM25 + cross encoder rerank
+(config 06). Each rate carries roughly plus or minus 7 points of uncertainty.
 
-* answer rate when the clause exists
-* abstain rate when it does not
-* citation validity and citation precision against lawyer spans
-* tokens, p50 and p95 latency, and cost per query
+| Measure | Result |
+|---|---|
+| Answered when the clause exists | 0.67 |
+| Abstained when the clause is absent | 0.83 |
+| Citations that resolve to text the model was shown | 0.69 |
+| Valid citations on the lawyer annotated span | 0.71 |
+| Tokens per query, input / output | 1,190 / 100 |
+| Latency p50 / p95 | 1.7 s / 3.3 s |
+
+`diagnose_answers.py` attributes every outcome to a cause, using the context
+ledger (what the model was shown) and the lawyer spans:
+
+| Clause exists (150) | Share |
+|---|---|
+| Correct: answered, citation on the annotated span | 50.0% |
+| Answered, citation outside the annotated span | 17.3% |
+| Retrieval miss: clause never reached the model | 16.0% |
+| Quote failure: clause shown, quote did not match the text | 15.3% |
+| Model missed: clause shown, model said it was absent | 1.3% |
+
+| Clause absent (150) | Share |
+|---|---|
+| Correct abstention | 83.3% |
+| False answer | 16.7% |
+
+**What it shows.** When the clause was in front of the model, the model found
+it almost every time. Nearly all failures come from evidence handling:
+retrieval that missed the clause, and quotes that paraphrased the source
+instead of copying it. A larger model would fix little of this. Better
+retrieval and a stricter citation mechanism would fix most of it. The citation
+rule did its job: a third of the model's quotes did not match the source, and
+none of them shipped as a supported answer.
+
+Some citations outside the annotated span may still be acceptable to a
+reviewer, since CUAD annotators marked minimal spans. The table reports
+agreement with the annotation, not legal correctness.
 
 ## Run it
 
@@ -132,12 +165,15 @@ pytest -q
 # retrieval ablation
 python run_eval.py --cuad data/cuad/test.json --configs configs/0*.yaml --contracts 102
 
-# end to end with Claude
-export ANTHROPIC_API_KEY=...        # model defaults to $CLAUDE_MODEL
-python run_answer.py --cuad data/cuad/test.json --config configs/04_hybrid_rerank.yaml \
-  --contracts 10 --queries 60 --input-price <USD per Mtok> --output-price <USD per Mtok>
+# end to end: answers, citations, abstention, cost
+# --provider anthropic (ANTHROPIC_API_KEY, $CLAUDE_MODEL) or openai (OPENAI_API_KEY, $OPENAI_MODEL)
+python run_answer.py --cuad data/cuad/test.json --config configs/06_bm25_rerank.yaml \
+  --provider openai --contracts 10 --queries 60 \
+  --input-price <USD per Mtok> --output-price <USD per Mtok>
 ```
-
+# attribute every outcome to a cause (no API calls)
+python diagnose_answers.py --cuad data/cuad/test.json --config configs/06_bm25_rerank.yaml \
+  --answers results/answers_06_bm25_rerank_openai.jsonl --contracts 102
 `configs/offline/` runs without downloading any model. Its TF-IDF/SVD
 "dense" retriever is a lexical stand-in for smoke tests, not a semantic result.
 
@@ -157,8 +193,8 @@ python run_answer.py --cuad data/cuad/test.json --config configs/04_hybrid_reran
 │   ├── graph.py          LangGraph answer flow with abstention
 │   └── pipeline.py       index construction
 ├── run_eval.py           retrieval ablation
-├── run_answer.py         end-to-end answer eval with Claude
-└── tests/                32 offline tests
+├── run_answer.py         end-to-end answer eval (Claude or OpenAI)
+└── tests/                33 offline tests
 ```
 
 ## Deliberately out of scope
