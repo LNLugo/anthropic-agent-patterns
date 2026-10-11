@@ -132,3 +132,5 @@ to retrieval: the simplest pipeline that holds up under measurement wins.
 Details and costs are in [07_rag/README.md](07_rag/README.md).
 
 **[Design: permission-aware RAG over Atlassian Data Center](docs/designs/atlassian-rag.md)**: how modules 07, 08, 10 and 11 compose into one governed system. Design only; each piece ships with its own number as the module lands.
+
+**[Design: permission-aware RAG over Atlassian Data Center](docs/designs/atlassian-rag.md)**: how modules 07, 08, 10 and 11 compose into one governed system. Design only; each piece ships with its own number as its module lands.
