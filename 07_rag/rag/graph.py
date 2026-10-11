@@ -52,24 +52,46 @@ class LLMReply(TypedDict):
 LLM = Callable[[str], LLMReply]
 
 
+def _reply_from_message(msg) -> LLMReply:
+    """Normalize a LangChain chat message into text plus token counts."""
+    usage = getattr(msg, "usage_metadata", None) or {}
+    content = msg.content
+    text = content if isinstance(content, str) else "".join(
+        b.get("text", "") for b in content if isinstance(b, dict)
+    )
+    return {
+        "text": text,
+        "input_tokens": int(usage.get("input_tokens", 0)),
+        "output_tokens": int(usage.get("output_tokens", 0)),
+    }
+
+
 def claude_llm(model: str | None = None, max_tokens: int = 800) -> LLM:
     """Claude via langchain-anthropic. Model defaults to $CLAUDE_MODEL."""
     from langchain_anthropic import ChatAnthropic
 
-    chat = ChatAnthropic(model=model or os.environ.get("CLAUDE_MODEL", "claude-sonnet-5-5"), temperature=0, max_tokens=max_tokens)
+    chat = ChatAnthropic(
+        model=model or os.environ.get("CLAUDE_MODEL", "claude-sonnet-5-5"), temperature=0, max_tokens=max_tokens
+    )
+    return lambda prompt: _reply_from_message(chat.invoke(prompt))
 
-    def call(prompt: str) -> LLMReply:
-        msg = chat.invoke(prompt)
-        usage = getattr(msg, "usage_metadata", None) or {}
-        return {
-            "text": msg.content if isinstance(msg.content, str) else "".join(
-                b.get("text", "") for b in msg.content if isinstance(b, dict)
-            ),
-            "input_tokens": int(usage.get("input_tokens", 0)),
-            "output_tokens": int(usage.get("output_tokens", 0)),
-        }
 
-    return call
+def openai_llm(model: str | None = None, max_tokens: int = 800) -> LLM:
+    """OpenAI via langchain-openai. Model defaults to $OPENAI_MODEL, then gpt-4o-mini."""
+    from langchain_openai import ChatOpenAI
+
+    chat = ChatOpenAI(model=model or os.environ.get("OPENAI_MODEL", "gpt-4o-mini"), temperature=0, max_tokens=max_tokens)
+    return lambda prompt: _reply_from_message(chat.invoke(prompt))
+
+
+PROVIDERS: dict[str, Callable[..., LLM]] = {"anthropic": claude_llm, "openai": openai_llm}
+
+
+def make_llm(provider: str, model: str | None = None) -> LLM:
+    """The graph is model agnostic; the provider is a run setting, not a code change."""
+    if provider not in PROVIDERS:
+        raise ValueError(f"unknown provider {provider!r}; choose from {sorted(PROVIDERS)}")
+    return PROVIDERS[provider](model)
 
 
 class State(TypedDict, total=False):

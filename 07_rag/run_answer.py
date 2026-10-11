@@ -1,8 +1,9 @@
-"""End-to-end answer eval with Claude: citations, abstention, tokens, latency, cost.
+"""End-to-end answer eval (Claude or OpenAI): citations, abstention, tokens, latency, cost.
 
-    export ANTHROPIC_API_KEY=...
-    python run_answer.py --cuad data/cuad/test.json --config configs/hybrid_rerank.yaml \
-        --contracts 10 --queries 60 --input-price <usd per Mtok> --output-price <usd per Mtok>
+    export ANTHROPIC_API_KEY=...      # or OPENAI_API_KEY with --provider openai
+    python run_answer.py --cuad data/cuad/test.json --config configs/06_bm25_rerank.yaml \
+        --provider anthropic --contracts 10 --queries 60 \
+        --input-price <usd per Mtok> --output-price <usd per Mtok>
 
 Samples a balanced set of answerable and unanswerable queries. Reports:
   answer rate on answerable queries      (did it find the clause when it exists)
@@ -29,7 +30,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from rag.citations import citation_precision  # noqa: E402
 from rag.config import load_config  # noqa: E402
 from rag.data import load_cuad  # noqa: E402
-from rag.graph import build_graph, claude_llm, initial_state  # noqa: E402
+from rag.graph import PROVIDERS, build_graph, initial_state, make_llm  # noqa: E402
 from rag.ledger import ContextLedger  # noqa: E402
 from rag.metrics import _pct  # noqa: E402
 from rag.pipeline import build_index  # noqa: E402
@@ -50,7 +51,8 @@ def main() -> None:
     ap.add_argument("--contracts", type=int, default=10)
     ap.add_argument("--queries", type=int, default=60)
     ap.add_argument("--seed", type=int, default=7)
-    ap.add_argument("--model", default=None, help="defaults to $CLAUDE_MODEL")
+    ap.add_argument("--provider", choices=sorted(PROVIDERS), default="anthropic")
+    ap.add_argument("--model", default=None, help="defaults to $CLAUDE_MODEL or $OPENAI_MODEL")
     ap.add_argument("--input-price", type=float, default=None, help="USD per million input tokens")
     ap.add_argument("--output-price", type=float, default=None, help="USD per million output tokens")
     ap.add_argument("--out", default="results")
@@ -59,12 +61,13 @@ def main() -> None:
     cfg = load_config(args.config)
     contracts, queries = load_cuad(args.cuad, args.contracts, args.seed)
     index = build_index(contracts, cfg)
-    graph = build_graph(index.retriever, claude_llm(args.model), k=cfg["k"])
+    graph = build_graph(index.retriever, make_llm(args.provider, args.model), k=cfg["k"])
+    tag = f"{cfg['name']}_{args.provider}"
     sample = sample_balanced(queries, args.queries, args.seed)
 
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
-    ledger_path = out / f"answers_{cfg['name']}.jsonl"
+    ledger_path = out / f"answers_{tag}.jsonl"
     rows = []
     with ledger_path.open("w") as fh:
         for i, q in enumerate(sample, 1):
@@ -97,7 +100,8 @@ def main() -> None:
     costs = [r["cost_usd"] for r in rows if r["cost_usd"] is not None]
     summary = {
         "config": cfg["name"],
-        "model": args.model or "$CLAUDE_MODEL",
+        "provider": args.provider,
+        "model": args.model or ("$CLAUDE_MODEL" if args.provider == "anthropic" else "$OPENAI_MODEL or gpt-4o-mini"),
         "queries": len(rows),
         "answer_rate_on_answerable": mean(r["status"] == "answered" for r in pos) if pos else None,
         "abstain_rate_on_unanswerable": mean(r["status"] == "abstained" for r in neg) if neg else None,
@@ -109,7 +113,7 @@ def main() -> None:
         "latency_ms_p95": _pct(lat, 0.95),
         "cost_usd_per_query": mean(costs) if costs else None,
     }
-    (out / f"answers_{cfg['name']}_summary.json").write_text(json.dumps(summary, indent=2))
+    (out / f"answers_{tag}_summary.json").write_text(json.dumps(summary, indent=2))
     print(json.dumps(summary, indent=2))
 
 
