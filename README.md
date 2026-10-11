@@ -130,3 +130,5 @@ cross encoder reranker did the real work. Once reranking was in place, the
 dense model could be removed with no loss. That is the Phase 1 thesis applied
 to retrieval: the simplest pipeline that holds up under measurement wins.
 Details and costs are in [07_rag/README.md](07_rag/README.md).
+
+**[Design: permission-aware RAG over Atlassian Data Center](docs/designs/atlassian-rag.md)**: how modules 07, 08, 10 and 11 compose into one governed system. Design only; each piece ships with its own number as the module lands.
