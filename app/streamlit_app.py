@@ -181,6 +181,25 @@ with col2:
             "until the quality threshold or iteration limit."
         )
 
+    elif selected_pattern == "Agents":
+
+        graph_path = (
+            PROJECT_ROOT
+            / "06_agents"
+            / "agents_06_v3_1_graph.png"
+        )
+
+        st.image(
+            str(graph_path),
+            width=400
+        )
+
+        st.caption(
+            "The agent dynamically decides whether to act or finish, "
+            "executes tools, observes the result, and can loop back "
+            "for another decision."
+        )
+
     else:
 
         st.info(
@@ -755,12 +774,242 @@ elif selected_pattern == "Evaluator-Optimizer":
         "until the quality threshold is met or the iteration limit is reached."
     )
 
-else:
+elif selected_pattern == "Agents":
 
     # --------------------------------------------------
-    # Future patterns
+    # Agents V3.1
     # --------------------------------------------------
+
+    module_path = (
+        PROJECT_ROOT
+        / "06_agents"
+        / "agents_06_v3_1.py"
+    )
+
+    spec = importlib.util.spec_from_file_location(
+        "agents_06_v3_1",
+        module_path
+    )
+
+    module = importlib.util.module_from_spec(spec)
+
+    spec.loader.exec_module(module)
+
+    app = module.app
+
+    with st.spinner(
+        "Running Agents..."
+    ):
+
+        result = app.invoke(
+            {
+                "question": question,
+                "actions": [],
+                "observations": [],
+                "decision": "",
+                "iteration": 0,
+                "final_answer": ""
+            }
+        )
+
+    st.success(
+        "Agents completed."
+    )
+
+    st.subheader("Execution Result")
+
+    st.metric(
+        "Tool Iterations",
+        result["iteration"]
+    )
+
+    st.divider()
+
+    st.markdown(
+        "### Agent Trajectory"
+    )
+
+    for index, action in enumerate(
+        result["actions"],
+        start=1
+    ):
+
+        st.write(
+            f"**Iteration {index}:** {action}"
+        )
+
+    st.divider()
+
+    st.markdown(
+        "### Observations"
+    )
+
+    for index, observation in enumerate(
+        result["observations"],
+        start=1
+    ):
+
+        with st.expander(
+            f"Observation {index}",
+            expanded=False
+        ):
+
+            st.write(
+                observation
+            )
+
+    st.divider()
+
+    st.markdown(
+        "### Final Answer"
+    )
+
+    st.write(
+        result["final_answer"]
+    )
 
     st.info(
-        f"{selected_pattern} will be connected next."
+        "The agent dynamically chooses actions, executes tools, "
+        "observes the results, and continues until it decides to finish "
+        "or reaches the iteration limit."
+    )
+
+
+elif selected_pattern == "Evaluator-Optimizer":
+
+    graph_path = (
+        PROJECT_ROOT
+        / "05_evaluator_optimizer"
+        / "evaluator_optimizer_05_graph.png"
+    )
+
+    st.image(
+        str(graph_path),
+        width=400
+    )
+
+    st.caption(
+        "Generate → evaluate → optimize → evaluate "
+        "until the quality threshold or iteration limit."
+    )
+elif selected_pattern == "Agents":
+
+    # --------------------------------------------------
+    # Agents V3.1
+    # --------------------------------------------------
+
+    module_path = (
+        PROJECT_ROOT
+        / "06_agents"
+        / "agents_06_v3_1.py"
+    )
+
+    spec = importlib.util.spec_from_file_location(
+        "agents_06_v3_1",
+        module_path
+    )
+
+    module = importlib.util.module_from_spec(spec)
+
+    spec.loader.exec_module(module)
+
+    app = module.app
+
+    with st.spinner(
+        "Running Agents..."
+    ):
+
+        result = app.invoke(
+            {
+                "question": question,
+                "actions": [],
+                "observations": [],
+                "decision": "",
+                "iteration": 0,
+                "final_answer": ""
+            }
+        )
+
+    st.success(
+        "Agents completed."
+    )
+
+    st.subheader("Execution Result")
+
+    st.metric(
+        "Tool Iterations",
+        result["iteration"]
+    )
+
+    st.divider()
+
+    st.markdown(
+        "### Agent Trajectory"
+    )
+
+    for index, action in enumerate(
+        result["actions"],
+        start=1
+    ):
+
+        st.write(
+            f"**Iteration {index}:** {action}"
+        )
+
+    st.divider()
+
+    st.markdown(
+        "### Observations"
+    )
+
+    for index, observation in enumerate(
+        result["observations"],
+        start=1
+    ):
+
+        with st.expander(
+            f"Observation {index}",
+            expanded=False
+        ):
+
+            st.write(
+                observation
+            )
+
+    st.divider()
+
+    st.markdown(
+        "### Final Answer"
+    )
+
+    st.write(
+        result["final_answer"]
+    )
+
+    st.info(
+        "The agent dynamically chooses actions, executes tools, "
+        "observes the results, and continues until it decides to finish "
+        "or reaches the iteration limit."
+    )
+elif selected_pattern == "Agents":
+
+    graph_path = (
+        PROJECT_ROOT
+        / "06_agents"
+        / "agents_06_v3_1_graph.png"
+    )
+
+    st.image(
+        str(graph_path),
+        width=400
+    )
+
+    st.caption(
+        "The agent dynamically decides whether to act or finish, "
+        "executes tools, observes the result, and can loop back for another decision."
+    )
+else:
+
+    st.info(
+        "This pattern will be connected next."
     )
