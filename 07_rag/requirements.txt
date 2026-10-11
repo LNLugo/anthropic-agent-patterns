@@ -6,4 +6,5 @@ scikit-learn>=1.4
 sentence-transformers>=3.0
 langgraph>=0.2
 langchain-anthropic>=0.3
+langchain-openai>=0.2
 pytest>=8.0

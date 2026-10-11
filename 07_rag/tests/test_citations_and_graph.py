@@ -2,7 +2,7 @@ import json
 
 from rag.chunking import Chunk, chunk_contract
 from rag.citations import Citation, citation_precision, locate, validate
-from rag.graph import build_graph, initial_state
+from rag.graph import build_graph, initial_state, make_llm
 from rag.ledger import ContextLedger
 from rag.retrievers import BM25Retriever
 
@@ -107,3 +107,10 @@ def test_graph_respects_model_abstention(contract, queries):
 def test_graph_survives_unparseable_output(contract, queries):
     final = _graph(contract, lambda p: "I think it is New York")[0].invoke(initial_state(queries["Governing Law"]))
     assert final["status"] == "abstained"
+
+
+def test_unknown_provider_is_rejected():
+    import pytest
+
+    with pytest.raises(ValueError):
+        make_llm("not-a-provider")
