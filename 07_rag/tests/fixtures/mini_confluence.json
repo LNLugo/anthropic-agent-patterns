@@ -1,0 +1,73 @@
+{
+  "_note": "Synthetic engineering wiki for the permission leakage test. All pages, people and systems are invented.",
+  "spaces": {
+    "ENG": {"view_groups": ["eng-all"]},
+    "SEC": {"view_groups": ["security-team"]},
+    "HR":  {"view_groups": ["hr-team"]}
+  },
+  "pages": [
+    {
+      "id": "ENG-1", "space": "ENG", "title": "Remote Connectivity Onboarding",
+      "owner": "it-platform", "last_modified": "2026-08-14",
+      "text": "New engineers request VPN access through the service portal. Install the VPN client, enroll your laptop in device management, and sign in with single sign on. VPN access is approved by your manager within one business day."
+    },
+    {
+      "id": "ENG-2", "space": "ENG", "title": "Deploy Pipeline Overview",
+      "owner": "release-eng", "last_modified": "2026-09-02",
+      "text": "Every merge to main triggers the deploy pipeline. The pipeline runs unit tests, builds a container image, deploys to staging, runs smoke tests, then waits for approval before production."
+    },
+    {
+      "id": "ENG-3", "space": "ENG", "title": "Billing API Credential Rotation",
+      "owner": "billing-platform", "last_modified": "2026-07-30",
+      "restrictions": {"groups": ["billing-oncall"]},
+      "text": "Rotate the billing API service credentials every ninety days. Generate the new secret in the vault, update the billing API deployment, verify payment authorization calls succeed, then revoke the old billing credentials."
+    },
+    {
+      "id": "ENG-4", "space": "ENG", "title": "Billing Rotation Appendix: Emergency Revocation",
+      "parent_id": "ENG-3", "owner": "billing-platform", "last_modified": "2026-07-30",
+      "text": "If billing credentials are exposed, revoke them immediately in the vault and page the billing oncall engineer. The emergency revocation break glass account is held by the billing platform lead."
+    },
+    {
+      "id": "ENG-5", "space": "ENG", "title": "Security Exception: Legacy TLS on Reporting Gateway",
+      "owner": "security", "last_modified": "2026-06-11",
+      "restrictions": {"groups": ["security-team"], "users": ["alice"]},
+      "text": "The reporting gateway still accepts legacy TLS for one vendor integration. This security exception expires at the end of the quarter. Compensating controls include network allow listing and enhanced logging on the reporting gateway."
+    },
+    {
+      "id": "SEC-1", "space": "SEC", "title": "Incident Postmortem: Credential Exposure",
+      "owner": "security", "last_modified": "2026-05-20",
+      "text": "Postmortem for the credential exposure incident. A service credential was committed to a repository and detected by secret scanning within forty minutes. Root cause was a missing pre commit hook. The credential was revoked and rotated."
+    },
+    {
+      "id": "HR-1", "space": "HR", "title": "Engineering Compensation Bands",
+      "owner": "people-ops", "last_modified": "2026-03-01",
+      "restrictions": {"groups": ["hr-comp"], "users": ["cfo"]},
+      "text": "Engineering compensation bands by level, including salary ranges, equity guidelines and promotion adjustments. Compensation bands are reviewed annually."
+    },
+    {
+      "id": "HR-2", "space": "HR", "title": "Holiday Calendar",
+      "owner": "people-ops", "last_modified": "2026-01-05",
+      "text": "Company holidays for the year, floating holiday rules, and how to request time off in the people portal."
+    }
+  ],
+  "users": [
+    {"id": "new_hire",       "groups": ["eng-all"]},
+    {"id": "billing_oncall", "groups": ["eng-all", "billing-oncall"]},
+    {"id": "sec_engineer",   "groups": ["eng-all", "security-team"]},
+    {"id": "alice",          "groups": ["eng-all"]},
+    {"id": "hr_partner",     "groups": ["hr-team"]},
+    {"id": "comp_analyst",   "groups": ["hr-team", "hr-comp"]},
+    {"id": "cfo",            "groups": ["hr-team"]},
+    {"id": "contractor",     "groups": []}
+  ],
+  "probe_queries": [
+    "how do I rotate the billing API credentials",
+    "emergency revocation of billing credentials break glass",
+    "legacy TLS security exception reporting gateway",
+    "credential exposure incident postmortem root cause",
+    "engineering compensation bands salary ranges",
+    "how do I get VPN access",
+    "deploy pipeline approval before production",
+    "holiday calendar time off"
+  ]
+}
