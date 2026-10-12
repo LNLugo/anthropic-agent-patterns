@@ -1,10 +1,12 @@
 # Design: Permission-Aware RAG over Atlassian Data Center
 
-> **Status: design, not implemented.** This document describes how the
-> capability modules in this repo compose into one system. Pieces move from
-> design to built as their modules land, and each one ships with the number
-> that proves it. Nothing here has been run against a live Confluence or Jira
-> instance.
+> **Status: mostly design.** This document describes how the capability
+> modules in this repo compose into one system. Pieces move from design to
+> built as their modules land, and each one ships with the number that proves
+> it. Built so far: retrieval, reranking, cited answers and abstention
+> ([07_rag](../../07_rag)), and permission-filtered retrieval with a leakage
+> test on a synthetic wiki. Nothing here has been run against a live
+> Confluence or Jira instance.
 
 ---
 
@@ -142,7 +144,7 @@ Every row becomes a number the repo produces once its module is built.
 
 | Measure | How | Gate |
 | --- | --- | --- |
-| Permission leakage | Restricted personas query for content they cannot see; count restricted chunks returned | **Zero. Hard gate.** |
+| Permission leakage | Restricted personas query for content they cannot see; count restricted chunks returned | **Zero. Hard gate.** Measured: 0 of 144 returned chunks on the synthetic wiki |
 | Retrieval quality | Hit@k and MRR on a golden set of real questions with labeled source pages | Beat the BM25 baseline |
 | Citation resolution | Share of shipped answers where every citation resolves | 100% of shipped answers |
 | Abstention quality | Precision of "not in the wiki" on questions with and without answers | Calibrated on the eval set |
@@ -160,7 +162,7 @@ deterministic and cheap, so it runs on every change.
 | Piece | Module | Status |
 | --- | --- | --- |
 | Hybrid retrieval, rerank, cited answers, abstention | [07_rag](../../07_rag) | Built on CUAD |
-| ACL payload filtering and leakage test | 07_rag extension | Planned |
+| ACL filtering and leakage test | [07_rag](../../07_rag) (`rag/acl.py`, `run_leakage.py`) | Built: 0 restricted chunks across 64 persona queries, 224 with the filter off |
 | Bounded JQL tool | 08 Tools and MCP | Planned |
 | Traces and policy checks | 10 Guardrails and observability | Planned |
 | Cost per answer | 11 AI FinOps | Planned |
