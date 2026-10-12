@@ -1,0 +1,6 @@
+# Phase 2, 08_tools
+langgraph>=0.2
+pytest>=8.0
+# demo_assistant.py also imports 07_rag (rank_bm25, numpy) for the knowledge path
+rank_bm25>=0.2.2
+numpy>=1.26

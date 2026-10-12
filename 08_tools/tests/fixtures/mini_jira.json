@@ -1,0 +1,37 @@
+{
+  "_note": "Synthetic Jira data for the bounded query tool. All projects, issues and people are invented.",
+  "projects": {
+    "BILL":   {"name": "Billing Platform",    "browse_groups": ["eng-all"]},
+    "PAY":    {"name": "Payments",            "browse_groups": ["eng-all"]},
+    "INFRA":  {"name": "Infrastructure",      "browse_groups": ["eng-all"]},
+    "SECOPS": {"name": "Security Operations", "browse_groups": ["security-team"]}
+  },
+  "security_levels": {
+    "billing-restricted": {"groups": ["billing-oncall"]}
+  },
+  "issues": [
+    {"key": "BILL-095", "project": "BILL", "type": "Incident", "priority": "P1", "status": "Resolved", "created": "2026-06-20", "summary": "Card network outage degraded authorizations"},
+    {"key": "BILL-101", "project": "BILL", "type": "Incident", "priority": "P1", "status": "Resolved", "created": "2026-07-08", "summary": "Payment authorization timeouts after deploy"},
+    {"key": "BILL-102", "project": "BILL", "type": "Bug",      "priority": "P1", "status": "Resolved", "created": "2026-07-15", "summary": "Tax rounding error on multi currency invoices"},
+    {"key": "BILL-104", "project": "BILL", "type": "Incident", "priority": "P1", "status": "Resolved", "created": "2026-08-02", "summary": "Invoice generation stalled"},
+    {"key": "BILL-107", "project": "BILL", "type": "Incident", "priority": "P1", "status": "Resolved", "created": "2026-08-21", "summary": "Billing credentials written to application logs", "security_level": "billing-restricted"},
+    {"key": "BILL-110", "project": "BILL", "type": "Incident", "priority": "P1", "status": "Resolved", "created": "2026-09-15", "summary": "Duplicate charges on payment retry"},
+    {"key": "BILL-111", "project": "BILL", "type": "Incident", "priority": "P2", "status": "Resolved", "created": "2026-09-18", "summary": "Slow invoice exports"},
+    {"key": "BILL-112", "project": "BILL", "type": "Incident", "priority": "P3", "status": "Open",     "created": "2026-09-25", "summary": "Intermittent webhook retries"},
+    {"key": "BILL-115", "project": "BILL", "type": "Incident", "priority": "P1", "status": "Open",     "created": "2026-10-03", "summary": "Subscription renewals failing for one region"},
+    {"key": "PAY-201",  "project": "PAY",  "type": "Incident", "priority": "P1", "status": "Resolved", "created": "2026-07-19", "summary": "Settlement file rejected by acquirer"},
+    {"key": "PAY-202",  "project": "PAY",  "type": "Incident", "priority": "P2", "status": "Open",     "created": "2026-09-02", "summary": "Refund latency above target"},
+    {"key": "PAY-203",  "project": "PAY",  "type": "Incident", "priority": "P2", "status": "Open",     "created": "2026-10-06", "summary": "Chargeback notifications delayed"},
+    {"key": "INFRA-301","project": "INFRA","type": "Incident", "priority": "P1", "status": "Resolved", "created": "2026-08-11", "summary": "Primary database failover"},
+    {"key": "INFRA-302","project": "INFRA","type": "Change",   "priority": "P3", "status": "Resolved", "created": "2026-09-01", "summary": "Kubernetes node pool upgrade"},
+    {"key": "INFRA-303","project": "INFRA","type": "Incident", "priority": "P2", "status": "Resolved", "created": "2026-09-09", "summary": "DNS resolution errors in one zone"},
+    {"key": "SECOPS-401","project": "SECOPS","type": "Incident","priority": "P1", "status": "Resolved", "created": "2026-08-21", "summary": "Credential exposure investigation"},
+    {"key": "SECOPS-402","project": "SECOPS","type": "Incident","priority": "P2", "status": "Open",     "created": "2026-09-29", "summary": "Suspicious login pattern review"}
+  ],
+  "users": [
+    {"id": "new_hire",       "groups": ["eng-all"]},
+    {"id": "billing_oncall", "groups": ["eng-all", "billing-oncall"]},
+    {"id": "sec_engineer",   "groups": ["eng-all", "security-team"]},
+    {"id": "contractor",     "groups": []}
+  ]
+}

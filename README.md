@@ -25,7 +25,7 @@ with predictable workflows and progressing toward dynamic agent behavior.
 | 06 | Agents | ✅ Complete | LLM dynamically directs its own process and tool use |
 | **Phase 2** | **Capability layer** | | |
 | 07 | Retrieval (RAG) | 🟡 In progress | Hybrid retrieval, reranking, cited answers, abstention, measured on CUAD |
-| 08 | Tools and MCP | ⬜ Planned | Retrieval and review exposed as tools |
+ | 08 | Tools and MCP | 🟡 In progress | Bounded, read only Jira tool behind a router; typed queries, delegated permissions 
 | 09 | Memory | ⬜ Planned | Retrieve relevant history instead of appending it |
 | 10 | Guardrails and observability | ⬜ Planned | Policy checks and traces built on the context ledger |
 | 11 | AI FinOps | ⬜ Planned | Cost per answer and cost per correct answer |
