@@ -201,5 +201,3 @@ and names the number that will prove each part.
 * **09 Memory**: retrieve relevant history instead of appending it to the prompt
 * **10 Guardrails and observability** on top of the context ledger
 * **11 AI FinOps**: cost per answer and cost per correct answer
-#   a g e n t - c o n t r o l - e v a l  
- 
