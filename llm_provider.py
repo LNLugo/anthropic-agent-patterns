@@ -3,7 +3,7 @@
 The patterns are model agnostic: the provider is a run setting, not a code
 change. This matches the convention in 07_rag/rag/graph.py.
 
-    LLM_PROVIDER   anthropic (default) or openai
+    LLM_PROVIDER   openai (default) or anthropic
     CLAUDE_MODEL   default claude-sonnet-5-5   (needs ANTHROPIC_API_KEY)
     OPENAI_MODEL   default gpt-4o-mini         (needs OPENAI_API_KEY)
 
@@ -20,7 +20,7 @@ import json
 import os
 import re
 
-DEFAULT_PROVIDER = "anthropic"
+DEFAULT_PROVIDER = "openai"
 
 
 def get_chat_model(provider: str | None = None, model: str | None = None, temperature: float = 0):
