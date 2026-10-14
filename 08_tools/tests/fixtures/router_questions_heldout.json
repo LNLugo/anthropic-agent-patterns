@@ -8,33 +8,142 @@
   },
   "today": "2026-10-12",
   "questions": [
-    {"_slot": "count, a time phrase not used in the development set", "q": "REPLACE", "route": "aggregation",
-     "spec": {"project": "REPLACE", "issue_type": "REPLACE", "created_from": "REPLACE", "created_before": "REPLACE"}},
-    {"_slot": "count, another unusual time phrase", "q": "REPLACE", "route": "aggregation",
-     "spec": {"project": "REPLACE", "created_from": "REPLACE", "created_before": "REPLACE"}},
-    {"_slot": "count, informal team or system name for a project", "q": "REPLACE", "route": "aggregation",
-     "spec": {"project": "REPLACE", "created_from": "REPLACE", "created_before": "REPLACE"}},
-    {"_slot": "count, with a typo or shorthand", "q": "REPLACE", "route": "aggregation",
-     "spec": {"project": "REPLACE", "created_from": "REPLACE", "created_before": "REPLACE"}},
-    {"_slot": "count, status implied by a verb", "q": "REPLACE", "route": "aggregation",
-     "spec": {"project": "REPLACE", "status": "REPLACE", "created_from": "REPLACE", "created_before": "REPLACE"}},
-    {"_slot": "count, a breakdown request", "q": "REPLACE", "route": "aggregation",
-     "spec": {"project": "REPLACE", "group_by": "REPLACE", "created_from": "REPLACE", "created_before": "REPLACE"}},
-    {"_slot": "count, no period stated", "q": "REPLACE", "route": "aggregation",
-     "spec": {"project": "REPLACE", "created_from": "2026-07-15", "created_before": "2026-10-13"}},
-    {"_slot": "count, phrased the way a VP would ask in a hurry", "q": "REPLACE", "route": "aggregation",
-     "spec": {"project": "REPLACE", "created_from": "REPLACE", "created_before": "REPLACE"}},
-    {"_slot": "count, no counting words at all", "q": "REPLACE", "route": "aggregation"},
-    {"_slot": "nothing should run: no project named", "q": "REPLACE", "route": "no_query"},
-    {"_slot": "nothing should run: two projects in one question", "q": "REPLACE", "route": "no_query"},
-    {"_slot": "nothing should run: a project outside the allowlist", "q": "REPLACE", "route": "no_query"},
-    {"_slot": "wiki, a plain how-to", "q": "REPLACE", "route": "knowledge"},
-    {"_slot": "wiki, a policy or ownership question", "q": "REPLACE", "route": "knowledge"},
-    {"_slot": "wiki, mentions incidents or bugs but asks for a document", "q": "REPLACE", "route": "knowledge"},
-    {"_slot": "wiki, uses a counting word but asks for documentation", "q": "REPLACE", "route": "knowledge"},
-    {"_slot": "wiki, asks for a list of steps or pages, not issues", "q": "REPLACE", "route": "knowledge"},
-    {"_slot": "wiki, an explanation of how a system works", "q": "REPLACE", "route": "knowledge"},
-    {"_slot": "wiki, short and terse", "q": "REPLACE", "route": "knowledge"},
-    {"_slot": "your choice: the question you would most expect to break this", "q": "REPLACE", "route": "REPLACE"}
+    {
+      "_slot": "count, a time phrase not used in the development set",
+      "q": "BILL bugs logged Q4-to-date?",
+      "route": "aggregation",
+      "spec": {
+        "project": "BILL",
+        "issue_type": "Bug",
+        "created_from": "2026-10-01",
+        "created_before": "2026-10-13"
+      }
+    },
+    {
+      "_slot": "count, another unusual time phrase",
+      "q": "How much PAY work hit the board over the past fortnight?",
+      "route": "aggregation",
+      "spec": {
+        "project": "PAY",
+        "created_from": "2026-09-29",
+        "created_before": "2026-10-13"
+      }
+    },
+    {
+      "_slot": "count, informal team or system name for a project",
+      "q": "Need a read on the invoice stack—tickets opened in September?",
+      "route": "aggregation",
+      "spec": {
+        "project": "BILL",
+        "created_from": "2026-09-01",
+        "created_before": "2026-10-01"
+      }
+    },
+    {
+      "_slot": "count, with a typo or shorthand",
+      "q": "PAY tix opened lst month?",
+      "route": "aggregation",
+      "spec": {
+        "project": "PAY",
+        "created_from": "2026-09-01",
+        "created_before": "2026-10-01"
+      }
+    },
+    {
+      "_slot": "count, status implied by a verb",
+      "q": "How much INFRA work got resolved this month?",
+      "route": "aggregation"
+    },
+    {
+      "_slot": "count, a breakdown request",
+      "q": "BILL—break it down by priority for this year, please.",
+      "route": "aggregation",
+      "spec": {
+        "project": "BILL",
+        "group_by": "priority",
+        "created_from": "2026-01-01",
+        "created_before": "2026-10-13"
+      }
+    },
+    {
+      "_slot": "count, no period stated",
+      "q": "What's PAY ticket volume?",
+      "route": "aggregation",
+      "spec": {
+        "project": "PAY",
+        "created_from": "2026-07-15",
+        "created_before": "2026-10-13"
+      }
+    },
+    {
+      "_slot": "count, phrased the way a VP would ask in a hurry",
+      "q": "Infra tickets this month. Need it for ELT.",
+      "route": "aggregation",
+      "spec": {
+        "project": "INFRA",
+        "created_from": "2026-10-01",
+        "created_before": "2026-10-13"
+      }
+    },
+    {
+      "_slot": "count, no counting words at all",
+      "q": "BILL incidents from last month.",
+      "route": "aggregation"
+    },
+    {
+      "_slot": "nothing should run: no project named",
+      "q": "How many incidents were created last week?",
+      "route": "no_query"
+    },
+    {
+      "_slot": "nothing should run: two projects in one question",
+      "q": "How many bugs did BILL and PAY open in September?",
+      "route": "no_query"
+    },
+    {
+      "_slot": "nothing should run: a project outside the allowlist",
+      "q": "How many OPS tickets came in this quarter?",
+      "route": "no_query"
+    },
+    {
+      "_slot": "wiki, a plain how-to",
+      "q": "How do I request access to the billing reconciliation dashboard?",
+      "route": "knowledge"
+    },
+    {
+      "_slot": "wiki, a policy or ownership question",
+      "q": "Who owns the after-hours escalation policy for Payments?",
+      "route": "knowledge"
+    },
+    {
+      "_slot": "wiki, mentions incidents or bugs but asks for a document",
+      "q": "Where's the runbook for handling P1 payment incidents caused by bugs?",
+      "route": "knowledge"
+    },
+    {
+      "_slot": "wiki, uses a counting word but asks for documentation",
+      "q": "Which doc lists the three approval checks for an INFRA change?",
+      "route": "knowledge"
+    },
+    {
+      "_slot": "wiki, asks for a list of steps or pages, not issues",
+      "q": "List the pages I need to read before rotating a production secret.",
+      "route": "knowledge"
+    },
+    {
+      "_slot": "wiki, an explanation of how a system works",
+      "q": "How does the payment retry pipeline decide when to stop retrying?",
+      "route": "knowledge"
+    },
+    {
+      "_slot": "wiki, short and terse",
+      "q": "BILL on-call runbook?",
+      "route": "knowledge"
+    },
+    {
+      "_slot": "your choice: the question you would most expect to break this",
+      "q": "PAY P1 incident runbook for Q4?",
+      "route": "knowledge"
+    }
   ]
 }
