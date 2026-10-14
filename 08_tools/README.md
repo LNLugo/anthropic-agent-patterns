@@ -166,19 +166,64 @@ long, the same off by one as on the development set, and it read "opened" as
 the status Open. Moving date arithmetic out of the model and into
 `time_window` would remove that class of error for cheaper models.
 
+### Coverage check
+
+**Control question:** *does the query cover what the question asked for?*
+
+The bound answers "is this query allowed". The held-out miss needed a second
+question, because "count BILL bugs in September" is allowed; it just is not
+what was asked. `agent_tools/coverage.py` asks it in code, after the model has
+chosen its arguments and before anything reaches Jira.
+
+The count tool, as offered to the model, gains one required argument,
+`project_evidence`: the exact words in the question that name the project.
+Nothing else in the prompt or the tool descriptions changes, so a difference
+in results can be credited to the check. It is the same move as 07_rag's
+citation check, where an answer ships only when its citation resolves to text
+the model was shown; here a query runs only when its project resolves to
+words the user typed. The check asks instead of running when:
+
+| Condition | Example |
+|---|---|
+| The question names more than one known project | "BILL and PAY" |
+| The quoted evidence is not in the question | the model quotes "payments" for a question that never says it |
+| The evidence is only generic words | "incidents", for a question that names no project |
+| The evidence names a different project than the one chosen | evidence "payments", project BILL |
+
+It fires on positive evidence only. An informal name the code does not know,
+such as "the invoice stack", passes, because it is real text from the
+question; whether it really means BILL stays the model's call, with the quoted
+words logged for review. For the same reason, an unknown project name ("OPS")
+mapped onto an allowed project is not caught. Two known projects in one
+question are stopped even when the second is only mentioned in passing, which
+may over-ask; the coverage set measures how often.
+
+`--no-coverage` reruns the router exactly as measured before the check: same
+schema, no check. The check is measured on
+`tests/fixtures/router_questions_coverage.json`, 20 questions written after
+it was designed, half that should be stopped and half that must still run.
+The development and held-out sets are rerun with it on as a regression check:
+it should not make the router ask where it used to answer correctly.
+
+Results: pending.
+
 ## Run it
 
 ```bash
 cd 08_tools
 pip install -r requirements.txt
 
-pytest -q                       # 67 offline tests
+pytest -q                       # 90 offline tests
 python run_router_eval.py       # router and extraction accuracy
 
 # the same questions, routed by a model through tool calling (needs OPENAI_API_KEY,
 # or --provider anthropic with ANTHROPIC_API_KEY); prices are USD per million tokens
 python run_model_router_eval.py --input-price <in> --output-price <out>
 python run_model_router_eval.py --questions tests/fixtures/router_questions_heldout.json
+
+# the coverage check: on by default; --no-coverage reproduces the router without it
+python run_model_router_eval.py --questions tests/fixtures/router_questions_coverage.json
+python run_model_router_eval.py --questions tests/fixtures/router_questions_coverage.json --no-coverage
 
 # counting question, as three different users
 python demo_assistant.py
@@ -206,12 +251,13 @@ set by eye on 8 pages, not calibrated.
 │   ├── jql_tool.py      QuerySpec, validator, JQL compiler, tool schema, count_jira_issues
 │   ├── router.py        classify (two cues), extract (project, type, priority, status, period)
 │   ├── model_router.py  the same routing and extraction by a model, through tool calling
+│   ├── coverage.py      stops valid queries that do not cover the question (two projects, none)
 │   ├── evaluate.py      router and extraction accuracy on the labeled set, rules or model
 │   └── assistant.py     LangGraph flow: classify, extract, run tool or retrieve, respond
 ├── run_router_eval.py
 ├── run_model_router_eval.py
 ├── demo_assistant.py
-└── tests/               67 offline tests, synthetic Jira, development and held-out questions
+└── tests/               90 offline tests, synthetic Jira, development, held-out and coverage questions
 ```
 
 ## Limits
@@ -219,9 +265,8 @@ set by eye on 8 pages, not calibrated.
 * The Jira here is a mock. It reproduces project permissions and issue
   security levels, not the Jira REST API, pagination or rate limits.
 * The assistant graph still routes with the rules. The held-out results favour
-  the model router, but it goes into the graph only with the coverage check
-  above in place, since an unchecked model answers half of a two project
-  question.
+  the model router; it goes into the graph once the coverage check above is
+  measured, since an unchecked model answers half of a two project question.
 * The tool filters by creation date only. "Resolved this month" cannot be
   expressed: it would need a resolution date filter.
 * The tool definition (`BoundedJiraTool.schema`) is shaped for tool calling and

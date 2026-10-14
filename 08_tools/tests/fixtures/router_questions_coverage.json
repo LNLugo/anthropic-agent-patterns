@@ -1,0 +1,31 @@
+{
+  "_note": "COVERAGE SET. Written after the coverage check was designed, to measure it on questions it was not built from. Write them without reading agent_tools/coverage.py. Half should be stopped (nothing should run) and half must still run, so the set measures both what the check catches and what it wrongly blocks. Replace every REPLACE; the evaluators refuse to run while any question starts with REPLACE.",
+  "_how_to_label": {
+    "route": "no_query when nothing should run (two or more projects, no project, a project outside BILL, PAY, INFRA). aggregation when one allowed project is meant and a count should run. knowledge is not needed in this set.",
+    "spec": "Optional here. Leave it out to score routing only, which is what this set measures. If you add one, follow the rules in router_questions_heldout.json.",
+    "projects": "BILL = Billing Platform, PAY = Payments, INFRA = Infrastructure. Anything else is off the allowlist."
+  },
+  "today": "2026-10-12",
+  "questions": [
+    {"_slot": "stop: two projects joined by 'and'", "q": "REPLACE", "route": "no_query"},
+    {"_slot": "stop: two projects compared ('versus', 'compared with')", "q": "REPLACE", "route": "no_query"},
+    {"_slot": "stop: three projects, or 'all projects'", "q": "REPLACE", "route": "no_query"},
+    {"_slot": "stop: two projects, one named informally", "q": "REPLACE", "route": "no_query"},
+    {"_slot": "stop: a count with no project at all", "q": "REPLACE", "route": "no_query"},
+    {"_slot": "stop: no project, but a team or person named", "q": "REPLACE", "route": "no_query"},
+    {"_slot": "stop: no project, very short", "q": "REPLACE", "route": "no_query"},
+    {"_slot": "stop: a known project off the allowlist (Security Operations)", "q": "REPLACE", "route": "no_query"},
+    {"_slot": "stop: a project name that does not exist here", "q": "REPLACE", "route": "no_query"},
+    {"_slot": "stop: your hardest case of something that should not run", "q": "REPLACE", "route": "no_query"},
+    {"_slot": "run: one project by its code", "q": "REPLACE", "route": "aggregation"},
+    {"_slot": "run: one project by its full name", "q": "REPLACE", "route": "aggregation"},
+    {"_slot": "run: one project by an informal name", "q": "REPLACE", "route": "aggregation"},
+    {"_slot": "run: one project by another informal name", "q": "REPLACE", "route": "aggregation"},
+    {"_slot": "run: one project, misspelled", "q": "REPLACE", "route": "aggregation"},
+    {"_slot": "run: one project, with a second project mentioned only in passing (for example as a cause)", "q": "REPLACE", "route": "aggregation"},
+    {"_slot": "run: one project, phrased as a VP would in a hurry", "q": "REPLACE", "route": "aggregation"},
+    {"_slot": "run: one project, with a word that looks like another project's name", "q": "REPLACE", "route": "aggregation"},
+    {"_slot": "run: one project, long and chatty", "q": "REPLACE", "route": "aggregation"},
+    {"_slot": "run: your hardest case of something that should run", "q": "REPLACE", "route": "aggregation"}
+  ]
+}

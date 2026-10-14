@@ -23,6 +23,7 @@ import time
 from dataclasses import dataclass
 from datetime import date, timedelta
 
+from . import coverage as coverage_check
 from .jql_tool import BoundedJiraTool, QuerySpec, ToolRejected, validate
 
 PROJECT_NAMES = {"BILL": "Billing Platform", "PAY": "Payments", "INFRA": "Infrastructure"}
@@ -88,6 +89,23 @@ Rules for count_jira_issues arguments:
 """
 
 
+EVIDENCE_FIELD = "project_evidence"
+
+
+def with_evidence(schema: dict) -> dict:
+    """The count tool's schema plus a required field quoting the words that name the project.
+    The Jira tool itself is unchanged; the field is stripped before its arguments are parsed."""
+    s = {**schema, "input_schema": {**schema["input_schema"]}}
+    props = dict(s["input_schema"]["properties"])
+    props[EVIDENCE_FIELD] = {
+        "type": "string",
+        "description": "The exact words from the user's question that name the project, copied verbatim.",
+    }
+    s["input_schema"]["properties"] = props
+    s["input_schema"]["required"] = [*s["input_schema"]["required"], EVIDENCE_FIELD]
+    return s
+
+
 def openai_style(tool: dict) -> dict:
     """{name, description, input_schema} as the function format both LangChain chat models accept."""
     return {"type": "function", "function": {
@@ -102,15 +120,18 @@ class Decision:
     rejected: str | None = None       # set when count_jira_issues arguments failed the bound
     tool_name: str | None = None
     arguments: dict | None = None
+    coverage: str | None = None       # set when the coverage check stopped a valid query
     input_tokens: int = 0
     output_tokens: int = 0
     latency_s: float = 0.0
 
 
 class ModelRouter:
-    def __init__(self, llm, tool: BoundedJiraTool):
-        self.tool = tool
-        tools = [openai_style(tool.schema), openai_style(SEARCH_WIKI), openai_style(ASK_CLARIFICATION)]
+    def __init__(self, llm, tool: BoundedJiraTool, coverage: bool = True):
+        """coverage=False reproduces the router measured before the check existed: same schema, no check."""
+        self.tool, self.coverage = tool, coverage
+        count_schema = with_evidence(tool.schema) if coverage else tool.schema
+        tools = [openai_style(count_schema), openai_style(SEARCH_WIKI), openai_style(ASK_CLARIFICATION)]
         self.llm = llm.bind_tools(tools, tool_choice="any")
 
     def decide(self, question: str, today: date) -> Decision:
@@ -126,11 +147,16 @@ class ModelRouter:
         call = calls[0]
         name, args = call["name"], dict(call.get("args") or {})
         route = ROUTES.get(name, "none")
-        spec = rejected = None
+        spec = rejected = covered = None
         if name == self.tool.name:
+            tool_args = {k: v for k, v in args.items() if k != EVIDENCE_FIELD} if self.coverage else args
             try:
-                spec = self.tool.spec_from_arguments(args)
+                spec = self.tool.spec_from_arguments(tool_args)
                 validate(spec, self.tool.allowed_projects)
             except ToolRejected as e:
                 spec, rejected = None, str(e)
-        return Decision(route, spec, rejected, name, args, latency_s=latency, **tokens)
+            if spec is not None and self.coverage:
+                covered = coverage_check.check(question, spec.project, args.get(EVIDENCE_FIELD))
+                if covered:
+                    route, spec = "clarify", None
+        return Decision(route, spec, rejected, name, args, coverage=covered, latency_s=latency, **tokens)
