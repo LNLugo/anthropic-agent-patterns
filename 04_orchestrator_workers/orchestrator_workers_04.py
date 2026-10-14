@@ -7,7 +7,11 @@ load_dotenv()
 
 from langgraph.graph import StateGraph, END
 from langchain_core.prompts import PromptTemplate
-from langchain_openai import ChatOpenAI
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from llm_provider import get_chat_model, parse_json  # LLM_PROVIDER picks Claude or OpenAI
 
 
 class State(TypedDict):
@@ -17,10 +21,7 @@ class State(TypedDict):
     synthesis: str
 
 
-llm = ChatOpenAI(
-    model="gpt-4o-mini",
-    temperature=0
-)
+llm = get_chat_model()
 
 
 def orchestrator_node(state: State):
@@ -70,7 +71,7 @@ Architecture problem:
     content = content.replace("```", "")
     content = content.strip()
 
-    data = json.loads(content)
+    data = parse_json(content)
 
     tasks = data["tasks"]
 

@@ -70,9 +70,8 @@ def claude_llm(model: str | None = None, max_tokens: int = 800) -> LLM:
     """Claude via langchain-anthropic. Model defaults to $CLAUDE_MODEL."""
     from langchain_anthropic import ChatAnthropic
 
-    chat = ChatAnthropic(
-        model=model or os.environ.get("CLAUDE_MODEL", "claude-sonnet-5-5"), temperature=0, max_tokens=max_tokens
-    )
+    # Claude Sonnet 5.5 accepts only its default temperature, so none is set here.
+    chat = ChatAnthropic(model=model or os.environ.get("CLAUDE_MODEL", "claude-sonnet-5-5"), max_tokens=max_tokens)
     return lambda prompt: _reply_from_message(chat.invoke(prompt))
 
 

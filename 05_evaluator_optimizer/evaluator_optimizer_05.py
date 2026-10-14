@@ -4,7 +4,11 @@ from typing import TypedDict
 
 from dotenv import load_dotenv
 from langchain_core.prompts import PromptTemplate
-from langchain_openai import ChatOpenAI
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from llm_provider import get_chat_model, parse_json  # LLM_PROVIDER picks Claude or OpenAI
 from langgraph.graph import StateGraph, END
 
 load_dotenv()
@@ -18,10 +22,7 @@ class State(TypedDict):
     iteration: int
 
 
-llm = ChatOpenAI(
-    model="gpt-4o-mini",
-    temperature=0
-)
+llm = get_chat_model()
 
 
 def generator_node(state: State):
@@ -91,7 +92,7 @@ The score must be an integer from 1 to 10.
 
     import json
 
-    data = json.loads(response.content.strip())
+    data = parse_json(response.content)
 
     return {
         "score": data["score"],

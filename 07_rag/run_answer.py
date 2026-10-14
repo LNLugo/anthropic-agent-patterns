@@ -1,6 +1,6 @@
 """End-to-end answer eval (Claude or OpenAI): citations, abstention, tokens, latency, cost.
 
-    export ANTHROPIC_API_KEY=...      # or OPENAI_API_KEY with --provider openai
+    export OPENAI_API_KEY=...         # or ANTHROPIC_API_KEY with --provider anthropic
     python run_answer.py --cuad data/cuad/test.json --config configs/06_bm25_rerank.yaml \
         --provider anthropic --contracts 10 --queries 60 \
         --input-price <usd per Mtok> --output-price <usd per Mtok>
@@ -51,7 +51,7 @@ def main() -> None:
     ap.add_argument("--contracts", type=int, default=10)
     ap.add_argument("--queries", type=int, default=60)
     ap.add_argument("--seed", type=int, default=7)
-    ap.add_argument("--provider", choices=sorted(PROVIDERS), default="anthropic")
+    ap.add_argument("--provider", choices=sorted(PROVIDERS), default="openai")
     ap.add_argument("--model", default=None, help="defaults to $CLAUDE_MODEL or $OPENAI_MODEL")
     ap.add_argument("--input-price", type=float, default=None, help="USD per million input tokens")
     ap.add_argument("--output-price", type=float, default=None, help="USD per million output tokens")

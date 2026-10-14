@@ -104,6 +104,28 @@ Each pattern answers a different architectural control question.
 
 ---
 
+## Model Provider
+
+The architecture follows Anthropic's paper; the model does not have to. The
+patterns are model agnostic, and the provider is a run setting, not a code
+change: every Phase 1 module gets its model from [`llm_provider.py`](llm_provider.py),
+and 07_rag makes the same choice through its `--provider` flag (default `openai`).
+The published results in this repo were produced with OpenAI's `gpt-4o-mini`,
+which is the default.
+
+| Setting | Default | Notes |
+|---|---|---|
+| `LLM_PROVIDER` | `openai` | `openai` or `anthropic` |
+| `OPENAI_MODEL` | `gpt-4o-mini` | needs `OPENAI_API_KEY` |
+| `CLAUDE_MODEL` | `claude-sonnet-5-5` | needs `ANTHROPIC_API_KEY` |
+
+Install with `pip install -r requirements.txt`, then copy
+[`.env.example`](.env.example) to `.env` at the repo root. Modules that ask
+the model for JSON parse the reply with `parse_json`, which tolerates markdown
+fences and surrounding prose, so switching providers does not break them.
+
+---
+
 ## Phase 2: The Capability Layer
 
 Phase 1 covered how control flows. Phase 2 covers what each pattern runs on:

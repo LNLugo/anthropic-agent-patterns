@@ -1,0 +1,7 @@
+# Phase 1 patterns (01 to 06). Phase 2 modules have their own requirements.txt.
+langgraph>=0.2
+langchain-core>=0.3
+langchain-anthropic>=0.3
+langchain-openai>=0.2
+python-dotenv>=1.0
+pydantic>=2.0

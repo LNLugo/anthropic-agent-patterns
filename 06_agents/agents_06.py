@@ -7,7 +7,11 @@ load_dotenv()
 
 from langgraph.graph import StateGraph, END
 from langchain_core.prompts import PromptTemplate
-from langchain_openai import ChatOpenAI
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from llm_provider import get_chat_model, parse_json  # LLM_PROVIDER picks Claude or OpenAI
 
 
 class State(TypedDict):
@@ -19,10 +23,7 @@ class State(TypedDict):
     final_answer: str
 
 
-llm = ChatOpenAI(
-    model="gpt-4o-mini",
-    temperature=0
-)
+llm = get_chat_model()
 
 
 # ---------------------------------------------------------
@@ -84,7 +85,7 @@ If the problem has been sufficiently analyzed, return:
         "iteration": state["iteration"]
     })
 
-    data = json.loads(response.content.strip())
+    data = parse_json(response.content)
 
     return {
         "decision": data["decision"],
