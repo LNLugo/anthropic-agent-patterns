@@ -198,8 +198,11 @@ Not every question is a retrieval question. "How many P1 incidents did we have
 last quarter?" needs a query, not a search. This module adds a router that
 sends aggregation questions to a bounded, read only query tool, built against
 a mock Jira. The tool has a fixed surface: allowed projects, read only, a
-result limit. An open agent with free tool choice waits until evaluation shows
-the router failing.
+result limit. The router is measured twice: as rules, and as a model choosing
+tools. On 20 held-out questions the rules routed 9 correctly and gpt-6-luna 18
+to 19 over three runs, at $0.09 per thousand questions. The model's one
+repeated miss, answering half of a two project question, is inside policy, so
+the bound cannot stop it; that is the next control to build.
 
 ---
 

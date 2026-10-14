@@ -129,7 +129,42 @@ asks (no project, two projects) or the bound refuses (a project off the
 allowlist), and wrong if any query runs. Rules and prompt are frozen while it
 is scored.
 
-Results: pending.
+Held-out results, 2026-10-14. gpt-6-luna was run three times, since it takes
+no temperature setting and its output can vary between runs.
+
+| | Rules | gpt-4o-mini, 1 run | gpt-6-luna, 3 runs |
+|---|---|---|---|
+| Routed correctly | 9 of 20 | 18 of 20 | 19, 19, 18 of 20 |
+| Query extracted exactly | 3 of 7 | 5 of 7 | 7, 7, 6 of 7 |
+| Ran a query when it should have asked | not measured | 2 | 1 in every run |
+| Latency p50 | ~0 | 0.78 s | 1.04 to 1.23 s |
+| Cost per 1,000 questions | 0 | not measured | $0.09 |
+
+**The rules were what overfit.** They scored 88% on the development set and
+45% here. They were written against the development vocabulary and break on
+"fortnight", "tix", "invoice stack" and terse requests with no counting words.
+That is the case for a model in one line: rules look fine until people phrase
+things their own way.
+
+**gpt-6-luna holds up on questions nobody tuned for.** No date errors in three
+runs. Its run to run variation fails safe: in one run it asked which project
+"the invoice stack" meant, where the other two runs answered correctly.
+
+**The miss that matters is one the bound cannot catch.** Asked "How many bugs
+did BILL and PAY open in September?", gpt-6-luna counted BILL bugs for
+September, in every run, and dropped PAY without saying so. The user gets a
+correct looking number that answers half the question. gpt-4o-mini did the
+same, and also ran a query for "How many incidents were created last week?",
+which names no project. The bound stops queries outside policy; these were
+inside policy and simply wrong. Catching them takes a different control, one
+that checks the query covers what the question asked for. It is the next piece,
+and because the failure was found on this set, it will be measured on new
+questions, not on these.
+
+**gpt-4o-mini still gets dates wrong.** "The past fortnight" came out one day
+long, the same off by one as on the development set, and it read "opened" as
+the status Open. Moving date arithmetic out of the model and into
+`time_window` would remove that class of error for cheaper models.
 
 ## Run it
 
@@ -183,9 +218,12 @@ set by eye on 8 pages, not calibrated.
 
 * The Jira here is a mock. It reproduces project permissions and issue
   security levels, not the Jira REST API, pagination or rate limits.
-* The assistant graph still routes with the rules. The model router is
-  measured on its own first; it replaces the rules in the graph only if it
-  beats them by enough to justify its cost.
+* The assistant graph still routes with the rules. The held-out results favour
+  the model router, but it goes into the graph only with the coverage check
+  above in place, since an unchecked model answers half of a two project
+  question.
+* The tool filters by creation date only. "Resolved this month" cannot be
+  expressed: it would need a resolution date filter.
 * The tool definition (`BoundedJiraTool.schema`) is shaped for tool calling and
   MCP, but no MCP server is running yet. Exposing it through an MCP gateway with
   on-behalf-of tokens is the planned next piece.
