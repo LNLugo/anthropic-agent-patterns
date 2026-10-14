@@ -34,6 +34,9 @@ from agent_tools.jql_tool import BoundedJiraTool  # noqa: E402
 WIKI_PATH = RAG_DIR / "tests" / "fixtures" / "mini_confluence.json"
 JIRA_PATH = TOOLS_DIR / "tests" / "fixtures" / "mini_jira.json"
 ROUTER_PATH = TOOLS_DIR / "tests" / "fixtures" / "router_questions.json"
+HELDOUT_PATH = TOOLS_DIR / "tests" / "fixtures" / "router_questions_heldout.json"
+PUBLISHED_PATH = TOOLS_DIR / "results_published.json"
+LOCAL_RESULTS = TOOLS_DIR / "results"
 
 st.set_page_config(page_title="Phase 2 Capabilities", page_icon="🔐", layout="wide")
 
@@ -97,8 +100,9 @@ st.markdown(
     "synthetic Confluence and Jira data, so every result is reproducible."
 )
 
-tab1, tab2, tab3, tab4 = st.tabs(
-    ["1 · Permission-aware retrieval", "2 · Leakage check", "3 · Assistant", "4 · Router accuracy"]
+tab1, tab2, tab3, tab4, tab5 = st.tabs(
+    ["1 · Permission-aware retrieval", "2 · Leakage check", "3 · Assistant", "4 · Router accuracy",
+     "5 · Rules vs model"]
 )
 
 
@@ -262,3 +266,111 @@ with tab4:
         st.markdown("**Extraction misses**")
         st.table([{"Question": q, "What differed": why} for q, why in r.extraction_misses])
     st.caption("Vague questions are where a production assistant needs a clarifying step.")
+
+
+# --------------------------------------------------
+# Tab 5: rules vs a model choosing tools, on development and held-out questions
+# --------------------------------------------------
+
+def _count(n, word):
+    return f"{n} {word}" + ("" if n == 1 else "es" if word.endswith("s") else "s")
+
+
+def _span(values, fmt="{}"):
+    """One value, or 'low to high' across runs."""
+    lo, hi = min(values), max(values)
+    return fmt.format(lo) if lo == hi else f"{fmt.format(lo)} to {fmt.format(hi)}"
+
+
+with tab5:
+    import json
+
+    st.subheader("Rules vs a model choosing tools")
+    st.markdown(
+        "The same routing and extraction decisions, made two ways: hand-written rules, and a model "
+        "that must call one of three tools (`count_jira_issues`, `search_wiki`, `ask_clarification`). "
+        "Whatever the model sends goes through the same validator as the rules, so the bound does not "
+        "depend on the model."
+    )
+
+    published = json.loads(PUBLISHED_PATH.read_text(encoding="utf-8"))
+    choice = st.radio(
+        "Question set",
+        ["heldout", "development"],
+        format_func=lambda k: published["sets"][k]["label"],
+        horizontal=True,
+    )
+    entry = published["sets"][choice]
+    rules = evaluate(HELDOUT_PATH if choice == "heldout" else ROUTER_PATH)
+
+    rows = [{
+        "Router": "Rules (computed live)", "Runs": 1,
+        "Routed correctly": f"{rules.routed_correctly} of {rules.total}",
+        "Extracted exactly": f"{rules.extracted_correctly} of {rules.extraction_total}",
+        "Refused by the bound": "n/a", "Tokens in / out": "0", "Latency p50": "~0",
+        "Cost per 1,000 questions": "$0",
+    }]
+    for name, model in entry["models"].items():
+        runs = model["runs"]
+        n, total, ext_total = len(runs), runs[0]["total"], runs[0]["extraction_total"]
+        cost = [r["cost_per_question_usd"] for r in runs if r["cost_per_question_usd"] is not None]
+        rows.append({
+            "Router": name, "Runs": n,
+            "Routed correctly": ", ".join(str(r["routed"]) for r in runs) + f" of {total}",
+            "Extracted exactly": ", ".join(str(r["extracted"]) for r in runs) + f" of {ext_total}",
+            "Refused by the bound": _span([r["rejected_by_bound"] for r in runs]),
+            "Tokens in / out": f"{runs[0]['tokens_in']} / {runs[0]['tokens_out']}",
+            "Latency p50": _span([r["latency_p50_s"] for r in runs], "{:.2f} s"),
+            "Cost per 1,000 questions": f"${sum(cost) / len(cost) * 1000:.2f}" if cost else "not measured",
+        })
+    st.table(rows)
+    st.caption(
+        f"Model results recorded {published['recorded']} with `08_tools/run_model_router_eval.py`; "
+        "rules recomputed on every page load. gpt-6-luna takes no temperature setting, so it was run "
+        "three times on the held-out set."
+    )
+
+    finding = entry.get("finding")
+    if finding:
+        st.markdown(f"#### {finding['title']}")
+        left, right = st.columns([1, 1])
+        with left:
+            st.markdown(f"**Question:** {finding['q']}")
+            st.markdown(f"**Should have:** {finding['expected']}")
+            st.markdown(f"**Seen:** {finding['seen']}")
+        with right:
+            st.markdown("**The call the model made**")
+            st.json(finding["tool_call"])
+        st.warning(finding["why_it_matters"])
+
+    st.markdown("#### Where each router missed")
+    with st.expander(f"Rules: {_count(len(rules.misroutes), 'misroute')}, "
+                     f"{_count(len(rules.extraction_misses), 'extraction miss')}"):
+        if rules.misroutes:
+            st.table([{"Question": q, "Expected": want, "Got": got} for q, want, got in rules.misroutes])
+        if rules.extraction_misses:
+            st.table([{"Question": q, "What differed": why} for q, why in rules.extraction_misses])
+    for name, model in entry["models"].items():
+        for i, run in enumerate(model["runs"], 1):
+            label = name if len(model["runs"]) == 1 else f"{name}, run {i}"
+            with st.expander(f"{label}: {_count(len(run['misroutes']), 'misroute')}, "
+                             f"{_count(len(run['extraction_misses']), 'extraction miss')}"):
+                if run["misroutes"]:
+                    st.table([{"Question": m["q"], "Expected": m["expected"], "Got": m["got"]}
+                              for m in run["misroutes"]])
+                if run["extraction_misses"]:
+                    st.table([{"Question": m["q"], "What differed": m["why"]} for m in run["extraction_misses"]])
+                if not run["misroutes"] and not run["extraction_misses"]:
+                    st.write("No misses.")
+
+    local = sorted(LOCAL_RESULTS.glob("model_router_*.json"), reverse=True) if LOCAL_RESULTS.exists() else []
+    if local:
+        with st.expander(f"Your local runs ({len(local)} files in 08_tools/results, not committed)"):
+            pick = st.selectbox("Run", local, format_func=lambda p: p.name)
+            run = json.loads(pick.read_text(encoding="utf-8"))
+            st.table([{
+                "Question": r["q"], "Expected": r["expected_route"], "Got": r["route"],
+                "Route ok": "yes" if r["route_ok"] else "no",
+                "Extraction": {True: "yes", False: "no", None: ""}[r["extraction_ok"]],
+                "Arguments": json.dumps(r["arguments"]) if r["arguments"] else "",
+            } for r in run["rows"]])

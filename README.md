@@ -22,6 +22,7 @@ with predictable workflows and progressing toward dynamic agent behavior.
 | How the modules compose into a law firm system with ethical walls | [Design: Matter-Aware Legal AI](docs/designs/legal-matter-rag.md) |
 | How the modules compose into an enterprise knowledge assistant | [Design: Permission-Aware RAG over Atlassian](docs/designs/atlassian-rag.md) |
 | The orchestration patterns themselves | [Architecture Progression](#architecture-progression) |
+| Everything above, interactively | `streamlit run app/Agent_Patterns.py` (Phase 2 results run offline, no API key) |
 
 ---
 
