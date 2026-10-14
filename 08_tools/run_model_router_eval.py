@@ -1,6 +1,6 @@
 """Model router vs. the rules baseline, on the same labeled questions.
 
-    python run_model_router_eval.py                                  # LLM_PROVIDER, default openai / gpt-4o-mini
+    python run_model_router_eval.py                                  # LLM_PROVIDER, default openai / gpt-6-luna
     python run_model_router_eval.py --input-price 0.15 --output-price 0.60
     python run_model_router_eval.py --provider anthropic --model claude-haiku-5-5
 

@@ -110,13 +110,15 @@ The architecture follows Anthropic's paper; the model does not have to. The
 patterns are model agnostic, and the provider is a run setting, not a code
 change: every Phase 1 module gets its model from [`llm_provider.py`](llm_provider.py),
 and 07_rag makes the same choice through its `--provider` flag (default `openai`).
-The published results in this repo were produced with OpenAI's `gpt-4o-mini`,
-which is the default.
+The published results in this repo were produced with OpenAI's `gpt-4o-mini`.
+OpenAI retires it on January 14, 2027 and names `gpt-6-luna` as the
+replacement, so that is now the default; results will be rerun on it.
 
 | Setting | Default | Notes |
 |---|---|---|
 | `LLM_PROVIDER` | `openai` | `openai` or `anthropic` |
-| `OPENAI_MODEL` | `gpt-4o-mini` | needs `OPENAI_API_KEY` |
+| `OPENAI_MODEL` | `gpt-6-luna` | needs `OPENAI_API_KEY`; any `gpt-4*` model still runs at temperature 0 |
+| `OPENAI_REASONING_EFFORT` | `none` | for `gpt-6-luna`; tool calling on Chat Completions needs `none` |
 | `CLAUDE_MODEL` | `claude-sonnet-5-5` | needs `ANTHROPIC_API_KEY` |
 
 Install with `pip install -r requirements.txt`, then copy

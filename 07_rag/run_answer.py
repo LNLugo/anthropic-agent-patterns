@@ -101,7 +101,7 @@ def main() -> None:
     summary = {
         "config": cfg["name"],
         "provider": args.provider,
-        "model": args.model or ("$CLAUDE_MODEL" if args.provider == "anthropic" else "$OPENAI_MODEL or gpt-4o-mini"),
+        "model": args.model or ("$CLAUDE_MODEL" if args.provider == "anthropic" else "$OPENAI_MODEL or gpt-6-luna"),
         "queries": len(rows),
         "answer_rate_on_answerable": mean(r["status"] == "answered" for r in pos) if pos else None,
         "abstain_rate_on_unanswerable": mean(r["status"] == "abstained" for r in neg) if neg else None,
