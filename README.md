@@ -39,7 +39,7 @@ with predictable workflows and progressing toward dynamic agent behavior.
 | 06 | Agents | ✅ Complete | LLM dynamically directs its own process and tool use |
 | **Phase 2** | **Capability layer** | | |
 | 07 | Retrieval (RAG) | ✅ Complete | Retrieval ablation, cited answers, abstention and permission-aware retrieval, measured on CUAD |
-| 08 | Tools and MCP | 🟡 In progress | Bounded, read only Jira tool; rules vs model router measured on held-out questions. Next: Coverage check, MCP Server|
+| 08 | Tools and MCP | 🟡 In progress | Bounded, read only Jira tool; rules vs model router measured on held-out questions; coverage check. Next: MCP server |
 | 09 | Memory | ⬜ Planned | Retrieve relevant history instead of appending it |
 | 10 | Guardrails and observability | ⬜ Planned | Policy checks and traces built on the context ledger |
 | 11 | AI FinOps | ⬜ Planned | Cost per answer and cost per correct answer |
@@ -201,9 +201,11 @@ sends aggregation questions to a bounded, read only query tool, built against
 a mock Jira. The tool has a fixed surface: allowed projects, read only, a
 result limit. The router is measured twice: as rules, and as a model choosing
 tools. On 20 held-out questions the rules routed 9 correctly and gpt-6-luna 18
-to 19 over three runs, at $0.09 per thousand questions. The model's one
-repeated miss, answering half of a two project question, is inside policy, so
-the bound cannot stop it; that is the next control to build.
+to 19 over three runs, at $0.09 per thousand questions. Its one repeated
+miss, answering half of a two project question, was inside policy, so the
+bound could not stop it. A coverage check in code now does: on 20 new
+questions, no query ran that should not have in any of three runs, against
+two such queries without it.
 
 ---
 

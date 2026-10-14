@@ -1,68 +1,153 @@
 {
-  "_note": "Model router results as recorded on 2026-10-14 with run_model_router_eval.py. Raw per-run files live in results/, which git ignores; this file keeps the published numbers and every miss. Rules results are not stored here: they are deterministic and the Streamlit page recomputes them.",
+  "_note": "Model router results as recorded on 2026-10-14 (coverage check runs the same evening) with run_model_router_eval.py. Raw per-run files live in results/, which git ignores; this file keeps the published numbers and every miss. Rules results are not stored here: they are deterministic and the Streamlit page recomputes them.",
   "recorded": "2026-10-14",
   "sets": {
-    "development": {
-      "file": "router_questions.json",
-      "label": "Development set, 25 questions (the prompt was written after seeing these)",
-      "models": {
-        "gpt-4o-mini": {
-          "runs": [
-            {"routed": 25, "total": 25, "extracted": 10, "extraction_total": 12, "rejected_by_bound": 1,
-             "tokens_in": 643, "tokens_out": 32, "latency_p50_s": 1.02, "latency_max_s": 3.58, "cost_per_question_usd": null,
-             "misroutes": [],
-             "extraction_misses": [
-               {"q": "Show me the open P2s in payments", "why": "rejected by the bound: date range is capped at 366 days"},
-               {"q": "Which changes were made to infra in the last 60 days?", "why": "created_from: expected '2026-08-14', got '2026-08-13'"}
-             ]}
-          ]
-        },
-        "gpt-6-luna": {
-          "runs": [
-            {"routed": 25, "total": 25, "extracted": 12, "extraction_total": 12, "rejected_by_bound": 0,
-             "tokens_in": 727, "tokens_out": 37, "latency_p50_s": 1.33, "latency_max_s": 3.12, "cost_per_question_usd": 0.000091,
-             "misroutes": [], "extraction_misses": []}
-          ]
-        }
-      }
-    },
     "heldout": {
       "file": "router_questions_heldout.json",
       "label": "Held-out set, 20 questions written without reading the prompt",
       "models": {
         "gpt-4o-mini": {
           "runs": [
-            {"routed": 18, "total": 20, "extracted": 5, "extraction_total": 7, "rejected_by_bound": 0,
-             "tokens_in": 644, "tokens_out": 42, "latency_p50_s": 0.78, "latency_max_s": 3.87, "cost_per_question_usd": null,
-             "misroutes": [
-               {"q": "How many incidents were created last week?", "expected": "no_query", "got": "aggregation"},
-               {"q": "How many bugs did BILL and PAY open in September?", "expected": "no_query", "got": "aggregation"}
-             ],
-             "extraction_misses": [
-               {"q": "How much PAY work hit the board over the past fortnight?", "why": "created_from: expected '2026-09-29', got '2026-09-28'"},
-               {"q": "PAY tix opened lst month?", "why": "status: expected None, got 'Open'"}
-             ]}
+            {
+              "routed": 18,
+              "total": 20,
+              "extracted": 5,
+              "extraction_total": 7,
+              "rejected_by_bound": 0,
+              "tokens_in": 644,
+              "tokens_out": 42,
+              "latency_p50_s": 0.78,
+              "latency_max_s": 3.87,
+              "cost_per_question_usd": null,
+              "misroutes": [
+                {
+                  "q": "How many incidents were created last week?",
+                  "expected": "no_query",
+                  "got": "aggregation"
+                },
+                {
+                  "q": "How many bugs did BILL and PAY open in September?",
+                  "expected": "no_query",
+                  "got": "aggregation"
+                }
+              ],
+              "extraction_misses": [
+                {
+                  "q": "How much PAY work hit the board over the past fortnight?",
+                  "why": "created_from: expected '2026-09-29', got '2026-09-28'"
+                },
+                {
+                  "q": "PAY tix opened lst month?",
+                  "why": "status: expected None, got 'Open'"
+                }
+              ]
+            }
           ]
         },
-        "gpt-6-luna": {
+        "gpt-6-luna, check off": {
           "runs": [
-            {"routed": 19, "total": 20, "extracted": 7, "extraction_total": 7, "rejected_by_bound": 0,
-             "tokens_in": 728, "tokens_out": 39, "latency_p50_s": 1.22, "latency_max_s": 8.79, "cost_per_question_usd": 0.000093,
-             "misroutes": [{"q": "How many bugs did BILL and PAY open in September?", "expected": "no_query", "got": "aggregation"}],
-             "extraction_misses": []},
-            {"routed": 19, "total": 20, "extracted": 7, "extraction_total": 7, "rejected_by_bound": 0,
-             "tokens_in": 728, "tokens_out": 39, "latency_p50_s": 1.04, "latency_max_s": 8.25, "cost_per_question_usd": 0.000093,
-             "misroutes": [{"q": "How many bugs did BILL and PAY open in September?", "expected": "no_query", "got": "aggregation"}],
-             "extraction_misses": []},
-            {"routed": 18, "total": 20, "extracted": 6, "extraction_total": 7, "rejected_by_bound": 0,
-             "tokens_in": 728, "tokens_out": 39, "latency_p50_s": 1.23, "latency_max_s": 1.83, "cost_per_question_usd": 0.000093,
-             "misroutes": [
-               {"q": "Need a read on the invoice stack—tickets opened in September?", "expected": "aggregation", "got": "clarify"},
-               {"q": "How many bugs did BILL and PAY open in September?", "expected": "no_query", "got": "aggregation"}
-             ],
-             "extraction_misses": [
-               {"q": "Need a read on the invoice stack—tickets opened in September?", "why": "no query (route clarify)"}
-             ]}
+            {
+              "routed": 19,
+              "total": 20,
+              "extracted": 7,
+              "extraction_total": 7,
+              "rejected_by_bound": 0,
+              "tokens_in": 728,
+              "tokens_out": 39,
+              "latency_p50_s": 1.22,
+              "latency_max_s": 8.79,
+              "cost_per_question_usd": 9.3e-05,
+              "misroutes": [
+                {
+                  "q": "How many bugs did BILL and PAY open in September?",
+                  "expected": "no_query",
+                  "got": "aggregation"
+                }
+              ],
+              "extraction_misses": []
+            },
+            {
+              "routed": 19,
+              "total": 20,
+              "extracted": 7,
+              "extraction_total": 7,
+              "rejected_by_bound": 0,
+              "tokens_in": 728,
+              "tokens_out": 39,
+              "latency_p50_s": 1.04,
+              "latency_max_s": 8.25,
+              "cost_per_question_usd": 9.3e-05,
+              "misroutes": [
+                {
+                  "q": "How many bugs did BILL and PAY open in September?",
+                  "expected": "no_query",
+                  "got": "aggregation"
+                }
+              ],
+              "extraction_misses": []
+            },
+            {
+              "routed": 18,
+              "total": 20,
+              "extracted": 6,
+              "extraction_total": 7,
+              "rejected_by_bound": 0,
+              "tokens_in": 728,
+              "tokens_out": 39,
+              "latency_p50_s": 1.23,
+              "latency_max_s": 1.83,
+              "cost_per_question_usd": 9.3e-05,
+              "misroutes": [
+                {
+                  "q": "Need a read on the invoice stack—tickets opened in September?",
+                  "expected": "aggregation",
+                  "got": "clarify"
+                },
+                {
+                  "q": "How many bugs did BILL and PAY open in September?",
+                  "expected": "no_query",
+                  "got": "aggregation"
+                }
+              ],
+              "extraction_misses": [
+                {
+                  "q": "Need a read on the invoice stack—tickets opened in September?",
+                  "why": "no query (route clarify)"
+                }
+              ]
+            }
+          ],
+          "coverage_check": false
+        },
+        "gpt-6-luna, check on": {
+          "coverage_check": true,
+          "runs": [
+            {
+              "routed": 19,
+              "total": 20,
+              "extracted": 6,
+              "extraction_total": 7,
+              "rejected_by_bound": 0,
+              "stopped_by_coverage": 1,
+              "tokens_in": 750,
+              "tokens_out": 42,
+              "latency_p50_s": 1.33,
+              "latency_max_s": 2.05,
+              "cost_per_question_usd": 9.6e-05,
+              "misroutes": [
+                {
+                  "q": "Need a read on the invoice stack—tickets opened in September?",
+                  "expected": "aggregation",
+                  "got": "clarify"
+                }
+              ],
+              "extraction_misses": [
+                {
+                  "q": "Need a read on the invoice stack—tickets opened in September?",
+                  "why": "no query (route clarify)"
+                }
+              ]
+            }
           ]
         }
       },
@@ -70,10 +155,270 @@
         "title": "A wrong query inside policy",
         "q": "How many bugs did BILL and PAY open in September?",
         "expected": "Ask which project, or run nothing: the tool counts one project at a time.",
-        "tool_call": {"name": "count_jira_issues",
-                      "arguments": {"project": "BILL", "issue_type": "Bug", "created_from": "2026-09-01", "created_before": "2026-10-01"}},
-        "seen": "gpt-6-luna made this exact call in 3 of 3 runs; gpt-4o-mini also ran a query.",
+        "tool_call": {
+          "name": "count_jira_issues",
+          "arguments": {
+            "project": "BILL",
+            "issue_type": "Bug",
+            "created_from": "2026-09-01",
+            "created_before": "2026-10-01"
+          }
+        },
+        "seen": "gpt-6-luna made this exact call in 3 of 3 runs; gpt-4o-mini also ran a query. With the coverage check on, the same question was stopped instead.",
         "why_it_matters": "Every argument is valid, so the bound accepts it. The user gets a correct looking count for BILL only, and nothing says PAY was dropped. The bound stops queries outside policy; this one is inside policy and wrong. Catching it needs a coverage check: does the query cover what the question asked for?"
+      }
+    },
+    "coverage": {
+      "file": "router_questions_coverage.json",
+      "label": "Coverage set, 20 questions written after the coverage check was designed",
+      "models": {
+        "gpt-6-luna, check off": {
+          "coverage_check": false,
+          "runs": [
+            {
+              "routed": 13,
+              "total": 20,
+              "extracted": 0,
+              "extraction_total": 0,
+              "rejected_by_bound": 0,
+              "stopped_by_coverage": null,
+              "tokens_in": 728,
+              "tokens_out": 44,
+              "latency_p50_s": 1.09,
+              "latency_max_s": 1.56,
+              "cost_per_question_usd": 9.5e-05,
+              "misroutes": [
+                {
+                  "q": "How many bugs did BILL and PAY log?",
+                  "expected": "no_query",
+                  "got": "aggregation"
+                },
+                {
+                  "q": "How does Billing Platform compare with Infrastructure on ticket volume?",
+                  "expected": "no_query",
+                  "got": "aggregation"
+                },
+                {
+                  "q": "Invoice stack ticket count?",
+                  "expected": "aggregation",
+                  "got": "clarify"
+                },
+                {
+                  "q": "Money-movement incident count?",
+                  "expected": "aggregation",
+                  "got": "clarify"
+                },
+                {
+                  "q": "How many BILL tickets were opened after a PAY outage?",
+                  "expected": "aggregation",
+                  "got": "clarify"
+                },
+                {
+                  "q": "How many BILL tickets are awaiting payment?",
+                  "expected": "aggregation",
+                  "got": "knowledge"
+                },
+                {
+                  "q": "How many Payments tickets came from that Billing Platform webhook failure?",
+                  "expected": "aggregation",
+                  "got": "clarify"
+                }
+              ],
+              "extraction_misses": []
+            }
+          ]
+        },
+        "gpt-6-luna, check on": {
+          "coverage_check": true,
+          "runs": [
+            {
+              "routed": 15,
+              "total": 20,
+              "extracted": 0,
+              "extraction_total": 0,
+              "rejected_by_bound": 0,
+              "stopped_by_coverage": 2,
+              "tokens_in": 750,
+              "tokens_out": 53,
+              "latency_p50_s": 2.05,
+              "latency_max_s": 3.76,
+              "cost_per_question_usd": 0.000102,
+              "misroutes": [
+                {
+                  "q": "Invoice stack ticket count?",
+                  "expected": "aggregation",
+                  "got": "clarify"
+                },
+                {
+                  "q": "Money-movement incident count?",
+                  "expected": "aggregation",
+                  "got": "clarify"
+                },
+                {
+                  "q": "How many BILL tickets were opened after a PAY outage?",
+                  "expected": "aggregation",
+                  "got": "clarify"
+                },
+                {
+                  "q": "How many BILL tickets are awaiting payment?",
+                  "expected": "aggregation",
+                  "got": "clarify"
+                },
+                {
+                  "q": "How many Payments tickets came from that Billing Platform webhook failure?",
+                  "expected": "aggregation",
+                  "got": "clarify"
+                }
+              ],
+              "extraction_misses": []
+            },
+            {
+              "routed": 15,
+              "total": 20,
+              "extracted": 0,
+              "extraction_total": 0,
+              "rejected_by_bound": 0,
+              "stopped_by_coverage": 3,
+              "tokens_in": 750,
+              "tokens_out": 48,
+              "latency_p50_s": 1.53,
+              "latency_max_s": 2.13,
+              "cost_per_question_usd": 9.9e-05,
+              "misroutes": [
+                {
+                  "q": "Invoice stack ticket count?",
+                  "expected": "aggregation",
+                  "got": "clarify"
+                },
+                {
+                  "q": "Money-movement incident count?",
+                  "expected": "aggregation",
+                  "got": "clarify"
+                },
+                {
+                  "q": "How many BILL tickets were opened after a PAY outage?",
+                  "expected": "aggregation",
+                  "got": "clarify"
+                },
+                {
+                  "q": "How many BILL tickets are awaiting payment?",
+                  "expected": "aggregation",
+                  "got": "clarify"
+                },
+                {
+                  "q": "How many Payments tickets came from that Billing Platform webhook failure?",
+                  "expected": "aggregation",
+                  "got": "knowledge"
+                }
+              ],
+              "extraction_misses": []
+            },
+            {
+              "routed": 15,
+              "total": 20,
+              "extracted": 0,
+              "extraction_total": 0,
+              "rejected_by_bound": 0,
+              "stopped_by_coverage": 5,
+              "tokens_in": 750,
+              "tokens_out": 54,
+              "latency_p50_s": 1.44,
+              "latency_max_s": 1.94,
+              "cost_per_question_usd": 0.000102,
+              "misroutes": [
+                {
+                  "q": "Invoice stack ticket count?",
+                  "expected": "aggregation",
+                  "got": "clarify"
+                },
+                {
+                  "q": "Money-movement incident count?",
+                  "expected": "aggregation",
+                  "got": "clarify"
+                },
+                {
+                  "q": "How many BILL tickets were opened after a PAY outage?",
+                  "expected": "aggregation",
+                  "got": "clarify"
+                },
+                {
+                  "q": "How many BILL tickets are awaiting payment?",
+                  "expected": "aggregation",
+                  "got": "clarify"
+                },
+                {
+                  "q": "How many Payments tickets came from that Billing Platform webhook failure?",
+                  "expected": "aggregation",
+                  "got": "clarify"
+                }
+              ],
+              "extraction_misses": []
+            }
+          ]
+        }
+      },
+      "finding": {
+        "title": "What the check stops, and what it costs",
+        "q": "How many bugs did BILL and PAY log?",
+        "expected": "Ask which project: the tool counts one project at a time.",
+        "tool_call": {
+          "name": "coverage check",
+          "stopped": "the question names BILL, PAY; the tool counts one project at a time"
+        },
+        "seen": "Check off: the model ran a query here and for Billing Platform vs Infrastructure. Check on: nothing that should not run ran, in 3 of 3 runs.",
+        "why_it_matters": "The check's rule cannot tell 'BILL and PAY' from 'BILL tickets opened after a PAY outage', and reads 'payment' as the project PAY. It stopped such single project questions 4 times across 3 runs; each was one the model also failed to answer without the check, so on this set it cost no answers.",
+        "panel_label": "What the check returned"
+      }
+    },
+    "development": {
+      "file": "router_questions.json",
+      "label": "Development set, 25 questions (the prompt was written after seeing these)",
+      "models": {
+        "gpt-4o-mini": {
+          "runs": [
+            {
+              "routed": 25,
+              "total": 25,
+              "extracted": 10,
+              "extraction_total": 12,
+              "rejected_by_bound": 1,
+              "tokens_in": 643,
+              "tokens_out": 32,
+              "latency_p50_s": 1.02,
+              "latency_max_s": 3.58,
+              "cost_per_question_usd": null,
+              "misroutes": [],
+              "extraction_misses": [
+                {
+                  "q": "Show me the open P2s in payments",
+                  "why": "rejected by the bound: date range is capped at 366 days"
+                },
+                {
+                  "q": "Which changes were made to infra in the last 60 days?",
+                  "why": "created_from: expected '2026-08-14', got '2026-08-13'"
+                }
+              ]
+            }
+          ]
+        },
+        "gpt-6-luna": {
+          "runs": [
+            {
+              "routed": 25,
+              "total": 25,
+              "extracted": 12,
+              "extraction_total": 12,
+              "rejected_by_bound": 0,
+              "tokens_in": 727,
+              "tokens_out": 37,
+              "latency_p50_s": 1.33,
+              "latency_max_s": 3.12,
+              "cost_per_question_usd": 9.1e-05,
+              "misroutes": [],
+              "extraction_misses": []
+            }
+          ]
+        }
       }
     }
   }

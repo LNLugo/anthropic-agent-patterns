@@ -205,7 +205,46 @@ it was designed, half that should be stopped and half that must still run.
 The development and held-out sets are rerun with it on as a regression check:
 it should not make the router ask where it used to answer correctly.
 
-Results: pending.
+Coverage set results, gpt-6-luna, 2026-10-14:
+
+| | Rules | Model, check off (1 run) | Model, check on (3 runs) |
+|---|---|---|---|
+| Routed correctly | 14 of 20 | 13 of 20 | 15, 15, 15 of 20 |
+| Should-stop questions handled | 5 of 10 | 8 of 10 | 10 of 10 every run |
+| Should-run questions answered | 9 of 10 | 5 of 10 | 5 of 10 every run |
+| Queries that ran when nothing should have | 1 | 2 | 0 |
+| Cost per 1,000 questions | 0 | $0.10 | $0.10 |
+
+**The check does the job it was built for.** With it off, the model ran
+queries for "How many bugs did BILL and PAY log?" and for Billing Platform
+compared with Infrastructure: two more correct looking, incomplete answers.
+With it on, nothing ran that should not have, in any run. Without the check
+the model trails the rules on this set; with it, the model leads.
+
+**The same five should-run questions went unanswered in every run, with or
+without the check:** the two informal names ("invoice stack",
+"money-movement") and the three single project questions that mention a
+second project in passing. On the informal names the model itself asked, in
+all four runs. "Money-movement" is counted as an ambiguity signal rather than
+a plain error, since billing moves money too. Requiring `project_evidence`
+did not cause this: without it, the model asked about the same names and
+asked about, or sent to the wiki, the same passing-mention questions.
+
+**The check's own cost is real but, so far, redundant.** Its rule "the
+question names more than one known project" cannot tell "BILL and PAY" from
+"BILL tickets opened after a PAY outage". Across three runs it stopped those
+passing-mention questions four times, including "awaiting payment", where
+"payment" reads as the project PAY. Each was a question the model also failed
+to answer without the check (it asked, or sent it to the wiki), so the check
+cost no answers on this set. On a model that answered those questions, it
+would.
+
+**Held-out regression check.** With the check on, the held-out set routes 19
+of 20, as before, but the miss changed kind: "BILL and PAY in September" is
+now stopped by the check instead of answered for BILL alone, and the one miss
+is the model asking about "the invoice stack", which it also did once without
+the check. The held-out set is not evidence for the fix, since the fix was
+built from its miss; the coverage set is.
 
 ## Run it
 
@@ -264,9 +303,13 @@ set by eye on 8 pages, not calibrated.
 
 * The Jira here is a mock. It reproduces project permissions and issue
   security levels, not the Jira REST API, pagination or rate limits.
-* The assistant graph still routes with the rules. The held-out results favour
-  the model router; it goes into the graph once the coverage check above is
-  measured, since an unchecked model answers half of a two project question.
+* The assistant graph still routes with the rules. The measured case for
+  moving it to the model router with the coverage check is now made; the switch
+  is a separate change.
+* The coverage check cannot tell a second project named as scope ("BILL and
+  PAY") from one named in passing ("after a PAY outage"), and reads "payment"
+  as the project PAY. It also cannot judge whether an informal name the code
+  does not know ("OPS", "the invoice stack") means the project the model chose.
 * The tool filters by creation date only. "Resolved this month" cannot be
   expressed: it would need a resolution date filter.
 * The tool definition (`BoundedJiraTool.schema`) is shaped for tool calling and
