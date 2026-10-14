@@ -106,11 +106,7 @@ Each pattern answers a different architectural control question.
 
 ## Model Provider
 
-The architecture follows Anthropic's paper; the model does not have to. The
-patterns are model agnostic, and the provider is a run setting, not a code
-change: every Phase 1 module gets its model from [`llm_provider.py`](llm_provider.py),
-and 07_rag uses the same convention. The published results in this repo were
-produced with OpenAI's `gpt-4o-mini`, which is the default.
+The architecture follows Anthropic’s paper; the model does not have to. The patterns are model agnostic, and the provider is a run setting, not a code change: every Phase 1 module gets its model from llm_provider.py, and 07_rag makes the same choice through its --provider flag (default openai). The published results in this repo were produced with OpenAI’s gpt-4o-mini, which is the default.
 
 | Setting | Default | Notes |
 |---|---|---|
