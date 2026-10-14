@@ -7,6 +7,9 @@ change. This matches the convention in 07_rag/rag/graph.py.
     CLAUDE_MODEL   default claude-sonnet-5-5   (needs ANTHROPIC_API_KEY)
     OPENAI_MODEL   default gpt-4o-mini         (needs OPENAI_API_KEY)
 
+Claude Sonnet 5.5 accepts only its default temperature, so `temperature` is
+applied to OpenAI only.
+
 Both providers return a LangChain chat model, so `llm.invoke(...)`,
 `prompt | llm` and `llm.with_structured_output(...)` work unchanged.
 """
@@ -27,7 +30,6 @@ def get_chat_model(provider: str | None = None, model: str | None = None, temper
 
         return ChatAnthropic(
             model=model or os.environ.get("CLAUDE_MODEL", "claude-sonnet-5-5"),
-            temperature=temperature,
             max_tokens=2048,
         )
     if provider == "openai":
