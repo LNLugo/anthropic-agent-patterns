@@ -110,13 +110,15 @@ The architecture follows Anthropic's paper; the model does not have to. The
 patterns are model agnostic, and the provider is a run setting, not a code
 change: every Phase 1 module gets its model from [`llm_provider.py`](llm_provider.py),
 and 07_rag makes the same choice through its `--provider` flag (default `openai`).
-The published results in this repo were produced with OpenAI's `gpt-4o-mini`,
-which is the default.
+The published results in this repo were produced with OpenAI's `gpt-4o-mini`.
+OpenAI retires it on January 14, 2027 and names `gpt-6-luna` as the
+replacement, so that is now the default; results will be rerun on it.
 
 | Setting | Default | Notes |
 |---|---|---|
 | `LLM_PROVIDER` | `openai` | `openai` or `anthropic` |
-| `OPENAI_MODEL` | `gpt-4o-mini` | needs `OPENAI_API_KEY` |
+| `OPENAI_MODEL` | `gpt-6-luna` | needs `OPENAI_API_KEY`; any `gpt-4*` model still runs at temperature 0 |
+| `OPENAI_REASONING_EFFORT` | `none` | for `gpt-6-luna`; tool calling on Chat Completions needs `none` |
 | `CLAUDE_MODEL` | `claude-sonnet-5-5` | needs `ANTHROPIC_API_KEY` |
 
 Install with `pip install -r requirements.txt`, then copy
@@ -196,8 +198,11 @@ Not every question is a retrieval question. "How many P1 incidents did we have
 last quarter?" needs a query, not a search. This module adds a router that
 sends aggregation questions to a bounded, read only query tool, built against
 a mock Jira. The tool has a fixed surface: allowed projects, read only, a
-result limit. An open agent with free tool choice waits until evaluation shows
-the router failing.
+result limit. The router is measured twice: as rules, and as a model choosing
+tools. On 20 held-out questions the rules routed 9 correctly and gpt-6-luna 18
+to 19 over three runs, at $0.09 per thousand questions. The model's one
+repeated miss, answering half of a two project question, is inside policy, so
+the bound cannot stop it; that is the next control to build.
 
 ---
 

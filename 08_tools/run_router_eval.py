@@ -18,7 +18,11 @@ def main() -> int:
     ap.add_argument("--questions", type=Path, default=DEFAULT)
     args = ap.parse_args()
 
-    r = evaluate(args.questions)
+    try:
+        r = evaluate(args.questions)
+    except ValueError as e:
+        print(f"Cannot score {args.questions.name}: {e}")
+        return 1
     print(f"Router:     {r.routed_correctly}/{r.total} routed correctly ({r.router_accuracy:.0%})")
     print(f"Extraction: {r.extracted_correctly}/{r.extraction_total} queries extracted exactly ({r.extraction_accuracy:.0%})")
     if r.misroutes:

@@ -76,14 +76,109 @@ These are where a model based router earns its cost. The bound does not
 depend on the router: whatever fills the `QuerySpec`, the same validator sits
 between it and Jira.
 
+### Model router through tool calling
+
+`agent_tools/model_router.py` makes the same two decisions with a model. The
+model is bound to three tools and must call exactly one:
+
+| Tool | Route |
+|---|---|
+| `count_jira_issues` (the schema above) | aggregation, with the `QuerySpec` as the arguments |
+| `search_wiki` | knowledge |
+| `ask_clarification` | neither: the project cannot be identified |
+
+The arguments go through `spec_from_arguments` and `validate`, the code the
+rules path uses, so an invented project, an out of range value or a raw `jql`
+argument is refused before anything runs. The conventions the rules encode
+(calendar quarters, exclusive end date, 90 day default, P1 means a P1
+incident) are stated in the system prompt as the tool's contract.
+`run_model_router_eval.py` scores the model with the same field comparison as
+the rules, on the same 25 questions, and adds what the rules do not cost:
+tokens, latency and, with prices supplied, cost per question.
+
+Development set results, the same 25 questions, 2026-10-14:
+
+| | Rules | gpt-4o-mini | gpt-6-luna |
+|---|---|---|---|
+| Routed correctly | 22 of 25 | 25 of 25 | 25 of 25 |
+| Query extracted exactly | 11 of 12 | 10 of 12 | 12 of 12 |
+| Arguments refused by the bound | n/a | 1 | 0 |
+| Tokens per question (in / out) | 0 | 643 / 32 | 727 / 37 |
+| Latency p50 | ~0 | 1.02 s | 1.33 s |
+| Cost per question | 0 | not measured | $0.000091 |
+
+Both models fix every routing miss the rules make. gpt-4o-mini extracts worse
+than the rules, and both of its misses are date arithmetic: "last 60 days"
+came out one day long, and "open P2s", which gives no period, came back as a
+range over a year. The validator refused that one, so no query ran. That is
+the bound doing its job against a real model.
+
+Two caveats keep these from being the headline. The system prompt was written
+after the development questions were seen, so 25 of 25 partly measures a
+prompt fitted to them. And each model was run once, without a temperature
+setting to pin its output. The numbers that count come from the held-out set
+below, run three times.
+
+### Held-out set
+
+`tests/fixtures/router_questions_heldout.json` holds 20 questions written
+without reading the prompt or the development set: unusual time phrases,
+informal names, typos, and questions where the right answer is to run
+nothing. Those carry the label `no_query`, scored correct when the system
+asks (no project, two projects) or the bound refuses (a project off the
+allowlist), and wrong if any query runs. Rules and prompt are frozen while it
+is scored.
+
+Held-out results, 2026-10-14. gpt-6-luna was run three times, since it takes
+no temperature setting and its output can vary between runs.
+
+| | Rules | gpt-4o-mini, 1 run | gpt-6-luna, 3 runs |
+|---|---|---|---|
+| Routed correctly | 9 of 20 | 18 of 20 | 19, 19, 18 of 20 |
+| Query extracted exactly | 3 of 7 | 5 of 7 | 7, 7, 6 of 7 |
+| Ran a query when it should have asked | not measured | 2 | 1 in every run |
+| Latency p50 | ~0 | 0.78 s | 1.04 to 1.23 s |
+| Cost per 1,000 questions | 0 | not measured | $0.09 |
+
+**The rules were what overfit.** They scored 88% on the development set and
+45% here. They were written against the development vocabulary and break on
+"fortnight", "tix", "invoice stack" and terse requests with no counting words.
+That is the case for a model in one line: rules look fine until people phrase
+things their own way.
+
+**gpt-6-luna holds up on questions nobody tuned for.** No date errors in three
+runs. Its run to run variation fails safe: in one run it asked which project
+"the invoice stack" meant, where the other two runs answered correctly.
+
+**The miss that matters is one the bound cannot catch.** Asked "How many bugs
+did BILL and PAY open in September?", gpt-6-luna counted BILL bugs for
+September, in every run, and dropped PAY without saying so. The user gets a
+correct looking number that answers half the question. gpt-4o-mini did the
+same, and also ran a query for "How many incidents were created last week?",
+which names no project. The bound stops queries outside policy; these were
+inside policy and simply wrong. Catching them takes a different control, one
+that checks the query covers what the question asked for. It is the next piece,
+and because the failure was found on this set, it will be measured on new
+questions, not on these.
+
+**gpt-4o-mini still gets dates wrong.** "The past fortnight" came out one day
+long, the same off by one as on the development set, and it read "opened" as
+the status Open. Moving date arithmetic out of the model and into
+`time_window` would remove that class of error for cheaper models.
+
 ## Run it
 
 ```bash
 cd 08_tools
 pip install -r requirements.txt
 
-pytest -q                       # 53 offline tests
+pytest -q                       # 67 offline tests
 python run_router_eval.py       # router and extraction accuracy
+
+# the same questions, routed by a model through tool calling (needs OPENAI_API_KEY,
+# or --provider anthropic with ANTHROPIC_API_KEY); prices are USD per million tokens
+python run_model_router_eval.py --input-price <in> --output-price <out>
+python run_model_router_eval.py --questions tests/fixtures/router_questions_heldout.json
 
 # counting question, as three different users
 python demo_assistant.py
@@ -110,20 +205,25 @@ set by eye on 8 pages, not calibrated.
 │   ├── jira_mock.py     Jira stand-in: project permissions, issue security levels, read only
 │   ├── jql_tool.py      QuerySpec, validator, JQL compiler, tool schema, count_jira_issues
 │   ├── router.py        classify (two cues), extract (project, type, priority, status, period)
-│   ├── evaluate.py      router and extraction accuracy on the labeled set
+│   ├── model_router.py  the same routing and extraction by a model, through tool calling
+│   ├── evaluate.py      router and extraction accuracy on the labeled set, rules or model
 │   └── assistant.py     LangGraph flow: classify, extract, run tool or retrieve, respond
 ├── run_router_eval.py
+├── run_model_router_eval.py
 ├── demo_assistant.py
-└── tests/               53 offline tests, synthetic Jira and labeled questions
+└── tests/               67 offline tests, synthetic Jira, development and held-out questions
 ```
 
 ## Limits
 
 * The Jira here is a mock. It reproduces project permissions and issue
   security levels, not the Jira REST API, pagination or rate limits.
-* Routing and extraction are rules. A model filling the same schema through
-  tool calling is the next step; the validator and the delegated permissions
-  stay as they are.
+* The assistant graph still routes with the rules. The held-out results favour
+  the model router, but it goes into the graph only with the coverage check
+  above in place, since an unchecked model answers half of a two project
+  question.
+* The tool filters by creation date only. "Resolved this month" cannot be
+  expressed: it would need a resolution date filter.
 * The tool definition (`BoundedJiraTool.schema`) is shaped for tool calling and
   MCP, but no MCP server is running yet. Exposing it through an MCP gateway with
   on-behalf-of tokens is the planned next piece.

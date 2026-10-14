@@ -76,10 +76,16 @@ def claude_llm(model: str | None = None, max_tokens: int = 800) -> LLM:
 
 
 def openai_llm(model: str | None = None, max_tokens: int = 800) -> LLM:
-    """OpenAI via langchain-openai. Model defaults to $OPENAI_MODEL, then gpt-4o-mini."""
+    """OpenAI via langchain-openai. Model defaults to $OPENAI_MODEL, then gpt-6-luna.
+
+    gpt-6-luna is a reasoning model and takes a reasoning effort, not a temperature;
+    the GPT-4 series (retired January 14, 2027) still gets temperature 0."""
     from langchain_openai import ChatOpenAI
 
-    chat = ChatOpenAI(model=model or os.environ.get("OPENAI_MODEL", "gpt-4o-mini"), temperature=0, max_tokens=max_tokens)
+    name = model or os.environ.get("OPENAI_MODEL", "gpt-6-luna")
+    settings = ({"temperature": 0} if name.startswith("gpt-4")
+                else {"reasoning_effort": os.environ.get("OPENAI_REASONING_EFFORT", "none")})
+    chat = ChatOpenAI(model=name, max_tokens=max_tokens, **settings)
     return lambda prompt: _reply_from_message(chat.invoke(prompt))
 
 
