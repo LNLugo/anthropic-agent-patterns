@@ -7,25 +7,105 @@
   },
   "today": "2026-10-12",
   "questions": [
-    {"_slot": "stop: two projects joined by 'and'", "q": "REPLACE", "route": "no_query"},
-    {"_slot": "stop: two projects compared ('versus', 'compared with')", "q": "REPLACE", "route": "no_query"},
-    {"_slot": "stop: three projects, or 'all projects'", "q": "REPLACE", "route": "no_query"},
-    {"_slot": "stop: two projects, one named informally", "q": "REPLACE", "route": "no_query"},
-    {"_slot": "stop: a count with no project at all", "q": "REPLACE", "route": "no_query"},
-    {"_slot": "stop: no project, but a team or person named", "q": "REPLACE", "route": "no_query"},
-    {"_slot": "stop: no project, very short", "q": "REPLACE", "route": "no_query"},
-    {"_slot": "stop: a known project off the allowlist (Security Operations)", "q": "REPLACE", "route": "no_query"},
-    {"_slot": "stop: a project name that does not exist here", "q": "REPLACE", "route": "no_query"},
-    {"_slot": "stop: your hardest case of something that should not run", "q": "REPLACE", "route": "no_query"},
-    {"_slot": "run: one project by its code", "q": "REPLACE", "route": "aggregation"},
-    {"_slot": "run: one project by its full name", "q": "REPLACE", "route": "aggregation"},
-    {"_slot": "run: one project by an informal name", "q": "REPLACE", "route": "aggregation"},
-    {"_slot": "run: one project by another informal name", "q": "REPLACE", "route": "aggregation"},
-    {"_slot": "run: one project, misspelled", "q": "REPLACE", "route": "aggregation"},
-    {"_slot": "run: one project, with a second project mentioned only in passing (for example as a cause)", "q": "REPLACE", "route": "aggregation"},
-    {"_slot": "run: one project, phrased as a VP would in a hurry", "q": "REPLACE", "route": "aggregation"},
-    {"_slot": "run: one project, with a word that looks like another project's name", "q": "REPLACE", "route": "aggregation"},
-    {"_slot": "run: one project, long and chatty", "q": "REPLACE", "route": "aggregation"},
-    {"_slot": "run: your hardest case of something that should run", "q": "REPLACE", "route": "aggregation"}
+    {
+      "_slot": "stop: two projects joined by 'and'",
+      "q": "How many bugs did BILL and PAY log?",
+      "route": "no_query"
+    },
+    {
+      "_slot": "stop: two projects compared ('versus', 'compared with')",
+      "q": "How does Billing Platform compare with Infrastructure on ticket volume?",
+      "route": "no_query"
+    },
+    {
+      "_slot": "stop: three projects, or 'all projects'",
+      "q": "Give me the total across all projects: BILL, PAY, and INFRA.",
+      "route": "no_query"
+    },
+    {
+      "_slot": "stop: two projects, one named informally",
+      "q": "Are Payments and the invoice stack carrying more incidents?",
+      "route": "no_query"
+    },
+    {
+      "_slot": "stop: a count with no project at all",
+      "q": "How many P1s did we create?",
+      "route": "no_query"
+    },
+    {
+      "_slot": "stop: no project, but a team or person named",
+      "q": "How many incidents did Priya's team open?",
+      "route": "no_query"
+    },
+    {
+      "_slot": "stop: no project, very short",
+      "q": "P1 count?",
+      "route": "no_query"
+    },
+    {
+      "_slot": "stop: a known project off the allowlist (Security Operations)",
+      "q": "How many Security Operations tickets are there?",
+      "route": "no_query"
+    },
+    {
+      "_slot": "stop: a project name that does not exist here",
+      "q": "How many CORE tickets were opened?",
+      "route": "no_query"
+    },
+    {
+      "_slot": "stop: your hardest case of something that should not run",
+      "q": "For the postmortem, give me the combined BILL / Payments total.",
+      "route": "no_query"
+    },
+    {
+      "_slot": "run: one project by its code",
+      "q": "BILL ticket count?",
+      "route": "aggregation"
+    },
+    {
+      "_slot": "run: one project by its full name",
+      "q": "How many Billing Platform issues did we log?",
+      "route": "aggregation"
+    },
+    {
+      "_slot": "run: one project by an informal name",
+      "q": "Invoice stack ticket count?",
+      "route": "aggregation"
+    },
+    {
+      "_slot": "run: one project by another informal name",
+      "q": "Money-movement incident count?",
+      "route": "aggregation"
+    },
+    {
+      "_slot": "run: one project, misspelled",
+      "q": "How many Infrastucture tickets came in?",
+      "route": "aggregation"
+    },
+    {
+      "_slot": "run: one project, with a second project mentioned only in passing (for example as a cause)",
+      "q": "How many BILL tickets were opened after a PAY outage?",
+      "route": "aggregation"
+    },
+    {
+      "_slot": "run: one project, phrased as a VP would in a hurry",
+      "q": "PAY count. EOD.",
+      "route": "aggregation"
+    },
+    {
+      "_slot": "run: one project, with a word that looks like another project's name",
+      "q": "How many BILL tickets are awaiting payment?",
+      "route": "aggregation"
+    },
+    {
+      "_slot": "run: one project, long and chatty",
+      "q": "Hey, for the leadership readout later, could you pull the BILL ticket count? I just need the headline number, not a breakdown.",
+      "route": "aggregation"
+    },
+    {
+      "_slot": "run: your hardest case of something that should run",
+      "q": "How many Payments tickets came from that Billing Platform webhook failure?",
+      "route": "aggregation"
+    }
   ]
 }
