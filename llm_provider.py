@@ -26,6 +26,15 @@ import re
 
 DEFAULT_PROVIDER = "openai"
 
+try:  # load the repo root .env, so every caller sees the keys the Phase 1 scripts see
+    from pathlib import Path
+
+    from dotenv import load_dotenv
+
+    load_dotenv(Path(__file__).resolve().parent / ".env")
+except ImportError:
+    pass
+
 
 def get_chat_model(provider: str | None = None, model: str | None = None, temperature: float = 0):
     provider = (provider or os.environ.get("LLM_PROVIDER") or DEFAULT_PROVIDER).lower()

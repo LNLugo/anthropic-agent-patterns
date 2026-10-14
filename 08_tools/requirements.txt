@@ -7,3 +7,4 @@ numpy>=1.26
 # run_model_router_eval.py uses the repo root llm_provider.py
 langchain-openai>=0.2
 langchain-anthropic>=0.3
+python-dotenv>=1.0
