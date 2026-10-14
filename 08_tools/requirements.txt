@@ -4,3 +4,6 @@ pytest>=8.0
 # demo_assistant.py also imports 07_rag (rank_bm25, numpy) for the knowledge path
 rank_bm25>=0.2.2
 numpy>=1.26
+# run_model_router_eval.py uses the repo root llm_provider.py
+langchain-openai>=0.2
+langchain-anthropic>=0.3

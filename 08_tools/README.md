@@ -76,14 +76,40 @@ These are where a model based router earns its cost. The bound does not
 depend on the router: whatever fills the `QuerySpec`, the same validator sits
 between it and Jira.
 
+### Model router through tool calling
+
+`agent_tools/model_router.py` makes the same two decisions with a model. The
+model is bound to three tools and must call exactly one:
+
+| Tool | Route |
+|---|---|
+| `count_jira_issues` (the schema above) | aggregation, with the `QuerySpec` as the arguments |
+| `search_wiki` | knowledge |
+| `ask_clarification` | neither: the project cannot be identified |
+
+The arguments go through `spec_from_arguments` and `validate`, the code the
+rules path uses, so an invented project, an out of range value or a raw `jql`
+argument is refused before anything runs. The conventions the rules encode
+(calendar quarters, exclusive end date, 90 day default, P1 means a P1
+incident) are stated in the system prompt as the tool's contract.
+`run_model_router_eval.py` scores the model with the same field comparison as
+the rules, on the same 25 questions, and adds what the rules do not cost:
+tokens, latency and, with prices supplied, cost per question.
+
+Results: not yet run against a live model.
+
 ## Run it
 
 ```bash
 cd 08_tools
 pip install -r requirements.txt
 
-pytest -q                       # 53 offline tests
+pytest -q                       # 63 offline tests
 python run_router_eval.py       # router and extraction accuracy
+
+# the same questions, routed by a model through tool calling (needs OPENAI_API_KEY,
+# or --provider anthropic with ANTHROPIC_API_KEY); prices are USD per million tokens
+python run_model_router_eval.py --input-price <in> --output-price <out>
 
 # counting question, as three different users
 python demo_assistant.py
@@ -110,20 +136,22 @@ set by eye on 8 pages, not calibrated.
 │   ├── jira_mock.py     Jira stand-in: project permissions, issue security levels, read only
 │   ├── jql_tool.py      QuerySpec, validator, JQL compiler, tool schema, count_jira_issues
 │   ├── router.py        classify (two cues), extract (project, type, priority, status, period)
-│   ├── evaluate.py      router and extraction accuracy on the labeled set
+│   ├── model_router.py  the same routing and extraction by a model, through tool calling
+│   ├── evaluate.py      router and extraction accuracy on the labeled set, rules or model
 │   └── assistant.py     LangGraph flow: classify, extract, run tool or retrieve, respond
 ├── run_router_eval.py
+├── run_model_router_eval.py
 ├── demo_assistant.py
-└── tests/               53 offline tests, synthetic Jira and labeled questions
+└── tests/               63 offline tests, synthetic Jira and labeled questions
 ```
 
 ## Limits
 
 * The Jira here is a mock. It reproduces project permissions and issue
   security levels, not the Jira REST API, pagination or rate limits.
-* Routing and extraction are rules. A model filling the same schema through
-  tool calling is the next step; the validator and the delegated permissions
-  stay as they are.
+* The assistant graph still routes with the rules. The model router is
+  measured on its own first; it replaces the rules in the graph only if it
+  beats them by enough to justify its cost.
 * The tool definition (`BoundedJiraTool.schema`) is shaped for tool calling and
   MCP, but no MCP server is running yet. Exposing it through an MCP gateway with
   on-behalf-of tokens is the planned next piece.
