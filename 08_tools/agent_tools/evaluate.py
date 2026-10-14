@@ -7,9 +7,49 @@ from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
 
+from .jql_tool import ToolRejected, validate
 from .router import NeedsClarification, classify, extract
 
 SPEC_FIELDS = ("project", "issue_type", "priority", "status", "group_by", "created_from", "created_before")
+
+
+def load_questions(path: str | Path) -> tuple[date, list[dict]]:
+    """(today, questions). Refuses a file that still holds template placeholders.
+
+    Each question's "route" is one of:
+      aggregation   a Jira count should run; add "spec" to also score extraction
+      knowledge     a wiki search should answer it
+      no_query      nothing should run: the system should ask (no project, two
+                    projects) or the bound should refuse (a project off the allowlist)
+    """
+    raw = json.loads(Path(path).read_text(encoding="utf-8"))
+    questions = raw["questions"]
+    placeholders = [q["q"] for q in questions if q["q"].startswith("REPLACE")]
+    if placeholders:
+        raise ValueError(f"{len(placeholders)} template questions still start with REPLACE in {Path(path).name}")
+    for q in questions:
+        if q["route"] not in ("aggregation", "knowledge", "no_query"):
+            raise ValueError(f"unknown route {q['route']!r} for: {q['q']}")
+    return date.fromisoformat(raw["today"]), questions
+
+
+def rules_route(question: str, today: date) -> str:
+    """The rules' route, with "no_query" when the counting path would ask or refuse."""
+    route = classify(question)
+    if route != "aggregation":
+        return route
+    try:
+        validate(extract(question, today).spec)
+    except (NeedsClarification, ToolRejected):
+        return "no_query"
+    return route
+
+
+def model_route(decision) -> str:
+    """The model's route, with "no_query" when it asked or the bound refused its arguments."""
+    if decision.route == "clarify" or (decision.route == "aggregation" and decision.rejected):
+        return "no_query"
+    return decision.route
 
 
 def spec_diffs(expected: dict, spec) -> list[str]:
@@ -43,12 +83,11 @@ class RouterReport:
 
 
 def evaluate(path: str | Path) -> RouterReport:
-    raw = json.loads(Path(path).read_text(encoding="utf-8"))
-    today = date.fromisoformat(raw["today"])
+    today, questions = load_questions(path)
     misroutes, misses = [], []
     ok_route = ok_extract = n_extract = 0
-    for item in raw["questions"]:
-        got = classify(item["q"])
+    for item in questions:
+        got = classify(item["q"]) if item["route"] != "no_query" else rules_route(item["q"], today)
         if got == item["route"]:
             ok_route += 1
         else:
@@ -67,7 +106,7 @@ def evaluate(path: str | Path) -> RouterReport:
             misses.append((item["q"], "; ".join(diffs)))
         else:
             ok_extract += 1
-    return RouterReport(len(raw["questions"]), ok_route, tuple(misroutes), n_extract, ok_extract, tuple(misses))
+    return RouterReport(len(questions), ok_route, tuple(misroutes), n_extract, ok_extract, tuple(misses))
 
 
 # ---------------------------------------------------------------- model router
@@ -102,21 +141,21 @@ class ModelReport:
 def evaluate_model(path: str | Path, router) -> ModelReport:
     """Score a ModelRouter on the same labeled set and the same field comparison as the rules.
 
-    A route of "clarify" is scored as a miss on both measures: every labeled
-    counting question names its project, so asking is a failure to answer."""
-    raw = json.loads(Path(path).read_text(encoding="utf-8"))
-    today = date.fromisoformat(raw["today"])
+    Asking ("clarify") or a refused query counts as correct only where the label
+    is "no_query"; on a question labeled aggregation it is a failure to answer."""
+    today, questions = load_questions(path)
     misroutes, misses, rejected, rows = [], [], [], []
     ok_route = ok_extract = n_extract = tok_in = tok_out = 0
     latency = 0.0
-    for item in raw["questions"]:
+    for item in questions:
         d = router.decide(item["q"], today)
         tok_in, tok_out, latency = tok_in + d.input_tokens, tok_out + d.output_tokens, latency + d.latency_s
-        route_ok = d.route == item["route"]
+        got = model_route(d) if item["route"] == "no_query" else d.route
+        route_ok = got == item["route"]
         if route_ok:
             ok_route += 1
         else:
-            misroutes.append((item["q"], item["route"], d.route))
+            misroutes.append((item["q"], item["route"], got))
         if d.rejected:
             rejected.append((item["q"], d.rejected))
         expected, why = item.get("spec"), None
@@ -138,6 +177,6 @@ def evaluate_model(path: str | Path, router) -> ModelReport:
             "input_tokens": d.input_tokens, "output_tokens": d.output_tokens, "latency_s": round(d.latency_s, 3),
         })
     return ModelReport(
-        len(raw["questions"]), ok_route, tuple(misroutes), n_extract, ok_extract, tuple(misses),
+        len(questions), ok_route, tuple(misroutes), n_extract, ok_extract, tuple(misses),
         tuple(rejected), tok_in, tok_out, latency, tuple(rows),
     )

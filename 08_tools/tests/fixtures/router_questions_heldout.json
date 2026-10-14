@@ -1,0 +1,40 @@
+{
+  "_note": "HELD-OUT SET. Write these questions without reading agent_tools/model_router.py or the development set (router_questions.json), and do not change the rules or the prompt after seeing results here. Each slot names a category only; replace every REPLACE value. The evaluators refuse to run while any question starts with REPLACE.",
+  "_how_to_label": {
+    "route": "aggregation (a Jira count should run), knowledge (a wiki page should answer it), or no_query (nothing should run: no project named, two projects in one question, or a project outside BILL, PAY, INFRA).",
+    "spec": "Only for aggregation. Keep the fields the question states and delete the rest. Projects: BILL, PAY, INFRA. issue_type: Incident, Bug, Task, Change. priority: P1 to P4. status: Open, In Progress, Resolved, Closed. group_by: priority, status, issue_type. Delete spec entirely to score routing only.",
+    "dates": "today is 2026-10-12. created_from is the first day included; created_before is the day AFTER the last day included. Calendar quarters and months. 'This quarter/month/year' runs through today, so created_before is 2026-10-13. 'Last N days' ends today: created_from is today minus N-1 days. No period stated: last 90 days, created_from 2026-07-15, created_before 2026-10-13.",
+    "conventions": "A P1 to P4 with no type named is an Incident. Outages are incidents. Status only when a state is named or implied by a verb."
+  },
+  "today": "2026-10-12",
+  "questions": [
+    {"_slot": "count, a time phrase not used in the development set", "q": "REPLACE", "route": "aggregation",
+     "spec": {"project": "REPLACE", "issue_type": "REPLACE", "created_from": "REPLACE", "created_before": "REPLACE"}},
+    {"_slot": "count, another unusual time phrase", "q": "REPLACE", "route": "aggregation",
+     "spec": {"project": "REPLACE", "created_from": "REPLACE", "created_before": "REPLACE"}},
+    {"_slot": "count, informal team or system name for a project", "q": "REPLACE", "route": "aggregation",
+     "spec": {"project": "REPLACE", "created_from": "REPLACE", "created_before": "REPLACE"}},
+    {"_slot": "count, with a typo or shorthand", "q": "REPLACE", "route": "aggregation",
+     "spec": {"project": "REPLACE", "created_from": "REPLACE", "created_before": "REPLACE"}},
+    {"_slot": "count, status implied by a verb", "q": "REPLACE", "route": "aggregation",
+     "spec": {"project": "REPLACE", "status": "REPLACE", "created_from": "REPLACE", "created_before": "REPLACE"}},
+    {"_slot": "count, a breakdown request", "q": "REPLACE", "route": "aggregation",
+     "spec": {"project": "REPLACE", "group_by": "REPLACE", "created_from": "REPLACE", "created_before": "REPLACE"}},
+    {"_slot": "count, no period stated", "q": "REPLACE", "route": "aggregation",
+     "spec": {"project": "REPLACE", "created_from": "2026-07-15", "created_before": "2026-10-13"}},
+    {"_slot": "count, phrased the way a VP would ask in a hurry", "q": "REPLACE", "route": "aggregation",
+     "spec": {"project": "REPLACE", "created_from": "REPLACE", "created_before": "REPLACE"}},
+    {"_slot": "count, no counting words at all", "q": "REPLACE", "route": "aggregation"},
+    {"_slot": "nothing should run: no project named", "q": "REPLACE", "route": "no_query"},
+    {"_slot": "nothing should run: two projects in one question", "q": "REPLACE", "route": "no_query"},
+    {"_slot": "nothing should run: a project outside the allowlist", "q": "REPLACE", "route": "no_query"},
+    {"_slot": "wiki, a plain how-to", "q": "REPLACE", "route": "knowledge"},
+    {"_slot": "wiki, a policy or ownership question", "q": "REPLACE", "route": "knowledge"},
+    {"_slot": "wiki, mentions incidents or bugs but asks for a document", "q": "REPLACE", "route": "knowledge"},
+    {"_slot": "wiki, uses a counting word but asks for documentation", "q": "REPLACE", "route": "knowledge"},
+    {"_slot": "wiki, asks for a list of steps or pages, not issues", "q": "REPLACE", "route": "knowledge"},
+    {"_slot": "wiki, an explanation of how a system works", "q": "REPLACE", "route": "knowledge"},
+    {"_slot": "wiki, short and terse", "q": "REPLACE", "route": "knowledge"},
+    {"_slot": "your choice: the question you would most expect to break this", "q": "REPLACE", "route": "REPLACE"}
+  ]
+}

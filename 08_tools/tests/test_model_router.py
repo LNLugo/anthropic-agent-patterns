@@ -126,3 +126,51 @@ def test_misses_and_rejections_are_reported(tool):
     assert (q_wiki, "knowledge", "aggregation") in report.misroutes
     assert report.rejected_by_bound[0][0] == q_wiki
     assert report.cost_usd(0.15, 0.60) == pytest.approx((25 * 400 * 0.15 + 25 * 30 * 0.60) / 1e6)
+
+
+# ---------------------------------------------------------------- no_query label and held-out files
+
+def write_set(tmp_path, questions):
+    p = tmp_path / "set.json"
+    p.write_text(json.dumps({"today": "2026-10-12", "questions": questions}), encoding="utf-8")
+    return p
+
+
+NO_PROJECT = "How many P1 incidents last month?"
+OFF_LIST = "How many incidents did security operations have last quarter?"
+TWO_PROJECTS = "How many incidents did billing and payments have last month?"
+
+
+def test_rules_score_asking_and_refusing_as_no_query(tmp_path):
+    from agent_tools.evaluate import evaluate
+    path = write_set(tmp_path, [{"q": NO_PROJECT, "route": "no_query"}, {"q": OFF_LIST, "route": "no_query"}])
+    report = evaluate(path)
+    assert report.routed_correctly == 2, report.misroutes   # one asks, one is refused by validate()
+
+
+def test_model_scores_clarify_or_rejection_as_no_query(tool, tmp_path):
+    path = write_set(tmp_path, [
+        {"q": NO_PROJECT, "route": "no_query"},
+        {"q": OFF_LIST, "route": "no_query"},
+        {"q": TWO_PROJECTS, "route": "no_query"},
+    ])
+    script = {
+        NO_PROJECT: ("ask_clarification", {"question": "Which project?"}),
+        OFF_LIST: count(project="SECOPS", created_from="2026-07-01", created_before="2026-10-01"),
+        TWO_PROJECTS: count(project="BILL", created_from="2026-09-01", created_before="2026-10-01"),  # ran a query: wrong
+    }
+    report = evaluate_model(path, ModelRouter(ScriptedModel(script), tool))
+    assert report.routed_correctly == 2
+    assert report.misroutes == ((TWO_PROJECTS, "no_query", "aggregation"),)
+
+
+def test_template_placeholders_are_refused(tool, tmp_path):
+    path = write_set(tmp_path, [{"q": "REPLACE: a counting question", "route": "aggregation"}])
+    with pytest.raises(ValueError, match="REPLACE"):
+        evaluate_model(path, ModelRouter(ScriptedModel({}), tool))
+
+
+def test_unknown_route_label_is_refused(tool, tmp_path):
+    path = write_set(tmp_path, [{"q": "How many bugs in billing?", "route": "count"}])
+    with pytest.raises(ValueError, match="unknown route"):
+        evaluate_model(path, ModelRouter(ScriptedModel({}), tool))

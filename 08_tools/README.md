@@ -96,7 +96,40 @@ incident) are stated in the system prompt as the tool's contract.
 the rules, on the same 25 questions, and adds what the rules do not cost:
 tokens, latency and, with prices supplied, cost per question.
 
-Results: not yet run against a live model.
+Development set results, the same 25 questions, 2026-10-14:
+
+| | Rules | gpt-4o-mini | gpt-6-luna |
+|---|---|---|---|
+| Routed correctly | 22 of 25 | 25 of 25 | 25 of 25 |
+| Query extracted exactly | 11 of 12 | 10 of 12 | 12 of 12 |
+| Arguments refused by the bound | n/a | 1 | 0 |
+| Tokens per question (in / out) | 0 | 643 / 32 | 727 / 37 |
+| Latency p50 | ~0 | 1.02 s | 1.33 s |
+| Cost per question | 0 | not measured | $0.000091 |
+
+Both models fix every routing miss the rules make. gpt-4o-mini extracts worse
+than the rules, and both of its misses are date arithmetic: "last 60 days"
+came out one day long, and "open P2s", which gives no period, came back as a
+range over a year. The validator refused that one, so no query ran. That is
+the bound doing its job against a real model.
+
+Two caveats keep these from being the headline. The system prompt was written
+after the development questions were seen, so 25 of 25 partly measures a
+prompt fitted to them. And each model was run once, without a temperature
+setting to pin its output. The numbers that count come from the held-out set
+below, run three times.
+
+### Held-out set
+
+`tests/fixtures/router_questions_heldout.json` holds 20 questions written
+without reading the prompt or the development set: unusual time phrases,
+informal names, typos, and questions where the right answer is to run
+nothing. Those carry the label `no_query`, scored correct when the system
+asks (no project, two projects) or the bound refuses (a project off the
+allowlist), and wrong if any query runs. Rules and prompt are frozen while it
+is scored.
+
+Results: pending.
 
 ## Run it
 
@@ -104,12 +137,13 @@ Results: not yet run against a live model.
 cd 08_tools
 pip install -r requirements.txt
 
-pytest -q                       # 63 offline tests
+pytest -q                       # 67 offline tests
 python run_router_eval.py       # router and extraction accuracy
 
 # the same questions, routed by a model through tool calling (needs OPENAI_API_KEY,
 # or --provider anthropic with ANTHROPIC_API_KEY); prices are USD per million tokens
 python run_model_router_eval.py --input-price <in> --output-price <out>
+python run_model_router_eval.py --questions tests/fixtures/router_questions_heldout.json
 
 # counting question, as three different users
 python demo_assistant.py
@@ -142,7 +176,7 @@ set by eye on 8 pages, not calibrated.
 ├── run_router_eval.py
 ├── run_model_router_eval.py
 ├── demo_assistant.py
-└── tests/               63 offline tests, synthetic Jira and labeled questions
+└── tests/               67 offline tests, synthetic Jira, development and held-out questions
 ```
 
 ## Limits

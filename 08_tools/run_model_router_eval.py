@@ -46,12 +46,16 @@ def main() -> int:
     llm = get_chat_model(args.provider, args.model)
     model_name = getattr(llm, "model_name", None) or getattr(llm, "model", "unknown")
     jira, _ = MockJira.from_fixture(JIRA)
-    rules = evaluate(args.questions)
+    try:
+        rules = evaluate(args.questions)
+    except ValueError as e:
+        print(f"Cannot score {args.questions.name}: {e}")
+        return 1
     model = evaluate_model(args.questions, ModelRouter(llm, BoundedJiraTool(jira)))
 
     n = model.total
     latencies = [r["latency_s"] for r in model.rows]
-    print(f"Model: {model_name}\n")
+    print(f"Model: {model_name}   Questions: {args.questions.name}\n")
     print(f"{'':28}{'Rules':>12}{'Model':>12}")
     print(f"{'Routed correctly':28}{f'{rules.routed_correctly}/{n}':>12}{f'{model.routed_correctly}/{n}':>12}")
     print(f"{'Query extracted exactly':28}{f'{rules.extracted_correctly}/{rules.extraction_total}':>12}"
@@ -73,7 +77,8 @@ def main() -> int:
                 print("  " + item[0] + ("" if len(item) < 2 else f"\n      {' -> '.join(item[1:])}"))
 
     args.out.mkdir(parents=True, exist_ok=True)
-    out = args.out / f"model_router_{str(model_name).replace('/', '_')}.json"
+    stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    out = args.out / f"model_router_{str(model_name).replace('/', '_')}_{args.questions.stem}_{stamp}.json"
     out.write_text(json.dumps({
         "model": model_name, "run_at": datetime.now().isoformat(timespec="seconds"),
         "questions": str(args.questions.name),
