@@ -49,7 +49,7 @@ def count(**args):
 
 def test_binds_three_tools_and_forces_a_call(tool):
     model = ScriptedModel({})
-    ModelRouter(model, tool)
+    ModelRouter(model, tool, coverage=False)
     names = [t["function"]["name"] for t in model.bound_tools]
     assert names == ["count_jira_issues", "search_wiki", "ask_clarification"]
     assert model.tool_choice == "any"
@@ -64,14 +64,14 @@ def test_tool_choice_is_the_route(tool):
         "q3": ("ask_clarification", {"question": "Which project?"}),
         "q4": None,
     })
-    r = ModelRouter(model, tool)
+    r = ModelRouter(model, tool, coverage=False)
     assert [r.decide(q, TODAY).route for q in ("q1", "q2", "q3", "q4")] == ["aggregation", "knowledge", "clarify", "none"]
 
 
 def test_arguments_become_a_validated_spec(tool):
     model = ScriptedModel({"q": count(project="PAY", created_from="2026-09-01", created_before="2026-10-01",
                                       issue_type="Incident", priority="P1")})
-    d = ModelRouter(model, tool).decide("q", TODAY)
+    d = ModelRouter(model, tool, coverage=False).decide("q", TODAY)
     assert (d.spec.project, d.spec.priority, d.spec.created_before) == ("PAY", "P1", date(2026, 10, 1))
     assert (d.input_tokens, d.output_tokens) == (400, 30)
 
@@ -85,7 +85,7 @@ def test_arguments_become_a_validated_spec(tool):
 ])
 def test_model_arguments_outside_the_bound_are_rejected(tool, args, reason):
     """Whatever the model sends, the same validator as the rules path decides."""
-    d = ModelRouter(ScriptedModel({"q": ("count_jira_issues", args)}), tool).decide("q", TODAY)
+    d = ModelRouter(ScriptedModel({"q": ("count_jira_issues", args)}), tool, coverage=False).decide("q", TODAY)
     assert d.route == "aggregation" and d.spec is None and reason in d.rejected
 
 
@@ -107,7 +107,7 @@ def test_perfect_model_scores_full_marks(tool):
             script[item["q"]] = count(project="BILL", created_from="2026-07-15", created_before="2026-10-13")
         else:
             script[item["q"]] = count(**{k: v for k, v in spec.items() if v is not None})
-    report = evaluate_model(FIXTURES / "router_questions.json", ModelRouter(ScriptedModel(script), tool))
+    report = evaluate_model(FIXTURES / "router_questions.json", ModelRouter(ScriptedModel(script), tool, coverage=False))
     assert (report.routed_correctly, report.total) == (25, 25)
     assert (report.extracted_correctly, report.extraction_total) == (12, 12)
     assert report.input_tokens == 25 * 400 and not report.rejected_by_bound
@@ -120,7 +120,7 @@ def test_misses_and_rejections_are_reported(tool):
         q_count: count(project="BILL", created_from="2026-07-01", created_before="2026-10-01", issue_type="Incident"),
         q_wiki: count(project="SECOPS", created_from="2026-07-01", created_before="2026-10-01"),
     }
-    report = evaluate_model(FIXTURES / "router_questions.json", ModelRouter(ScriptedModel(script), tool))
+    report = evaluate_model(FIXTURES / "router_questions.json", ModelRouter(ScriptedModel(script), tool, coverage=False))
     misses = dict(report.extraction_misses)
     assert "priority: expected 'P1', got None" in misses[q_count]
     assert (q_wiki, "knowledge", "aggregation") in report.misroutes
@@ -159,7 +159,7 @@ def test_model_scores_clarify_or_rejection_as_no_query(tool, tmp_path):
         OFF_LIST: count(project="SECOPS", created_from="2026-07-01", created_before="2026-10-01"),
         TWO_PROJECTS: count(project="BILL", created_from="2026-09-01", created_before="2026-10-01"),  # ran a query: wrong
     }
-    report = evaluate_model(path, ModelRouter(ScriptedModel(script), tool))
+    report = evaluate_model(path, ModelRouter(ScriptedModel(script), tool, coverage=False))
     assert report.routed_correctly == 2
     assert report.misroutes == ((TWO_PROJECTS, "no_query", "aggregation"),)
 
@@ -167,10 +167,10 @@ def test_model_scores_clarify_or_rejection_as_no_query(tool, tmp_path):
 def test_template_placeholders_are_refused(tool, tmp_path):
     path = write_set(tmp_path, [{"q": "REPLACE: a counting question", "route": "aggregation"}])
     with pytest.raises(ValueError, match="REPLACE"):
-        evaluate_model(path, ModelRouter(ScriptedModel({}), tool))
+        evaluate_model(path, ModelRouter(ScriptedModel({}), tool, coverage=False))
 
 
 def test_unknown_route_label_is_refused(tool, tmp_path):
     path = write_set(tmp_path, [{"q": "How many bugs in billing?", "route": "count"}])
     with pytest.raises(ValueError, match="unknown route"):
-        evaluate_model(path, ModelRouter(ScriptedModel({}), tool))
+        evaluate_model(path, ModelRouter(ScriptedModel({}), tool, coverage=False))

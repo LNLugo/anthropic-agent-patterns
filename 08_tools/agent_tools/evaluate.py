@@ -120,6 +120,7 @@ class ModelReport:
     extracted_correctly: int
     extraction_misses: tuple[tuple[str, str], ...]
     rejected_by_bound: tuple[tuple[str, str], ...]      # (question, reason): model args the validator refused
+    stopped_by_coverage: tuple[tuple[str, str], ...]    # (question, reason): valid queries the coverage check stopped
     input_tokens: int
     output_tokens: int
     latency_s: float
@@ -144,7 +145,7 @@ def evaluate_model(path: str | Path, router) -> ModelReport:
     Asking ("clarify") or a refused query counts as correct only where the label
     is "no_query"; on a question labeled aggregation it is a failure to answer."""
     today, questions = load_questions(path)
-    misroutes, misses, rejected, rows = [], [], [], []
+    misroutes, misses, rejected, stopped, rows = [], [], [], [], []
     ok_route = ok_extract = n_extract = tok_in = tok_out = 0
     latency = 0.0
     for item in questions:
@@ -158,11 +159,15 @@ def evaluate_model(path: str | Path, router) -> ModelReport:
             misroutes.append((item["q"], item["route"], got))
         if d.rejected:
             rejected.append((item["q"], d.rejected))
+        if d.coverage:
+            stopped.append((item["q"], d.coverage))
         expected, why = item.get("spec"), None
         if expected is not None:
             n_extract += 1
             if d.spec is None:
-                why = f"rejected by the bound: {d.rejected}" if d.rejected else f"no query (route {d.route})"
+                why = (f"rejected by the bound: {d.rejected}" if d.rejected
+                       else f"stopped by the coverage check: {d.coverage}" if d.coverage
+                       else f"no query (route {d.route})")
             else:
                 diffs = spec_diffs(expected, d.spec)
                 why = "; ".join(diffs) or None
@@ -172,11 +177,11 @@ def evaluate_model(path: str | Path, router) -> ModelReport:
                 ok_extract += 1
         rows.append({
             "q": item["q"], "expected_route": item["route"], "route": d.route, "route_ok": route_ok,
-            "tool": d.tool_name, "arguments": d.arguments, "rejected": d.rejected,
+            "tool": d.tool_name, "arguments": d.arguments, "rejected": d.rejected, "coverage": d.coverage,
             "extraction_ok": None if expected is None else why is None, "extraction_miss": why,
             "input_tokens": d.input_tokens, "output_tokens": d.output_tokens, "latency_s": round(d.latency_s, 3),
         })
     return ModelReport(
         len(questions), ok_route, tuple(misroutes), n_extract, ok_extract, tuple(misses),
-        tuple(rejected), tok_in, tok_out, latency, tuple(rows),
+        tuple(rejected), tuple(stopped), tok_in, tok_out, latency, tuple(rows),
     )

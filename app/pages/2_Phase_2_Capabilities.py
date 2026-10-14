@@ -34,7 +34,6 @@ from agent_tools.jql_tool import BoundedJiraTool  # noqa: E402
 WIKI_PATH = RAG_DIR / "tests" / "fixtures" / "mini_confluence.json"
 JIRA_PATH = TOOLS_DIR / "tests" / "fixtures" / "mini_jira.json"
 ROUTER_PATH = TOOLS_DIR / "tests" / "fixtures" / "router_questions.json"
-HELDOUT_PATH = TOOLS_DIR / "tests" / "fixtures" / "router_questions_heldout.json"
 PUBLISHED_PATH = TOOLS_DIR / "results_published.json"
 LOCAL_RESULTS = TOOLS_DIR / "results"
 
@@ -296,19 +295,26 @@ with tab5:
     published = json.loads(PUBLISHED_PATH.read_text(encoding="utf-8"))
     choice = st.radio(
         "Question set",
-        ["heldout", "development"],
+        list(published["sets"]),
         format_func=lambda k: published["sets"][k]["label"],
-        horizontal=True,
+        horizontal=False,
     )
     entry = published["sets"][choice]
-    rules = evaluate(HELDOUT_PATH if choice == "heldout" else ROUTER_PATH)
+    try:
+        rules = evaluate(TOOLS_DIR / "tests" / "fixtures" / entry["file"])
+    except ValueError as e:  # a question file still holding template placeholders
+        rules = None
+        st.info(f"Rules not shown: {e}")
 
-    rows = [{
+    def _of(n, total):
+        return f"{n} of {total}" if total else "n/a"
+
+    rows = [] if rules is None else [{
         "Router": "Rules (computed live)", "Runs": 1,
-        "Routed correctly": f"{rules.routed_correctly} of {rules.total}",
-        "Extracted exactly": f"{rules.extracted_correctly} of {rules.extraction_total}",
-        "Refused by the bound": "n/a", "Tokens in / out": "0", "Latency p50": "~0",
-        "Cost per 1,000 questions": "$0",
+        "Routed correctly": _of(rules.routed_correctly, rules.total),
+        "Extracted exactly": _of(rules.extracted_correctly, rules.extraction_total),
+        "Refused by the bound": "n/a", "Stopped by coverage check": "n/a",
+        "Tokens in / out": "0", "Latency p50": "~0", "Cost per 1,000 questions": "$0",
     }]
     for name, model in entry["models"].items():
         runs = model["runs"]
@@ -317,8 +323,11 @@ with tab5:
         rows.append({
             "Router": name, "Runs": n,
             "Routed correctly": ", ".join(str(r["routed"]) for r in runs) + f" of {total}",
-            "Extracted exactly": ", ".join(str(r["extracted"]) for r in runs) + f" of {ext_total}",
+            "Extracted exactly": (", ".join(str(r["extracted"]) for r in runs) + f" of {ext_total}"
+                                  if ext_total else "n/a"),
             "Refused by the bound": _span([r["rejected_by_bound"] for r in runs]),
+            "Stopped by coverage check": (", ".join(str(r["stopped_by_coverage"]) for r in runs)
+                                          if model.get("coverage_check") else "off"),
             "Tokens in / out": f"{runs[0]['tokens_in']} / {runs[0]['tokens_out']}",
             "Latency p50": _span([r["latency_p50_s"] for r in runs], "{:.2f} s"),
             "Cost per 1,000 questions": f"${sum(cost) / len(cost) * 1000:.2f}" if cost else "not measured",
@@ -339,17 +348,18 @@ with tab5:
             st.markdown(f"**Should have:** {finding['expected']}")
             st.markdown(f"**Seen:** {finding['seen']}")
         with right:
-            st.markdown("**The call the model made**")
+            st.markdown(f"**{finding.get('panel_label', 'The call the model made')}**")
             st.json(finding["tool_call"])
         st.warning(finding["why_it_matters"])
 
     st.markdown("#### Where each router missed")
-    with st.expander(f"Rules: {_count(len(rules.misroutes), 'misroute')}, "
-                     f"{_count(len(rules.extraction_misses), 'extraction miss')}"):
-        if rules.misroutes:
-            st.table([{"Question": q, "Expected": want, "Got": got} for q, want, got in rules.misroutes])
-        if rules.extraction_misses:
-            st.table([{"Question": q, "What differed": why} for q, why in rules.extraction_misses])
+    if rules is not None:
+        with st.expander(f"Rules: {_count(len(rules.misroutes), 'misroute')}, "
+                         f"{_count(len(rules.extraction_misses), 'extraction miss')}"):
+            if rules.misroutes:
+                st.table([{"Question": q, "Expected": want, "Got": got} for q, want, got in rules.misroutes])
+            if rules.extraction_misses:
+                st.table([{"Question": q, "What differed": why} for q, why in rules.extraction_misses])
     for name, model in entry["models"].items():
         for i, run in enumerate(model["runs"], 1):
             label = name if len(model["runs"]) == 1 else f"{name}, run {i}"

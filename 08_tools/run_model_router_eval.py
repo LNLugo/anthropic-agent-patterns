@@ -41,6 +41,8 @@ def main() -> int:
     ap.add_argument("--input-price", type=float, default=None, help="USD per million input tokens")
     ap.add_argument("--output-price", type=float, default=None, help="USD per million output tokens")
     ap.add_argument("--out", type=Path, default=HERE / "results")
+    ap.add_argument("--no-coverage", action="store_true",
+                    help="run without the coverage check, as the router was measured before it existed")
     args = ap.parse_args()
 
     llm = get_chat_model(args.provider, args.model)
@@ -51,16 +53,20 @@ def main() -> int:
     except ValueError as e:
         print(f"Cannot score {args.questions.name}: {e}")
         return 1
-    model = evaluate_model(args.questions, ModelRouter(llm, BoundedJiraTool(jira)))
+    coverage = not args.no_coverage
+    model = evaluate_model(args.questions, ModelRouter(llm, BoundedJiraTool(jira), coverage=coverage))
 
     n = model.total
     latencies = [r["latency_s"] for r in model.rows]
-    print(f"Model: {model_name}   Questions: {args.questions.name}\n")
+    print(f"Model: {model_name}   Questions: {args.questions.name}   "
+          f"Coverage check: {'on' if coverage else 'off'}\n")
     print(f"{'':28}{'Rules':>12}{'Model':>12}")
     print(f"{'Routed correctly':28}{f'{rules.routed_correctly}/{n}':>12}{f'{model.routed_correctly}/{n}':>12}")
     print(f"{'Query extracted exactly':28}{f'{rules.extracted_correctly}/{rules.extraction_total}':>12}"
           f"{f'{model.extracted_correctly}/{model.extraction_total}':>12}")
     print(f"{'Rejected by the bound':28}{'n/a':>12}{len(model.rejected_by_bound):>12}")
+    if coverage:
+        print(f"{'Stopped by coverage check':28}{'n/a':>12}{len(model.stopped_by_coverage):>12}")
     print(f"{'Tokens per question (in/out)':28}{'0':>12}{f'{model.input_tokens // n}/{model.output_tokens // n}':>12}")
     print(f"{'Latency p50 / max (s)':28}{'~0':>12}"
           f"{f'{statistics.median(latencies):.2f}/{max(latencies):.2f}':>12}")
@@ -70,7 +76,8 @@ def main() -> int:
         print(f"{'Cost per question (USD)':28}{'0':>12}{cost / n:>12.6f}")
 
     for title, items in (("Misroutes", model.misroutes), ("Extraction misses", model.extraction_misses),
-                         ("Rejected by the bound", model.rejected_by_bound)):
+                         ("Rejected by the bound", model.rejected_by_bound),
+                         ("Stopped by the coverage check", model.stopped_by_coverage)):
         if items:
             print(f"\n{title}:")
             for item in items:
@@ -78,14 +85,16 @@ def main() -> int:
 
     args.out.mkdir(parents=True, exist_ok=True)
     stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
-    out = args.out / f"model_router_{str(model_name).replace('/', '_')}_{args.questions.stem}_{stamp}.json"
+    tag = "coverage" if coverage else "nocoverage"
+    out = args.out / f"model_router_{str(model_name).replace('/', '_')}_{args.questions.stem}_{tag}_{stamp}.json"
     out.write_text(json.dumps({
-        "model": model_name, "run_at": datetime.now().isoformat(timespec="seconds"),
+        "model": model_name, "run_at": datetime.now().isoformat(timespec="seconds"), "coverage_check": coverage,
         "questions": str(args.questions.name),
         "rules": {"routed": rules.routed_correctly, "extracted": rules.extracted_correctly,
                   "extraction_total": rules.extraction_total},
         "model_result": {"routed": model.routed_correctly, "extracted": model.extracted_correctly,
                          "rejected_by_bound": len(model.rejected_by_bound),
+                         "stopped_by_coverage": len(model.stopped_by_coverage),
                          "input_tokens": model.input_tokens, "output_tokens": model.output_tokens,
                          "latency_p50_s": round(statistics.median(latencies), 3), "cost_usd": cost},
         "rows": list(model.rows),
