@@ -1,0 +1,80 @@
+{
+  "_note": "Model router results as recorded on 2026-10-14 with run_model_router_eval.py. Raw per-run files live in results/, which git ignores; this file keeps the published numbers and every miss. Rules results are not stored here: they are deterministic and the Streamlit page recomputes them.",
+  "recorded": "2026-10-14",
+  "sets": {
+    "development": {
+      "file": "router_questions.json",
+      "label": "Development set, 25 questions (the prompt was written after seeing these)",
+      "models": {
+        "gpt-4o-mini": {
+          "runs": [
+            {"routed": 25, "total": 25, "extracted": 10, "extraction_total": 12, "rejected_by_bound": 1,
+             "tokens_in": 643, "tokens_out": 32, "latency_p50_s": 1.02, "latency_max_s": 3.58, "cost_per_question_usd": null,
+             "misroutes": [],
+             "extraction_misses": [
+               {"q": "Show me the open P2s in payments", "why": "rejected by the bound: date range is capped at 366 days"},
+               {"q": "Which changes were made to infra in the last 60 days?", "why": "created_from: expected '2026-08-14', got '2026-08-13'"}
+             ]}
+          ]
+        },
+        "gpt-6-luna": {
+          "runs": [
+            {"routed": 25, "total": 25, "extracted": 12, "extraction_total": 12, "rejected_by_bound": 0,
+             "tokens_in": 727, "tokens_out": 37, "latency_p50_s": 1.33, "latency_max_s": 3.12, "cost_per_question_usd": 0.000091,
+             "misroutes": [], "extraction_misses": []}
+          ]
+        }
+      }
+    },
+    "heldout": {
+      "file": "router_questions_heldout.json",
+      "label": "Held-out set, 20 questions written without reading the prompt",
+      "models": {
+        "gpt-4o-mini": {
+          "runs": [
+            {"routed": 18, "total": 20, "extracted": 5, "extraction_total": 7, "rejected_by_bound": 0,
+             "tokens_in": 644, "tokens_out": 42, "latency_p50_s": 0.78, "latency_max_s": 3.87, "cost_per_question_usd": null,
+             "misroutes": [
+               {"q": "How many incidents were created last week?", "expected": "no_query", "got": "aggregation"},
+               {"q": "How many bugs did BILL and PAY open in September?", "expected": "no_query", "got": "aggregation"}
+             ],
+             "extraction_misses": [
+               {"q": "How much PAY work hit the board over the past fortnight?", "why": "created_from: expected '2026-09-29', got '2026-09-28'"},
+               {"q": "PAY tix opened lst month?", "why": "status: expected None, got 'Open'"}
+             ]}
+          ]
+        },
+        "gpt-6-luna": {
+          "runs": [
+            {"routed": 19, "total": 20, "extracted": 7, "extraction_total": 7, "rejected_by_bound": 0,
+             "tokens_in": 728, "tokens_out": 39, "latency_p50_s": 1.22, "latency_max_s": 8.79, "cost_per_question_usd": 0.000093,
+             "misroutes": [{"q": "How many bugs did BILL and PAY open in September?", "expected": "no_query", "got": "aggregation"}],
+             "extraction_misses": []},
+            {"routed": 19, "total": 20, "extracted": 7, "extraction_total": 7, "rejected_by_bound": 0,
+             "tokens_in": 728, "tokens_out": 39, "latency_p50_s": 1.04, "latency_max_s": 8.25, "cost_per_question_usd": 0.000093,
+             "misroutes": [{"q": "How many bugs did BILL and PAY open in September?", "expected": "no_query", "got": "aggregation"}],
+             "extraction_misses": []},
+            {"routed": 18, "total": 20, "extracted": 6, "extraction_total": 7, "rejected_by_bound": 0,
+             "tokens_in": 728, "tokens_out": 39, "latency_p50_s": 1.23, "latency_max_s": 1.83, "cost_per_question_usd": 0.000093,
+             "misroutes": [
+               {"q": "Need a read on the invoice stack—tickets opened in September?", "expected": "aggregation", "got": "clarify"},
+               {"q": "How many bugs did BILL and PAY open in September?", "expected": "no_query", "got": "aggregation"}
+             ],
+             "extraction_misses": [
+               {"q": "Need a read on the invoice stack—tickets opened in September?", "why": "no query (route clarify)"}
+             ]}
+          ]
+        }
+      },
+      "finding": {
+        "title": "A wrong query inside policy",
+        "q": "How many bugs did BILL and PAY open in September?",
+        "expected": "Ask which project, or run nothing: the tool counts one project at a time.",
+        "tool_call": {"name": "count_jira_issues",
+                      "arguments": {"project": "BILL", "issue_type": "Bug", "created_from": "2026-09-01", "created_before": "2026-10-01"}},
+        "seen": "gpt-6-luna made this exact call in 3 of 3 runs; gpt-4o-mini also ran a query.",
+        "why_it_matters": "Every argument is valid, so the bound accepts it. The user gets a correct looking count for BILL only, and nothing says PAY was dropped. The bound stops queries outside policy; this one is inside policy and wrong. Catching it needs a coverage check: does the query cover what the question asked for?"
+      }
+    }
+  }
+}
