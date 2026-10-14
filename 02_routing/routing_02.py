@@ -7,7 +7,11 @@ load_dotenv()
 
 from langgraph.graph import StateGraph, END
 from langchain_core.prompts import PromptTemplate
-from langchain_openai import ChatOpenAI
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from llm_provider import get_chat_model  # LLM_PROVIDER picks Claude or OpenAI
 from langchain_core.messages import HumanMessage
 
 
@@ -26,10 +30,7 @@ class State(TypedDict):
 # LLM
 # ---------------------------------------------------------
 
-llm = ChatOpenAI(
-    model="gpt-4o-mini",
-    temperature=0
-)
+llm = get_chat_model()
 
 
 # ---------------------------------------------------------
