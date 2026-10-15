@@ -1,102 +1,29 @@
-from importlib.util import spec_from_file_location, module_from_spec
+"""Routing v2: the route is a constrained structured output, not free text."""
+
+import pytest
+from pydantic import ValidationError
+
+from llm_provider import scripted
+from routing_02_v2 import RouteDecision, app
+
+TEXT = "A new study shows retrieval augmented generation improves accuracy."
 
 
-# ---------------------------------------------------------
-# Load Routing V2
-# ---------------------------------------------------------
-
-module_path = "02_routing/routing_02_v2.py"
-
-spec = spec_from_file_location(
-    "routing_02_v2",
-    module_path
-)
-
-module = module_from_spec(spec)
-spec.loader.exec_module(module)
-
-app = module.app
+@pytest.mark.parametrize("route", ["news", "research", "blog", "other"])
+def test_structured_route_selects_one_branch(run_graph, route):
+    with scripted([{"route": route}, f"{route} analysis"]) as model:
+        path, state = run_graph(app, {"text": TEXT})
+    assert path == ["classification_node", route]
+    assert state["selected_path"] == route
+    assert model.calls[0].schema == "RouteDecision"
 
 
-# ---------------------------------------------------------
-# Test Scenarios
-# ---------------------------------------------------------
-
-scenarios = [
-    {
-        "name": "News",
-        "text": """
-        Microsoft announced a new enterprise AI platform today
-        that will allow organizations to deploy AI assistants
-        across their workforce.
-        """
-    },
-    {
-        "name": "Research",
-        "text": """
-        A new research study demonstrates that
-        retrieval-augmented generation can improve the
-        accuracy of enterprise AI assistants.
-        """
-    },
-    {
-        "name": "Blog",
-        "text": """
-        In this article, I discuss five lessons I learned
-        while designing an enterprise AI architecture.
-        """
-    },
-    {
-        "name": "Other",
-        "text": """
-        An enterprise wants to build an AI platform
-        for 10,000 employees.
-        """
-    }
-]
+def test_a_route_outside_the_schema_never_reaches_a_branch(run_graph):
+    with pytest.raises(ValidationError), scripted([{"route": "finance"}]) as model:
+        run_graph(app, {"text": TEXT})
+    assert len(model.calls) == 1  # failed at classification; no branch was called
 
 
-# ---------------------------------------------------------
-# Execute Tests
-# ---------------------------------------------------------
-
-print("\nROUTING V2 — FOUR PATH TEST")
-print("=" * 60)
-
-passed = 0
-
-for scenario in scenarios:
-
-    result = app.invoke({
-        "text": scenario["text"],
-        "route": "",
-        "selected_path": "",
-        "response": ""
-    })
-
-    expected = scenario["name"].lower()
-    actual_route = result["route"]
-    actual_path = result["selected_path"]
-
-    print(f"\nSCENARIO: {scenario['name']}")
-    print(f"LLM ROUTE:              {actual_route}")
-    print(f"LANGGRAPH SELECTED:     {actual_path}")
-
-    if actual_route == expected and actual_path == expected:
-        print("STATUS: PASS")
-        passed += 1
-    else:
-        print("STATUS: FAIL")
-
-
-# ---------------------------------------------------------
-# Summary
-# ---------------------------------------------------------
-
-print("\n" + "=" * 60)
-print(f"RESULT: {passed}/{len(scenarios)} routes passed")
-
-if passed == len(scenarios):
-    print("PASS — LLM successfully selected all four approved routes.")
-else:
-    print("FAIL — One or more routing scenarios did not match.")
+def test_the_ambiguous_label_that_misroutes_v1_cannot_be_expressed():
+    with pytest.raises(ValidationError):
+        RouteDecision(route="Not news, it is research")

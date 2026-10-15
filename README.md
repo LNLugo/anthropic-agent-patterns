@@ -1,5 +1,7 @@
 # Anthropic Workflow Patterns
 
+[![tests](https://github.com/LNLugo/anthropic-agent-patterns/actions/workflows/tests.yml/badge.svg)](https://github.com/LNLugo/anthropic-agent-patterns/actions/workflows/tests.yml)
+
 Implementations of the workflow and agent patterns described in Anthropic's
 **Building effective agents**, followed by the capability layer they run on:
 retrieval, tools, memory, guardrails, observability and cost.
@@ -117,7 +119,7 @@ replacement, so that is now the default; results will be rerun on it.
 
 | Setting | Default | Notes |
 |---|---|---|
-| `LLM_PROVIDER` | `openai` | `openai` or `anthropic` |
+| `LLM_PROVIDER` | `openai` | `openai`, `anthropic`, or `scripted` for offline tests |
 | `OPENAI_MODEL` | `gpt-6-luna` | needs `OPENAI_API_KEY`; any `gpt-4*` model still runs at temperature 0 |
 | `OPENAI_REASONING_EFFORT` | `none` | for `gpt-6-luna`; tool calling on Chat Completions needs `none` |
 | `CLAUDE_MODEL` | `claude-sonnet-5-5` | needs `ANTHROPIC_API_KEY` |
@@ -126,6 +128,35 @@ Install with `pip install -r requirements.txt`, then copy
 [`.env.example`](.env.example) to `.env` at the repo root. Modules that ask
 the model for JSON parse the reply with `parse_json`, which tolerates markdown
 fences and surrounding prose, so switching providers does not break them.
+
+---
+
+## Tests
+
+Every suite runs offline, with no API key, and CI runs all three on Python
+3.12 and 3.13 for every push and pull request.
+
+| Suite | Run from | Tests | What stands in for the model |
+|---|---|---|---|
+| Phase 1 patterns | repo root: `pytest` | 45 | `ScriptedChatModel` in [`llm_provider.py`](llm_provider.py) |
+| 07 Retrieval | `07_rag`: `pytest` | 60 | fixtures; no model call in the suite |
+| 08 Tools | `08_tools`: `pytest` | 90 | scripted tool calls |
+
+Phase 1 tests assert on the **path the graph took**, not on model prose: which
+nodes ran, in what order, and what each node was given. `LLM_PROVIDER=scripted`
+replaces the model with a stand-in that replays scripted replies and fails
+loudly on drift. A call with no reply left raises `UnexpectedModelCall`; a test
+that ends with replies unused raises `UnconsumedModelSteps`. The contract
+follows `ScriptedModel` in OpenAI's Agents SDK; `Step(match=...)` is added so
+parallel branches can be scripted without depending on which thread calls
+first. The suite was checked against deliberate breakage: moving the agent
+loop cap, the evaluator's pass mark, a routing branch, or a chain edge each
+fails it.
+
+A few tests pin down behaviour worth knowing, not just behaviour that works:
+the free text router in 02 sends "not news, it is research" to the news
+branch; the loop caps in 05 and 06 end a run without marking that the cap,
+not the model, ended it.
 
 ---
 

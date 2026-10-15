@@ -1,0 +1,51 @@
+name: tests
+
+# Every suite runs offline: Phase 1 on the scripted model, 07 and 08 on fixtures.
+# No API keys are configured, so a test that tried to reach a live model would fail.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: ${{ matrix.suite }} on Python ${{ matrix.python }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.12", "3.13"]
+        suite: [phase1, 07_rag, 08_tools]
+        include:
+          - suite: phase1
+            dir: .
+            requirements: requirements.txt
+          - suite: 07_rag
+            dir: 07_rag
+            requirements: 07_rag/requirements-test.txt
+          - suite: 08_tools
+            dir: 08_tools
+            requirements: 08_tools/requirements.txt
+    env:
+      LLM_PROVIDER: scripted
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: ${{ matrix.requirements }}
+
+      - name: Install
+        run: python -m pip install -r ${{ matrix.requirements }}
+
+      - name: Test
+        working-directory: ${{ matrix.dir }}
+        run: python -m pytest -q

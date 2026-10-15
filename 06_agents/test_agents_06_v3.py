@@ -1,52 +1,32 @@
+"""Agents v3: the model loops over tools until it finishes; the run ends at the agent."""
+
+from llm_provider import scripted
 from agents_06_v3 import app
 
-
-question = """
-An enterprise wants to build an AI platform for 10,000 employees.
-
-The platform will provide RAG-based knowledge search,
-AI assistants, multiple foundation models,
-integration with enterprise applications,
-and must meet security, compliance,
-scalability, and cost requirements.
-
-What should the enterprise consider when designing
-this platform?
-"""
+START = {"question": "Assess the platform.", "actions": [], "observations": [],
+         "decision": "", "iteration": 0, "final_answer": ""}
+ARCH = {"decision": "act", "tool": "architecture_analysis"}
+RISK = {"decision": "act", "tool": "risk_analysis"}
+FINISH = {"decision": "finish", "tool": ""}
 
 
-result = app.invoke({
-    "question": question,
-    "actions": [],
-    "observations": [],
-    "decision": "",
-    "iteration": 0,
-    "final_answer": ""
-})
+def test_finishing_immediately_runs_no_tool(run_graph):
+    with scripted([FINISH]):
+        path, state = run_graph(app, START)
+    assert path == ["agent"] and state["actions"] == []
 
 
-print("\n" + "=" * 70)
-print("AGENT V3 EXECUTION")
-print("=" * 70)
-
-print("\nAGENT TRAJECTORY:")
-
-for i, action in enumerate(result["actions"], start=1):
-
-    print(f"\nIteration {i}")
-    print(f"  Action: {action}")
-
-    if i <= len(result["observations"]):
-        print(
-            f"  Observation: "
-            f"{result['observations'][i - 1]}"
-        )
+def test_tools_run_in_the_order_the_model_chooses(run_graph):
+    with scripted([RISK, ARCH, FINISH]):
+        path, state = run_graph(app, START)
+    assert path == ["agent", "tool_executor", "agent", "tool_executor", "agent"]
+    assert state["actions"] == ["risk_analysis", "architecture_analysis"]
+    assert state["observations"][0].startswith("Risk analysis completed.")
+    assert state["final_answer"] == ""  # v3 has no answer step; v3.1 adds it
 
 
-print("\n" + "-" * 70)
-
-print(f"\nTOTAL ITERATIONS: {result['iteration']}")
-
-print(f"\nFINAL DECISION: {result['decision']}")
-
-print("\n" + "=" * 70)
+def test_the_cap_ends_the_loop_after_three_tools(run_graph):
+    with scripted([ARCH, RISK, ARCH, RISK]):
+        path, state = run_graph(app, START)
+    assert path == ["agent", "tool_executor"] * 3 + ["agent"]
+    assert state["iteration"] == 3 and len(state["actions"]) == 4  # the 4th choice is recorded, not run
