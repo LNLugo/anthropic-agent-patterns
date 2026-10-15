@@ -108,12 +108,20 @@ def run_guardrails(guardrails, stage: str, data: ToolCallData, log: list[Guardra
 RESTRICTED_PROJECTS = frozenset({"SECOPS"})
 
 
+def target_project(d: ToolCallData) -> str | None:
+    """The project a call touches: a count names it; a comment names an issue key like BILL-107."""
+    if d.arguments.get("project"):
+        return d.arguments["project"]
+    key = str(d.arguments.get("issue_key", ""))
+    return key.split("-", 1)[0] if "-" in key else None
+
+
 def restricted_project(restricted: frozenset[str] = RESTRICTED_PROJECTS) -> ToolGuardrail:
     """Halt on any attempt to query a restricted project. This is not a mistake the
     model should be coached out of: it is a security event, so the run stops."""
 
     def check(d: ToolCallData) -> ToolGuardrailFunctionOutput:
-        project = d.arguments.get("project")
+        project = target_project(d)
         if project in restricted:
             return ToolGuardrailFunctionOutput.raise_exception(
                 {"project": project, "caller": d.caller.id, "reason": "restricted project"}
@@ -128,13 +136,13 @@ def deployment_scope(projects: frozenset[str]) -> ToolGuardrail:
     itself allows them; this assistant was deployed for a narrower audience."""
 
     def check(d: ToolCallData) -> ToolGuardrailFunctionOutput:
-        project = d.arguments.get("project")
+        project = target_project(d)
         if project in projects:
             return ToolGuardrailFunctionOutput.allow({"project": project})
         allowed = ", ".join(sorted(projects))
         return ToolGuardrailFunctionOutput.reject_content(
             f"Not run: {project} is outside this assistant's scope ({allowed}). "
-            "Do not retry with a different project. Tell the user which projects you can count.",
+            "Do not retry with a different project. Tell the user which projects you can work with.",
             {"project": project, "scope": sorted(projects)},
         )
 
@@ -146,6 +154,8 @@ def question_coverage() -> ToolGuardrail:
     answer only part of the question is blocked, and the model is told to ask."""
 
     def check(d: ToolCallData) -> ToolGuardrailFunctionOutput:
+        if d.tool_name != "count_jira_issues":
+            return ToolGuardrailFunctionOutput.allow()  # coverage is about counts
         reason = coverage_check(d.question, d.arguments.get("project"), d.arguments.get("project_evidence"))
         if reason:
             return ToolGuardrailFunctionOutput.reject_content(

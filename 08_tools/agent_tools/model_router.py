@@ -57,7 +57,8 @@ ASK_CLARIFICATION = {
     },
 }
 
-ROUTES = {"count_jira_issues": "aggregation", "search_wiki": "knowledge", "ask_clarification": "clarify"}
+ROUTES = {"count_jira_issues": "aggregation", "search_wiki": "knowledge", "ask_clarification": "clarify",
+          "comment_on_issue": "comment"}
 
 
 def system_prompt(today: date) -> str:
@@ -106,6 +107,13 @@ def with_evidence(schema: dict) -> dict:
     return s
 
 
+COMMENT_NOTE = """
+Use comment_on_issue only when the user asks to add or post something to one
+named issue. Put the text they want posted in body, as they gave it. A person
+approves every comment before it is posted.
+"""
+
+
 def openai_style(tool: dict) -> dict:
     """{name, description, input_schema} as the function format both LangChain chat models accept."""
     return {"type": "function", "function": {
@@ -129,16 +137,21 @@ class Decision:
 
 
 class ModelRouter:
-    def __init__(self, llm, tool: BoundedJiraTool, coverage: bool = True):
-        """coverage=False reproduces the router measured before the check existed: same schema, no check."""
+    def __init__(self, llm, tool: BoundedJiraTool, coverage: bool = True, comment_tool=None):
+        """coverage=False reproduces the router measured before the check existed: same schema, no check.
+        comment_tool adds the write action; the evaluations run without it, as they were measured."""
         self.tool, self.coverage = tool, coverage
         count_schema = with_evidence(tool.schema) if coverage else tool.schema
         tools = [openai_style(count_schema), openai_style(SEARCH_WIKI), openai_style(ASK_CLARIFICATION)]
+        self.comments = comment_tool is not None
+        if self.comments:
+            tools.append(openai_style(comment_tool.schema))
         self.llm = llm.bind_tools(tools, tool_choice="any")
 
     def decide(self, question: str, today: date) -> Decision:
         t0 = time.perf_counter()
-        msg = self.llm.invoke([("system", system_prompt(today)), ("human", question)])
+        system = system_prompt(today) + (COMMENT_NOTE if self.comments else "")
+        msg = self.llm.invoke([("system", system), ("human", question)])
         latency = time.perf_counter() - t0
         usage = getattr(msg, "usage_metadata", None) or {}
         tokens = {"input_tokens": usage.get("input_tokens", 0), "output_tokens": usage.get("output_tokens", 0)}
