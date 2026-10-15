@@ -5,8 +5,8 @@
 > built as their modules land, and each one ships with the number that proves
 > it. Built so far: retrieval, reranking, cited answers and abstention
 > ([07_rag](../../07_rag)); permission-filtered retrieval with a leakage test on
-> a synthetic wiki; and the router with a bounded, read only Jira tool against
-> a mock Jira ([08_tools](../../08_tools)). Nothing here has been run against a
+> a synthetic wiki; and the router, the bounded Jira tool, guardrails, human
+> approval and the MCP gateway against a mock Jira ([08_tools](../../08_tools)). Nothing here has been run against a
 > live Confluence or Jira instance.
 
 ---
@@ -164,7 +164,9 @@ deterministic and cheap, so it runs on every change.
 | --- | --- | --- |
 | Hybrid retrieval, rerank, cited answers, abstention | [07_rag](../../07_rag) | Built on CUAD |
 | ACL filtering and leakage test | [07_rag](../../07_rag) (`rag/acl.py`, `run_leakage.py`) | Built: 0 restricted chunks across 64 persona queries, 224 with the filter off |
-| Router and bounded Jira tool | [08_tools](../../08_tools) | Built on a mock Jira: typed query, project allowlist, delegated permissions; router 22 of 25 on a labeled set |
+| Router and bounded Jira tool | [08_tools](../../08_tools) | Built on a mock Jira: typed query, project allowlist, delegated permissions; model router 18 to 19 of 20 held-out questions, rules 9 |
+| Coverage check, tool guardrails, human approval on writes | [08_tools](../../08_tools) | Built: no query ran that should not have, across three runs of 20 new questions; writes post only after another person approves |
+| MCP gateway with identity from the token | [08_tools](../../08_tools) (`agent_tools/mcp_server.py`) | Built: no tool takes a user argument; the same call answers per token; a bad token gets 401. Static tokens stand in for on-behalf-of tokens |
 | Traces and policy checks | 10 Guardrails and observability | Planned |
 | Cost per answer | 11 AI FinOps | Planned |
 

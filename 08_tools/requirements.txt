@@ -10,3 +10,5 @@ langchain-anthropic>=0.3
 python-dotenv>=1.0
 # human approval: checkpoints saved to disk, so a pending approval survives a restart
 langgraph-checkpoint-sqlite>=3.0
+# the tools over MCP (mcp 2.x: MCPServer, formerly FastMCP); brings uvicorn and httpx2
+mcp>=2.2
