@@ -124,6 +124,8 @@ class Decision:
     input_tokens: int = 0
     output_tokens: int = 0
     latency_s: float = 0.0
+    message: str = ""                 # for clarify: the question to put to the user
+    assumptions: tuple[str, ...] = () # defaults the router applied, stated in the answer
 
 
 class ModelRouter:
@@ -143,11 +145,12 @@ class ModelRouter:
 
         calls = getattr(msg, "tool_calls", None) or []
         if not calls:
-            return Decision("none", latency_s=latency, **tokens)
+            return Decision("none", latency_s=latency, message=str(msg.content or ""), **tokens)
         call = calls[0]
         name, args = call["name"], dict(call.get("args") or {})
         route = ROUTES.get(name, "none")
         spec = rejected = covered = None
+        message = args.get("question", "") if name == ASK_CLARIFICATION["name"] else ""
         if name == self.tool.name:
             tool_args = {k: v for k, v in args.items() if k != EVIDENCE_FIELD} if self.coverage else args
             try:
@@ -159,4 +162,6 @@ class ModelRouter:
                 covered = coverage_check.check(question, spec.project, args.get(EVIDENCE_FIELD))
                 if covered:
                     route, spec = "clarify", None
-        return Decision(route, spec, rejected, name, args, coverage=covered, latency_s=latency, **tokens)
+                    message = f"I can't count that as asked: {covered}. Which single project do you mean?"
+        return Decision(route, spec, rejected, name, args, coverage=covered, latency_s=latency,
+                        message=message, **tokens)

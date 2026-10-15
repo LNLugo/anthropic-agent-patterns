@@ -30,6 +30,7 @@ from agent_tools.assistant import ask, build_assistant  # noqa: E402
 from agent_tools.evaluate import evaluate  # noqa: E402
 from agent_tools.jira_mock import MockJira  # noqa: E402
 from agent_tools.jql_tool import BoundedJiraTool  # noqa: E402
+from agent_tools.router import RulesRouter  # noqa: E402
 
 WIKI_PATH = RAG_DIR / "tests" / "fixtures" / "mini_confluence.json"
 JIRA_PATH = TOOLS_DIR / "tests" / "fixtures" / "mini_jira.json"
@@ -57,7 +58,8 @@ def wiki_resources():
 @st.cache_resource
 def assistant_resources():
     jira, callers = MockJira.from_fixture(JIRA_PATH)
-    app = build_assistant(BoundedJiraTool(jira), demo_assistant.wiki_search())
+    # RulesRouter keeps this page offline and free; demo_assistant.py runs the model router.
+    app = build_assistant(BoundedJiraTool(jira), demo_assistant.wiki_search(), RulesRouter())
     return app, callers
 
 
@@ -214,7 +216,9 @@ with tab3:
     st.caption(
         "RAG cannot count. The router sends counting questions to a bounded Jira query that runs "
         "with each person's permissions and shows its JQL; knowledge questions go to the "
-        "permission-filtered wiki search."
+        "permission-filtered wiki search. This page routes with the rules, so it runs offline at "
+        "no cost; the model router, which routed 18 to 19 of 20 held-out questions where the "
+        "rules routed 9, runs in `08_tools/demo_assistant.py`. Tab 5 has the comparison."
     )
     app, callers = assistant_resources()
     c1, c2 = st.columns([3, 2])

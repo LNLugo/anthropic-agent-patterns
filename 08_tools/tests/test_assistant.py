@@ -6,6 +6,7 @@ import pytest
 from agent_tools.assistant import ask, build_assistant
 from agent_tools.jira_mock import MockJira
 from agent_tools.jql_tool import BoundedJiraTool
+from agent_tools.router import RulesRouter
 
 FIXTURE = Path(__file__).parent / "fixtures" / "mini_jira.json"
 TODAY = date(2026, 10, 12)
@@ -27,7 +28,7 @@ class StubKnowledge:
 def setup():
     jira, users = MockJira.from_fixture(FIXTURE)
     knowledge = StubKnowledge()
-    return build_assistant(BoundedJiraTool(jira), knowledge), users, knowledge
+    return build_assistant(BoundedJiraTool(jira), knowledge, RulesRouter()), users, knowledge
 
 
 def test_headline_question_counts_what_the_user_can_see(setup):
@@ -55,7 +56,7 @@ def test_knowledge_question_goes_to_retrieval(setup):
 def test_knowledge_with_no_pages_abstains(setup):
     _, users, _ = setup
     jira, _ = MockJira.from_fixture(FIXTURE)
-    app = build_assistant(BoundedJiraTool(jira), StubKnowledge(pages=()))
+    app = build_assistant(BoundedJiraTool(jira), StubKnowledge(pages=()), RulesRouter())
     out = ask(app, "How do I rotate the billing API credentials?", users["new_hire"], TODAY)
     assert out["answer"].startswith("Not in the wiki")
 
