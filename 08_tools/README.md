@@ -246,13 +246,60 @@ is the model asking about "the invoice stack", which it also did once without
 the check. The held-out set is not evidence for the fix, since the fix was
 built from its miss; the coverage set is.
 
+### Tool guardrails
+
+**Control question:** *when a call is allowed by the tool, should this deployment still run it?*
+
+The bound in `jql_tool.py` is the tool's contract and is the same everywhere.
+Guardrails are deployment policy around it. Each returns one of three
+behaviours, following the tool guardrail contract in OpenAI's Agents SDK:
+
+| Behaviour | Effect | Demo on the JQL tool (finance assistant, BILL and PAY) |
+|---|---|---|
+| `allow` | the call runs | BILL: counted, the model answers from the result |
+| `reject_content` | blocked; the model is told why, in place of a result, and gets another turn | INFRA: the tool allows it, this deployment does not serve it; the model asks the user |
+| `raise_exception` | the run halts with a tripwire exception | SECOPS: an attempt on a restricted project is a security event, not a mistake to coach |
+
+Input guardrails see the model's raw arguments before anything reaches Jira;
+output guardrails see the result before the model does. The demo policy
+(`finance_assistant_policy`) runs four, in order:
+
+1. `restricted_project` (input): SECOPS halts the run.
+2. `deployment_scope` (input): projects outside BILL and PAY are rejected with a message.
+3. `question_coverage` (input): the coverage check above, as `reject_content`.
+4. `keys_match_project` (output): a result holding keys from another project halts the run before the model sees it.
+
+Order is policy: SECOPS is also outside the deployment's scope, and because the
+restricted check runs first, the attempt halts instead of being politely
+redirected. A test pins this down.
+
+`reject_content` needs the model to hear the rejection, so guardrails run
+inside `agent_tools/tool_loop.py`: a bounded loop (4 turns by default) in
+which each tool reply, or each rejection, goes back to the model as a tool
+message. The router above stays single shot, since it is what the
+evaluations measure. Every verdict, allow included, is kept as a
+`GuardrailRecord`, so a run can be audited afterwards. The tool's own bound
+still runs on every call the guardrails allow, so a guardrail can narrow
+what reaches Jira but never widen it.
+
+What the tests show, with Jira calls counted rather than assumed:
+
+| Case | Model turns | Jira queries |
+|---|---|---|
+| BILL, allowed | 2 | 1 |
+| INFRA, rejected, model asks the user | 2 | 0 |
+| INFRA, the same call with no guardrails (control) | 2 | 1 |
+| INFRA, model keeps retrying | 4, then `max_turns` | 0 |
+| SECOPS, halted | 1 | 0 |
+| A stub tool returns a SECOPS key for a BILL query; the output guardrail halts | 1; the result never reaches the model | none (stub) |
+
 ## Run it
 
 ```bash
 cd 08_tools
 pip install -r requirements.txt
 
-pytest -q                       # 90 offline tests
+pytest -q                       # 100 offline tests
 python run_router_eval.py       # router and extraction accuracy
 
 # the same questions, routed by a model through tool calling (needs OPENAI_API_KEY,
@@ -266,6 +313,10 @@ python run_model_router_eval.py --questions tests/fixtures/router_questions_cove
 
 # counting question, as three different users
 python demo_assistant.py
+
+# tool guardrails: allow, reject_content, raise_exception (offline; --live asks the configured model)
+python demo_guardrails.py
+python demo_guardrails.py --live "How many INFRA incidents last quarter?" --user new_hire
 
 # knowledge question, routed to 07_rag's permission-filtered retrieval
 python demo_assistant.py "How do I rotate the billing API credentials?" --users billing_oncall new_hire
@@ -291,12 +342,15 @@ set by eye on 8 pages, not calibrated.
 │   ├── router.py        classify (two cues), extract (project, type, priority, status, period)
 │   ├── model_router.py  the same routing and extraction by a model, through tool calling
 │   ├── coverage.py      stops valid queries that do not cover the question (two projects, none)
+│   ├── guardrails.py    tool guardrails: allow, reject_content, raise_exception; the demo policy
+│   ├── tool_loop.py     bounded tool loop that runs guardrails and tells the model when one rejects
 │   ├── evaluate.py      router and extraction accuracy on the labeled set, rules or model
 │   └── assistant.py     LangGraph flow: classify, extract, run tool or retrieve, respond
 ├── run_router_eval.py
 ├── run_model_router_eval.py
 ├── demo_assistant.py
-└── tests/               90 offline tests, synthetic Jira, development, held-out and coverage questions
+├── demo_guardrails.py
+└── tests/               100 offline tests, synthetic Jira, development, held-out and coverage questions
 ```
 
 ## Limits

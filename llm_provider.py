@@ -184,6 +184,7 @@ class ScriptedChatModel(BaseChatModel):
 
     _steps: list = PrivateAttr(default_factory=list)
     _calls: list = PrivateAttr(default_factory=list)
+    _tools: tuple = PrivateAttr(default=())
     _lock: Any = PrivateAttr(default_factory=threading.Lock)
 
     @property
@@ -193,10 +194,10 @@ class ScriptedChatModel(BaseChatModel):
     # ------------------------------------------------ script
 
     def load(self, steps: Iterable[Any]) -> None:
-        """Replace the script and clear recorded calls."""
+        """Replace the script and clear recorded calls and bound tools."""
         coerced = [_coerce(s, i) for i, s in enumerate(steps)]
         with self._lock:
-            self._steps, self._calls = coerced, []
+            self._steps, self._calls, self._tools = coerced, [], ()
 
     def extend(self, steps: Iterable[Any]) -> None:
         start = self.remaining_steps
@@ -258,6 +259,22 @@ class ScriptedChatModel(BaseChatModel):
         reply = self._next(list(messages), None)
         message = reply if isinstance(reply, AIMessage) else AIMessage(content=_as_text(reply))
         return ChatResult(generations=[ChatGeneration(message=message)])
+
+    def bind_tools(self, tools, **kwargs):
+        """Record the tool names offered; replies come from the script. To script a
+        tool call, use an AIMessage step with tool_calls."""
+        names = []
+        for t in tools:
+            fn = t.get("function", t) if isinstance(t, dict) else None
+            names.append(fn["name"] if fn else getattr(t, "name", str(t)))
+        with self._lock:
+            self._tools = tuple(names)
+        return self
+
+    @property
+    def bound_tools(self) -> tuple[str, ...]:
+        with self._lock:
+            return self._tools
 
     def with_structured_output(self, schema, **kwargs):
         name = getattr(schema, "__name__", None) or str(schema)
