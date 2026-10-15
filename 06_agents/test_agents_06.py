@@ -1,45 +1,35 @@
+"""Agents v1: the model decides act or finish each turn; an iteration cap bounds the loop."""
+
+from llm_provider import scripted
 from agents_06 import app
 
-
-question = """
-An enterprise wants to build an AI platform for 10,000 employees.
-
-The platform will provide RAG-based knowledge search,
-AI assistants, multiple foundation models,
-integration with enterprise applications,
-and must meet security, compliance,
-scalability, and cost requirements.
-
-What should the enterprise consider when designing
-this platform?
-"""
+START = {"question": "Should we build an AI platform for 10,000 employees?", "actions": [],
+         "observation": "", "decision": "", "iteration": 0, "final_answer": ""}
 
 
-result = app.invoke({
-    "question": question,
-    "actions": [],
-    "observation": "",
-    "decision": "",
-    "iteration": 0,
-    "final_answer": ""
-})
+def act(action):
+    return {"decision": "act", "action": action}
 
 
-print("\n" + "=" * 70)
-print("AGENT EXECUTION")
-print("=" * 70)
-
-print("\nACTIONS:")
-
-for i, action in enumerate(result["actions"], start=1):
-    print(f"\n{i}. {action}")
+FINISH = {"decision": "finish", "action": "Provide the final recommendation."}
 
 
-print("\n" + "-" * 70)
+def test_acts_until_the_model_finishes(run_graph):
+    with scripted([act("Assess risks"), "Risks: access control.",
+                   act("Assess cost"), "Cost: high.", FINISH, "Build in phases."]):
+        path, state = run_graph(app, START)
+    assert path == ["agent", "action", "agent", "action", "agent", "final_answer"]
+    assert state["iteration"] == 2 and state["final_answer"] == "Build in phases."
 
-print(f"\nITERATIONS: {result['iteration']}")
 
-print("\nFINAL ANSWER:")
-print(result["final_answer"])
-
-print("\n" + "=" * 70)
+def test_the_cap_overrides_the_model(run_graph):
+    """After three actions the router finishes even though the model asked to act again.
+    That fourth decision is recorded and silently ignored."""
+    script = []
+    for i in range(3):
+        script += [act(f"step {i}"), f"observation {i}"]
+    script += [act("step 3"), "Answer from three observations."]
+    with scripted(script):
+        path, state = run_graph(app, START)
+    assert path == ["agent", "action"] * 3 + ["agent", "final_answer"]
+    assert state["decision"] == "act" and state["iteration"] == 3

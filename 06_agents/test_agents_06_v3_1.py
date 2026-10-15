@@ -1,55 +1,26 @@
+"""Agents v3.1: v3 plus a final answer step built from the observations."""
+
+from llm_provider import scripted
 from agents_06_v3_1 import app
 
-
-question = """
-An enterprise wants to build an AI platform for 10,000 employees.
-
-The platform will provide RAG-based knowledge search,
-AI assistants, multiple foundation models,
-integration with enterprise applications,
-and must meet security, compliance,
-scalability, and cost requirements.
-
-What should the enterprise consider when designing
-this platform?
-"""
+START = {"question": "Assess the platform.", "actions": [], "observations": [],
+         "decision": "", "iteration": 0, "final_answer": ""}
+ARCH = {"decision": "act", "tool": "architecture_analysis"}
+RISK = {"decision": "act", "tool": "risk_analysis"}
+FINISH = {"decision": "finish", "tool": ""}
 
 
-result = app.invoke({
-    "question": question,
-    "actions": [],
-    "observations": [],
-    "decision": "",
-    "iteration": 0,
-    "final_answer": ""
-})
+def test_tools_then_a_final_answer(run_graph):
+    with scripted([ARCH, RISK, FINISH, "Proceed in phases."]) as model:
+        path, state = run_graph(app, START)
+    assert path == ["agent", "tool_executor", "agent", "tool_executor", "agent", "final_answer"]
+    assert state["final_answer"] == "Proceed in phases."
+    answer_prompt = model.calls[-1].prompt
+    assert "Architecture analysis completed." in answer_prompt and "Risk analysis completed." in answer_prompt
 
 
-print("\n" + "=" * 70)
-print("AGENT V3.1 EXECUTION")
-print("=" * 70)
-
-print("\nAGENT TRAJECTORY:")
-
-for i, action in enumerate(result["actions"], start=1):
-
-    print(f"\nIteration {i}")
-    print(f"  Action: {action}")
-
-    if i <= len(result["observations"]):
-        print(
-            f"  Observation: "
-            f"{result['observations'][i - 1]}"
-        )
-
-
-print("\n" + "-" * 70)
-
-print(f"\nTOTAL TOOL ITERATIONS: {result['iteration']}")
-
-print(f"\nFINAL DECISION: {result['decision']}")
-
-print("\nFINAL ANSWER:")
-print(result["final_answer"])
-
-print("\n" + "=" * 70)
+def test_the_cap_still_produces_an_answer(run_graph):
+    with scripted([ARCH, RISK, ARCH, RISK, "Answer from three tools."]):
+        path, state = run_graph(app, START)
+    assert path == ["agent", "tool_executor"] * 3 + ["agent", "final_answer"]
+    assert state["final_answer"] == "Answer from three tools."

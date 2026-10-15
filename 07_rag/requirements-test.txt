@@ -1,0 +1,8 @@
+# What the offline test suite needs. requirements.txt adds sentence-transformers
+# (and with it torch) for the dense and rerank retrievers, which the tests do not load.
+langgraph>=0.2
+numpy>=1.26
+pyyaml>=6.0
+rank_bm25>=0.2.2
+scikit-learn>=1.4
+pytest>=8.0
