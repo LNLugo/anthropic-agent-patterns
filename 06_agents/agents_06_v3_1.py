@@ -1,31 +1,114 @@
-import json
-from typing import TypedDict, List
+"""Agents v3.1: the model chooses each turn; every turn ends in one typed outcome.
+
+    agent --RunAgain-----> tool_executor --> agent
+          --FinalOutput--> final_answer --> END        status "completed"
+          --Handoff------> handoff ------> END         status "handed_off"
+          --Interruption-> final_answer or stop -> END status "max_turns" or "invalid_decision"
+
+The model's reply is parsed into exactly one TurnOutcome. A reply that names an
+unknown tool, an unknown handoff target, or no valid decision is an
+Interruption, never a guess. The turn limit is an outcome too: at the limit the
+agent does not call the model at all, and the run ends with status
+"max_turns", answered from what was gathered so far and labelled as such.
+Every run says why it ended.
+
+The outcome types follow the turn results in openai/openai-agents-python
+(final output, run again, handoff, interruption); only the contract is borrowed.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import List, Literal, TypedDict, Union
 
 from dotenv import load_dotenv
 
 load_dotenv()
 
-from langchain_core.prompts import PromptTemplate
-import sys
-from pathlib import Path
+from langchain_core.prompts import PromptTemplate  # noqa: E402
+import sys  # noqa: E402
+from pathlib import Path  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from llm_provider import get_chat_model, parse_json  # LLM_PROVIDER picks Claude or OpenAI
-from langgraph.graph import StateGraph, END
+from llm_provider import get_chat_model, parse_json  # noqa: E402  LLM_PROVIDER picks the model
+from langgraph.graph import END, StateGraph  # noqa: E402
 
-from langgraph.graph import StateGraph, END
+
+# ---------------------------------------------------------
+# TURN OUTCOMES
+# ---------------------------------------------------------
+
+@dataclass(frozen=True)
+class FinalOutput:
+    """The model has enough to answer."""
+
+
+@dataclass(frozen=True)
+class RunAgain:
+    """Run this tool, then give the model another turn."""
+
+    tool: str
+
+
+@dataclass(frozen=True)
+class Handoff:
+    """Pass the problem to another agent; this run ends."""
+
+    to: str
+
+
+@dataclass(frozen=True)
+class Interruption:
+    """The run stopped for a reason other than the model choosing to finish."""
+
+    reason: Literal["max_turns", "invalid_decision"]
+    detail: str = ""
+
+
+TurnOutcome = Union[FinalOutput, RunAgain, Handoff, Interruption]
+
+TOOLS = ("architecture_analysis", "risk_analysis")
+HANDOFF_TARGETS = ("risk_specialist",)
+MAX_TURNS = 3
+
+
+def parse_outcome(reply) -> TurnOutcome:
+    """Map the model's JSON reply onto one outcome. Anything else is an Interruption."""
+    try:
+        data = parse_json(reply)
+    except (ValueError, TypeError) as e:
+        return Interruption("invalid_decision", f"reply is not JSON: {e}")
+    if not isinstance(data, dict):
+        return Interruption("invalid_decision", "reply is not a JSON object")
+    decision = data.get("decision")
+    if decision == "finish":
+        return FinalOutput()
+    if decision == "act":
+        tool = data.get("tool")
+        if tool in TOOLS:
+            return RunAgain(tool)
+        return Interruption("invalid_decision", f"unknown tool {tool!r}")
+    if decision == "handoff":
+        to = data.get("to")
+        if to in HANDOFF_TARGETS:
+            return Handoff(to)
+        return Interruption("invalid_decision", f"unknown handoff target {to!r}")
+    return Interruption("invalid_decision", f"unknown decision {decision!r}")
 
 
 # ---------------------------------------------------------
 # STATE
 # ---------------------------------------------------------
 
-class State(TypedDict):
+class State(TypedDict, total=False):
     question: str
     actions: List[str]
     observations: List[str]
-    decision: str
-    iteration: int
+    iteration: int          # tool turns taken
+    max_turns: int          # optional; MAX_TURNS when absent
+    outcome: TurnOutcome    # the latest turn's outcome
+    status: str             # why the run ended
+    handoff_to: str
     final_answer: str
 
 
@@ -37,7 +120,7 @@ llm = get_chat_model()
 
 
 # ---------------------------------------------------------
-# TOOL 1 — ARCHITECTURE ANALYSIS
+# TOOLS
 # ---------------------------------------------------------
 
 def architecture_analysis(question: str) -> str:
@@ -49,10 +132,6 @@ def architecture_analysis(question: str) -> str:
     )
 
 
-# ---------------------------------------------------------
-# TOOL 2 — RISK ANALYSIS
-# ---------------------------------------------------------
-
 def risk_analysis(question: str) -> str:
 
     return (
@@ -61,14 +140,16 @@ def risk_analysis(question: str) -> str:
         "operational complexity, model risk, and financial risk."
     )
 
+
+TOOL_FUNCTIONS = {"architecture_analysis": architecture_analysis, "risk_analysis": risk_analysis}
+
+
 # ---------------------------------------------------------
-# AGENT — DECIDE WHAT TO DO NEXT
+# AGENT
 # ---------------------------------------------------------
 
-def agent_node(state: State):
-
-    prompt = PromptTemplate.from_template(
-        """You are an autonomous enterprise AI agent.
+AGENT_PROMPT = PromptTemplate.from_template(
+    """You are an autonomous enterprise AI agent.
 
 Your job is to determine what should happen next
 to solve the user's problem.
@@ -87,6 +168,11 @@ Available tools:
    Analyze security, compliance, operational complexity,
    model risk, and financial risk.
 
+You may also hand the problem to another agent:
+
+- risk_specialist
+  For problems that are mainly regulatory or model risk questions.
+
 Previous actions:
 
 {actions}
@@ -95,118 +181,66 @@ Previous observations:
 
 {observations}
 
-Current iteration:
+Turns used: {iteration} of {max_turns}
 
-{iteration}
+Return ONLY valid JSON, one of:
 
-Decide whether:
-
-1. You need another tool to gather useful information.
-2. You have enough information to provide a final answer.
-
-Return ONLY valid JSON.
-
-If another tool is needed:
-
-{{
-    "decision": "act",
-    "tool": "architecture_analysis"
-}}
-
-If another tool is needed:
-
-{{
-    "decision": "act",
-    "tool": "risk_analysis"
-}}
-
-If you have enough information:
-
-{{
-    "decision": "finish",
-    "tool": ""
-}}
-
-The decision must be either:
-
-act
-
-or
-
-finish
-
-If decision is "act", the tool must be either:
-
-architecture_analysis
-
-or
-
-risk_analysis
+{{"decision": "act", "tool": "architecture_analysis"}}
+{{"decision": "act", "tool": "risk_analysis"}}
+{{"decision": "handoff", "to": "risk_specialist"}}
+{{"decision": "finish"}}
 """
-    )
+)
 
-    response = (prompt | llm).invoke({
+
+def agent_node(state: State):
+    turns, limit = state.get("iteration", 0), state.get("max_turns", MAX_TURNS)
+    if turns >= limit:
+        # The limit is decided here, before the model is asked, so no call is
+        # spent on a decision that would be overruled.
+        return {"outcome": Interruption("max_turns", f"{turns} of {limit} turns used")}
+
+    response = (AGENT_PROMPT | llm).invoke({
         "question": state["question"],
-        "actions": state["actions"],
-        "observations": state["observations"],
-        "iteration": state["iteration"]
+        "actions": state.get("actions", []),
+        "observations": state.get("observations", []),
+        "iteration": turns,
+        "max_turns": limit,
     })
+    outcome = parse_outcome(response.content)
+    update = {"outcome": outcome}
+    if isinstance(outcome, RunAgain):
+        update["actions"] = state.get("actions", []) + [outcome.tool]
+    return update
 
-    data = parse_json(response.content)
 
-    decision = data["decision"]
-    tool = data["tool"]
-
-    return {
-        "decision": decision,
-        "actions": (
-            state["actions"] + [tool]
-            if decision == "act"
-            else state["actions"]
-        )
-    }
-    
 # ---------------------------------------------------------
 # TOOL EXECUTOR
 # ---------------------------------------------------------
 
 def tool_executor_node(state: State):
-
-    selected_tool = state["actions"][-1]
-
-    if selected_tool == "architecture_analysis":
-
-        observation = architecture_analysis(
-            state["question"]
-        )
-
-    elif selected_tool == "risk_analysis":
-
-        observation = risk_analysis(
-            state["question"]
-        )
-
-    else:
-
-        observation = (
-            f"Unknown tool selected: {selected_tool}"
-        )
-
+    tool = state["outcome"].tool
+    observation = TOOL_FUNCTIONS[tool](state["question"])
     return {
-        "observations": (
-            state["observations"] + [observation]
-        ),
-        "iteration": state["iteration"] + 1
+        "observations": state.get("observations", []) + [observation],
+        "iteration": state.get("iteration", 0) + 1,
     }
-    
+
+
+# ---------------------------------------------------------
+# FINAL ANSWER
+# ---------------------------------------------------------
+
 def final_answer_node(state: State):
+    outcome = state["outcome"]
+    capped = isinstance(outcome, Interruption) and outcome.reason == "max_turns"
 
     prompt = PromptTemplate.from_template(
         """You are an enterprise AI architect.
 
 Answer the user's original question using the
 observations gathered by the agent.
-
+{limit_note}
 User question:
 
 {question}
@@ -224,36 +258,60 @@ Return only the final answer.
 
     response = (prompt | llm).invoke({
         "question": state["question"],
-        "observations": state["observations"]
+        "observations": state.get("observations", []),
+        "limit_note": (
+            "\nThe agent reached its turn limit before deciding it was done. "
+            "Say plainly what remains unanalysed.\n" if capped else ""
+        ),
     })
 
     return {
-        "final_answer": response.content.strip()
+        "final_answer": response.content.strip(),
+        "status": "max_turns" if capped else "completed",
     }
+
+
+# ---------------------------------------------------------
+# HANDOFF AND STOP
+# ---------------------------------------------------------
+
+def handoff_node(state: State):
+    return {"status": "handed_off", "handoff_to": state["outcome"].to}
+
+
+def stop_node(state: State):
+    return {"status": state["outcome"].reason}
+
+
 # ---------------------------------------------------------
 # ROUTING
 # ---------------------------------------------------------
 
-def route_after_agent(state: State):
-
-    # Safety limit to prevent an infinite agent loop
-    if state["iteration"] >= 3:
-        return "finish"
-
-    if state["decision"] == "finish":
-        return "finish"
-
-    return "act"
+def route_after_agent(state: State) -> str:
+    """The route is named after the outcome, so the graph diagram labels each edge with it."""
+    outcome = state["outcome"]
+    if isinstance(outcome, RunAgain):
+        return "RunAgain"
+    if isinstance(outcome, FinalOutput):
+        return "FinalOutput"
+    if isinstance(outcome, Handoff):
+        return "Handoff"
+    if outcome.reason == "max_turns":
+        return "Interruption: max_turns"     # answer from what was gathered, labelled as capped
+    return "Interruption: invalid_decision"  # no answer rather than a guessed one
 
 
 # ---------------------------------------------------------
 # GRAPH
 # ---------------------------------------------------------
+
 workflow = StateGraph(State)
 
 workflow.add_node("agent", agent_node)
 workflow.add_node("tool_executor", tool_executor_node)
 workflow.add_node("final_answer", final_answer_node)
+workflow.add_node("handoff", handoff_node)
+workflow.add_node("stop", stop_node)
 
 workflow.set_entry_point("agent")
 
@@ -261,19 +319,17 @@ workflow.add_conditional_edges(
     "agent",
     route_after_agent,
     {
-        "act": "tool_executor",
-        "finish": "final_answer"
-    }
+        "RunAgain": "tool_executor",
+        "FinalOutput": "final_answer",
+        "Interruption: max_turns": "final_answer",
+        "Handoff": "handoff",
+        "Interruption: invalid_decision": "stop",
+    },
 )
 
-workflow.add_edge(
-    "tool_executor",
-    "agent"
-)
-
-workflow.add_edge(
-    "final_answer",
-    END
-)
+workflow.add_edge("tool_executor", "agent")
+workflow.add_edge("final_answer", END)
+workflow.add_edge("handoff", END)
+workflow.add_edge("stop", END)
 
 app = workflow.compile()

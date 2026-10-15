@@ -38,7 +38,7 @@ with predictable workflows and progressing toward dynamic agent behavior.
 | 03 | Parallelization | ✅ Complete | Independent work in parallel; sectioning / voting |
 | 04 | Orchestrator-Workers | ✅ Complete | LLM dynamically decomposes → workers → synthesis |
 | 05 | Evaluator-Optimizer | ✅ Complete | Generate → evaluate → feedback → refine |
-| 06 | Agents | ✅ Complete | LLM dynamically directs its own process and tool use |
+| 06 | Agents | ✅ Complete | LLM directs its own process and tool use; every turn ends in a typed outcome |
 | **Phase 2** | **Capability layer** | | |
 | 07 | Retrieval (RAG) | ✅ Complete | Retrieval ablation, cited answers, abstention and permission-aware retrieval, measured on CUAD |
 | 08 | Tools and MCP | 🟡 In progress | Bounded, read only Jira tool; rules vs model router measured on held-out questions; coverage check. Next: MCP server |
@@ -138,7 +138,7 @@ Every suite runs offline, with no API key, and CI runs all three on Python
 
 | Suite | Run from | Tests | What stands in for the model |
 |---|---|---|---|
-| Phase 1 patterns | repo root: `pytest` | 45 | `ScriptedChatModel` in [`llm_provider.py`](llm_provider.py) |
+| Phase 1 patterns and the explorer app | repo root: `pytest` | 74 | `ScriptedChatModel` in [`llm_provider.py`](llm_provider.py) |
 | 07 Retrieval | `07_rag`: `pytest` | 60 | fixtures; no model call in the suite |
 | 08 Tools | `08_tools`: `pytest` | 90 | scripted tool calls |
 
@@ -155,8 +155,29 @@ fails it.
 
 A few tests pin down behaviour worth knowing, not just behaviour that works:
 the free text router in 02 sends "not news, it is research" to the news
-branch; the loop caps in 05 and 06 end a run without marking that the cap,
-not the model, ended it.
+branch, and the loop cap in 05 ends a run without marking that the cap, not
+the evaluator, ended it. The explorer app is tested too: selecting a pattern
+must make no model call, and Run must execute it.
+
+### Turn outcomes in 06
+
+The current agent ([`agents_06_v3_1.py`](06_agents/agents_06_v3_1.py)) ends
+every turn in exactly one typed outcome, and every run in an explicit status:
+
+| Outcome | Next | Run status |
+|---|---|---|
+| `RunAgain(tool)` | run the tool, give the model another turn | |
+| `FinalOutput()` | answer | `completed` |
+| `Handoff(to)` | stop, recording the target | `handed_off` |
+| `Interruption("max_turns")` | answer from what was gathered, saying what is missing | `max_turns` |
+| `Interruption("invalid_decision")` | stop without an answer | `invalid_decision` |
+
+The model's reply is parsed into one outcome; an unknown tool, an unknown
+handoff target or unparseable output is an `Interruption`, never a guess. The
+turn limit is checked before the model is asked, so no call is spent on a
+decision that would be overruled; the earlier version asked a fourth time and
+silently ignored the answer. The outcome names follow the turn results in
+OpenAI's Agents SDK; only the contract is borrowed.
 
 ---
 

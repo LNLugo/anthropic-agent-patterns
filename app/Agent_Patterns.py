@@ -191,7 +191,7 @@ with col2:
 
         st.image(
             str(graph_path),
-            width=400
+            width=640
         )
 
         st.caption(
@@ -276,6 +276,7 @@ if st.button(
 
         module = importlib.util.module_from_spec(spec)
 
+        sys.modules[spec.name] = module  # dataclasses look the module up here
         spec.loader.exec_module(module)
 
         app = module.app
@@ -344,6 +345,7 @@ if st.button(
 
         module = importlib.util.module_from_spec(spec)
 
+        sys.modules[spec.name] = module  # dataclasses look the module up here
         spec.loader.exec_module(module)
 
         app = module.app
@@ -410,6 +412,7 @@ if st.button(
 
         module = importlib.util.module_from_spec(spec)
 
+        sys.modules[spec.name] = module  # dataclasses look the module up here
         spec.loader.exec_module(module)
 
         app = module.app
@@ -457,7 +460,7 @@ if st.button(
                 result["response"]
             )
 
-elif selected_pattern == "Parallelization":
+    elif selected_pattern == "Parallelization":
 
         # --------------------------------------------------
         # Parallelization
@@ -476,6 +479,7 @@ elif selected_pattern == "Parallelization":
 
         module = importlib.util.module_from_spec(spec)
 
+        sys.modules[spec.name] = module  # dataclasses look the module up here
         spec.loader.exec_module(module)
 
         app = module.app
@@ -591,425 +595,307 @@ elif selected_pattern == "Parallelization":
             "and converge at the synthesis node."
         )
 
-elif selected_pattern == "Orchestrator-Workers":
+    elif selected_pattern == "Orchestrator-Workers":
 
-    # --------------------------------------------------
-    # Orchestrator-Workers V3
-    # --------------------------------------------------
+        # --------------------------------------------------
+        # Orchestrator-Workers V3
+        # --------------------------------------------------
 
-    module_path = (
-        PROJECT_ROOT
-        / "04_orchestrator_workers"
-        / "orchestrator_workers_04_v3.py"
-    )
-
-    spec = importlib.util.spec_from_file_location(
-        "orchestrator_workers_04_v3",
-        module_path
-    )
-
-    module = importlib.util.module_from_spec(spec)
-
-    spec.loader.exec_module(module)
-
-    app = module.app
-
-    with st.spinner(
-        "Running Orchestrator-Workers..."
-    ):
-
-        result = app.invoke(
-            {
-                "text": question,
-                "tasks": [],
-                "worker_results": [],
-                "synthesis": ""
-            }
+        module_path = (
+            PROJECT_ROOT
+            / "04_orchestrator_workers"
+            / "orchestrator_workers_04_v3.py"
         )
 
-    st.success(
-        "Orchestrator-Workers completed."
-    )
-
-    st.subheader("Execution Result")
-
-    # --------------------------------------------------
-    # Dynamic Workstreams
-    # --------------------------------------------------
-
-    st.markdown("### Dynamic Workstreams")
-
-    st.caption(
-        "The orchestrator dynamically decomposed the problem "
-        "into the following independent workstreams."
-    )
-
-    for index, task in enumerate(
-        result["tasks"],
-        start=1
-    ):
-
-        st.write(
-            f"**{index}.** {task}"
+        spec = importlib.util.spec_from_file_location(
+            "orchestrator_workers_04_v3",
+            module_path
         )
 
-    st.divider()
+        module = importlib.util.module_from_spec(spec)
 
-    # --------------------------------------------------
-    # Worker Results
-    # --------------------------------------------------
+        sys.modules[spec.name] = module  # dataclasses look the module up here
+        spec.loader.exec_module(module)
 
-    st.markdown("### Worker Assessments")
+        app = module.app
 
-    for index, worker_result in enumerate(
-        result["worker_results"],
-        start=1
-    ):
+        with st.spinner(
+            "Running Orchestrator-Workers..."
+        ):
 
-        with st.expander(
-            f"Worker {index}",
-            expanded=False
+            result = app.invoke(
+                {
+                    "text": question,
+                    "tasks": [],
+                    "worker_results": [],
+                    "synthesis": ""
+                }
+            )
+
+        st.success(
+            "Orchestrator-Workers completed."
+        )
+
+        st.subheader("Execution Result")
+
+        # --------------------------------------------------
+        # Dynamic Workstreams
+        # --------------------------------------------------
+
+        st.markdown("### Dynamic Workstreams")
+
+        st.caption(
+            "The orchestrator dynamically decomposed the problem "
+            "into the following independent workstreams."
+        )
+
+        for index, task in enumerate(
+            result["tasks"],
+            start=1
         ):
 
             st.write(
-                worker_result
+                f"**{index}.** {task}"
             )
 
-    st.divider()
+        st.divider()
 
-    # --------------------------------------------------
-    # Synthesis
-    # --------------------------------------------------
+        # --------------------------------------------------
+        # Worker Results
+        # --------------------------------------------------
 
-    st.markdown(
-        "### Architectural Synthesis"
-    )
+        st.markdown("### Worker Assessments")
 
-    st.write(
-        result["synthesis"]
-    )
+        for index, worker_result in enumerate(
+            result["worker_results"],
+            start=1
+        ):
 
-    st.info(
-        "The orchestrator dynamically decomposes the problem, "
-        "Send() fans the work out to workers, and the synthesis "
-        "node combines the worker assessments."
-    )
+            with st.expander(
+                f"Worker {index}",
+                expanded=False
+            ):
 
-elif selected_pattern == "Evaluator-Optimizer":
+                st.write(
+                    worker_result
+                )
 
-    # --------------------------------------------------
-    # Evaluator-Optimizer
-    # --------------------------------------------------
+        st.divider()
 
-    module_path = (
-        PROJECT_ROOT
-        / "05_evaluator_optimizer"
-        / "evaluator_optimizer_05.py"
-    )
-
-    spec = importlib.util.spec_from_file_location(
-        "evaluator_optimizer_05",
-        module_path
-    )
-
-    module = importlib.util.module_from_spec(spec)
-
-    spec.loader.exec_module(module)
-
-    app = module.app
-
-    with st.spinner(
-        "Running Evaluator-Optimizer..."
-    ):
-
-        result = app.invoke(
-            {
-                "question": question,
-                "draft": "",
-                "score": 0,
-                "feedback": "",
-                "iteration": 0
-            }
-        )
-
-    st.success(
-        "Evaluator-Optimizer completed."
-    )
-
-    st.subheader("Execution Result")
-
-    st.metric(
-        "Optimization Iterations",
-        result["iteration"]
-    )
-
-    st.metric(
-        "Final Evaluation Score",
-        f'{result["score"]}/10'
-    )
-
-    st.divider()
-
-    st.markdown(
-        "### Final Answer"
-    )
-
-    st.write(
-        result["draft"]
-    )
-
-    if result["feedback"]:
+        # --------------------------------------------------
+        # Synthesis
+        # --------------------------------------------------
 
         st.markdown(
-            "### Evaluator Feedback"
+            "### Architectural Synthesis"
         )
 
         st.write(
-            result["feedback"]
+            result["synthesis"]
         )
 
-    st.info(
-        "The generator creates a draft, the evaluator scores it "
-        "and provides feedback, and the optimizer refines the answer "
-        "until the quality threshold is met or the iteration limit is reached."
-    )
-
-elif selected_pattern == "Agents":
-
-    # --------------------------------------------------
-    # Agents V3.1
-    # --------------------------------------------------
-
-    module_path = (
-        PROJECT_ROOT
-        / "06_agents"
-        / "agents_06_v3_1.py"
-    )
-
-    spec = importlib.util.spec_from_file_location(
-        "agents_06_v3_1",
-        module_path
-    )
-
-    module = importlib.util.module_from_spec(spec)
-
-    spec.loader.exec_module(module)
-
-    app = module.app
-
-    with st.spinner(
-        "Running Agents..."
-    ):
-
-        result = app.invoke(
-            {
-                "question": question,
-                "actions": [],
-                "observations": [],
-                "decision": "",
-                "iteration": 0,
-                "final_answer": ""
-            }
+        st.info(
+            "The orchestrator dynamically decomposes the problem, "
+            "Send() fans the work out to workers, and the synthesis "
+            "node combines the worker assessments."
         )
 
-    st.success(
-        "Agents completed."
-    )
+    elif selected_pattern == "Evaluator-Optimizer":
 
-    st.subheader("Execution Result")
+        # --------------------------------------------------
+        # Evaluator-Optimizer
+        # --------------------------------------------------
 
-    st.metric(
-        "Tool Iterations",
-        result["iteration"]
-    )
+        module_path = (
+            PROJECT_ROOT
+            / "05_evaluator_optimizer"
+            / "evaluator_optimizer_05.py"
+        )
 
-    st.divider()
+        spec = importlib.util.spec_from_file_location(
+            "evaluator_optimizer_05",
+            module_path
+        )
 
-    st.markdown(
-        "### Agent Trajectory"
-    )
+        module = importlib.util.module_from_spec(spec)
 
-    for index, action in enumerate(
-        result["actions"],
-        start=1
-    ):
+        sys.modules[spec.name] = module  # dataclasses look the module up here
+        spec.loader.exec_module(module)
+
+        app = module.app
+
+        with st.spinner(
+            "Running Evaluator-Optimizer..."
+        ):
+
+            result = app.invoke(
+                {
+                    "question": question,
+                    "draft": "",
+                    "score": 0,
+                    "feedback": "",
+                    "iteration": 0
+                }
+            )
+
+        st.success(
+            "Evaluator-Optimizer completed."
+        )
+
+        st.subheader("Execution Result")
+
+        st.metric(
+            "Optimization Iterations",
+            result["iteration"]
+        )
+
+        st.metric(
+            "Final Evaluation Score",
+            f'{result["score"]}/10'
+        )
+
+        st.divider()
+
+        st.markdown(
+            "### Final Answer"
+        )
 
         st.write(
-            f"**Iteration {index}:** {action}"
+            result["draft"]
         )
 
-    st.divider()
+        if result["feedback"]:
 
-    st.markdown(
-        "### Observations"
-    )
+            st.markdown(
+                "### Evaluator Feedback"
+            )
 
-    for index, observation in enumerate(
-        result["observations"],
-        start=1
-    ):
+            st.write(
+                result["feedback"]
+            )
 
-        with st.expander(
-            f"Observation {index}",
-            expanded=False
+        st.info(
+            "The generator creates a draft, the evaluator scores it "
+            "and provides feedback, and the optimizer refines the answer "
+            "until the quality threshold is met or the iteration limit is reached."
+        )
+
+    elif selected_pattern == "Agents":
+
+        # --------------------------------------------------
+        # Agents V3.1
+        # --------------------------------------------------
+
+        module_path = (
+            PROJECT_ROOT
+            / "06_agents"
+            / "agents_06_v3_1.py"
+        )
+
+        spec = importlib.util.spec_from_file_location(
+            "agents_06_v3_1",
+            module_path
+        )
+
+        module = importlib.util.module_from_spec(spec)
+
+        sys.modules[spec.name] = module  # dataclasses look the module up here
+        spec.loader.exec_module(module)
+
+        app = module.app
+
+        with st.spinner(
+            "Running Agents..."
+        ):
+
+            result = app.invoke(
+                {
+                    "question": question,
+                    "actions": [],
+                    "observations": [],
+                    "iteration": 0,
+                    "final_answer": ""
+                }
+            )
+
+        status = result.get("status", "")
+        status_text = {
+            "completed": "The agent decided it had enough and answered.",
+            "max_turns": "The agent reached its turn limit. The answer is built from what it gathered, and says what is missing.",
+            "handed_off": f"The agent handed the problem to {result.get('handoff_to', 'another agent')}.",
+            "invalid_decision": "The model returned a decision outside the allowed set, so the run stopped without guessing.",
+        }.get(status, "")
+
+        if status == "completed":
+            st.success(status_text)
+        else:
+            st.warning(status_text)
+
+        st.subheader("Execution Result")
+
+        status_col, turns_col = st.columns(2)
+        status_col.metric("Why the run ended", status.replace("_", " ") or "unknown")
+        turns_col.metric("Tool turns", result["iteration"])
+
+        outcome = result.get("outcome")
+        if outcome is not None:
+            st.caption(f"Last turn outcome: `{outcome!r}`")
+
+        st.divider()
+
+        st.markdown(
+            "### Agent Trajectory"
+        )
+
+        for index, action in enumerate(
+            result["actions"],
+            start=1
         ):
 
             st.write(
-                observation
+                f"**Iteration {index}:** {action}"
             )
 
-    st.divider()
+        st.divider()
 
-    st.markdown(
-        "### Final Answer"
-    )
-
-    st.write(
-        result["final_answer"]
-    )
-
-    st.info(
-        "The agent dynamically chooses actions, executes tools, "
-        "observes the results, and continues until it decides to finish "
-        "or reaches the iteration limit."
-    )
-
-
-elif selected_pattern == "Evaluator-Optimizer":
-
-    graph_path = (
-        PROJECT_ROOT
-        / "05_evaluator_optimizer"
-        / "evaluator_optimizer_05_graph.png"
-    )
-
-    st.image(
-        str(graph_path),
-        width=400
-    )
-
-    st.caption(
-        "Generate → evaluate → optimize → evaluate "
-        "until the quality threshold or iteration limit."
-    )
-elif selected_pattern == "Agents":
-
-    # --------------------------------------------------
-    # Agents V3.1
-    # --------------------------------------------------
-
-    module_path = (
-        PROJECT_ROOT
-        / "06_agents"
-        / "agents_06_v3_1.py"
-    )
-
-    spec = importlib.util.spec_from_file_location(
-        "agents_06_v3_1",
-        module_path
-    )
-
-    module = importlib.util.module_from_spec(spec)
-
-    spec.loader.exec_module(module)
-
-    app = module.app
-
-    with st.spinner(
-        "Running Agents..."
-    ):
-
-        result = app.invoke(
-            {
-                "question": question,
-                "actions": [],
-                "observations": [],
-                "decision": "",
-                "iteration": 0,
-                "final_answer": ""
-            }
+        st.markdown(
+            "### Observations"
         )
 
-    st.success(
-        "Agents completed."
-    )
-
-    st.subheader("Execution Result")
-
-    st.metric(
-        "Tool Iterations",
-        result["iteration"]
-    )
-
-    st.divider()
-
-    st.markdown(
-        "### Agent Trajectory"
-    )
-
-    for index, action in enumerate(
-        result["actions"],
-        start=1
-    ):
-
-        st.write(
-            f"**Iteration {index}:** {action}"
-        )
-
-    st.divider()
-
-    st.markdown(
-        "### Observations"
-    )
-
-    for index, observation in enumerate(
-        result["observations"],
-        start=1
-    ):
-
-        with st.expander(
-            f"Observation {index}",
-            expanded=False
+        for index, observation in enumerate(
+            result["observations"],
+            start=1
         ):
 
-            st.write(
-                observation
-            )
+            with st.expander(
+                f"Observation {index}",
+                expanded=False
+            ):
 
-    st.divider()
+                st.write(
+                    observation
+                )
 
-    st.markdown(
-        "### Final Answer"
-    )
+        st.divider()
 
-    st.write(
-        result["final_answer"]
-    )
+        st.markdown(
+            "### Final Answer"
+        )
 
-    st.info(
-        "The agent dynamically chooses actions, executes tools, "
-        "observes the results, and continues until it decides to finish "
-        "or reaches the iteration limit."
-    )
-elif selected_pattern == "Agents":
+        st.write(
+            result.get("final_answer") or "No answer: see why the run ended, above."
+        )
 
-    graph_path = (
-        PROJECT_ROOT
-        / "06_agents"
-        / "agents_06_v3_1_graph.png"
-    )
+        st.info(
+            "Each turn ends in one typed outcome: run a tool again, give the final "
+            "answer, hand off, or an interruption (turn limit reached, or a decision "
+            "outside the allowed set). The turn limit is checked before the model is "
+            "asked, so no call is spent on a decision that would be overruled."
+        )
 
-    st.image(
-        str(graph_path),
-        width=400
-    )
 
-    st.caption(
-        "The agent dynamically decides whether to act or finish, "
-        "executes tools, observes the result, and can loop back for another decision."
-    )
-else:
+    else:
 
-    st.info(
-        "This pattern will be connected next."
-    )
+        st.info(
+            "This pattern will be connected next."
+        )
