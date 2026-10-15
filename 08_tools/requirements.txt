@@ -8,3 +8,5 @@ numpy>=1.26
 langchain-openai>=0.2
 langchain-anthropic>=0.3
 python-dotenv>=1.0
+# human approval: checkpoints saved to disk, so a pending approval survives a restart
+langgraph-checkpoint-sqlite>=3.0

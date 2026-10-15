@@ -39,7 +39,7 @@ refused.
 | Scope | Fixed project allowlist, enum values, date range capped at 366 days, at most 25 keys returned | The bound is a policy on the tool, separate from the user's permissions. A security engineer can browse SECOPS in Jira, and the tool still refuses it. |
 | Permissions | Delegated to Jira: every call names the user, no service account | Jira applies project permissions and issue security levels itself. Nothing is replicated, so nothing can drift. |
 | Counts | "Issues visible to you", stated in every answer | The true total would reveal that restricted issues exist. Jira behaves the same way. |
-| Write access | None | The tool exposes one operation, a count. A test asserts there is no other public method. |
+| Write access | None for counts; one write, a comment, only after a person approves it | The count tool exposes one operation, and a test asserts it has no other public method. The comment tool is separate, and every comment waits for an approver who is not the requester. |
 | Missing project | Ask a question, run nothing | Guessing a project is how a wrong number reaches a VP. |
 | Missing period | Default to the last 90 days and say so | A bounded default beats an unbounded query, and the stated assumption lets the user correct it. |
 | Date bounds | `created < next day`, not `created <= last day` | In JQL, `<=` a bare date means midnight at the start of that day and silently drops it. A test covers the boundary. |
@@ -300,13 +300,43 @@ What the tests show, with Jira calls counted rather than assumed:
 | SECOPS, halted | 1 | 0 |
 | A stub tool returns a SECOPS key for a BILL query; the output guardrail halts | 1; the result never reaches the model | none (stub) |
 
+### Human approval
+
+**Control question:** *who decides that this write happens, and can the decision wait?*
+
+The module has one write, `comment_on_issue`, and it never runs on the model's
+say so. The graph pauses with LangGraph's `interrupt()`, saves the run to a
+checkpoint, and waits for a person:
+
+```text
+decide --comment--> propose --> approve [interrupt: wait] --approved, by someone else--> post --> respond
+                       |                                 --declined or self-approved--> declined --> respond
+                       +-- guardrails, arguments, can the requester see the issue? -- no --> respond, nobody asked
+```
+
+| Control | How |
+|---|---|
+| The pause survives a restart | Checkpoints are saved to SQLite. The test stops the service, builds a new graph on a new connection to the same file, finds the pending request there and resumes it. The model is not called again. |
+| The write happens once | LangGraph runs an interrupted node again from the top on resume, so the approval node has no side effects; the write is its own node after it. Resuming a finished run does not post twice. |
+| No self-approval | The approver must be someone other than the requester. |
+| Nobody approves an impossible write | Guardrails, argument checks and the requester's access to the issue run before anyone is asked. An issue the requester cannot see gets the same answer as one that does not exist. |
+| Access is checked again at post time | Permissions can change while the approval waits. |
+| The comment is attributable | Posted as the requester, with the approver recorded on it. |
+| Saved approvals stay loadable | LangGraph is moving to blocking unregistered types when loading a checkpoint. The module's types are registered (`checkpoint_serde()`), and a test runs the full restart with that blocking already on. |
+
+The write path is opt in: `build_assistant(..., comment_tool=..., checkpointer=...)`
+refuses a comment tool without a checkpointer, and `ModelRouter` offers the
+comment tool only when given one, so the measured evaluations run as they
+were measured. `pending()` reads a waiting request from the checkpoint and
+`resume()` answers it, which is all an approval screen needs.
+
 ## Run it
 
 ```bash
 cd 08_tools
 pip install -r requirements.txt
 
-pytest -q                       # 110 offline tests
+pytest -q                       # 122 offline tests
 python run_router_eval.py       # router and extraction accuracy
 
 # the same questions, routed by a model through tool calling (needs OPENAI_API_KEY,
@@ -326,6 +356,9 @@ python demo_assistant.py "How many INFRA incidents last quarter?" --policy finan
 # tool guardrails: allow, reject_content, raise_exception (offline; --live asks the configured model)
 python demo_guardrails.py
 python demo_guardrails.py --live "How many INFRA incidents last quarter?" --user new_hire
+
+# human approval: a comment pauses, the service restarts, the approval resumes it (offline; --live for the model)
+python demo_approval.py
 
 # knowledge question, routed to 07_rag's permission-filtered retrieval
 python demo_assistant.py "How do I rotate the billing API credentials?" --users billing_oncall new_hire
@@ -353,13 +386,15 @@ set by eye on 8 pages, not calibrated.
 │   ├── coverage.py      stops valid queries that do not cover the question (two projects, none)
 │   ├── guardrails.py    tool guardrails: allow, reject_content, raise_exception; the demo policy
 │   ├── tool_loop.py     bounded tool loop that runs guardrails and tells the model when one rejects
+│   ├── comments.py      comment_on_issue, the one write; kept apart from the read only count tool
 │   ├── evaluate.py      router and extraction accuracy on the labeled set, rules or model
 │   └── assistant.py     LangGraph flow: classify, extract, run tool or retrieve, respond
 ├── run_router_eval.py
 ├── run_model_router_eval.py
 ├── demo_assistant.py
 ├── demo_guardrails.py
-└── tests/               110 offline tests, synthetic Jira, development, held-out and coverage questions
+├── demo_approval.py
+└── tests/               122 offline tests, synthetic Jira, development, held-out and coverage questions
 ```
 
 ## Limits

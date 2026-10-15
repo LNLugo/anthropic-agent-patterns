@@ -70,6 +70,16 @@ class MockJira:
         # Unknown security level: hidden from everyone (fail closed).
         return bool(caller.groups & self._levels.get(issue.security_level, frozenset()))
 
+    def get_issue(self, caller: Caller, key: str) -> Issue | None:
+        """The issue if this caller can see it, else None. A missing issue and an issue
+        the caller may not see give the same answer, so existence is not revealed."""
+        if not isinstance(caller, Caller) or not caller.id:
+            raise PermissionError("every Jira call must be made on behalf of a named user")
+        for issue in self._issues:
+            if issue.key == key:
+                return issue if self._visible(issue, caller) else None
+        return None
+
     def search(
         self,
         caller: Caller,
