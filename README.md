@@ -41,7 +41,7 @@ with predictable workflows and progressing toward dynamic agent behavior.
 | 06 | Agents | ✅ Complete | LLM directs its own process and tool use; every turn ends in a typed outcome |
 | **Phase 2** | **Capability layer** | | |
 | 07 | Retrieval (RAG) | ✅ Complete | Retrieval ablation, cited answers, abstention and permission-aware retrieval, measured on CUAD |
-| 08 | Tools and MCP | 🟡 In progress | Bounded, read only Jira tool; rules vs model router measured on held-out questions; coverage check. Next: MCP server |
+| 08 | Tools and MCP | 🟡 In progress | Bounded, read only Jira tool; rules vs model router measured on held-out questions; coverage check; tool guardrails. Next: MCP server |
 | 09 | Memory | ⬜ Planned | Retrieve relevant history instead of appending it |
 | 10 | Guardrails and observability | ⬜ Planned | Policy checks and traces built on the context ledger |
 | 11 | AI FinOps | ⬜ Planned | Cost per answer and cost per correct answer |
@@ -138,9 +138,9 @@ Every suite runs offline, with no API key, and CI runs all three on Python
 
 | Suite | Run from | Tests | What stands in for the model |
 |---|---|---|---|
-| Phase 1 patterns and the explorer app | repo root: `pytest` | 74 | `ScriptedChatModel` in [`llm_provider.py`](llm_provider.py) |
+| Phase 1 patterns and the explorer app | repo root: `pytest` | 75 | `ScriptedChatModel` in [`llm_provider.py`](llm_provider.py) |
 | 07 Retrieval | `07_rag`: `pytest` | 60 | fixtures; no model call in the suite |
-| 08 Tools | `08_tools`: `pytest` | 90 | scripted tool calls |
+| 08 Tools | `08_tools`: `pytest` | 100 | `ScriptedChatModel` and scripted tool calls |
 
 Phase 1 tests assert on the **path the graph took**, not on model prose: which
 nodes ran, in what order, and what each node was given. `LLM_PROVIDER=scripted`
@@ -257,7 +257,10 @@ to 19 over three runs, at $0.09 per thousand questions. Its one repeated
 miss, answering half of a two project question, was inside policy, so the
 bound could not stop it. A coverage check in code now does: on 20 new
 questions, no query ran that should not have in any of three runs, against
-two such queries without it.
+two such queries without it. Tool guardrails add deployment policy on top:
+`allow`, `reject_content` (blocked, and the model is told why) and
+`raise_exception` (the run halts), shown on the JQL tool with an
+out-of-scope project and a restricted one.
 
 ---
 

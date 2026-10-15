@@ -106,3 +106,16 @@ def test_match_steps_answer_parallel_calls_whatever_order_they_arrive_in():
 def test_a_match_that_never_fires_is_an_unexpected_call():
     with pytest.raises(UnexpectedModelCall), scripted([Step("x", match="never")]):
         scripted_model().invoke("something else")
+
+
+def test_tools_can_be_bound_and_tool_calls_scripted():
+    from langchain_core.messages import ToolMessage
+
+    call = AIMessage(content="", tool_calls=[{"name": "count", "args": {"project": "BILL"}, "id": "c1"}])
+    with scripted([call, Step(responder=lambda c: f"saw: {c.messages[-1].content}")]) as model:
+        llm = scripted_model().bind_tools([{"type": "function", "function": {"name": "count", "parameters": {}}}])
+        assert model.bound_tools == ("count",)
+        first = llm.invoke("count BILL")
+        second = llm.invoke(["count BILL", first, ToolMessage(content="42", tool_call_id="c1")])
+    assert first.tool_calls[0]["args"] == {"project": "BILL"} and second.content == "saw: 42"
+    assert model.calls[1].messages[-1].content == "42"
