@@ -7,6 +7,10 @@ relative to --today (default 2026-10-12) so the output is reproducible.
     python demo_assistant.py
     python demo_assistant.py "How many P1 incidents did the billing platform have last quarter?" --users billing_oncall new_hire
     python demo_assistant.py "How do I rotate the billing API credentials?" --users billing_oncall new_hire
+    python demo_assistant.py --router rules          # offline: the rules instead of the model
+    python demo_assistant.py "How many INFRA incidents last quarter?" --policy finance
+
+The model router (default) needs the key for LLM_PROVIDER (default openai / gpt-6-luna).
 """
 
 from __future__ import annotations
@@ -18,7 +22,10 @@ from pathlib import Path
 
 from agent_tools.assistant import ask, build_assistant
 from agent_tools.jira_mock import Caller, MockJira
+from agent_tools.guardrails import ToolGuardrailTripwireTriggered, finance_assistant_policy
 from agent_tools.jql_tool import BoundedJiraTool
+from agent_tools.model_router import ModelRouter
+from agent_tools.router import RulesRouter
 
 HERE = Path(__file__).parent
 JIRA = HERE / "tests" / "fixtures" / "mini_jira.json"
@@ -61,10 +68,23 @@ def main() -> int:
     ap.add_argument("question", nargs="?", default=HEADLINE)
     ap.add_argument("--users", nargs="+", default=["billing_oncall", "new_hire", "contractor"])
     ap.add_argument("--today", type=date.fromisoformat, default=date(2026, 10, 12))
+    ap.add_argument("--router", choices=["model", "rules"], default="model",
+                    help="model: a model choosing a tool, with the coverage check (default); rules: offline")
+    ap.add_argument("--policy", choices=["none", "finance"], default="none",
+                    help="finance: the guardrail policy for a finance assistant serving BILL and PAY")
     args = ap.parse_args()
 
     jira, users = MockJira.from_fixture(JIRA)
-    app = build_assistant(BoundedJiraTool(jira), wiki_search())
+    tool = BoundedJiraTool(jira)
+    if args.router == "model":
+        sys.path.insert(0, str(HERE.parent))  # llm_provider.py at the repo root
+        from llm_provider import get_chat_model
+        router = ModelRouter(get_chat_model(), tool)
+    else:
+        router = RulesRouter()
+    policy = finance_assistant_policy() if args.policy == "finance" else []
+    app = build_assistant(tool, wiki_search(), router, guardrails=policy)
+    print(f"router: {args.router}   policy: {args.policy}")
 
     print(f'Question: "{args.question}"   (today = {args.today.isoformat()})\n')
     for uid in args.users:
@@ -72,7 +92,11 @@ def main() -> int:
             print(f"unknown user {uid!r}; choose from: {', '.join(users)}")
             return 2
         caller = users[uid]
-        out = ask(app, args.question, caller, args.today)
+        try:
+            out = ask(app, args.question, caller, args.today)
+        except ToolGuardrailTripwireTriggered as e:
+            print(f"{uid}: HALTED by guardrail {e.guardrail.name}: {e.output.output_info}\n")
+            continue
         print(f"{uid}  ({', '.join(sorted(caller.groups)) or 'no groups'})   route: {out['route']}")
         for line in out["answer"].splitlines():
             print(f"   {line}")

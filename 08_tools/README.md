@@ -13,16 +13,23 @@ permission-filtered retrieval.
 ## Architecture
 
 ```text
- question ──► classify ──knowledge──► 07_rag permission-filtered retrieval ──► pages or "not in the wiki"
-                 │
-                 └──aggregation──► extract QuerySpec ──► validate (bound) ──► Jira, called AS the user
-                                        │                    │                       │
-                                   no project:          outside bound:        count + keys + JQL
-                                   ask, run nothing     refuse, run nothing   "only issues you can see"
+ question ──► router ──knowledge──► 07_rag permission-filtered retrieval ──► pages or "not in the wiki"
+                │
+                ├──clarify───────► ask, run nothing   (no project, or the coverage check: two projects)
+                │
+                └──aggregation──► input guardrails ──► bound ──► Jira, called AS the user ──► output guardrails
+                                        │                │                                       │
+                                  reject: say why    outside bound:                       count + keys + JQL
+                                  halt: tripwire     refuse, run nothing                  "only issues you can see"
 ```
 
 The answer flow is a LangGraph `StateGraph` (`agent_tools/assistant.py`),
-consistent with patterns 01 to 07.
+consistent with patterns 01 to 07. The router is chosen when the graph is
+built: `ModelRouter` (a model choosing a tool, with the coverage check) or
+`RulesRouter` (the offline baseline). Both answer `decide(question, today)`.
+Guardrails see every count the model attempts, including ones the bound will
+refuse, so an attempt on a restricted project halts instead of being politely
+refused.
 
 ## Design decisions
 
@@ -36,7 +43,7 @@ consistent with patterns 01 to 07.
 | Missing project | Ask a question, run nothing | Guessing a project is how a wrong number reaches a VP. |
 | Missing period | Default to the last 90 days and say so | A bounded default beats an unbounded query, and the stated assumption lets the user correct it. |
 | Date bounds | `created < next day`, not `created <= last day` | In JQL, `<=` a bare date means midnight at the start of that day and silently drops it. A test covers the boundary. |
-| Router | Rules requiring a counting cue and an issue cue | Deterministic and testable offline. It is the measured baseline a model based router has to beat, not the end state. |
+| Router | A model choosing one of three tools, with the coverage check; the rules as an offline baseline | Measured on held-out questions: the model routed 18 to 19 of 20, the rules 9. The rules stay for offline runs and as the baseline, behind the same `decide()` interface. |
 
 ## Results
 
@@ -299,7 +306,7 @@ What the tests show, with Jira calls counted rather than assumed:
 cd 08_tools
 pip install -r requirements.txt
 
-pytest -q                       # 100 offline tests
+pytest -q                       # 110 offline tests
 python run_router_eval.py       # router and extraction accuracy
 
 # the same questions, routed by a model through tool calling (needs OPENAI_API_KEY,
@@ -311,8 +318,10 @@ python run_model_router_eval.py --questions tests/fixtures/router_questions_held
 python run_model_router_eval.py --questions tests/fixtures/router_questions_coverage.json
 python run_model_router_eval.py --questions tests/fixtures/router_questions_coverage.json --no-coverage
 
-# counting question, as three different users
+# counting question, as three different users, on the model router (needs the key for LLM_PROVIDER)
 python demo_assistant.py
+python demo_assistant.py --router rules     # the same, offline, on the rules
+python demo_assistant.py "How many INFRA incidents last quarter?" --policy finance   # with guardrails
 
 # tool guardrails: allow, reject_content, raise_exception (offline; --live asks the configured model)
 python demo_guardrails.py
@@ -350,16 +359,13 @@ set by eye on 8 pages, not calibrated.
 ├── run_model_router_eval.py
 ├── demo_assistant.py
 ├── demo_guardrails.py
-└── tests/               100 offline tests, synthetic Jira, development, held-out and coverage questions
+└── tests/               110 offline tests, synthetic Jira, development, held-out and coverage questions
 ```
 
 ## Limits
 
 * The Jira here is a mock. It reproduces project permissions and issue
   security levels, not the Jira REST API, pagination or rate limits.
-* The assistant graph still routes with the rules. The measured case for
-  moving it to the model router with the coverage check is now made; the switch
-  is a separate change.
 * The coverage check cannot tell a second project named as scope ("BILL and
   PAY") from one named in passing ("after a PAY outage"), and reads "payment"
   as the project PAY. It also cannot judge whether an informal name the code
