@@ -8,6 +8,12 @@ store, which stands in for Jira's comment API.
              runs before anyone is asked to approve, so nobody approves an impossible write
     post()   writes the comment as the requester, recording who approved it;
              checks visibility again, because access can change while approval waits
+
+A post carries the approval's request id as a marker (in Jira, a comment
+property). If the response to a post is lost, the service cannot tell whether
+the comment went through, and retrying the run would post it twice; with the
+marker, the retry finds the comment already there and returns it. Jira's comment
+API takes no idempotency key, so the check is made before every post.
 """
 
 from __future__ import annotations
@@ -31,6 +37,7 @@ class Comment:
     approved_by: str     # the person who approved it
     body: str
     created: str
+    request_id: str | None = None   # the approval this comment carries out
 
 
 @dataclass
@@ -39,11 +46,15 @@ class CommentStore:
 
     comments: list[Comment] = field(default_factory=list)
 
-    def add(self, issue_key: str, author: str, approved_by: str, body: str) -> Comment:
+    def add(self, issue_key: str, author: str, approved_by: str, body: str, request_id: str | None = None) -> Comment:
         c = Comment(len(self.comments) + 1, issue_key, author, approved_by, body,
-                    datetime.now(timezone.utc).isoformat(timespec="seconds"))
+                    datetime.now(timezone.utc).isoformat(timespec="seconds"), request_id)
         self.comments.append(c)
         return c
+
+    def find(self, issue_key: str, request_id: str) -> Comment | None:
+        """The comment already posted for this approval, if any (in Jira, a search by comment property)."""
+        return next((c for c in self.comments if c.issue_key == issue_key and c.request_id == request_id), None)
 
 
 class CommentTool:
@@ -90,7 +101,12 @@ class CommentTool:
             raise ToolRejected(f"{key} is not an issue you can see")
         return key, body
 
-    def post(self, issue_key: str, body: str, caller: Caller, approved_by: str) -> Comment:
+    def post(self, issue_key: str, body: str, caller: Caller, approved_by: str, request_id: str | None = None) -> Comment:
+        """With request_id, posting is idempotent: a retry returns the comment already posted."""
+        if request_id is not None:
+            done = self.store.find(issue_key, request_id)
+            if done is not None:
+                return done
         if self.client.get_issue(caller, issue_key) is None:
             raise ToolRejected(f"{issue_key} is no longer an issue you can see")
-        return self.store.add(issue_key, caller.id, approved_by, body)
+        return self.store.add(issue_key, caller.id, approved_by, body, request_id)

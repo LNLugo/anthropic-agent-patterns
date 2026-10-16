@@ -24,6 +24,7 @@ from datetime import date, timedelta
 from typing import Callable, Protocol, TypedDict
 
 from langgraph.checkpoint.serde.jsonplus import JsonPlusSerializer
+from langchain_core.runnables import RunnableConfig
 from langgraph.graph import END, StateGraph
 from langgraph.types import Command, interrupt
 
@@ -188,15 +189,19 @@ def build_assistant(tool: BoundedJiraTool, knowledge: KnowledgeSearch, router: R
         decision = interrupt(s["proposal"])
         return {"approval": dict(decision) if isinstance(decision, dict) else {"approved": False, "reason": "malformed decision"}}
 
-    def post_node(s: State) -> State:
+    def post_node(s: State, config: RunnableConfig) -> State:
+        """The write, once. The thread id is the approval's request id: if this node runs
+        again after a lost response, the post finds its own earlier comment and stops."""
         p, a = s["proposal"], s["approval"]
+        request_id = (config.get("configurable") or {}).get("thread_id")
         tracer = get_tracer()
         tracer.event("custom", "approval", decision="approved", approver=a["approver"], requested_by=p["requested_by"],
                      issue_key=p["issue_key"])
         with tracer.span("tool", comment_tool.name, caller=s["caller"].id, issue_key=p["issue_key"]) as span:
             span.content(input={"body": p["body"]})
             try:
-                comment = comment_tool.post(p["issue_key"], p["body"], s["caller"], approved_by=a["approver"])
+                comment = comment_tool.post(p["issue_key"], p["body"], s["caller"], approved_by=a["approver"],
+                                            request_id=request_id)
             except ToolRejected as e:
                 span.set(outcome="rejected")
                 return {"stop_reason": "rejected", "answer": f"Not posted: {e}."}

@@ -1,0 +1,22 @@
+{
+  "_note": "Synthetic Jira for a fictional transit agency's operations team. All stations, assets, issues and people are invented.",
+  "projects": {
+    "ELEV": {"name": "Elevators and Escalators", "browse_groups": ["ops-all"]},
+    "SIG":  {"name": "Signals",                  "browse_groups": ["ops-all"]},
+    "SECOPS": {"name": "Security Operations",    "browse_groups": ["security-team"]}
+  },
+  "security_levels": {},
+  "issues": [
+    {"key": "ELEV-35", "project": "ELEV", "type": "Incident", "priority": "P2", "status": "Resolved", "created": "2026-09-21", "summary": "Elevator ELV-114-01 door fault, Station S114"},
+    {"key": "ELEV-38", "project": "ELEV", "type": "Incident", "priority": "P2", "status": "Open",     "created": "2026-10-02", "summary": "Escalator ESC-203-01 handrail stopped, Station S203"},
+    {"key": "ELEV-40", "project": "ELEV", "type": "Incident", "priority": "P3", "status": "Open",     "created": "2026-10-07", "summary": "Elevator ELV-127-01 slow doors, Station S127"},
+    {"key": "ELEV-41", "project": "ELEV", "type": "Incident", "priority": "P1", "status": "Open",     "created": "2026-10-12", "summary": "Escalator ESC-127-02 out of service, Station S127"},
+    {"key": "SIG-12",  "project": "SIG",  "type": "Incident", "priority": "P1", "status": "Open",     "created": "2026-10-11", "summary": "Track circuit fault near Station S203"}
+  ],
+  "users": [
+    {"id": "svc-alert-triage", "groups": ["ops-all"]},
+    {"id": "maintenance_lead",  "groups": ["ops-all"]},
+    {"id": "station_supervisor", "groups": ["ops-all"]},
+    {"id": "contractor",         "groups": []}
+  ]
+}

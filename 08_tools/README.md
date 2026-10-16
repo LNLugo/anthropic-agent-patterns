@@ -357,6 +357,12 @@ comment tool only when given one, so the measured evaluations run as they
 were measured. `pending()` reads a waiting request from the checkpoint and
 `resume()` answers it, which is all an approval screen needs.
 
+A retry after a lost response cannot post twice. Every post carries the
+approval's request id as a marker (in Jira, a comment property), and a retry
+of the run finds its own comment and stops. [12_integration](../12_integration/)
+found the fault: Jira committed the comment, the response was lost, and the
+service retried from its checkpoint, so one approval became two comments.
+
 ### Tools over MCP
 
 **Control question:** *when any agent can call these tools, who decides whose data it sees?*
