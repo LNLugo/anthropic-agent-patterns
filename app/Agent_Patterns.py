@@ -1,10 +1,12 @@
+import json
+import os
 import sys
 import importlib.util
 from pathlib import Path
 
 import streamlit as st
 
-from demo_scenarios import ROUTING_SCENARIOS
+from demo_scenarios import AGENT_SCENARIOS, ROUTING_SCENARIOS
 
 
 # --------------------------------------------------
@@ -216,8 +218,48 @@ st.divider()
 
 st.subheader("Demonstration Scenario")
 
+agent_scenario = None
+max_turns = 3
 
-if selected_pattern in ["Routing", "Routing V2"]:
+
+if selected_pattern == "Agents":
+
+    scenario_name = st.selectbox(
+        "Select an Agents Scenario",
+        list(AGENT_SCENARIOS.keys())
+    )
+
+    agent_scenario = AGENT_SCENARIOS[scenario_name]
+    replay = "replay" in agent_scenario
+
+    st.caption(agent_scenario["about"])
+
+    question = st.text_area(
+        "Prompt",
+        value=agent_scenario["prompt"],
+        height=120,
+        disabled=replay,
+        key=f"agents_prompt_{scenario_name}",
+    )
+
+    max_turns = int(st.number_input(
+        "Turn limit",
+        min_value=1,
+        max_value=5,
+        value=agent_scenario["max_turns"],
+        disabled=replay,
+        key=f"agents_turns_{scenario_name}",
+    ))
+
+    if replay:
+        st.info(
+            "Replay: the model's replies are scripted, so this ends the same way "
+            "every time and makes no API call. A live model rarely breaks the "
+            "decision contract, so this case is replayed rather than hoped for. "
+            "The graph, the parsing and the stop are the real ones."
+        )
+
+elif selected_pattern in ["Routing", "Routing V2"]:
 
     scenario_name = st.selectbox(
         "Select a Routing Scenario",
@@ -799,31 +841,50 @@ if st.button(
 
         module = importlib.util.module_from_spec(spec)
 
-        sys.modules[spec.name] = module  # dataclasses look the module up here
-        spec.loader.exec_module(module)
+        replay_steps = (agent_scenario or {}).get("replay")
+        provider = os.environ.get("LLM_PROVIDER")
+        if replay_steps:
+            os.environ["LLM_PROVIDER"] = "scripted"  # the module builds its model on import
+        try:
+            sys.modules[spec.name] = module  # dataclasses look the module up here
+            spec.loader.exec_module(module)
+        finally:
+            if provider is None:
+                os.environ.pop("LLM_PROVIDER", None)
+            else:
+                os.environ["LLM_PROVIDER"] = provider
 
         app = module.app
+        start = {
+            "question": question,
+            "actions": [],
+            "observations": [],
+            "iteration": 0,
+            "max_turns": max_turns,
+            "final_answer": ""
+        }
 
         with st.spinner(
             "Running Agents..."
         ):
 
-            result = app.invoke(
-                {
-                    "question": question,
-                    "actions": [],
-                    "observations": [],
-                    "iteration": 0,
-                    "final_answer": ""
-                }
-            )
+            if replay_steps:
+                from llm_provider import scripted
+                with scripted(replay_steps):  # fails if a reply goes unused
+                    result = app.invoke(start)
+            else:
+                result = app.invoke(start)
 
         status = result.get("status", "")
+        outcome = result.get("outcome")
         status_text = {
             "completed": "The agent decided it had enough and answered.",
             "max_turns": "The agent reached its turn limit. The answer is built from what it gathered, and says what is missing.",
-            "handed_off": f"The agent handed the problem to {result.get('handoff_to', 'another agent')}.",
-            "invalid_decision": "The model returned a decision outside the allowed set, so the run stopped without guessing.",
+            "handed_off": f"The agent handed the problem to {result.get('handoff_to', 'another agent')} and did not answer it.",
+            "invalid_decision": (
+                "The agent abstained: the model returned a decision outside the allowed set "
+                f"({getattr(outcome, 'detail', '')}), so the run stopped without guessing."
+            ),
         }.get(status, "")
 
         if status == "completed":
@@ -831,15 +892,31 @@ if st.button(
         else:
             st.warning(status_text)
 
+        expected = (agent_scenario or {}).get("expected")
+        if expected and not replay_steps:
+            if status == expected:
+                st.caption(f"Ended as this scenario was designed to: {expected.replace('_', ' ')}.")
+            else:
+                st.caption(
+                    f"This scenario was designed to end {expected.replace('_', ' ')} and ended "
+                    f"{status.replace('_', ' ')}. The live model decides each turn, so a "
+                    "scenario is a prompt, not a guarantee."
+                )
+
         st.subheader("Execution Result")
 
         status_col, turns_col = st.columns(2)
         status_col.metric("Why the run ended", status.replace("_", " ") or "unknown")
         turns_col.metric("Tool turns", result["iteration"])
 
-        outcome = result.get("outcome")
         if outcome is not None:
             st.caption(f"Last turn outcome: `{outcome!r}`")
+
+        if replay_steps:
+            with st.expander("What the scripted model replied", expanded=False):
+                for index, step in enumerate(replay_steps, start=1):
+                    st.write(f"**Reply {index}:**")
+                    st.code(step if isinstance(step, str) else json.dumps(step), language="json")
 
         st.divider()
 
