@@ -186,3 +186,29 @@ def test_a_saved_approval_loads_under_strict_deserialization(tmp_path):
     asks = [t["group_id"] for t in ended if t["workflow"] == "assistant"]
     resumes = [t["group_id"] for t in ended if t["workflow"] == "assistant.resume"]
     assert asks and asks == resumes and all(t["status"] == "ok" for t in ended)  # each request, then its decision
+
+
+def test_a_lost_response_and_a_retry_still_post_once(env):
+    """Jira commits the comment, the response is lost, the service retries the run. Without
+    the request id marker the retry posted a second copy (2 comments for one approval)."""
+
+    class LostResponse(CommentStore):
+        dropped = False
+
+        def add(self, *a, **k):
+            c = super().add(*a, **k)
+            if not self.dropped:
+                self.dropped = True
+                raise ConnectionError("connection reset after the server committed")
+            return c
+
+    env["store"] = LostResponse()
+    app, conn = build(env)
+    with scripted([comment_call()]):
+        ask(app, ASK, env["users"]["billing_oncall"], TODAY, thread_id="t-lost")
+    with pytest.raises(ConnectionError):
+        resume(app, "t-lost", approved=True, approver="incident_lead")
+    app2, conn2 = build(env)  # the service restarts and retries the run from its checkpoint
+    out = app2.invoke(None, {"configurable": {"thread_id": "t-lost"}})
+    assert out["stop_reason"] == "posted" and len(env["store"].comments) == 1
+    assert env["store"].comments[0].request_id == "t-lost"

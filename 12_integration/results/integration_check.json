@@ -1,0 +1,114 @@
+{
+  "design": {
+    "dedupe": true,
+    "key_on": "incident",
+    "marker": true,
+    "published": 60,
+    "messages": 48,
+    "redelivered": 12,
+    "handler_runs": 51,
+    "jira_searches": 6,
+    "work_orders_loaded": 38,
+    "crashed_after": [
+      "bus/service-alerts:A-101"
+    ],
+    "approval_requests": 4,
+    "comments_posted": 4,
+    "duplicates_skipped": 12,
+    "retries": 2,
+    "backoff_waits": [
+      1.0,
+      1.0
+    ],
+    "dead_letters": [
+      "line 13: unknown status 'XX'",
+      "line 25: opened date '20261399' is not a real date",
+      "halted by guardrail restricted_project",
+      "count refused: Not run: BILL is outside this assistant's scope (ELEV, SIG). Do not retry with a different project. Tell the user which projects you can work with."
+    ]
+  },
+  "no idempotency store": {
+    "dedupe": false,
+    "key_on": "incident",
+    "marker": true,
+    "published": 60,
+    "messages": 48,
+    "redelivered": 12,
+    "handler_runs": 63,
+    "jira_searches": 6,
+    "work_orders_loaded": 38,
+    "crashed_after": [
+      "bus/service-alerts:A-101"
+    ],
+    "approval_requests": 4,
+    "comments_posted": 4,
+    "duplicates_skipped": 0,
+    "retries": 2,
+    "backoff_waits": [
+      1.0,
+      1.0
+    ],
+    "dead_letters": [
+      "line 13: unknown status 'XX'",
+      "line 25: opened date '20261399' is not a real date",
+      "halted by guardrail restricted_project",
+      "count refused: Not run: BILL is outside this assistant's scope (ELEV, SIG). Do not retry with a different project. Tell the user which projects you can work with."
+    ]
+  },
+  "keyed on the event, not the incident": {
+    "dedupe": true,
+    "key_on": "event",
+    "marker": true,
+    "published": 60,
+    "messages": 48,
+    "redelivered": 12,
+    "handler_runs": 51,
+    "jira_searches": 10,
+    "work_orders_loaded": 38,
+    "crashed_after": [
+      "bus/service-alerts:A-101"
+    ],
+    "approval_requests": 8,
+    "comments_posted": 8,
+    "duplicates_skipped": 12,
+    "retries": 2,
+    "backoff_waits": [
+      1.0,
+      1.0
+    ],
+    "dead_letters": [
+      "line 13: unknown status 'XX'",
+      "line 25: opened date '20261399' is not a real date",
+      "halted by guardrail restricted_project",
+      "count refused: Not run: BILL is outside this assistant's scope (ELEV, SIG). Do not retry with a different project. Tell the user which projects you can work with."
+    ]
+  },
+  "no request id marker on the post": {
+    "dedupe": true,
+    "key_on": "incident",
+    "marker": false,
+    "published": 60,
+    "messages": 48,
+    "redelivered": 12,
+    "handler_runs": 51,
+    "jira_searches": 6,
+    "work_orders_loaded": 38,
+    "crashed_after": [
+      "bus/service-alerts:A-101"
+    ],
+    "approval_requests": 4,
+    "comments_posted": 5,
+    "duplicates_skipped": 12,
+    "retries": 2,
+    "backoff_waits": [
+      1.0,
+      1.0
+    ],
+    "dead_letters": [
+      "line 13: unknown status 'XX'",
+      "line 25: opened date '20261399' is not a real date",
+      "halted by guardrail restricted_project",
+      "count refused: Not run: BILL is outside this assistant's scope (ELEV, SIG). Do not retry with a different project. Tell the user which projects you can work with."
+    ]
+  }
+}
