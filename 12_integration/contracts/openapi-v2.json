@@ -1,0 +1,625 @@
+{
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "title": "Transit operations agent API",
+    "version": "v2"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/ask": {
+      "post": {
+        "operationId": "ask",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "question": {
+                    "maxLength": 500,
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "question"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "answer": {
+                      "type": "string"
+                    },
+                    "ended": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "answer",
+                    "ended"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    },
+                    "instance": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "integer"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "title",
+                    "status"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "No valid token"
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    },
+                    "instance": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "integer"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "title",
+                    "status"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Token lacks the scope"
+          },
+          "410": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    },
+                    "instance": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "integer"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "title",
+                    "status"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Version sunset"
+          },
+          "429": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    },
+                    "instance": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "integer"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "title",
+                    "status"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Rate limit or budget reached"
+          }
+        },
+        "security": [
+          {
+            "bearer": [
+              "model:invoke"
+            ]
+          }
+        ],
+        "summary": "Ask the assistant; a model routes the question, within your budget"
+      }
+    },
+    "/incidents/count": {
+      "get": {
+        "operationId": "countIncidents",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "project",
+            "required": true,
+            "schema": {
+              "enum": [
+                "ELEV",
+                "SIG"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_from",
+            "required": true,
+            "schema": {
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_before",
+            "required": true,
+            "schema": {
+              "format": "date",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "enum": [
+                "Open",
+                "Resolved"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "count": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "jql": {
+                      "type": "string"
+                    },
+                    "keys": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "project": {
+                      "type": "string"
+                    },
+                    "truncated": {
+                      "type": "boolean"
+                    },
+                    "visible_to": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "project",
+                    "count",
+                    "keys",
+                    "truncated",
+                    "jql",
+                    "visible_to"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    },
+                    "instance": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "integer"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "title",
+                    "status"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "No valid token"
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    },
+                    "instance": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "integer"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "title",
+                    "status"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Token lacks the scope"
+          },
+          "410": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    },
+                    "instance": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "integer"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "title",
+                    "status"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Version sunset"
+          },
+          "429": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    },
+                    "instance": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "integer"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "title",
+                    "status"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Rate limit or budget reached"
+          }
+        },
+        "security": [
+          {
+            "bearer": [
+              "jira:read"
+            ]
+          }
+        ],
+        "summary": "Incidents in a project and creation window, as the caller can see them"
+      }
+    },
+    "/triage/{issue_key}": {
+      "get": {
+        "operationId": "getTriage",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "issue_key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "issue_key": {
+                      "type": "string"
+                    },
+                    "requested_by": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "enum": [
+                        "none",
+                        "pending_approval",
+                        "posted",
+                        "declined"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "issue_key",
+                    "state"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    },
+                    "instance": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "integer"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "title",
+                    "status"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "No valid token"
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    },
+                    "instance": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "integer"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "title",
+                    "status"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Token lacks the scope"
+          },
+          "410": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    },
+                    "instance": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "integer"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "title",
+                    "status"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Version sunset"
+          },
+          "429": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    },
+                    "instance": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "integer"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "title",
+                    "status"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Rate limit or budget reached"
+          }
+        },
+        "security": [
+          {
+            "bearer": [
+              "jira:read"
+            ]
+          }
+        ],
+        "summary": "Where an incident's automated triage stands"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "/v2"
+    }
+  ]
+}
