@@ -1,0 +1,39 @@
+# Exception register. Where a module does not yet meet a standard that applies to it,
+# the gap is recorded here with an owner, a compensating control and an expiry.
+# An expired exception is a failure, not a reminder: the conformance check fails on it.
+# Maximum term: six months from approval.
+
+exceptions:
+
+  - id: EXC-001
+    standard: APP-05
+    modules: ["07"]
+    gap: "07_rag/rag/graph.py builds its OpenAI and Anthropic models itself instead of calling llm_provider.get_chat_model."
+    risk: "Changing the default model in llm_provider leaves 07 on the old one."
+    compensating_control: "Both paths read OPENAI_MODEL and default to gpt-6-luna with the same reasoning-effort rule; 07's runs record the model they called."
+    owner: "@LNLugo"
+    approved: 2026-10-16
+    expires: 2026-12-31
+    plan: "Route 07 through llm_provider in the repository housekeeping change."
+
+  - id: EXC-002
+    standard: API-01
+    modules: ["08"]
+    gap: "08's MCP server is reached directly, not through the gateway."
+    risk: "Gateway policies (rate limits, budgets) do not apply to MCP clients."
+    compensating_control: "The MCP server enforces identity from the bearer token and per-tool scopes itself, and makes no model calls, so no budget is at stake."
+    owner: "@LNLugo"
+    approved: 2026-10-16
+    expires: 2027-03-31
+    plan: "Mount the MCP endpoint behind the gateway with the same policy chain."
+
+  - id: EXC-003
+    standard: OPS-03
+    modules: ["06", "07"]
+    gap: "06's agents and 07's answers carry no caller identity, so their model calls are not held to a per-identity budget."
+    risk: "Their spend is reported, not limited."
+    compensating_control: "Both are costed by workflow in the cost report; neither is exposed to users except through the explorer app."
+    owner: "@LNLugo"
+    approved: 2026-10-16
+    expires: 2027-03-31
+    plan: "Give 06 and 07 a caller and pass the budget the way 08 does."

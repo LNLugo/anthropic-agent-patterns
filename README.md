@@ -23,6 +23,7 @@ with predictable workflows and progressing toward dynamic agent behavior.
 | Proof that retrieval never returns text a user cannot open | [Permission-aware retrieval](07_rag/README.md#permission-aware-retrieval) |
 | How the modules compose into a law firm system with ethical walls | [Design: Matter-Aware Legal AI](docs/designs/legal-matter-rag.md) |
 | How the modules compose into an enterprise knowledge assistant | [Design: Permission-Aware RAG over Atlassian](docs/designs/atlassian-rag.md) |
+| One reference architecture, standards enforced by tests, ADRs and a COE charter | [docs/architecture](docs/architecture/) |
 | A model router measured against rules on questions nobody tuned for | [08_tools held-out results](08_tools/README.md#held-out-set) |
 | Tools any agent can call, answering only as the signed-in user | [08_tools over MCP](08_tools/README.md#tools-over-mcp) |
 | Guardrails and human approval around a tool, with every claim counted | [Guardrails](08_tools/README.md#tool-guardrails), [approval](08_tools/README.md#human-approval) |
@@ -145,7 +146,7 @@ Every suite runs offline, with no API key, and CI runs all six on Python
 
 | Suite | Run from | Tests | What stands in for the model |
 |---|---|---|---|
-| Phase 1 patterns and the explorer app | repo root: `pytest` | 90 | `ScriptedChatModel` in [`llm_provider.py`](llm_provider.py) |
+| Phase 1 patterns, the explorer app and the architecture docs | repo root: `pytest` | 184 | `ScriptedChatModel` in [`llm_provider.py`](llm_provider.py) |
 | 07 Retrieval | `07_rag`: `pytest` | 63 | fixtures; no model call in the suite |
 | 08 Tools | `08_tools`: `pytest` | 149 | `ScriptedChatModel` and scripted tool calls |
 | 10 Observability | `10_observability`: `pytest` | 14 | runs 06, 07 and 08 on the scripted model and fixtures |
@@ -291,6 +292,18 @@ and names the number that will prove each part.
 | [Matter-Aware Legal AI](docs/designs/legal-matter-rag.md) | Research, drafting and playbook review for a law firm: matter scoping, ethical walls as deny rules, firm know-how kept apart from client files, fail-closed wall enforcement | 07, 08, Phase 1 routing, parallelization and evaluator-optimizer |
 | [Permission-Aware RAG over Atlassian](docs/designs/atlassian-rag.md) | Knowledge and aggregation questions over Confluence and Jira Data Center, with replicated ACLs for retrieval and delegated permissions for queries | 07, 08, 10, 11 |
 
+## Architecture standards
+
+[docs/architecture](docs/architecture/) is what an architecture COE would publish
+for teams building on these modules:
+- **[Reference architecture](docs/architecture/reference-architecture.md):** every layer, its control and the number that shows it works.
+- **[Standards](docs/architecture/standards.md):** 26 standards, 24 of them enforced by named tests.
+- **[Decision records](docs/architecture/adr/README.md):** 15 ADRs.
+- **[Design review checklist](docs/architecture/design-review-checklist.md)**, an exception register, and a **[COE charter](docs/architecture/coe-charter.md)**.
+
+A test checks that every test a standard cites exists, every link resolves,
+and every exception has an owner and an end date.
+
 ---
 
 ## Roadmap
@@ -302,10 +315,8 @@ and names the number that will prove each part.
 * **09 Memory**: retrieve relevant history instead of appending it to the prompt
 * **Handoff leakage test**: restricted context must not reach a worker that is
   not cleared for it, proven the same way 07 proves retrieval permissions
-* **Architecture standards and COE**: one reference architecture tying the
-  modules together; application, API, integration and AI standards, each
-  enforced by a named test; ADRs; a design review checklist and an exception
-  register
-* **Conformance check**: standards adoption computed from the repo, not claimed
+* **Conformance check**: standards adoption per module computed from the repo,
+  the review-only standards turned into checks where they can be, and CI
+  failing on an expired exception
 * **Housekeeping**: one current file per pattern, tagged releases with a
   changelog, a single `pyproject.toml`

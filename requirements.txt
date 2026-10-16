@@ -5,6 +5,8 @@ langchain-anthropic>=0.3
 langchain-openai>=0.2
 python-dotenv>=1.0
 pydantic>=2.0
+# docs/architecture: standards and exceptions are YAML
+pyyaml>=6.0
 pytest>=8.0
 # The pattern explorer (app/), also exercised by tests/test_app.py
 streamlit>=1.40
