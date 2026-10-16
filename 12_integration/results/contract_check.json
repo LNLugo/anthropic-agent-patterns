@@ -1,0 +1,112 @@
+{
+  "v1_to_v2": [
+    "GET /incidents/count: new required parameter created_from",
+    "GET /incidents/count: new required parameter created_before"
+  ],
+  "labeled_edits": [
+    {
+      "edit": "remove the triage operation",
+      "breaking": true,
+      "flagged": true,
+      "reasons": [
+        "GET /triage/{issue_key}: operation removed"
+      ]
+    },
+    {
+      "edit": "add a required parameter",
+      "breaking": true,
+      "flagged": true,
+      "reasons": [
+        "GET /incidents/count: new required parameter region"
+      ]
+    },
+    {
+      "edit": "make status required",
+      "breaking": true,
+      "flagged": true,
+      "reasons": [
+        "GET /incidents/count: parameter status is now required"
+      ]
+    },
+    {
+      "edit": "stop accepting project SIG",
+      "breaking": true,
+      "flagged": true,
+      "reasons": [
+        "GET /incidents/count: parameter project no longer accepts ['SIG']"
+      ]
+    },
+    {
+      "edit": "remove the jql response property",
+      "breaking": true,
+      "flagged": true,
+      "reasons": [
+        "GET /incidents/count: response property jql removed"
+      ]
+    },
+    {
+      "edit": "return count as a string",
+      "breaking": true,
+      "flagged": true,
+      "reasons": [
+        "GET /incidents/count: response property count type changed"
+      ]
+    },
+    {
+      "edit": "make visible_to optional in responses",
+      "breaking": true,
+      "flagged": true,
+      "reasons": [
+        "GET /incidents/count: response property visible_to may now be missing"
+      ]
+    },
+    {
+      "edit": "add a triage state clients have never seen",
+      "breaking": true,
+      "flagged": true,
+      "reasons": [
+        "GET /triage/{issue_key}: response property state has new values ['escalated']"
+      ]
+    },
+    {
+      "edit": "require a new property in the ask body",
+      "breaking": true,
+      "flagged": true,
+      "reasons": [
+        "POST /ask: request property station is now required"
+      ]
+    },
+    {
+      "edit": "stop accepting question in the ask body",
+      "breaking": true,
+      "flagged": true,
+      "reasons": [
+        "POST /ask: request property question is no longer accepted"
+      ]
+    },
+    {
+      "edit": "add an optional parameter",
+      "breaking": false,
+      "flagged": false,
+      "reasons": []
+    },
+    {
+      "edit": "add an operation",
+      "breaking": false,
+      "flagged": false,
+      "reasons": []
+    },
+    {
+      "edit": "add a response property",
+      "breaking": false,
+      "flagged": false,
+      "reasons": []
+    },
+    {
+      "edit": "accept a new project",
+      "breaking": false,
+      "flagged": false,
+      "reasons": []
+    }
+  ]
+}

@@ -58,3 +58,12 @@ jobs:
       - name: Test
         working-directory: ${{ matrix.dir }}
         run: python -m pytest -q
+
+      # The API lifecycle gate: a pull request may not break the v2 contract main publishes.
+      - name: Contract gate
+        if: matrix.suite == '12_integration' && github.event_name == 'pull_request'
+        working-directory: 12_integration
+        run: |
+          git fetch --depth=1 origin "${{ github.base_ref }}"
+          git show FETCH_HEAD:12_integration/contracts/openapi-v2.json > "$RUNNER_TEMP/base-v2.json" 2>/dev/null || echo '{}' > "$RUNNER_TEMP/base-v2.json"
+          python run_contract_check.py --baseline-v2 "$RUNNER_TEMP/base-v2.json"

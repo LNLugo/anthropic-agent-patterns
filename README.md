@@ -28,7 +28,7 @@ with predictable workflows and progressing toward dynamic agent behavior.
 | Guardrails and human approval around a tool, with every claim counted | [Guardrails](08_tools/README.md#tool-guardrails), [approval](08_tools/README.md#human-approval) |
 | Traces an auditor can use that hold no prompt, document or tool result | [10_observability](10_observability/) |
 | What a correct answer costs, and what each extra one costs over free rules | [11_finops](11_finops/) |
-| Agents started by events from legacy, SaaS and cloud sources, handled exactly once | [12_integration](12_integration/) |
+| Agents started by events from legacy, SaaS and cloud sources, handled exactly once; a governed, versioned API in front | [12_integration](12_integration/) |
 | The orchestration patterns themselves | [Architecture Progression](#architecture-progression) |
 | Everything above, interactively | `streamlit run app/Agent_Patterns.py` (Phase 2 results run offline, no API key) |
 
@@ -51,7 +51,7 @@ with predictable workflows and progressing toward dynamic agent behavior.
 | 09 | Memory | ⬜ Planned | Retrieve relevant history instead of appending it |
 | 10 | Observability | ✅ Complete | One trace per run across 06, 07 and 08, with agent, generation, tool, guardrail and handoff spans; local by default, sensitive content off; 0 of 16 planted content markers in the trace file, an audit report from the file alone. (Tool guardrails are built in 08) |
 | 11 | AI FinOps | ✅ Complete | Prices with sources and unpriced models refused; every run costed from its trace; cost per correct answer from recorded runs ($96 per million questions for +50 points of routing accuracy); per-identity budgets checked before every model call |
-| 12 | Integration | 🔶 In progress | Agents started by events from a legacy batch file, a signed SaaS webhook and a cloud event bus; at least once in, exactly once handled, measured against a control for each guarantee. Gateway and API lifecycle next |
+| 12 | Integration | ✅ Complete | Agents started by events from a legacy batch file, a signed SaaS webhook and a cloud event bus, handled exactly once (measured against a control for each guarantee); a gateway with identity, scopes, rate limits, budgets and versions; API contracts gated in CI |
 
 ---
 
@@ -150,7 +150,7 @@ Every suite runs offline, with no API key, and CI runs all six on Python
 | 08 Tools | `08_tools`: `pytest` | 149 | `ScriptedChatModel` and scripted tool calls |
 | 10 Observability | `10_observability`: `pytest` | 14 | runs 06, 07 and 08 on the scripted model and fixtures |
 | 11 AI FinOps | `11_finops`: `pytest` | 28 | prices recorded runs and trace files; budgets through 08 on `ScriptedChatModel` |
-| 12 Integration | `12_integration`: `pytest` | 34 | none: the worker routes in code; synthetic sources and an in-process broker |
+| 12 Integration | `12_integration`: `pytest` | 56 | the worker routes in code; synthetic sources, an in-process broker, the gateway over Starlette's test client |
 
 Phase 1 tests assert on the **path the graph took**, not on model prose: which
 nodes ran, in what order, and what each node was given. `LLM_PROVIDER=scripted`
@@ -302,9 +302,6 @@ and names the number that will prove each part.
 * **09 Memory**: retrieve relevant history instead of appending it to the prompt
 * **Handoff leakage test**: restricted context must not reach a worker that is
   not cleared for it, proven the same way 07 proves retrieval permissions
-* **12 Integration**: [events and delivery](12_integration/) are built; next, a
-  gateway with per-identity quotas fed by 11's budgets and versioned routes,
-  and API contracts with breaking-change tests and deprecation
 * **Architecture standards and COE**: one reference architecture tying the
   modules together; application, API, integration and AI standards, each
   enforced by a named test; ADRs; a design review checklist and an exception
