@@ -16,22 +16,7 @@ import json
 from collections import Counter, defaultdict
 from pathlib import Path
 
-
-def load(folder: Path) -> tuple[dict, list[dict]]:
-    traces, spans = {}, []
-    for path in sorted(Path(folder).rglob("traces-*.jsonl")):
-        for line in path.read_text().splitlines():
-            r = json.loads(line)
-            if r["type"] == "trace":
-                traces[r["trace_id"]] = r  # the end record replaces the start record
-            else:
-                spans.append(r)
-    return traces, spans
-
-
-def identity(trace: dict) -> str:
-    m = trace.get("metadata") or {}
-    return m.get("caller") or m.get("approver") or m.get("subject") or f"({trace['workflow']})"
+from tracing.files import identity, load_traces as load
 
 
 def report(traces: dict, spans: list[dict]) -> dict:
@@ -41,12 +26,8 @@ def report(traces: dict, spans: list[dict]) -> dict:
     people: dict[str, Counter] = defaultdict(Counter)
     halts, declines = [], []
     for tid, t in traces.items():
-        who = identity(t)
         mine = by_trace[tid]
-        # An MCP call names its subject in the token check, not in the trace metadata.
-        scope = next((s for s in mine if s["kind"] == "guardrail" and s["name"] == "token_scope"), None)
-        if scope and scope["data"].get("subject"):
-            who = scope["data"]["subject"]
+        who = identity(t, mine)
         c = people[who]
         c["runs"] += 1
         c[f"runs {t['status']}"] += 1

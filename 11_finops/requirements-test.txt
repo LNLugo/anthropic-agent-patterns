@@ -1,0 +1,4 @@
+# Prices and costing need PyYAML; scoring the rules router and the budget tests use 08_tools,
+# and costing reads traces through 10_observability (standard library).
+pyyaml>=6.0
+-r ../08_tools/requirements.txt

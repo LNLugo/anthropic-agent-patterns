@@ -10,6 +10,6 @@ except ImportError:
     sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "10_observability"))
     import tracing  # noqa: F401
 
-from tracing import get_tracer  # noqa: E402
+from tracing import get_tracer, model_name, usage  # noqa: E402
 
-__all__ = ["get_tracer"]
+__all__ = ["get_tracer", "model_name", "usage"]

@@ -1,0 +1,17 @@
+{
+  "_note": "07_rag's recorded answer evaluation, as published in 07_rag/README.md (Answer quality). Tokens are per-query means; outcomes are counts of 300 queries.",
+  "source": "07_rag/README.md#answer-quality",
+  "model": "gpt-4o-mini",
+  "queries": 300,
+  "input_tokens_per_query": 1190,
+  "output_tokens_per_query": 100,
+  "clause_present": 150,
+  "clause_absent": 150,
+  "correct": {
+    "answered_with_citation_on_the_annotated_span": 75,
+    "correct_abstention": 125
+  },
+  "lenient_also_correct": {
+    "answered_with_citation_outside_the_annotated_span": 26
+  }
+}

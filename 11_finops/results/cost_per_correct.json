@@ -1,0 +1,299 @@
+{
+  "prices": {
+    "gpt-6-luna": {
+      "input": 0.1,
+      "cached_input": 0.01,
+      "output": 0.5,
+      "source": "https://developers.openai.com/api/docs/models/gpt-6-luna",
+      "checked": "2026-10-16"
+    },
+    "gpt-4o-mini": {
+      "input": 0.15,
+      "cached_input": 0.075,
+      "output": 0.6,
+      "source": "https://developers.openai.com/api/docs/models/gpt-4o-mini",
+      "checked": "2026-10-16"
+    }
+  },
+  "routing": [
+    {
+      "set": "heldout",
+      "option": "rules",
+      "model": null,
+      "runs": 1,
+      "total": 20,
+      "correct": [
+        9
+      ],
+      "cost_per_question": 0.0,
+      "cost_per_correct": 0.0
+    },
+    {
+      "set": "heldout",
+      "option": "gpt-4o-mini",
+      "model": "gpt-4o-mini",
+      "runs": 1,
+      "total": 20,
+      "correct": [
+        18
+      ],
+      "cost_per_question": 0.00012179999999999999,
+      "cost_per_correct": 0.00013533333333333333
+    },
+    {
+      "set": "heldout",
+      "option": "gpt-6-luna, check off",
+      "model": "gpt-6-luna",
+      "runs": 3,
+      "total": 20,
+      "correct": [
+        19,
+        19,
+        18
+      ],
+      "cost_per_question": 9.23e-05,
+      "cost_per_correct": 9.895711500974658e-05
+    },
+    {
+      "set": "heldout",
+      "option": "gpt-6-luna, check on",
+      "model": "gpt-6-luna",
+      "runs": 1,
+      "total": 20,
+      "correct": [
+        19
+      ],
+      "cost_per_question": 9.6e-05,
+      "cost_per_correct": 0.00010105263157894737
+    },
+    {
+      "set": "coverage",
+      "option": "rules",
+      "model": null,
+      "runs": 1,
+      "total": 20,
+      "correct": [
+        14
+      ],
+      "cost_per_question": 0.0,
+      "cost_per_correct": 0.0
+    },
+    {
+      "set": "coverage",
+      "option": "gpt-6-luna, check off",
+      "model": "gpt-6-luna",
+      "runs": 1,
+      "total": 20,
+      "correct": [
+        13
+      ],
+      "cost_per_question": 9.48e-05,
+      "cost_per_correct": 0.00014584615384615385
+    },
+    {
+      "set": "coverage",
+      "option": "gpt-6-luna, check on",
+      "model": "gpt-6-luna",
+      "runs": 3,
+      "total": 20,
+      "correct": [
+        15,
+        15,
+        15
+      ],
+      "cost_per_question": 0.00010083333333333334,
+      "cost_per_correct": 0.00013444444444444444
+    },
+    {
+      "set": "development",
+      "option": "rules",
+      "model": null,
+      "runs": 1,
+      "total": 25,
+      "correct": [
+        22
+      ],
+      "cost_per_question": 0.0,
+      "cost_per_correct": 0.0
+    },
+    {
+      "set": "development",
+      "option": "gpt-4o-mini",
+      "model": "gpt-4o-mini",
+      "runs": 1,
+      "total": 25,
+      "correct": [
+        25
+      ],
+      "cost_per_question": 0.00011565,
+      "cost_per_correct": 0.00011565
+    },
+    {
+      "set": "development",
+      "option": "gpt-6-luna",
+      "model": "gpt-6-luna",
+      "runs": 1,
+      "total": 25,
+      "correct": [
+        25
+      ],
+      "cost_per_question": 9.120000000000001e-05,
+      "cost_per_correct": 9.120000000000001e-05
+    }
+  ],
+  "versus_rules": [
+    {
+      "set": "heldout",
+      "option": "gpt-4o-mini",
+      "accuracy_gain": 0.45,
+      "cost_per_extra_correct": 0.00027066666666666667,
+      "cost_per_million_questions": 121.8
+    },
+    {
+      "set": "heldout",
+      "option": "gpt-6-luna, check off",
+      "accuracy_gain": 0.4833333333333334,
+      "cost_per_extra_correct": 0.00019096551724137928,
+      "cost_per_million_questions": 92.3
+    },
+    {
+      "set": "heldout",
+      "option": "gpt-6-luna, check on",
+      "accuracy_gain": 0.5,
+      "cost_per_extra_correct": 0.000192,
+      "cost_per_million_questions": 96.0
+    },
+    {
+      "set": "coverage",
+      "option": "gpt-6-luna, check off",
+      "accuracy_gain": -0.05,
+      "cost_per_extra_correct": null,
+      "cost_per_million_questions": 94.8
+    },
+    {
+      "set": "coverage",
+      "option": "gpt-6-luna, check on",
+      "accuracy_gain": 0.05,
+      "cost_per_extra_correct": 0.0020166666666666666,
+      "cost_per_million_questions": 100.83333333333334
+    },
+    {
+      "set": "development",
+      "option": "gpt-4o-mini",
+      "accuracy_gain": 0.12,
+      "cost_per_extra_correct": 0.0009637500000000001,
+      "cost_per_million_questions": 115.65
+    },
+    {
+      "set": "development",
+      "option": "gpt-6-luna",
+      "accuracy_gain": 0.12,
+      "cost_per_extra_correct": 0.00076,
+      "cost_per_million_questions": 91.2
+    }
+  ],
+  "coverage_check": [
+    {
+      "set": "heldout",
+      "per_question_change": 0.04008667388949094,
+      "per_correct_change": 0.021176007091500137,
+      "correct_off": [
+        19,
+        19,
+        18
+      ],
+      "correct_on": [
+        19
+      ]
+    },
+    {
+      "set": "coverage",
+      "per_question_change": 0.06364275668073138,
+      "per_correct_change": -0.0781762775433662,
+      "correct_off": [
+        13
+      ],
+      "correct_on": [
+        15,
+        15,
+        15
+      ]
+    }
+  ],
+  "rag_answers": {
+    "set": "07 CUAD answers",
+    "model": "gpt-4o-mini",
+    "queries": 300,
+    "correct_strict": 200,
+    "correct_lenient": 226,
+    "cost_per_question": 0.0002385,
+    "cost_per_correct_strict": 0.00035775,
+    "cost_per_correct_lenient": 0.0003165929203539823,
+    "spend_on_wrong_strict_share": 0.33333333333333337
+  },
+  "reproduces_recorded_costs": [
+    {
+      "set": "heldout",
+      "option": "gpt-6-luna, check off",
+      "recorded": 9.3e-05,
+      "from_file": 9.23e-05,
+      "relative_difference": 0.007526881720430145
+    },
+    {
+      "set": "heldout",
+      "option": "gpt-6-luna, check off",
+      "recorded": 9.3e-05,
+      "from_file": 9.23e-05,
+      "relative_difference": 0.007526881720430145
+    },
+    {
+      "set": "heldout",
+      "option": "gpt-6-luna, check off",
+      "recorded": 9.3e-05,
+      "from_file": 9.23e-05,
+      "relative_difference": 0.007526881720430145
+    },
+    {
+      "set": "heldout",
+      "option": "gpt-6-luna, check on",
+      "recorded": 9.6e-05,
+      "from_file": 9.6e-05,
+      "relative_difference": 0.0
+    },
+    {
+      "set": "coverage",
+      "option": "gpt-6-luna, check off",
+      "recorded": 9.5e-05,
+      "from_file": 9.48e-05,
+      "relative_difference": 0.002105263157894788
+    },
+    {
+      "set": "coverage",
+      "option": "gpt-6-luna, check on",
+      "recorded": 0.000102,
+      "from_file": 0.0001015,
+      "relative_difference": 0.0049019607843137115
+    },
+    {
+      "set": "coverage",
+      "option": "gpt-6-luna, check on",
+      "recorded": 9.9e-05,
+      "from_file": 9.9e-05,
+      "relative_difference": 0.0
+    },
+    {
+      "set": "coverage",
+      "option": "gpt-6-luna, check on",
+      "recorded": 0.000102,
+      "from_file": 0.000102,
+      "relative_difference": 0.0
+    },
+    {
+      "set": "development",
+      "option": "gpt-6-luna",
+      "recorded": 9.1e-05,
+      "from_file": 9.120000000000001e-05,
+      "relative_difference": 0.002197802197802251
+    }
+  ]
+}

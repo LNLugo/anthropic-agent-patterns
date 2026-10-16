@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import random
 import sys
 from pathlib import Path
@@ -34,6 +35,23 @@ from rag.graph import PROVIDERS, answer_query, build_graph, make_llm  # noqa: E4
 from rag.ledger import ContextLedger  # noqa: E402
 from rag.metrics import _pct  # noqa: E402
 from rag.pipeline import build_index  # noqa: E402
+
+
+def model_name(provider: str, model: str | None) -> str:
+    """The model make_llm calls, resolved the same way, so the price file can name it."""
+    if provider == "anthropic":
+        return model or os.environ.get("CLAUDE_MODEL", "claude-sonnet-5-5")
+    return model or os.environ.get("OPENAI_MODEL", "gpt-6-luna")
+
+
+def priced(model, ledger):
+    """The ledger's cost from 11_finops/prices.yaml, or None (unpriced) for a model not in it."""
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "11_finops"))
+    from finops import PriceBook, Unpriced
+    try:
+        return PriceBook.load().cost(model, ledger.input_tokens, ledger.output_tokens)
+    except Unpriced:
+        return None
 
 
 def sample_balanced(queries, n: int, seed: int):
@@ -85,7 +103,8 @@ def main() -> None:
                     {"chunk_id": c.citation.chunk_id, "status": c.status, "span": c.span} for c in checked
                 ],
                 "citation_precision": citation_precision(checked, q.gold_spans) if q.answerable else None,
-                "cost_usd": ledger.cost(args.input_price, args.output_price),
+                "cost_usd": ledger.cost(args.input_price, args.output_price) if args.input_price is not None
+                            else priced(model_name(args.provider, args.model), ledger),
                 "ledger": ledger.to_dict(),
             }
             fh.write(json.dumps(row) + "\n")

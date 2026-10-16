@@ -24,10 +24,10 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
 try:
-    from tracing import get_tracer
+    from tracing import get_tracer, usage
 except ImportError:  # the path setup goes away with the single pyproject
     sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "10_observability"))
-    from tracing import get_tracer
+    from tracing import get_tracer, usage
 
 STAGE_KINDS = {"retrieve": "tool", "generate": "generation", "validate": "guardrail"}
 

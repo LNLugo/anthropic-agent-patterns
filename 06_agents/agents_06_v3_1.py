@@ -35,7 +35,7 @@ from pathlib import Path  # noqa: E402
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "10_observability"))
 from llm_provider import get_chat_model, parse_json  # noqa: E402  LLM_PROVIDER picks the model
-from tracing import get_tracer  # noqa: E402
+from tracing import get_tracer, model_name, usage  # noqa: E402
 from langgraph.graph import END, StateGraph  # noqa: E402
 
 
@@ -125,12 +125,11 @@ llm = get_chat_model()
 
 
 def _usage(response) -> dict:
-    usage = getattr(response, "usage_metadata", None) or {}
-    return {"input_tokens": usage.get("input_tokens", 0), "output_tokens": usage.get("output_tokens", 0)}
+    return usage(response)
 
 
 def _model_name() -> str:
-    return getattr(llm, "model_name", None) or getattr(llm, "model", None) or type(llm).__name__
+    return model_name(llm)
 
 
 # ---------------------------------------------------------

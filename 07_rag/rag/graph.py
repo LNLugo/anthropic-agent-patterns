@@ -20,7 +20,7 @@ from langgraph.graph import END, StateGraph
 
 from .chunking import Chunk
 from .citations import CheckedCitation, Citation, validate
-from .ledger import ContextLedger, get_tracer
+from .ledger import ContextLedger, get_tracer, usage
 from .retrievers import Retriever
 
 PROMPT = """You review commercial contracts. Use only the numbered excerpts below.
@@ -43,27 +43,26 @@ or
 {{"abstain": true, "reason": "why the excerpts do not support an answer"}}"""
 
 
-class LLMReply(TypedDict):
+class LLMReply(TypedDict, total=False):
     text: str
     input_tokens: int
     output_tokens: int
+    cached_input_tokens: int
+    model: str              # the configured model, as a price list names it
 
 
 LLM = Callable[[str], LLMReply]
 
 
-def _reply_from_message(msg) -> LLMReply:
+def _reply_from_message(msg, model: str) -> LLMReply:
     """Normalize a LangChain chat message into text plus token counts."""
-    usage = getattr(msg, "usage_metadata", None) or {}
+    counts = usage(msg)
     content = msg.content
     text = content if isinstance(content, str) else "".join(
         b.get("text", "") for b in content if isinstance(b, dict)
     )
-    return {
-        "text": text,
-        "input_tokens": int(usage.get("input_tokens", 0)),
-        "output_tokens": int(usage.get("output_tokens", 0)),
-    }
+    return {"text": text, "input_tokens": counts["input_tokens"], "output_tokens": counts["output_tokens"],
+            "cached_input_tokens": counts["cached_input_tokens"], "model": model}
 
 
 def claude_llm(model: str | None = None, max_tokens: int = 800) -> LLM:
@@ -71,8 +70,9 @@ def claude_llm(model: str | None = None, max_tokens: int = 800) -> LLM:
     from langchain_anthropic import ChatAnthropic
 
     # Claude Sonnet 5.5 accepts only its default temperature, so none is set here.
-    chat = ChatAnthropic(model=model or os.environ.get("CLAUDE_MODEL", "claude-sonnet-5-5"), max_tokens=max_tokens)
-    return lambda prompt: _reply_from_message(chat.invoke(prompt))
+    name = model or os.environ.get("CLAUDE_MODEL", "claude-sonnet-5-5")
+    chat = ChatAnthropic(model=name, max_tokens=max_tokens)
+    return lambda prompt: _reply_from_message(chat.invoke(prompt), name)
 
 
 def openai_llm(model: str | None = None, max_tokens: int = 800) -> LLM:
@@ -86,7 +86,7 @@ def openai_llm(model: str | None = None, max_tokens: int = 800) -> LLM:
     settings = ({"temperature": 0} if name.startswith("gpt-4")
                 else {"reasoning_effort": os.environ.get("OPENAI_REASONING_EFFORT", "none")})
     chat = ChatOpenAI(model=name, max_tokens=max_tokens, **settings)
-    return lambda prompt: _reply_from_message(chat.invoke(prompt))
+    return lambda prompt: _reply_from_message(chat.invoke(prompt), name)
 
 
 PROVIDERS: dict[str, Callable[..., LLM]] = {"anthropic": claude_llm, "openai": openai_llm}
@@ -141,7 +141,9 @@ def build_graph(retriever: Retriever, llm: LLM, k: int = 5):
         prompt = PROMPT.format(category=state["category"], details=state["details"], excerpts=excerpts)
         with ledger.stage("generate") as rec:
             reply = llm(prompt)
-            get_tracer().current().content(input=prompt, output=reply["text"])
+            span = get_tracer().current()
+            span.set(model=reply.get("model"), cached_input_tokens=reply.get("cached_input_tokens", 0))
+            span.content(input=prompt, output=reply["text"])
             rec.chunk_ids = [c.id for c in state["chunks"]]
             rec.context_chars = len(prompt)
             rec.input_tokens, rec.output_tokens, rec.model_calls = reply["input_tokens"], reply["output_tokens"], 1

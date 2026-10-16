@@ -28,7 +28,7 @@ from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
 from .guardrails import GuardrailRecord, ToolCallData, ToolGuardrail, run_guardrails
 from .jira_mock import Caller
 from .jql_tool import BoundedJiraTool, ToolRejected, ToolResult
-from .observe import get_tracer
+from .observe import get_tracer, model_name, usage
 from .model_router import ASK_CLARIFICATION, EVIDENCE_FIELD, SEARCH_WIKI, openai_style, system_prompt, with_evidence
 
 LOOP_INSTRUCTIONS = """
@@ -52,7 +52,7 @@ class ToolLoop:
         self.tool, self.guardrails, self.max_turns = tool, list(guardrails), max_turns
         tools = [openai_style(with_evidence(tool.schema)), openai_style(SEARCH_WIKI), openai_style(ASK_CLARIFICATION)]
         self.llm = llm.bind_tools(tools)
-        self.model = getattr(llm, "model_name", None) or getattr(llm, "model", None) or type(llm).__name__
+        self.model = model_name(llm)
 
     def run(self, question: str, caller: Caller, today: date) -> LoopResult:
         tracer = get_tracer()
@@ -73,9 +73,7 @@ class ToolLoop:
             with tracer.span("generation", "turn", model=self.model, turn=turn) as gen:
                 msg = self.llm.invoke(messages)
                 calls = getattr(msg, "tool_calls", None) or []
-                usage = getattr(msg, "usage_metadata", None) or {}
-                gen.set(input_tokens=usage.get("input_tokens", 0), output_tokens=usage.get("output_tokens", 0),
-                        tool_choice=calls[0]["name"] if calls else None)
+                gen.set(**usage(msg), tool_choice=calls[0]["name"] if calls else None)
                 gen.content(output=[dict(c.get("args") or {}) for c in calls] or str(msg.content))
             if not calls:
                 result.status, result.text = "answered", str(msg.content)
