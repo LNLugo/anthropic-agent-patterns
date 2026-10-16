@@ -23,6 +23,9 @@ with predictable workflows and progressing toward dynamic agent behavior.
 | Proof that retrieval never returns text a user cannot open | [Permission-aware retrieval](07_rag/README.md#permission-aware-retrieval) |
 | How the modules compose into a law firm system with ethical walls | [Design: Matter-Aware Legal AI](docs/designs/legal-matter-rag.md) |
 | How the modules compose into an enterprise knowledge assistant | [Design: Permission-Aware RAG over Atlassian](docs/designs/atlassian-rag.md) |
+| A model router measured against rules on questions nobody tuned for | [08_tools held-out results](08_tools/README.md#held-out-set) |
+| Tools any agent can call, answering only as the signed-in user | [08_tools over MCP](08_tools/README.md#tools-over-mcp) |
+| Guardrails and human approval around a tool, with every claim counted | [Guardrails](08_tools/README.md#tool-guardrails), [approval](08_tools/README.md#human-approval) |
 | The orchestration patterns themselves | [Architecture Progression](#architecture-progression) |
 | Everything above, interactively | `streamlit run app/Agent_Patterns.py` (Phase 2 results run offline, no API key) |
 
@@ -287,6 +290,13 @@ and names the number that will prove each part.
   positive control, so deny rules can be proven the same way allow rules are
 * **Cross-matter contamination test**: a user on one matter must never retrieve
   another matter's documents
+* **10 Observability**: one trace for every run, with agent, generation, tool,
+  guardrail and handoff spans, built on 07's context ledger and the guardrail
+  and approval records 08 already keeps; local by default, sensitive content off.
+  Tool guardrails, the other half of 10, are built in 08
 * **09 Memory**: retrieve relevant history instead of appending it to the prompt
-* **10 Guardrails and observability** on top of the context ledger
+* **Handoff leakage test**: restricted context must not reach a worker that is
+  not cleared for it, proven the same way 07 proves retrieval permissions
 * **11 AI FinOps**: cost per answer and cost per correct answer
+* **Housekeeping**: one current file per pattern, tagged releases with a
+  changelog, a single `pyproject.toml`
