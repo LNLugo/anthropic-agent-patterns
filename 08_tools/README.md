@@ -1,4 +1,4 @@
-# 08 · Tools (bounded Jira queries)
+# 08 · Tools and MCP
 
 **Control question:** *What is the model allowed to do, and who decides what it can see?*
 
@@ -330,13 +330,45 @@ comment tool only when given one, so the measured evaluations run as they
 were measured. `pending()` reads a waiting request from the checkpoint and
 `resume()` answers it, which is all an approval screen needs.
 
+### Tools over MCP
+
+**Control question:** *when any agent can call these tools, who decides whose data it sees?*
+
+`agent_tools/mcp_server.py` serves `count_jira_issues`, `search_wiki` and
+`comment_on_issue` over MCP (Streamable HTTP, mcp 2.x `MCPServer`). The
+caller's identity comes only from the transport:
+
+```text
+MCP client --Authorization: Bearer <token>--> token verifier --> subject --> caller in the directory
+                                                                               |
+                     tool call --> the assistant graph: guardrails --> bound --> Jira, as the caller
+```
+
+| Control | How it holds, tested over real HTTP against a local server |
+|---|---|
+| Identity from the token, never the arguments | No tool takes a user, caller or group argument. The same count returns 4 for billing_oncall's token and 3 for new_hire's. A `user="billing_oncall"` argument sent with new_hire's token is dropped by the SDK, and the answer is still new_hire's 3. |
+| No valid token, no session | An unknown or expired token gets HTTP 401 with `WWW-Authenticate: Bearer error="invalid_token"`, before any tool runs. A valid token for someone outside the directory gets nothing. |
+| Least privilege per tool | Reads need `jira:read`; commenting also needs `jira:write`. |
+| The same controls as the assistant | Each call runs through the assistant graph, with a `PresetRouter` passing in the client's chosen tool: the bound, the guardrails and Jira's permissions apply exactly as they do in the assistant. |
+| Writes still need a person | `comment_on_issue` returns `pending_approval` and a request id. There is deliberately no approve tool, so no agent can approve its own write; a person decides through `ApprovalDesk`, outside MCP, on the same checkpoints as above. |
+| Every call is audited | Tool, token subject, arguments, outcome and guardrail verdicts. |
+
+Two limits stated plainly. A guardrail's `raise_exception` refuses the call and
+is recorded as a halt, but stopping the client's own agent run is the
+client's job; the server cannot reach into it. And the token table is a
+stand-in: in production the verifier would validate an on-behalf-of token
+exchanged from the user's sign-in (OAuth 2.0 token exchange, RFC 8693), and
+Jira would be called with it. The question coverage check is not in the MCP
+policy, since the server never sees the user's question, only the client's
+chosen arguments.
+
 ## Run it
 
 ```bash
 cd 08_tools
 pip install -r requirements.txt
 
-pytest -q                       # 122 offline tests
+pytest -q                       # 134 offline tests
 python run_router_eval.py       # router and extraction accuracy
 
 # the same questions, routed by a model through tool calling (needs OPENAI_API_KEY,
@@ -359,6 +391,10 @@ python demo_guardrails.py --live "How many INFRA incidents last quarter?" --user
 
 # human approval: a comment pauses, the service restarts, the approval resumes it (offline; --live for the model)
 python demo_approval.py
+
+# the tools over MCP: a local server and client, two tokens, two answers, a 401, a pending comment
+python demo_mcp.py
+python serve_mcp.py                      # serve on localhost:8765 for an MCP client; prints demo tokens
 
 # knowledge question, routed to 07_rag's permission-filtered retrieval
 python demo_assistant.py "How do I rotate the billing API credentials?" --users billing_oncall new_hire
@@ -387,6 +423,7 @@ set by eye on 8 pages, not calibrated.
 │   ├── guardrails.py    tool guardrails: allow, reject_content, raise_exception; the demo policy
 │   ├── tool_loop.py     bounded tool loop that runs guardrails and tells the model when one rejects
 │   ├── comments.py      comment_on_issue, the one write; kept apart from the read only count tool
+│   ├── mcp_server.py    the tools over MCP; identity from the bearer token; ApprovalDesk for writes
 │   ├── evaluate.py      router and extraction accuracy on the labeled set, rules or model
 │   └── assistant.py     LangGraph flow: classify, extract, run tool or retrieve, respond
 ├── run_router_eval.py
@@ -394,7 +431,9 @@ set by eye on 8 pages, not calibrated.
 ├── demo_assistant.py
 ├── demo_guardrails.py
 ├── demo_approval.py
-└── tests/               122 offline tests, synthetic Jira, development, held-out and coverage questions
+├── demo_mcp.py
+├── serve_mcp.py
+└── tests/               134 offline tests, synthetic Jira, development, held-out and coverage questions
 ```
 
 ## Limits
@@ -407,9 +446,8 @@ set by eye on 8 pages, not calibrated.
   does not know ("OPS", "the invoice stack") means the project the model chose.
 * The tool filters by creation date only. "Resolved this month" cannot be
   expressed: it would need a resolution date filter.
-* The tool definition (`BoundedJiraTool.schema`) is shaped for tool calling and
-  MCP, but no MCP server is running yet. Exposing it through an MCP gateway with
-  on-behalf-of tokens is the planned next piece.
+* The MCP server's tokens are a static table standing in for on-behalf-of
+  tokens, and the server is meant for localhost.
 * Answers are composed by code, not by a model, so every word is testable. In
   production a model would phrase them, with the count, keys and JQL passed
   through unchanged.

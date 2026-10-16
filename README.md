@@ -41,7 +41,7 @@ with predictable workflows and progressing toward dynamic agent behavior.
 | 06 | Agents | ✅ Complete | LLM directs its own process and tool use; every turn ends in a typed outcome |
 | **Phase 2** | **Capability layer** | | |
 | 07 | Retrieval (RAG) | ✅ Complete | Retrieval ablation, cited answers, abstention and permission-aware retrieval, measured on CUAD |
-| 08 | Tools and MCP | 🟡 In progress | Bounded, read only Jira tool; model router (measured against rules on held-out questions) with coverage check and tool guardrails in the main path; human approval on writes. Next: MCP server |
+| 08 | Tools and MCP | ✅ Complete | Bounded, read only Jira tool; model router measured against rules on held-out questions; coverage check, tool guardrails and human approval in the main path; the tools over MCP with identity from the token |
 | 09 | Memory | ⬜ Planned | Retrieve relevant history instead of appending it |
 | 10 | Guardrails and observability | ⬜ Planned | Policy checks and traces built on the context ledger |
 | 11 | AI FinOps | ⬜ Planned | Cost per answer and cost per correct answer |
@@ -140,7 +140,7 @@ Every suite runs offline, with no API key, and CI runs all three on Python
 |---|---|---|---|
 | Phase 1 patterns and the explorer app | repo root: `pytest` | 75 | `ScriptedChatModel` in [`llm_provider.py`](llm_provider.py) |
 | 07 Retrieval | `07_rag`: `pytest` | 60 | fixtures; no model call in the suite |
-| 08 Tools | `08_tools`: `pytest` | 122 | `ScriptedChatModel` and scripted tool calls |
+| 08 Tools | `08_tools`: `pytest` | 134 | `ScriptedChatModel` and scripted tool calls |
 
 Phase 1 tests assert on the **path the graph took**, not on model prose: which
 nodes ran, in what order, and what each node was given. `LLM_PROVIDER=scripted`
@@ -260,7 +260,11 @@ questions, no query ran that should not have in any of three runs, against
 two such queries without it. Tool guardrails add deployment policy on top:
 `allow`, `reject_content` (blocked, and the model is told why) and
 `raise_exception` (the run halts), shown on the JQL tool with an
-out-of-scope project and a restricted one.
+out-of-scope project and a restricted one. The one write, a comment, posts
+only after a different person approves it, and the pending approval survives
+a restart on a saved checkpoint. Over MCP the caller's identity comes from the
+bearer token, never from tool arguments: the same call returns each token
+holder's own view, and a bad token gets a 401 before any tool runs.
 
 ---
 
