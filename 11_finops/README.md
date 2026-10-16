@@ -1,11 +1,9 @@
 # 11 AI FinOps
 
-What each answer costs, priced from the trace of the run that produced it,
-and what a *correct* answer costs, which is the number to choose between
-options on.
-
-> **Status:** prices and costing are built. Per-identity budgets enforced
-> before each model call follow in the next change.
+What each answer costs, priced from the trace of the run that produced it;
+what a *correct* answer costs, which is the number to choose between options
+on; and a budget per identity, checked before every model call so spend is
+held to a limit rather than reported after it.
 
 ## The rule: no price, no number
 
@@ -103,6 +101,48 @@ file reproduces all 9 recorded costs within 0.8%. The small differences come
 from applying the file to rounded mean token counts. 08's gpt-4o-mini runs were
 recorded with no cost at all; the file now prices them.
 
+### Budgets: held to the limit, not reported after it
+
+[`finops/budget.py`](finops/budget.py) holds a budget per identity per day.
+Spend is **measured, not estimated**. A `SpendMeter` is a trace exporter: it
+prices each model call from its generation span as the span ends, the same
+record module 10 writes and the cost report reads. Before every model call, the
+policy adds a reserve (what one more call is expected to cost) to what the
+identity has spent today:
+
+| Before the call | Behaviour | Effect |
+|---|---|---|
+| spent + reserve within the limit | `allow` | the call is made |
+| … and at or above 80% of it | `allow`, with `warning` in the trace | the call is made; the trace shows the identity is close |
+| spent + reserve over the limit | `reject_content` | **no model call**; the user is told the budget is used and when it resets |
+| the model to be called has no price, or earlier calls today had none | `reject_content` | no model call: spend that can't be measured can't be kept within a limit |
+
+Running over budget is not a security event, so nothing halts. The behaviours
+are 08's guardrail contract, and each verdict is a `model_budget` guardrail span
+with the spend, reserve and limit. 08 takes the budget as a parameter
+(`build_assistant(..., budget=)`, `ToolLoop(..., budget=)`) through a
+one-method protocol, so 08 does not depend on this module. The rules router
+calls no model, so it is never checked.
+
+[`run_budget_check.py`](run_budget_check.py) measures it through 08's assistant
+and tool loop, offline. The scripted model is priced as gpt-6-luna and reports
+the held-out mean of 728 input and 39 output tokens, so each call costs what an
+average real router call does: $0.0000923. Each scenario has a control run with
+no budget.
+
+| Scenario | With the budget | Without (control) |
+|---|---|---|
+| billing_oncall, $0.001 a day, asks 12 counts | 10 answered, refused from question 11 with **no model call**, warned on runs 9 and 10; $0.000923 spent | 12 answered |
+| new_hire, separate budget, asks 2 | 2 answered: one identity's spend never blocks another | 2 answered |
+| the next day | billing_oncall answered again | n/a |
+| A model looping on an out-of-scope project in the tool loop, budget of 2.5 calls | **stopped mid-run** at turn 3, after 2 model calls | ran to the 4-turn limit, 4 model calls |
+| The router switched to a model with no price | refused, 0 model calls | n/a |
+
+Model calls in the daily scenario: 12 with the budget against 14 without.
+Spend never exceeds the limit because the reserve is checked before the call,
+not after. Checking only what was already spent would let the 11th call
+through and end the day at $0.001015.
+
 ## Costing a trace
 
 Every generation span records its model and token counts
@@ -116,6 +156,7 @@ the turn limit.
 cd 11_finops
 pip install -r requirements-test.txt
 python run_cost_per_correct.py
+python run_budget_check.py
 python run_cost_report.py ../08_tools/traces
 ```
 
@@ -129,16 +170,20 @@ reported as unpriced, not costed at a typed guess.
 
 ## Tests
 
-From `11_finops`, `pytest` (18 tests): prices and the refusal, cached and
+From `11_finops`, `pytest` (28 tests): prices and the refusal, cached and
 long-context billing, costing trace records and a real trace file, rollups
-that refuse partial sums, and the cost per correct answer figures, including
-the check that the file reproduces 08's recorded costs.
+that refuse partial sums, the cost per correct answer figures (including the
+check that the file reproduces 08's recorded costs), and budgets, from the
+meter and policy up to the scenarios above run through 08.
 
 Each of these deliberate breakages fails a test: counting an unpriced call as
 $0, keeping a partial sum in a rollup, pricing a missing model at zero, applying
 the long-context rate at exactly 272K instead of above it, billing cached input
 at the full rate, and claiming a price per extra correct answer where the model
-did no better than rules.
+did no better than rules. For budgets: the assistant ignoring a refusal,
+checking spend without the reserve, failing open on an unpriced model, the
+tool loop checking only its first turn, an MCP call not charged to its token's
+subject, and spend that never resets by day.
 
 ## Limits
 
@@ -150,3 +195,11 @@ did no better than rules.
   question, so per-question costs are means too, with 1 to 3 runs per option.
 * **The development set favours the model.** The router's prompt was written
   after seeing those questions; the held-out set is the fair comparison.
+* **The meter is in memory.** Spend is rebuilt from the trace, not persisted, so
+  a restarted process starts the day at zero. Replaying today's trace file into
+  a fresh meter rebuilds it; a shared store would be needed across processes.
+* **The reserve is a setting.** A call that costs more than the reserve can take
+  spend past the limit by the difference. Set it from the p95 call cost, or from
+  the model's maximum output.
+* **06 and 07 are not budgeted.** Their runs carry no identity, so their spend
+  is reported by workflow, not held to a per-user limit.

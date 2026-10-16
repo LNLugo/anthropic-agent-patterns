@@ -1,0 +1,52 @@
+{
+  "daily_limit": [
+    {
+      "budget": true,
+      "cost_per_call": 9.23e-05,
+      "model_calls": 12,
+      "billing_oncall_answered": 10,
+      "billing_oncall_refused": 2,
+      "first_refused_at": 11,
+      "warned_runs": [
+        9,
+        10
+      ],
+      "new_hire_answered": 2,
+      "billing_oncall_spent": 0.0009230000000000001,
+      "next_day": "answered"
+    },
+    {
+      "budget": false,
+      "cost_per_call": 9.23e-05,
+      "model_calls": 14,
+      "billing_oncall_answered": 12,
+      "billing_oncall_refused": 0,
+      "first_refused_at": null,
+      "warned_runs": [],
+      "new_hire_answered": 2,
+      "billing_oncall_spent": 0.0011076,
+      "next_day": null
+    }
+  ],
+  "runaway_loop": [
+    {
+      "budget": true,
+      "status": "budget",
+      "turns": 3,
+      "model_calls": 2,
+      "spent": 0.0001846
+    },
+    {
+      "budget": false,
+      "status": "max_turns",
+      "turns": 4,
+      "model_calls": 4,
+      "spent": 0.0003692
+    }
+  ],
+  "unpriced_model": {
+    "stop_reason": "budget",
+    "answer": "Not run: this model has no price, so its spend cannot be kept within your budget.",
+    "model_calls": 0
+  }
+}

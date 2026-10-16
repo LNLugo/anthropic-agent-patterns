@@ -310,6 +310,12 @@ if it has the shape of a Jira project key, a coverage reason becomes a fixed
 code, and stray keys are counted, not listed. 10's leak check found the
 earlier versions echoing the model's arguments and the user's words.
 
+A budget can be asked before every model call: `build_assistant(..., budget=)`
+checks it before the router's model call, and `ToolLoop(..., budget=)` before
+every turn, so a looping model is stopped mid-run. The verdict is a
+`model_budget` guardrail, and over budget no model is called.
+[11_finops](../11_finops/) provides the budget, measured from the trace.
+
 What the tests show, with Jira calls counted rather than assumed:
 
 | Case | Model turns | Jira queries |
@@ -455,7 +461,7 @@ set by eye on 8 pages, not calibrated.
 ├── demo_approval.py
 ├── demo_mcp.py
 ├── serve_mcp.py
-└── tests/               144 offline tests, synthetic Jira, development, held-out and coverage questions
+└── tests/               148 offline tests, synthetic Jira, development, held-out and coverage questions
 ```
 
 ## Limits

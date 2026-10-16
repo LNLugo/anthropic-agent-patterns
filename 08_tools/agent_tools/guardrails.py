@@ -26,7 +26,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from typing import Any, Callable, Literal
+from typing import Any, Callable, Literal, Protocol
 
 from .coverage import check as coverage_check
 from .jira_mock import Caller
@@ -113,6 +113,29 @@ def run_guardrails(guardrails, stage: str, data: ToolCallData, log: list[Guardra
         if out.behavior == "raise_exception":
             raise tripwire(g, out, log)
     return None
+
+
+# ---------------------------------------------------------------- before a model call: the budget
+
+class ModelBudget(Protocol):
+    """Anything that can say whether one more model call fits a budget, e.g.
+    11_finops BudgetPolicy. Returns (behavior, message, output_info)."""
+
+    def check(self, identity: str, model: str | None) -> tuple[str, str, dict]: ...
+
+
+def check_model_budget(budget: ModelBudget | None, caller: Caller, model: str | None,
+                       log: list[GuardrailRecord]) -> str | None:
+    """Ask the budget before a model call. Returns the message to give the user when the
+    call must not be made, else None. With no budget, or no model to call, nothing is asked."""
+    if budget is None or model is None:
+        return None
+    with get_tracer().span("guardrail", "model_budget", stage="model", model=model) as span:
+        behavior, message, info = budget.check(caller.id, model)
+        span.set(behavior=behavior, triggered=behavior != "allow", output_info=info)
+        span.content(message=message or None)
+    log.append(GuardrailRecord("model_budget", "model", model, behavior, info))
+    return message if behavior == "reject_content" else None
 
 
 # ---------------------------------------------------------------- the demo policy for the JQL tool

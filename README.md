@@ -49,7 +49,7 @@ with predictable workflows and progressing toward dynamic agent behavior.
 | 08 | Tools and MCP | ✅ Complete | Bounded, read only Jira tool; model router measured against rules on held-out questions; coverage check, tool guardrails and human approval in the main path; the tools over MCP with identity from the token |
 | 09 | Memory | ⬜ Planned | Retrieve relevant history instead of appending it |
 | 10 | Observability | ✅ Complete | One trace per run across 06, 07 and 08, with agent, generation, tool, guardrail and handoff spans; local by default, sensitive content off; 0 of 16 planted content markers in the trace file, an audit report from the file alone. (Tool guardrails are built in 08) |
-| 11 | AI FinOps | 🔶 In progress | Prices with sources, every run costed from its trace, unpriced models refused; cost per correct answer from recorded runs. Budgets per identity next |
+| 11 | AI FinOps | ✅ Complete | Prices with sources and unpriced models refused; every run costed from its trace; cost per correct answer from recorded runs ($96 per million questions for +50 points of routing accuracy); per-identity budgets checked before every model call |
 
 ---
 
@@ -145,9 +145,9 @@ Every suite runs offline, with no API key, and CI runs all five on Python
 |---|---|---|---|
 | Phase 1 patterns and the explorer app | repo root: `pytest` | 90 | `ScriptedChatModel` in [`llm_provider.py`](llm_provider.py) |
 | 07 Retrieval | `07_rag`: `pytest` | 63 | fixtures; no model call in the suite |
-| 08 Tools | `08_tools`: `pytest` | 144 | `ScriptedChatModel` and scripted tool calls |
+| 08 Tools | `08_tools`: `pytest` | 148 | `ScriptedChatModel` and scripted tool calls |
 | 10 Observability | `10_observability`: `pytest` | 14 | runs 06, 07 and 08 on the scripted model and fixtures |
-| 11 AI FinOps | `11_finops`: `pytest` | 18 | none: prices recorded runs and trace files |
+| 11 AI FinOps | `11_finops`: `pytest` | 28 | prices recorded runs and trace files; budgets through 08 on `ScriptedChatModel` |
 
 Phase 1 tests assert on the **path the graph took**, not on model prose: which
 nodes ran, in what order, and what each node was given. `LLM_PROVIDER=scripted`
@@ -299,7 +299,15 @@ and names the number that will prove each part.
 * **09 Memory**: retrieve relevant history instead of appending it to the prompt
 * **Handoff leakage test**: restricted context must not reach a worker that is
   not cleared for it, proven the same way 07 proves retrieval permissions
-* **11 AI FinOps**: [prices and costing](11_finops/) are built; next, per-identity
-  budgets checked before every model call, fed by the same spans
+* **12 Integration**: agents triggered by events, with idempotency, a
+  dead-letter queue and replay; an outbox so an approved write posts exactly
+  once; a gateway with per-identity quotas fed by 11's budgets; API contracts
+  with breaking-change tests; legacy, SaaS and cloud-native adapters behind one
+  interface
+* **Architecture standards and COE**: one reference architecture tying the
+  modules together; application, API, integration and AI standards, each
+  enforced by a named test; ADRs; a design review checklist and an exception
+  register
+* **Conformance check**: standards adoption computed from the repo, not claimed
 * **Housekeeping**: one current file per pattern, tagged releases with a
   changelog, a single `pyproject.toml`

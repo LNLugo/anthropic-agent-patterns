@@ -28,7 +28,7 @@ from langgraph.graph import END, StateGraph
 from langgraph.types import Command, interrupt
 
 from .comments import Comment, CommentTool
-from .guardrails import GuardrailRecord, ToolCallData, ToolGuardrail, run_guardrails
+from .guardrails import GuardrailRecord, ModelBudget, ToolCallData, ToolGuardrail, check_model_budget, run_guardrails
 from .jira_mock import Caller
 from .jql_tool import BoundedJiraTool, QuerySpec, ToolRejected, ToolResult
 from .observe import get_tracer
@@ -97,14 +97,24 @@ def _describe(spec) -> str:
 
 def build_assistant(tool: BoundedJiraTool, knowledge: KnowledgeSearch, router: Router,
                     guardrails: list[ToolGuardrail] = (), k: int = 3,
-                    comment_tool: CommentTool | None = None, checkpointer=None):
+                    comment_tool: CommentTool | None = None, checkpointer=None, budget: ModelBudget | None = None):
     """comment_tool enables the write path, which pauses for human approval; that pause
-    has to survive until someone answers, so a checkpointer is required with it."""
+    has to survive until someone answers, so a checkpointer is required with it.
+    budget (e.g. 11_finops BudgetPolicy) is asked before the router calls its model; a
+    router with no model (the rules) costs nothing and is not checked."""
     guardrails = list(guardrails)
     if comment_tool is not None and checkpointer is None:
         raise ValueError("comment_tool needs a checkpointer: approval waits for a person, and the run must survive the wait")
 
     def decide_node(s: State) -> State:
+        records: list[GuardrailRecord] = []
+        refused = check_model_budget(budget, s["caller"], getattr(router, "model", None), records)
+        if refused is not None:
+            return {"route": "none", "stop_reason": "budget", "answer": refused, "guardrail_records": records}
+        update = _decide(s)
+        return update | {"guardrail_records": records} if records else update
+
+    def _decide(s: State) -> State:
         d = router.decide(s["question"], s["today"])
         if d.route == "aggregation":
             if d.rejected:
@@ -126,7 +136,7 @@ def build_assistant(tool: BoundedJiraTool, knowledge: KnowledgeSearch, router: R
                 "answer": "I couldn't tell whether that is a count or a documentation question. Could you rephrase it?"}
 
     def tool_node(s: State) -> State:
-        records: list[GuardrailRecord] = []
+        records: list[GuardrailRecord] = list(s.get("guardrail_records") or [])
         data = ToolCallData(tool.name, s["arguments"], s["question"], s["caller"])
         rejected = run_guardrails(guardrails, "input", data, records)  # raise_exception propagates and halts
         if rejected is not None:
@@ -155,7 +165,7 @@ def build_assistant(tool: BoundedJiraTool, knowledge: KnowledgeSearch, router: R
     def propose_node(s: State) -> State:
         """Everything that can be checked before a person is asked: guardrails, arguments,
         and that the requester can see the issue. Nobody is asked to approve an impossible write."""
-        records: list[GuardrailRecord] = []
+        records: list[GuardrailRecord] = list(s.get("guardrail_records") or [])
         args = s["arguments"]
         rejected = run_guardrails(guardrails, "input", ToolCallData(comment_tool.name, args, s["question"], s["caller"]), records)
         if rejected is not None:
