@@ -30,6 +30,7 @@ flowchart TB
         GR["Guardrails (08): allow, reject, halt"]
         AP["Approval (08): interrupt, checkpoint, no self-approval"]
         B["Budget (11): checked before each model call"]
+        MEM["Memory (09): owned sessions, relevant turns plus pinned instructions"]
     end
     subgraph sor[Systems of record]
         J[(Jira)]
@@ -47,6 +48,7 @@ flowchart TB
     AS --> R --> W
     AS --> AP --> J
     AS --> B
+    AS --> MEM
     P -. "built from" .-> AS
 ```
 
@@ -65,9 +67,10 @@ flowchart TB
 | Capability | Guardrails | [08](../../08_tools/README.md#tool-guardrails) | Allow, coach or halt; security first | An out-of-scope query reaches Jira 0 times, 1 without the guardrail |
 | Capability | Approval | [08](../../08_tools/README.md#human-approval) | Writes wait for a different person, on a durable checkpoint | Survives a restart; a lost response still posts once |
 | Capability | Budget | [11](../../11_finops/README.md) | Spend plus a reserve checked before each model call | $0.001 a day: 10 answered, the 11th refused with no model call |
-| Across | Tracing | [10](../../10_observability/README.md) | One trace per run; content off by default | 0 of 16 planted markers in the trace file; 16 of 16 with content on |
+| Capability | Memory | [09](../../09_memory/README.md) | A session owned by one identity; relevant turns plus pinned instructions; never evidence for a check except the user's own pinned words | 28 of 30 recalled at 240 exchanges with 34 times fewer tokens than appending everything |
+| Across | Tracing | [10](../../10_observability/README.md) | One trace per run; content off by default | 0 of 17 planted markers in the trace file; 17 of 17 with content on |
 | Across | Costing | [11](../../11_finops/README.md) | Priced from a sourced file; unpriced is unknown, not $0 | Reproduces 9 recorded costs within 0.8% |
-| Across | Standards | [standards](standards.md) | Each standard names the tests that enforce it | A test fails if a cited test does not exist |
+| Across | Standards | [standards](standards.md), [scorecard](scorecard.md) | Each standard names the tests or static check that enforce it, per module | 57 of 65 standard-module pairs conform; CI fails on an unregistered gap or an expired exception |
 
 ## Who acts, and as whom
 
@@ -105,7 +108,7 @@ response is lost.
 
 ## Not covered yet
 
-- **Memory (09):** retrieving relevant history instead of appending it.
+- **Memory with a model summary:** 09's compaction uses a deterministic stand-in; a live comparison is not made yet.
 - **Ethical walls in retrieval:** deny rules proven the way allow rules are.
 - **Handoff leakage:** restricted context must not reach a worker that isn't cleared for it.
 - **Production infrastructure:** shared state across processes, ordering and partitions.

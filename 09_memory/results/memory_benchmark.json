@@ -1,0 +1,387 @@
+{
+  "append all": [
+    {
+      "exchanges": 10,
+      "recall": 30,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 5,
+        "lex-work-order": 5,
+        "lex-sunset": 5,
+        "pin-signals": 5,
+        "pin-jql": 5,
+        "unpinned-shift": 5
+      },
+      "context_tokens": 247,
+      "context_cost_per_1000_questions": 0.024700000000000003
+    },
+    {
+      "exchanges": 30,
+      "recall": 30,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 5,
+        "lex-work-order": 5,
+        "lex-sunset": 5,
+        "pin-signals": 5,
+        "pin-jql": 5,
+        "unpinned-shift": 5
+      },
+      "context_tokens": 609,
+      "context_cost_per_1000_questions": 0.0609
+    },
+    {
+      "exchanges": 60,
+      "recall": 30,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 5,
+        "lex-work-order": 5,
+        "lex-sunset": 5,
+        "pin-signals": 5,
+        "pin-jql": 5,
+        "unpinned-shift": 5
+      },
+      "context_tokens": 1150,
+      "context_cost_per_1000_questions": 0.115
+    },
+    {
+      "exchanges": 120,
+      "recall": 30,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 5,
+        "lex-work-order": 5,
+        "lex-sunset": 5,
+        "pin-signals": 5,
+        "pin-jql": 5,
+        "unpinned-shift": 5
+      },
+      "context_tokens": 2220,
+      "context_cost_per_1000_questions": 0.222
+    },
+    {
+      "exchanges": 240,
+      "recall": 30,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 5,
+        "lex-work-order": 5,
+        "lex-sunset": 5,
+        "pin-signals": 5,
+        "pin-jql": 5,
+        "unpinned-shift": 5
+      },
+      "context_tokens": 4346,
+      "context_cost_per_1000_questions": 0.43460000000000004
+    }
+  ],
+  "last 10 items": [
+    {
+      "exchanges": 10,
+      "recall": 5,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 0,
+        "lex-work-order": 0,
+        "lex-sunset": 0,
+        "pin-signals": 0,
+        "pin-jql": 0,
+        "unpinned-shift": 5
+      },
+      "context_tokens": 101,
+      "context_cost_per_1000_questions": 0.010100000000000001
+    },
+    {
+      "exchanges": 30,
+      "recall": 0,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 0,
+        "lex-work-order": 0,
+        "lex-sunset": 0,
+        "pin-signals": 0,
+        "pin-jql": 0,
+        "unpinned-shift": 0
+      },
+      "context_tokens": 91,
+      "context_cost_per_1000_questions": 0.009099999999999999
+    },
+    {
+      "exchanges": 60,
+      "recall": 0,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 0,
+        "lex-work-order": 0,
+        "lex-sunset": 0,
+        "pin-signals": 0,
+        "pin-jql": 0,
+        "unpinned-shift": 0
+      },
+      "context_tokens": 89,
+      "context_cost_per_1000_questions": 0.008900000000000002
+    },
+    {
+      "exchanges": 120,
+      "recall": 0,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 0,
+        "lex-work-order": 0,
+        "lex-sunset": 0,
+        "pin-signals": 0,
+        "pin-jql": 0,
+        "unpinned-shift": 0
+      },
+      "context_tokens": 90,
+      "context_cost_per_1000_questions": 0.009000000000000001
+    },
+    {
+      "exchanges": 240,
+      "recall": 0,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 0,
+        "lex-work-order": 0,
+        "lex-sunset": 0,
+        "pin-signals": 0,
+        "pin-jql": 0,
+        "unpinned-shift": 0
+      },
+      "context_tokens": 88,
+      "context_cost_per_1000_questions": 0.0088
+    }
+  ],
+  "append and compact": [
+    {
+      "exchanges": 10,
+      "recall": 15,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 0,
+        "lex-work-order": 0,
+        "lex-sunset": 0,
+        "pin-signals": 5,
+        "pin-jql": 5,
+        "unpinned-shift": 5
+      },
+      "context_tokens": 167,
+      "context_cost_per_1000_questions": 0.0167
+    },
+    {
+      "exchanges": 30,
+      "recall": 0,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 0,
+        "lex-work-order": 0,
+        "lex-sunset": 0,
+        "pin-signals": 0,
+        "pin-jql": 0,
+        "unpinned-shift": 0
+      },
+      "context_tokens": 179,
+      "context_cost_per_1000_questions": 0.017900000000000003
+    },
+    {
+      "exchanges": 60,
+      "recall": 0,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 0,
+        "lex-work-order": 0,
+        "lex-sunset": 0,
+        "pin-signals": 0,
+        "pin-jql": 0,
+        "unpinned-shift": 0
+      },
+      "context_tokens": 179,
+      "context_cost_per_1000_questions": 0.017900000000000003
+    },
+    {
+      "exchanges": 120,
+      "recall": 0,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 0,
+        "lex-work-order": 0,
+        "lex-sunset": 0,
+        "pin-signals": 0,
+        "pin-jql": 0,
+        "unpinned-shift": 0
+      },
+      "context_tokens": 181,
+      "context_cost_per_1000_questions": 0.0181
+    },
+    {
+      "exchanges": 240,
+      "recall": 0,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 0,
+        "lex-work-order": 0,
+        "lex-sunset": 0,
+        "pin-signals": 0,
+        "pin-jql": 0,
+        "unpinned-shift": 0
+      },
+      "context_tokens": 179,
+      "context_cost_per_1000_questions": 0.017900000000000003
+    }
+  ],
+  "retrieve relevant": [
+    {
+      "exchanges": 10,
+      "recall": 26,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 5,
+        "lex-work-order": 5,
+        "lex-sunset": 5,
+        "pin-signals": 1,
+        "pin-jql": 5,
+        "unpinned-shift": 5
+      },
+      "context_tokens": 115,
+      "context_cost_per_1000_questions": 0.0115
+    },
+    {
+      "exchanges": 30,
+      "recall": 21,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 5,
+        "lex-work-order": 5,
+        "lex-sunset": 5,
+        "pin-signals": 0,
+        "pin-jql": 5,
+        "unpinned-shift": 1
+      },
+      "context_tokens": 112,
+      "context_cost_per_1000_questions": 0.011200000000000002
+    },
+    {
+      "exchanges": 60,
+      "recall": 21,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 5,
+        "lex-work-order": 5,
+        "lex-sunset": 5,
+        "pin-signals": 0,
+        "pin-jql": 5,
+        "unpinned-shift": 1
+      },
+      "context_tokens": 110,
+      "context_cost_per_1000_questions": 0.011
+    },
+    {
+      "exchanges": 120,
+      "recall": 24,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 4,
+        "lex-work-order": 5,
+        "lex-sunset": 5,
+        "pin-signals": 0,
+        "pin-jql": 5,
+        "unpinned-shift": 5
+      },
+      "context_tokens": 111,
+      "context_cost_per_1000_questions": 0.011100000000000002
+    },
+    {
+      "exchanges": 240,
+      "recall": 23,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 3,
+        "lex-work-order": 5,
+        "lex-sunset": 5,
+        "pin-signals": 0,
+        "pin-jql": 5,
+        "unpinned-shift": 5
+      },
+      "context_tokens": 109,
+      "context_cost_per_1000_questions": 0.0109
+    }
+  ],
+  "retrieve relevant + pinned": [
+    {
+      "exchanges": 10,
+      "recall": 30,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 5,
+        "lex-work-order": 5,
+        "lex-sunset": 5,
+        "pin-signals": 5,
+        "pin-jql": 5,
+        "unpinned-shift": 5
+      },
+      "context_tokens": 131,
+      "context_cost_per_1000_questions": 0.013100000000000002
+    },
+    {
+      "exchanges": 30,
+      "recall": 26,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 5,
+        "lex-work-order": 5,
+        "lex-sunset": 5,
+        "pin-signals": 5,
+        "pin-jql": 5,
+        "unpinned-shift": 1
+      },
+      "context_tokens": 131,
+      "context_cost_per_1000_questions": 0.013100000000000002
+    },
+    {
+      "exchanges": 60,
+      "recall": 26,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 5,
+        "lex-work-order": 5,
+        "lex-sunset": 5,
+        "pin-signals": 5,
+        "pin-jql": 5,
+        "unpinned-shift": 1
+      },
+      "context_tokens": 127,
+      "context_cost_per_1000_questions": 0.012700000000000001
+    },
+    {
+      "exchanges": 120,
+      "recall": 29,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 4,
+        "lex-work-order": 5,
+        "lex-sunset": 5,
+        "pin-signals": 5,
+        "pin-jql": 5,
+        "unpinned-shift": 5
+      },
+      "context_tokens": 127,
+      "context_cost_per_1000_questions": 0.012700000000000001
+    },
+    {
+      "exchanges": 240,
+      "recall": 28,
+      "of": 30,
+      "hits": {
+        "lex-p1-count": 3,
+        "lex-work-order": 5,
+        "lex-sunset": 5,
+        "pin-signals": 5,
+        "pin-jql": 5,
+        "unpinned-shift": 5
+      },
+      "context_tokens": 126,
+      "context_cost_per_1000_questions": 0.012600000000000002
+    }
+  ]
+}

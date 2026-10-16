@@ -1,0 +1,4 @@
+# 09 runs 08's assistant with memory (rank_bm25 comes with it), is traced through 10,
+# and prices context with 11's price file (PyYAML).
+-r ../08_tools/requirements.txt
+pyyaml>=6.0

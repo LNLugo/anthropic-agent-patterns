@@ -48,6 +48,11 @@ def test_every_cited_test_exists(ref):
     assert name in _tests_in(ROOT / path), f"{name} is not a test in {path}"
 
 
+def test_evidence_is_keyed_by_a_module_the_standard_applies_to():
+    for s in STANDARDS:
+        assert set(s["evidence"]) <= set(s["applies_to"]), s["id"]
+
+
 def test_every_adr_a_standard_cites_exists_and_cites_it_back():
     adrs = render.adr_files()
     for s in STANDARDS:
@@ -102,3 +107,21 @@ def test_every_relative_link_and_anchor_resolves(doc):
         assert dest.exists(), f"{doc.name}: link to {target} goes nowhere"
         if anchor and dest.suffix == ".md":
             assert anchor in _anchors(dest), f"{doc.name}: no heading #{anchor} in {dest.name}"
+
+
+@pytest.mark.parametrize("name", ["standards.yaml", "exceptions.yaml"])
+def test_the_yaml_has_no_duplicate_keys(name):
+    """YAML keeps the last of two equal keys without a word, so a duplicated module under
+    evidence would silently drop the first one's tests."""
+
+    class Strict(yaml.SafeLoader):
+        pass
+
+    def mapping(loader, node, deep=False):
+        keys = [loader.construct_object(k, deep=deep) for k, _ in node.value]
+        dups = sorted({str(k) for k in keys if keys.count(k) > 1})
+        assert not dups, f"{name} line {node.start_mark.line + 1}: duplicate keys {dups}"
+        return yaml.SafeLoader.construct_mapping(loader, node, deep)
+
+    Strict.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, mapping)
+    yaml.load((ARCH / name).read_text(), Loader=Strict)

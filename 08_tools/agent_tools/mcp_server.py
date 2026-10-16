@@ -115,7 +115,7 @@ class PresetRouter:
     def __init__(self, decision: Decision):
         self.decision = decision
 
-    def decide(self, question: str, today: date) -> Decision:
+    def decide(self, question: str, today: date, context: list[dict] | None = None) -> Decision:
         return self.decision
 
 

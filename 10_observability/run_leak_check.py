@@ -27,7 +27,7 @@ os.environ["LLM_PROVIDER"] = "scripted"  # before any module builds its model
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-for p in (HERE, ROOT, ROOT / "06_agents", ROOT / "07_rag", ROOT / "08_tools"):
+for p in (HERE, ROOT, ROOT / "06_agents", ROOT / "07_rag", ROOT / "08_tools", ROOT / "12_integration"):
     sys.path.insert(0, str(p))
 
 from langchain_core.messages import AIMessage  # noqa: E402
@@ -58,6 +58,7 @@ MARKERS = {
     "08 model tool argument": "QX08-arg-9e1d",
     "08 project evidence":    "QX08-evidence-41aa",
     "08 tool bound error":    "QX08-date-c77e",
+    "12 work order text":     "QX12-workorder-5b0e",
 }
 M = MARKERS
 
@@ -159,6 +160,31 @@ def run_08(workdir: Path):
         resume(writer(), thread, approved=approved, approver=approver, reason=reason)
 
 
+def run_12(workdir: Path):
+    """Event-triggered triage: a work order's free text from the legacy file ends up in the
+    proposed comment, so it must stay out of the trace like any other content."""
+    from datetime import date as d
+
+    from agent_tools.comments import CommentStore
+    from agent_tools.jira_mock import MockJira
+    from integration.adapters import detail_record, parse_workorders, service_alert
+    from integration.delivery import Broker, Consumer, DeadLetters, ProcessedStore
+    from integration.triage import Triage
+
+    jira, users = MockJira.from_fixture(ROOT / "12_integration" / "fixtures" / "transit_jira.json")
+    triage = Triage(jira, users, CommentStore(), workdir / "triage.db", TODAY)
+    broker = Broker()
+    line = detail_record("WO-9001", "ESC-127-02", "S127", "OP", d(2026, 10, 9), f"Chain {M['12 work order text']}")
+    events, _ = parse_workorders(f"H20261012\n{line}\nT000000001\n")
+    for e in events + [service_alert({"alert_id": "A-1", "asset": "ESC-127-02", "station": "S127",
+                                      "kind": "out_of_service", "severity": "major",
+                                      "raised_at": "2026-10-12T07:00:00Z", "issue_key": "ELEV-41"})]:
+        broker.publish(e)
+    Consumer(broker, triage.handlers(), ProcessedStore(workdir / "p.db"), DeadLetters(workdir / "d.db")).run_until_idle()
+    assert M["12 work order text"] in triage.pending("triage-ELEV-41")["body"]
+    triage.decide("triage-ELEV-41", True, "maintenance_lead")   # posting traces the body, as content
+
+
 def run_all(folder: Path, include_sensitive: bool) -> Path:
     exporter = JsonlExporter(folder)
     tracer = Tracer([exporter], include_sensitive=include_sensitive)
@@ -167,6 +193,7 @@ def run_all(folder: Path, include_sensitive: bool) -> Path:
         run_06()
         run_07()
         run_08(folder)
+        run_12(folder)
     finally:
         set_tracer(previous)
     assert tracer.export_errors == 0

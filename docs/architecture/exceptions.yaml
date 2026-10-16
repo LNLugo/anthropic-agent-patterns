@@ -37,3 +37,14 @@ exceptions:
     approved: 2026-10-16
     expires: 2027-03-31
     plan: "Give 06 and 07 a caller and pass the budget the way 08 does."
+
+  - id: EXC-004
+    standard: AI-07
+    modules: ["07"]
+    gap: "07's answer evaluation ran once, on one model (gpt-4o-mini), with no non-model baseline for answers."
+    risk: "Run-to-run variation is unmeasured, and there is no baseline to say what the model adds."
+    compensating_control: "Scored against lawyer annotations on CUAD's test contracts, never seen when the prompt was written; the README states the plus or minus 7 point uncertainty and attributes every failure to a cause."
+    owner: "@LNLugo"
+    approved: 2026-10-16
+    expires: 2027-04-16
+    plan: "Re-run on gpt-6-luna three times, and report an extractive baseline (the top reranked chunk, cited) beside it."

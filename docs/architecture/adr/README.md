@@ -20,3 +20,4 @@ strongest objection with its answer. Standards cite these by number ([standards]
 | [0013](0013-offline-tests-measured-live-runs.md) | Tests run offline; model quality is measured separately | APP-04, AI-07 |
 | [0014](0014-api-versions-and-sunset.md) | A breaking change is a new version, with a dated end for the old one | API-02, API-03, API-04 |
 | [0015](0015-in-process-stand-ins.md) | Stand-ins in process, mapped to managed services | INT-01, INT-04 |
+| [0016](0016-memory-retrieved-and-pinned.md) | Memory is retrieved by relevance, with standing instructions pinned | AI-08, APP-06 |

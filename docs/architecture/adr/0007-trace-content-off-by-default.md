@@ -25,7 +25,7 @@ A planted-marker leak check runs in CI. A new kind of content needs a new marker
 
 ## Evidence
 
-0 of 16 planted markers reached the trace file with sensitive data off; all 16 with it on (the control). Building
+0 of 17 planted markers reached the trace file with sensitive data off; all 17 with it on (the control). Building
 the check found 3 real leaks through guardrail metadata, now fixed (10_observability).
 
 ## The strongest objection

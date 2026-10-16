@@ -1,11 +1,15 @@
 # Architecture standards. The source of truth: standards.md is rendered from this
 # file (python docs/architecture/render_standards.py), and a test fails if it is stale.
 #
-# Every standard names the tests that enforce it, as path::test. A test checks that
-# each one exists, so a standard cannot cite enforcement that is not there. A
-# standard enforced only by review says so (enforced_by: []), and is counted that way.
-# applies_to lists the modules the standard governs; an exception (exceptions.yaml)
-# records where one does not yet meet it.
+# applies_to lists the modules a standard governs. For each of them, conformance
+# (conformance.py) needs one of:
+#   evidence  tests that enforce the standard for that module, as path::test, keyed by
+#             module (a test in one module can be evidence for another: 10's leak check
+#             covers 06, 07 and 08). A test checks that each one exists.
+#   checks    static checks run over the module's code (conformance.py)
+#   an exception in exceptions.yaml, with an owner and an expiry
+# A standard with neither evidence nor checks is enforced by design review only, and
+# is counted as attested, not as conforming. Anything else is a gap, and CI fails on it.
 
 standards:
 
@@ -18,7 +22,7 @@ standards:
     rationale: "Every added step is cost and a way to be wrong. The repo's routing, triage and evaluations are each justified by a number."
     adr: ["0001", "0011"]
     applies_to: ["06", "08", "12"]
-    enforced_by: []
+    evidence: {}
 
   - id: AI-02
     domain: AI
@@ -27,10 +31,11 @@ standards:
     rationale: "Typed arguments leave nothing to inject into."
     adr: ["0002"]
     applies_to: ["08"]
-    enforced_by:
-      - 08_tools/tests/test_jql_tool.py::test_injection_through_a_field_is_rejected
-      - 08_tools/tests/test_jql_tool.py::test_raw_jql_argument_cannot_pass_through
-      - 08_tools/tests/test_jql_tool.py::test_jql_is_built_by_the_tool
+    evidence:
+      "08":
+        - 08_tools/tests/test_jql_tool.py::test_injection_through_a_field_is_rejected
+        - 08_tools/tests/test_jql_tool.py::test_raw_jql_argument_cannot_pass_through
+        - 08_tools/tests/test_jql_tool.py::test_jql_is_built_by_the_tool
 
   - id: AI-03
     domain: AI
@@ -39,10 +44,12 @@ standards:
     rationale: "An agent that cannot say why it stopped cannot be audited or debugged."
     adr: []
     applies_to: ["06", "08"]
-    enforced_by:
-      - 06_agents/test_agents_06_v3_1.py::test_anything_else_is_an_interruption_not_a_guess
-      - 06_agents/test_agents_06_v3_1.py::test_every_run_ends_with_a_status
-      - 08_tools/tests/test_assistant_model_router.py::test_a_reply_with_no_tool_call_is_not_guessed_at
+    evidence:
+      "06":
+        - 06_agents/test_agents_06_v3_1.py::test_anything_else_is_an_interruption_not_a_guess
+        - 06_agents/test_agents_06_v3_1.py::test_every_run_ends_with_a_status
+      "08":
+        - 08_tools/tests/test_assistant_model_router.py::test_a_reply_with_no_tool_call_is_not_guessed_at
 
   - id: AI-04
     domain: AI
@@ -51,10 +58,12 @@ standards:
     rationale: "A confident wrong answer is the expensive failure."
     adr: []
     applies_to: ["07", "08"]
-    enforced_by:
-      - 07_rag/tests/test_citations_and_graph.py::test_graph_abstains_when_citation_is_fabricated
-      - 08_tools/tests/test_assistant_model_router.py::test_the_coverage_check_stops_a_half_answer_in_the_main_path
-      - 08_tools/tests/test_assistant.py::test_missing_project_asks_a_question_and_runs_nothing
+    evidence:
+      "07":
+        - 07_rag/tests/test_citations_and_graph.py::test_graph_abstains_when_citation_is_fabricated
+      "08":
+        - 08_tools/tests/test_assistant_model_router.py::test_the_coverage_check_stops_a_half_answer_in_the_main_path
+        - 08_tools/tests/test_assistant.py::test_missing_project_asks_a_question_and_runs_nothing
 
   - id: AI-05
     domain: AI
@@ -63,10 +72,12 @@ standards:
     rationale: "A security event must not be politely redirected into a retry."
     adr: ["0004"]
     applies_to: ["08", "12"]
-    enforced_by:
-      - 08_tools/tests/test_guardrails.py::test_order_matters_restricted_halts_before_scope_could_redirect
-      - 08_tools/tests/test_assistant_model_router.py::test_raise_exception_halts_the_graph_even_for_a_call_the_bound_refuses
-      - 12_integration/tests/test_triage.py::test_an_event_cannot_point_the_service_at_a_restricted_project
+    evidence:
+      "08":
+        - 08_tools/tests/test_guardrails.py::test_order_matters_restricted_halts_before_scope_could_redirect
+        - 08_tools/tests/test_assistant_model_router.py::test_raise_exception_halts_the_graph_even_for_a_call_the_bound_refuses
+      "12":
+        - 12_integration/tests/test_triage.py::test_an_event_cannot_point_the_service_at_a_restricted_project
 
   - id: AI-06
     domain: AI
@@ -75,11 +86,13 @@ standards:
     rationale: "Accountability for a change belongs to a person."
     adr: ["0005"]
     applies_to: ["08", "12"]
-    enforced_by:
-      - 08_tools/tests/test_approval.py::test_the_requester_cannot_approve_their_own_write
-      - 08_tools/tests/test_approval.py::test_resume_from_a_saved_checkpoint_after_a_restart
-      - 08_tools/tests/test_mcp_server.py::test_a_comment_over_mcp_waits_for_a_person_and_there_is_no_approve_tool
-      - 12_integration/tests/test_triage.py::test_the_service_cannot_approve_itself_and_a_person_posts_it_once
+    evidence:
+      "08":
+        - 08_tools/tests/test_approval.py::test_the_requester_cannot_approve_their_own_write
+        - 08_tools/tests/test_approval.py::test_resume_from_a_saved_checkpoint_after_a_restart
+        - 08_tools/tests/test_mcp_server.py::test_a_comment_over_mcp_waits_for_a_person_and_there_is_no_approve_tool
+      "12":
+        - 12_integration/tests/test_triage.py::test_the_service_cannot_approve_itself_and_a_person_posts_it_once
 
   - id: AI-07
     domain: AI
@@ -88,12 +101,26 @@ standards:
     rationale: "A score on the development set measures the prompt's fit to it."
     adr: ["0001", "0013"]
     applies_to: ["07", "08"]
-    enforced_by:
-      - 08_tools/tests/test_model_router.py::test_template_placeholders_are_refused
-      - 11_finops/tests/test_cost_per_correct.py::test_rules_are_free_but_each_extra_correct_route_has_a_price
+    evidence:
+      "08":
+        - 08_tools/tests/test_model_router.py::test_template_placeholders_are_refused
+        - 11_finops/tests/test_cost_per_correct.py::test_rules_are_free_but_each_extra_correct_route_has_a_price
 
   # ---------------------------------------------------------------- Security and identity (application)
 
+
+  - id: AI-08
+    domain: AI
+    title: "Memory is selected, bounded, and never widens a check"
+    statement: "What a model sees from past turns is chosen by relevance within a bound, with the user's standing instructions pinned. Nothing from memory counts as evidence for a check except the user's own pinned instructions."
+    rationale: "Appending everything grows cost without limit; a summary forgets; and a project named in passing earlier must not authorize a query now."
+    adr: ["0016"]
+    applies_to: ["09"]
+    evidence:
+      "09":
+        - 09_memory/tests/test_strategies.py::test_retrieval_with_pins_recalls_most_at_a_fraction_of_the_cost
+        - 09_memory/tests/test_strategies.py::test_pinning_is_what_keeps_the_standing_instruction
+        - 09_memory/tests/test_assistant_memory.py::test_a_project_named_earlier_is_not_evidence_for_a_new_question
   - id: APP-01
     domain: Application
     title: "Every call is made as a named identity"
@@ -101,11 +128,14 @@ standards:
     rationale: "Delegated permissions cannot drift; a replicated copy can."
     adr: ["0003", "0012"]
     applies_to: ["07", "08", "12"]
-    enforced_by:
-      - 08_tools/tests/test_jql_tool.py::test_jira_refuses_calls_without_a_named_user
-      - 08_tools/tests/test_jql_tool.py::test_count_depends_on_who_asks
-      - 07_rag/tests/test_permissions.py::test_zero_leakage_with_filter
-      - 12_integration/tests/test_gateway.py::test_jira_permissions_still_apply_through_the_gateway
+    evidence:
+      "07":
+        - 07_rag/tests/test_permissions.py::test_zero_leakage_with_filter
+      "08":
+        - 08_tools/tests/test_jql_tool.py::test_jira_refuses_calls_without_a_named_user
+        - 08_tools/tests/test_jql_tool.py::test_count_depends_on_who_asks
+      "12":
+        - 12_integration/tests/test_gateway.py::test_jira_permissions_still_apply_through_the_gateway
 
   - id: APP-02
     domain: Application
@@ -114,10 +144,12 @@ standards:
     rationale: "An agent that can name the user can name any user."
     adr: ["0006"]
     applies_to: ["08", "12"]
-    enforced_by:
-      - 08_tools/tests/test_mcp_server.py::test_no_tool_takes_a_user_argument
-      - 08_tools/tests/test_mcp_server.py::test_naming_another_user_in_the_arguments_changes_nothing
-      - 12_integration/tests/test_gateway.py::test_the_contract_refuses_a_request_before_any_agent_runs
+    evidence:
+      "08":
+        - 08_tools/tests/test_mcp_server.py::test_no_tool_takes_a_user_argument
+        - 08_tools/tests/test_mcp_server.py::test_naming_another_user_in_the_arguments_changes_nothing
+      "12":
+        - 12_integration/tests/test_gateway.py::test_the_contract_refuses_a_request_before_any_agent_runs
 
   - id: APP-03
     domain: Application
@@ -126,11 +158,14 @@ standards:
     rationale: "Every default-open path is a leak waiting for its input."
     adr: ["0008"]
     applies_to: ["07", "11", "12"]
-    enforced_by:
-      - 07_rag/tests/test_permissions.py::test_unknown_space_fails_closed
-      - 07_rag/tests/test_permissions.py::test_chunk_without_gates_is_never_returned
-      - 11_finops/tests/test_budget.py::test_an_unpriced_model_is_refused_before_it_is_called
-      - 12_integration/tests/test_adapters.py::test_an_unsigned_or_forged_webhook_is_refused
+    evidence:
+      "07":
+        - 07_rag/tests/test_permissions.py::test_unknown_space_fails_closed
+        - 07_rag/tests/test_permissions.py::test_chunk_without_gates_is_never_returned
+      "11":
+        - 11_finops/tests/test_budget.py::test_an_unpriced_model_is_refused_before_it_is_called
+      "12":
+        - 12_integration/tests/test_adapters.py::test_an_unsigned_or_forged_webhook_is_refused
 
   - id: APP-04
     domain: Application
@@ -138,12 +173,22 @@ standards:
     statement: "Every suite runs with no API key. A test that proves something never happens is paired with a run where it does (the control), so a zero means the check works, not that it is blind."
     rationale: "A zero without a control is indistinguishable from a broken test."
     adr: ["0013"]
-    applies_to: ["06", "07", "08", "10", "11", "12"]
-    enforced_by:
-      - tests/test_scripted_model.py::test_a_call_with_no_step_left_raises
-      - 07_rag/tests/test_permissions.py::test_unfiltered_baseline_leaks
-      - 10_observability/tests/test_leak_check.py::test_no_content_reaches_the_trace_file_and_the_control_sees_all_of_it
-      - 12_integration/tests/test_integration_check.py::test_without_the_marker_one_lost_response_posts_twice
+    applies_to: ["06", "07", "08", "09", "10", "11", "12"]
+    evidence:
+      "06":
+        - tests/test_scripted_model.py::test_a_call_with_no_step_left_raises
+      "07":
+        - 07_rag/tests/test_permissions.py::test_unfiltered_baseline_leaks
+      "08":
+        - 08_tools/tests/test_guardrails.py::test_without_the_guardrail_the_tool_would_have_run_it
+      "09":
+        - 09_memory/tests/test_assistant_memory.py::test_without_the_pin_the_same_words_are_not_evidence
+      "10":
+        - 10_observability/tests/test_leak_check.py::test_no_content_reaches_the_trace_file_and_the_control_sees_all_of_it
+      "11":
+        - 11_finops/tests/test_budget.py::test_a_daily_budget_stops_at_the_expected_question_and_calls_nothing_after
+      "12":
+        - 12_integration/tests/test_integration_check.py::test_without_the_marker_one_lost_response_posts_twice
 
   - id: APP-05
     domain: Application
@@ -152,21 +197,46 @@ standards:
     rationale: "Two selection paths drift: change the default in one and the other keeps the old one."
     adr: []
     applies_to: ["01", "02", "03", "04", "05", "06", "07", "08"]
-    enforced_by: []
+    evidence: {}
+    checks: [model_construction]
 
   # ---------------------------------------------------------------- Observability and cost (AI operations)
 
+
+  - id: APP-06
+    domain: Application
+    title: "Memory belongs to one identity, can be deleted, and expires"
+    statement: "A session is bound to the identity that created it; opening another identity's session is refused. A user's history can be deleted, and expires after its retention period, deleted rather than hidden."
+    rationale: "A session id is not a credential, and history kept forever is a liability, not a feature."
+    adr: ["0016"]
+    applies_to: ["09"]
+    evidence:
+      "09":
+        - 09_memory/tests/test_session.py::test_a_sqlite_session_survives_a_restart_and_belongs_to_its_owner
+        - 09_memory/tests/test_assistant_memory.py::test_someone_elses_session_is_refused_before_anything_runs
+        - 09_memory/tests/test_session.py::test_expired_items_are_deleted_on_the_next_write_not_just_hidden
+        - 09_memory/tests/test_session.py::test_pop_undoes_the_last_item_and_clear_deletes_everything
   - id: OPS-01
     domain: AI
     title: "Every run is traced, and content stays out by default"
     statement: "Every agent run is one trace with typed spans. Prompts, documents, model output and tool results are recorded only when explicitly enabled; metadata holds only identities, counts and values checked against a known format."
     rationale: "Traces are read by more people than the data they describe."
     adr: ["0007"]
-    applies_to: ["06", "07", "08", "12"]
-    enforced_by:
-      - 10_observability/tests/test_leak_check.py::test_no_content_reaches_the_trace_file_and_the_control_sees_all_of_it
-      - 08_tools/tests/test_guardrails.py::test_output_info_never_echoes_free_text_from_the_model
-      - 08_tools/tests/test_traces.py::test_a_count_reconciles_span_for_span
+    applies_to: ["06", "07", "08", "09", "12"]
+    evidence:
+      "06":
+        - 10_observability/tests/test_leak_check.py::test_no_content_reaches_the_trace_file_and_the_control_sees_all_of_it
+      "07":
+        - 10_observability/tests/test_leak_check.py::test_no_content_reaches_the_trace_file_and_the_control_sees_all_of_it
+      "08":
+        - 10_observability/tests/test_leak_check.py::test_no_content_reaches_the_trace_file_and_the_control_sees_all_of_it
+        - 08_tools/tests/test_guardrails.py::test_output_info_never_echoes_free_text_from_the_model
+        - 08_tools/tests/test_traces.py::test_a_count_reconciles_span_for_span
+      "09":
+        - 09_memory/tests/test_assistant_memory.py::test_history_reaches_the_model_but_not_the_trace
+        - 09_memory/tests/test_assistant_memory.py::test_the_trace_names_which_turns_the_model_saw_by_position_only
+      "12":
+        - 10_observability/tests/test_leak_check.py::test_no_content_reaches_the_trace_file_and_the_control_sees_all_of_it
 
   - id: OPS-02
     domain: AI
@@ -175,10 +245,14 @@ standards:
     rationale: "A wrong number that looks real is worse than a missing one."
     adr: ["0008"]
     applies_to: ["07", "08", "11"]
-    enforced_by:
-      - 11_finops/tests/test_prices_and_costing.py::test_a_model_missing_from_the_file_is_refused
-      - 11_finops/tests/test_prices_and_costing.py::test_one_unpriced_call_makes_the_run_and_every_total_unpriced
-      - 11_finops/tests/test_cost_per_correct.py::test_the_price_file_reproduces_every_cost_recorded_in_08
+    evidence:
+      "07":
+        - 11_finops/tests/test_cost_per_correct.py::test_rag_cost_per_correct_answer
+      "08":
+        - 11_finops/tests/test_cost_per_correct.py::test_the_price_file_reproduces_every_cost_recorded_in_08
+      "11":
+        - 11_finops/tests/test_prices_and_costing.py::test_a_model_missing_from_the_file_is_refused
+        - 11_finops/tests/test_prices_and_costing.py::test_one_unpriced_call_makes_the_run_and_every_total_unpriced
 
   - id: OPS-03
     domain: AI
@@ -187,10 +261,12 @@ standards:
     rationale: "A budget reported after the fact is a bill, not a control."
     adr: ["0009"]
     applies_to: ["06", "07", "08", "12"]
-    enforced_by:
-      - 11_finops/tests/test_budget.py::test_a_daily_budget_stops_at_the_expected_question_and_calls_nothing_after
-      - 11_finops/tests/test_budget.py::test_a_budget_stops_a_runaway_loop_mid_run
-      - 12_integration/tests/test_gateway.py::test_the_model_route_is_held_to_the_callers_budget
+    evidence:
+      "08":
+        - 11_finops/tests/test_budget.py::test_a_daily_budget_stops_at_the_expected_question_and_calls_nothing_after
+        - 11_finops/tests/test_budget.py::test_a_budget_stops_a_runaway_loop_mid_run
+      "12":
+        - 12_integration/tests/test_gateway.py::test_the_model_route_is_held_to_the_callers_budget
 
   # ---------------------------------------------------------------- API
 
@@ -201,10 +277,11 @@ standards:
     rationale: "One policy point is one place to audit and change."
     adr: []
     applies_to: ["08", "12"]
-    enforced_by:
-      - 12_integration/tests/test_gateway.py::test_no_token_no_entry
-      - 12_integration/tests/test_gateway.py::test_a_route_needs_its_scope
-      - 12_integration/tests/test_gateway.py::test_a_burst_is_limited_per_subject_and_recovers
+    evidence:
+      "12":
+        - 12_integration/tests/test_gateway.py::test_no_token_no_entry
+        - 12_integration/tests/test_gateway.py::test_a_route_needs_its_scope
+        - 12_integration/tests/test_gateway.py::test_a_burst_is_limited_per_subject_and_recovers
 
   - id: API-02
     domain: API
@@ -213,9 +290,10 @@ standards:
     rationale: "An API change should be visible in review as a contract diff."
     adr: ["0014"]
     applies_to: ["12"]
-    enforced_by:
-      - 12_integration/tests/test_contracts.py::test_the_committed_contracts_match_the_code
-      - 12_integration/tests/test_gateway.py::test_the_served_contract_is_the_committed_one
+    evidence:
+      "12":
+        - 12_integration/tests/test_contracts.py::test_the_committed_contracts_match_the_code
+        - 12_integration/tests/test_gateway.py::test_the_served_contract_is_the_committed_one
 
   - id: API-03
     domain: API
@@ -224,9 +302,10 @@ standards:
     rationale: "Clients upgrade on their schedule, not the provider's."
     adr: ["0014"]
     applies_to: ["12"]
-    enforced_by:
-      - 12_integration/tests/test_contracts.py::test_the_gate_fails_a_pr_that_breaks_v2
-      - 12_integration/tests/test_contracts.py::test_the_checker_classifies_every_labeled_edit
+    evidence:
+      "12":
+        - 12_integration/tests/test_contracts.py::test_the_gate_fails_a_pr_that_breaks_v2
+        - 12_integration/tests/test_contracts.py::test_the_checker_classifies_every_labeled_edit
 
   - id: API-04
     domain: API
@@ -235,10 +314,11 @@ standards:
     rationale: "A client should learn of a retirement from the API, not from an outage."
     adr: ["0014"]
     applies_to: ["12"]
-    enforced_by:
-      - 12_integration/tests/test_gateway.py::test_v1_is_served_with_its_deprecation_and_sunset
-      - 12_integration/tests/test_gateway.py::test_after_its_sunset_v1_is_gone_and_says_where_to_go
-      - 12_integration/tests/test_contracts.py::test_v1_is_marked_deprecated_in_its_contract
+    evidence:
+      "12":
+        - 12_integration/tests/test_gateway.py::test_v1_is_served_with_its_deprecation_and_sunset
+        - 12_integration/tests/test_gateway.py::test_after_its_sunset_v1_is_gone_and_says_where_to_go
+        - 12_integration/tests/test_contracts.py::test_v1_is_marked_deprecated_in_its_contract
 
   - id: API-05
     domain: API
@@ -247,9 +327,11 @@ standards:
     rationale: "An error that differs for hidden resources reveals that they exist."
     adr: []
     applies_to: ["08", "12"]
-    enforced_by:
-      - 12_integration/tests/test_gateway.py::test_triage_status_follows_the_event_driven_run
-      - 08_tools/tests/test_mcp_server.py::test_a_comment_on_an_issue_the_token_holder_cannot_see_is_refused
+    evidence:
+      "08":
+        - 08_tools/tests/test_mcp_server.py::test_a_comment_on_an_issue_the_token_holder_cannot_see_is_refused
+      "12":
+        - 12_integration/tests/test_gateway.py::test_triage_status_follows_the_event_driven_run
 
   # ---------------------------------------------------------------- Integration
 
@@ -260,9 +342,10 @@ standards:
     rationale: "Consumers then depend on one contract, not on every source."
     adr: ["0015"]
     applies_to: ["12"]
-    enforced_by:
-      - 12_integration/tests/test_adapters.py::test_a_service_alert_is_already_event_shaped
-      - 12_integration/tests/test_adapters.py::test_the_envelope_refuses_what_it_cannot_identify
+    evidence:
+      "12":
+        - 12_integration/tests/test_adapters.py::test_a_service_alert_is_already_event_shaped
+        - 12_integration/tests/test_adapters.py::test_the_envelope_refuses_what_it_cannot_identify
 
   - id: INT-02
     domain: Integration
@@ -271,10 +354,11 @@ standards:
     rationale: "Broker deduplication works within a time window and per source; a business key has neither limit."
     adr: ["0010"]
     applies_to: ["12"]
-    enforced_by:
-      - 12_integration/tests/test_delivery.py::test_duplicates_are_handled_once
-      - 12_integration/tests/test_triage.py::test_one_outage_from_two_sources_is_triaged_once
-      - 12_integration/tests/test_integration_check.py::test_keyed_on_events_two_sources_double_the_work_for_people_and_jira
+    evidence:
+      "12":
+        - 12_integration/tests/test_delivery.py::test_duplicates_are_handled_once
+        - 12_integration/tests/test_triage.py::test_one_outage_from_two_sources_is_triaged_once
+        - 12_integration/tests/test_integration_check.py::test_keyed_on_events_two_sources_double_the_work_for_people_and_jira
 
   - id: INT-03
     domain: Integration
@@ -283,9 +367,11 @@ standards:
     rationale: "Retries are certain; duplicate writes are not acceptable."
     adr: ["0012"]
     applies_to: ["08", "12"]
-    enforced_by:
-      - 08_tools/tests/test_approval.py::test_a_lost_response_and_a_retry_still_post_once
-      - 12_integration/tests/test_integration_check.py::test_without_the_marker_one_lost_response_posts_twice
+    evidence:
+      "08":
+        - 08_tools/tests/test_approval.py::test_a_lost_response_and_a_retry_still_post_once
+      "12":
+        - 12_integration/tests/test_integration_check.py::test_without_the_marker_one_lost_response_posts_twice
 
   - id: INT-04
     domain: Integration
@@ -294,10 +380,11 @@ standards:
     rationale: "Retrying a message that cannot succeed only delays the ones behind it."
     adr: ["0015"]
     applies_to: ["12"]
-    enforced_by:
-      - 12_integration/tests/test_delivery.py::test_a_message_that_keeps_failing_is_dead_lettered_and_the_rest_still_flow
-      - 12_integration/tests/test_delivery.py::test_an_invalid_event_is_dead_lettered_at_once
-      - 12_integration/tests/test_delivery.py::test_a_dead_letter_is_replayed_once_its_cause_is_fixed
+    evidence:
+      "12":
+        - 12_integration/tests/test_delivery.py::test_a_message_that_keeps_failing_is_dead_lettered_and_the_rest_still_flow
+        - 12_integration/tests/test_delivery.py::test_an_invalid_event_is_dead_lettered_at_once
+        - 12_integration/tests/test_delivery.py::test_a_dead_letter_is_replayed_once_its_cause_is_fixed
 
   - id: INT-05
     domain: Integration
@@ -306,9 +393,10 @@ standards:
     rationale: "A truncated night looks like a quiet night."
     adr: []
     applies_to: ["12"]
-    enforced_by:
-      - 12_integration/tests/test_adapters.py::test_a_truncated_file_is_rejected_whole
-      - 12_integration/tests/test_adapters.py::test_a_bad_record_is_rejected_alone_and_the_rest_go_through
+    evidence:
+      "12":
+        - 12_integration/tests/test_adapters.py::test_a_truncated_file_is_rejected_whole
+        - 12_integration/tests/test_adapters.py::test_a_bad_record_is_rejected_alone_and_the_rest_go_through
 
   - id: INT-06
     domain: Integration
@@ -317,6 +405,7 @@ standards:
     rationale: "Parsing an unverified body is already trusting it."
     adr: []
     applies_to: ["12"]
-    enforced_by:
-      - 12_integration/tests/test_adapters.py::test_an_unsigned_or_forged_webhook_is_refused
-      - 12_integration/tests/test_adapters.py::test_a_body_changed_after_signing_is_refused
+    evidence:
+      "12":
+        - 12_integration/tests/test_adapters.py::test_an_unsigned_or_forged_webhook_is_refused
+        - 12_integration/tests/test_adapters.py::test_a_body_changed_after_signing_is_refused

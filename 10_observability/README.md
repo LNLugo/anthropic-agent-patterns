@@ -3,9 +3,10 @@
 One trace for every run, one span for every unit of work, and nothing
 sensitive recorded unless you turn it on.
 
-**Result:** 06, 07 and 08 traced end to end, 60 spans across 13 runs. With
-sensitive data off, **0 of 16** planted content markers reached the trace
-file. With it on, all 16 did, so the check would have caught any of them.
+**Result:** 06, 07, 08 and 12 traced end to end, 72 spans across 16 runs.
+With sensitive data off, **0 of 17** planted content markers reached the
+trace file. With it on, all 17 did, so the check would have caught any of
+them.
 Building the check found **3 real leaks**, fixed here: guardrail metadata
 was echoing the model's arguments, words quoted from the question, and the
 tool bound's error text.
@@ -84,9 +85,16 @@ scenarios with sensitive data on, as the control.
 | 08 model clarification, final answer | 0 | 4 |
 | 08 comment body, approver's reason | 0 | 5 |
 | 08 model tool argument, project evidence, tool bound error | 0 | 8 |
-| **All 16 sources** | **0** | **every source found** |
+| 12 work order text from the legacy file, quoted in a triage comment | 0 | 1 |
+| **All 17 sources** | **0** | **every source found** |
 
-13 runs, 60 spans: 13 agent, 17 generation, 19 guardrail, 7 tool, 2 handoff, 2 custom.
+16 runs, 72 spans: 16 agent, 17 generation, 24 guardrail, 9 tool, 3 handoff, 3 custom.
+
+The 12 row was added when the [conformance check](../docs/architecture/scorecard.md)
+found 12's traces had never been checked. Its first version was blind: the
+comment body is traced only when the comment posts, and the scenario never
+approved it, so the control found 0 even with content on. The scenario now
+approves the comment, and the control finds it.
 Turning sensitive data on changes what spans contain, never which spans exist.
 Full counts are in [`results/leak_check.json`](results/leak_check.json).
 

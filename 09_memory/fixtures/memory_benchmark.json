@@ -1,0 +1,107 @@
+{
+  "_note": "A long operations conversation with things the user establishes early and later questions that depend on them. Written by the module's author, so treat the results as a regression check of the strategies, not an evaluation of any model. Every probe names the one earlier exchange it needs. A probe is recalled when the text it needs (\"needs\") is in the context, whether verbatim or in a summary.",
+  "facts": [
+    {
+      "id": "lex-p1-count",
+      "kind": "follow-up",
+      "user": "How many P1 incidents did ELEV open in September?",
+      "assistant": "4 P1 incidents in ELEV created 2026-09-01 to 2026-09-30: ELEV-31, ELEV-33, ELEV-34, ELEV-36.",
+      "probe": "Remind me, what was the September P1 number for ELEV?",
+      "needs": "4 P1 incidents"
+    },
+    {
+      "id": "lex-work-order",
+      "kind": "follow-up",
+      "user": "Which work orders are open on escalator ESC-127-02?",
+      "assistant": "One: WO-1001, step chain noise at the lower landing, opened 2026-10-09.",
+      "probe": "Is WO-1001 on ESC-127-02 still the only open one?",
+      "needs": "WO-1001"
+    },
+    {
+      "id": "lex-sunset",
+      "kind": "follow-up",
+      "user": "When is the v1 count API retired?",
+      "assistant": "v1 is deprecated and its sunset is 31 January 2027; after that it returns 410 and points to v2.",
+      "probe": "When does the v1 count API go away again?",
+      "needs": "31 January 2027"
+    },
+    {
+      "id": "pin-signals",
+      "kind": "standing instruction",
+      "user": "From now on, only count incidents for Signals unless I say otherwise.",
+      "assistant": "Understood: counts will be for SIG until you say otherwise.",
+      "probe": "How many open incidents were created this week?",
+      "needs": "only count incidents for Signals"
+    },
+    {
+      "id": "pin-jql",
+      "kind": "standing instruction",
+      "user": "Always show me the JQL with every answer.",
+      "assistant": "Will do: every count will include its JQL.",
+      "probe": "Count the P2s from yesterday.",
+      "needs": "show me the JQL"
+    },
+    {
+      "id": "unpinned-shift",
+      "kind": "standing instruction, no trigger words",
+      "user": "I work nights, so today for me means since 7 pm yesterday.",
+      "assistant": "Got it: for you, today starts at 19:00 the previous day.",
+      "probe": "How many incidents came in today?",
+      "needs": "since 7 pm yesterday"
+    }
+  ],
+  "noise": {
+    "projects": [
+      "ELEV",
+      "SIG",
+      "SECOPS",
+      "BILL",
+      "PAY"
+    ],
+    "months": [
+      "July",
+      "August",
+      "September",
+      "October"
+    ],
+    "priorities": [
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "templates": [
+      [
+        "How many {priority} incidents did {project} open in {month}?",
+        "{n} {priority} incidents in {project} for {month}."
+      ],
+      [
+        "Any open work orders on escalator ESC-{station}-0{k}?",
+        "{n} open work orders on ESC-{station}-0{k}."
+      ],
+      [
+        "What's the trend for {project} since {month}?",
+        "{project} is {trend} since {month}: {n} incidents."
+      ],
+      [
+        "Did station S{station} have any outages in {month}?",
+        "{n} outages at S{station} in {month}."
+      ],
+      [
+        "Show the API rate limit for my token.",
+        "10 requests a minute, bursts of 10."
+      ],
+      [
+        "Which {project} incidents are still open?",
+        "{n} open in {project}."
+      ],
+      [
+        "Who approved the last triage comment on ELEV-{k}0?",
+        "maintenance_lead approved it."
+      ],
+      [
+        "Summarize {month} for {project} in one line.",
+        "{project} in {month}: {n} incidents, {k} still open."
+      ]
+    ]
+  }
+}

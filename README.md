@@ -29,6 +29,7 @@ with predictable workflows and progressing toward dynamic agent behavior.
 | Guardrails and human approval around a tool, with every claim counted | [Guardrails](08_tools/README.md#tool-guardrails), [approval](08_tools/README.md#human-approval) |
 | Traces an auditor can use that hold no prompt, document or tool result | [10_observability](10_observability/) |
 | What a correct answer costs, and what each extra one costs over free rules | [11_finops](11_finops/) |
+| What the model sees from a long conversation, and whose history it is | [09_memory](09_memory/) |
 | Agents started by events from legacy, SaaS and cloud sources, handled exactly once; a governed, versioned API in front | [12_integration](12_integration/) |
 | The orchestration patterns themselves | [Architecture Progression](#architecture-progression) |
 | Everything above, interactively | `streamlit run app/Agent_Patterns.py` (Phase 2 results run offline, no API key) |
@@ -49,8 +50,8 @@ with predictable workflows and progressing toward dynamic agent behavior.
 | **Phase 2** | **Capability layer** | | |
 | 07 | Retrieval (RAG) | ✅ Complete | Retrieval ablation, cited answers, abstention and permission-aware retrieval, measured on CUAD |
 | 08 | Tools and MCP | ✅ Complete | Bounded, read only Jira tool; model router measured against rules on held-out questions; coverage check, tool guardrails and human approval in the main path; the tools over MCP with identity from the token |
-| 09 | Memory | ⬜ Planned | Retrieve relevant history instead of appending it |
-| 10 | Observability | ✅ Complete | One trace per run across 06, 07 and 08, with agent, generation, tool, guardrail and handoff spans; local by default, sensitive content off; 0 of 16 planted content markers in the trace file, an audit report from the file alone. (Tool guardrails are built in 08) |
+| 09 | Memory | ✅ Complete | A session owned by one identity, with retention; the history the model sees chosen by relevance with standing instructions pinned: 28 of 30 recalled at 240 exchanges with 34 times fewer tokens than appending everything; memory never widens a check |
+| 10 | Observability | ✅ Complete | One trace per run across 06, 07, 08 and 12, with agent, generation, tool, guardrail and handoff spans; local by default, sensitive content off; 0 of 17 planted content markers in the trace file, an audit report from the file alone. (Tool guardrails are built in 08) |
 | 11 | AI FinOps | ✅ Complete | Prices with sources and unpriced models refused; every run costed from its trace; cost per correct answer from recorded runs ($96 per million questions for +50 points of routing accuracy); per-identity budgets checked before every model call |
 | 12 | Integration | ✅ Complete | Agents started by events from a legacy batch file, a signed SaaS webhook and a cloud event bus, handled exactly once (measured against a control for each guarantee); a gateway with identity, scopes, rate limits, budgets and versions; API contracts gated in CI |
 
@@ -141,14 +142,15 @@ fences and surrounding prose, so switching providers does not break them.
 
 ## Tests
 
-Every suite runs offline, with no API key, and CI runs all six on Python
+Every suite runs offline, with no API key, and CI runs all seven on Python
 3.12 and 3.13 for every push and pull request.
 
 | Suite | Run from | Tests | What stands in for the model |
 |---|---|---|---|
-| Phase 1 patterns, the explorer app and the architecture docs | repo root: `pytest` | 184 | `ScriptedChatModel` in [`llm_provider.py`](llm_provider.py) |
+| Phase 1 patterns, the explorer app, the architecture docs and conformance | repo root: `pytest` | 200 | `ScriptedChatModel` in [`llm_provider.py`](llm_provider.py) |
 | 07 Retrieval | `07_rag`: `pytest` | 63 | fixtures; no model call in the suite |
-| 08 Tools | `08_tools`: `pytest` | 149 | `ScriptedChatModel` and scripted tool calls |
+| 08 Tools | `08_tools`: `pytest` | 150 | `ScriptedChatModel` and scripted tool calls |
+| 09 Memory | `09_memory`: `pytest` | 40 | `ScriptedChatModel`; no model call in the benchmark |
 | 10 Observability | `10_observability`: `pytest` | 14 | runs 06, 07 and 08 on the scripted model and fixtures |
 | 11 AI FinOps | `11_finops`: `pytest` | 28 | prices recorded runs and trace files; budgets through 08 on `ScriptedChatModel` |
 | 12 Integration | `12_integration`: `pytest` | 56 | the worker routes in code; synthetic sources, an in-process broker, the gateway over Starlette's test client |
@@ -297,7 +299,8 @@ and names the number that will prove each part.
 [docs/architecture](docs/architecture/) is what an architecture COE would publish
 for teams building on these modules:
 - **[Reference architecture](docs/architecture/reference-architecture.md):** every layer, its control and the number that shows it works.
-- **[Standards](docs/architecture/standards.md):** 26 standards, 24 of them enforced by named tests.
+- **[Standards](docs/architecture/standards.md):** 28 standards, 27 of them enforced by named tests or a static check.
+- **[Conformance scorecard](docs/architecture/scorecard.md):** computed from the repo. 57 of 65 standard-module pairs conform; the rest are 4 registered exceptions with owners and expiry dates, or are checked at design review. CI fails on an unregistered gap or an expired exception.
 - **[Decision records](docs/architecture/adr/README.md):** 15 ADRs.
 - **[Design review checklist](docs/architecture/design-review-checklist.md)**, an exception register, and a **[COE charter](docs/architecture/coe-charter.md)**.
 
@@ -312,11 +315,14 @@ and every exception has an owner and an end date.
   positive control, so deny rules can be proven the same way allow rules are
 * **Cross-matter contamination test**: a user on one matter must never retrieve
   another matter's documents
-* **09 Memory**: retrieve relevant history instead of appending it to the prompt
+* **Memory, live**: compaction with a model summary measured against retrieval
+  with pins, in a run with a key (09's stand-in summary is not evidence either
+  way)
 * **Handoff leakage test**: restricted context must not reach a worker that is
   not cleared for it, proven the same way 07 proves retrieval permissions
-* **Conformance check**: standards adoption per module computed from the repo,
-  the review-only standards turned into checks where they can be, and CI
-  failing on an expired exception
+* **Close the open exceptions** ([scorecard](docs/architecture/scorecard.md)):
+  route 07 through `llm_provider` (EXC-001, due 2026-12-31), the MCP server
+  behind the gateway, budgets for 06 and 07, and a repeated, baselined 07
+  evaluation
 * **Housekeeping**: one current file per pattern, tagged releases with a
   changelog, a single `pyproject.toml`
