@@ -293,6 +293,9 @@ and names the number that will prove each part.
 |---|---|---|
 | [Matter-Aware Legal AI](docs/designs/legal-matter-rag.md) | Research, drafting and playbook review for a law firm: matter scoping, ethical walls as deny rules, firm know-how kept apart from client files, fail-closed wall enforcement | 07, 08, Phase 1 routing, parallelization and evaluator-optimizer |
 | [Permission-Aware RAG over Atlassian](docs/designs/atlassian-rag.md) | Knowledge and aggregation questions over Confluence and Jira Data Center, with replicated ACLs for retrieval and delegated permissions for queries | 07, 08, 10, 11 |
+| [A paved road for new use cases](docs/designs/paved-road.md) (design only) | How a new use case composes 07 to 11 from configuration, prompts, a golden set and minimal glue, with an evaluation gate in CI and reuse measured from real counts | 07, 08, 09, 10, 11, 12 |
+
+Design documents and decision records follow the [templates](docs/templates/README.md).
 
 ## Architecture standards
 

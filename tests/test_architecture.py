@@ -94,10 +94,10 @@ def _anchors(path: Path) -> set[str]:
     return {_slug(m.group(1)) for m in re.finditer(r"^#+ (.+)$", path.read_text(), re.M)}
 
 
-DOCS = sorted(ARCH.rglob("*.md"))
+DOCS = sorted((ROOT / "docs").rglob("*.md"))
 
 
-@pytest.mark.parametrize("doc", DOCS, ids=lambda p: str(p.relative_to(ARCH)))
+@pytest.mark.parametrize("doc", DOCS, ids=lambda p: str(p.relative_to(ROOT / "docs")))
 def test_every_relative_link_and_anchor_resolves(doc):
     for target in re.findall(r"\]\(([^)\s]+)\)", doc.read_text()):
         if re.match(r"[a-z]+://", target):
