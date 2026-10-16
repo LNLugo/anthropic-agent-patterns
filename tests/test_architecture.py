@@ -48,6 +48,11 @@ def test_every_cited_test_exists(ref):
     assert name in _tests_in(ROOT / path), f"{name} is not a test in {path}"
 
 
+def test_evidence_is_keyed_by_a_module_the_standard_applies_to():
+    for s in STANDARDS:
+        assert set(s["evidence"]) <= set(s["applies_to"]), s["id"]
+
+
 def test_every_adr_a_standard_cites_exists_and_cites_it_back():
     adrs = render.adr_files()
     for s in STANDARDS:

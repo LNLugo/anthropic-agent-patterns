@@ -21,6 +21,10 @@ DOMAINS = ("AI", "Application", "API", "Integration")
 def load() -> tuple[list[dict], list[dict]]:
     standards = yaml.safe_load((HERE / "standards.yaml").read_text())["standards"]
     exceptions = yaml.safe_load((HERE / "exceptions.yaml").read_text())["exceptions"]
+    for s in standards:
+        s.setdefault("evidence", {})
+        s.setdefault("checks", [])
+        s["enforced_by"] = list(dict.fromkeys(t for tests in s["evidence"].values() for t in tests))
     return standards, exceptions
 
 
@@ -43,15 +47,16 @@ def render() -> str:
     by_standard: dict[str, list[dict]] = {}
     for e in exceptions:
         by_standard.setdefault(e["standard"], []).append(e)
-    tested = sum(1 for s in standards if s["enforced_by"])
+    tested = sum(1 for s in standards if s["enforced_by"] or s["checks"])
     out = [
         "# Architecture standards",
         "",
         "<!-- Rendered from standards.yaml and exceptions.yaml by render_standards.py. Edit those, not this. -->",
         "",
-        f"{len(standards)} standards. {tested} are enforced by named tests that run in CI; "
+        f"{len(standards)} standards. {tested} are enforced by named tests or static checks that run in CI; "
         f"{len(standards) - tested} are enforced by design review only, and say so. "
-        "A test checks that every test cited here exists.",
+        "A test checks that every test cited here exists. Conformance per module is in the "
+        "[scorecard](scorecard.md).",
         "",
         "Each standard has an ID used by the [design review checklist](design-review-checklist.md), "
         "the ADRs that explain it, and the modules it applies to. Where a module doesn't meet a standard yet, "
@@ -64,9 +69,15 @@ def render() -> str:
             out += [f"### {s['id']} · {s['title']}", "", s["statement"], "",
                     f"*Why:* {s['rationale']}", "",
                     f"*Applies to:* {', '.join(s['applies_to'])} · *ADRs:* {_adr_links(s['adr'], adrs)}", ""]
-            if s["enforced_by"]:
-                out += ["*Enforced by:*", ""] + [f"- {_test_link(t)}" for t in s["enforced_by"]] + [""]
-            else:
+            if s["evidence"]:
+                out += ["*Enforced by:*", ""]
+                for module, tests in sorted(s["evidence"].items()):
+                    out.append(f"- {module}: " + ", ".join(_test_link(t) for t in tests))
+                out.append("")
+            if s["checks"]:
+                out += [f"*Checked by:* static check `{', '.join(s['checks'])}` "
+                        "([conformance.py](conformance.py)) over the code of every module it applies to.", ""]
+            if not s["evidence"] and not s["checks"]:
                 out += ["*Enforced by:* design review only. No test checks this yet.", ""]
             for e in by_standard.get(s["id"], []):
                 out += [f"*Exception {e['id']}* for {', '.join(e['modules'])}, until {e['expires']}: {e['gap']}", ""]

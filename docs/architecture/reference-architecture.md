@@ -65,9 +65,9 @@ flowchart TB
 | Capability | Guardrails | [08](../../08_tools/README.md#tool-guardrails) | Allow, coach or halt; security first | An out-of-scope query reaches Jira 0 times, 1 without the guardrail |
 | Capability | Approval | [08](../../08_tools/README.md#human-approval) | Writes wait for a different person, on a durable checkpoint | Survives a restart; a lost response still posts once |
 | Capability | Budget | [11](../../11_finops/README.md) | Spend plus a reserve checked before each model call | $0.001 a day: 10 answered, the 11th refused with no model call |
-| Across | Tracing | [10](../../10_observability/README.md) | One trace per run; content off by default | 0 of 16 planted markers in the trace file; 16 of 16 with content on |
+| Across | Tracing | [10](../../10_observability/README.md) | One trace per run; content off by default | 0 of 17 planted markers in the trace file; 17 of 17 with content on |
 | Across | Costing | [11](../../11_finops/README.md) | Priced from a sourced file; unpriced is unknown, not $0 | Reproduces 9 recorded costs within 0.8% |
-| Across | Standards | [standards](standards.md) | Each standard names the tests that enforce it | A test fails if a cited test does not exist |
+| Across | Standards | [standards](standards.md), [scorecard](scorecard.md) | Each standard names the tests or static check that enforce it, per module | 53 of 61 standard-module pairs conform; CI fails on an unregistered gap or an expired exception |
 
 ## Who acts, and as whom
 

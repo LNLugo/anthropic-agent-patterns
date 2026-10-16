@@ -25,8 +25,8 @@ A prompt change needs a live re-run to claim a quality change; CI only proves th
 
 ## Evidence
 
-400 offline tests across six suites, run in CI on Python 3.12 and 3.13. Controls are checked against deliberate
-breakage: 38 breakages across modules 10 to 12 alone, each failing a test.
+Six suites, all offline, run in CI on Python 3.12 and 3.13 (the counts are in the root README). Controls are checked
+against deliberate breakage: 38 breakages across modules 10 to 12 alone, each failing a test.
 
 ## The strongest objection
 

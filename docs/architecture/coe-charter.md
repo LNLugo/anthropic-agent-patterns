@@ -62,7 +62,8 @@ Requested at review, recorded in [exceptions.yaml](exceptions.yaml), rendered in
 the [register](standards.md#exception-register). Each one names the standard, the
 modules, the gap, the risk, the compensating control, the owner and an expiry no
 more than six months out. An exception can be extended once, at exception review,
-with a reason. Once the conformance check is in place, an expired exception fails CI.
+with a reason. An expired exception fails CI, and so does a stale one: an
+exception for something that now conforms must be closed.
 
 ## Training and playbooks
 
@@ -76,9 +77,9 @@ the checklist plus the module closest to what the team is building.
 
 | Metric | How it is measured | Status |
 |---|---|---|
-| Standards adoption | Modules meeting each applicable standard, from the conformance check | To be computed from the repository (the conformance check, next change) |
-| Standards enforced by tests | Standards with at least one named enforcing test | Computed from standards.yaml |
-| Open and expired exceptions | From exceptions.yaml | Recorded now; the conformance check will fail CI on an expired one |
+| Standards adoption | Standard-module pairs that are tested or checked, from [the conformance check](scorecard.md) | Computed in the [scorecard](scorecard.md) |
+| Standards enforced by tests | Standards with named enforcing tests or a static check | Computed in [standards](standards.md) |
+| Open and expired exceptions | From exceptions.yaml | Computed in the [scorecard](scorecard.md); CI fails on an expired or stale one |
 | Reuse | Components built on a reference implementation rather than from scratch | Measured in operation |
 | Review cycle time | Request to recorded outcome | Measured in operation |
 | Review outcomes | Approved, with actions, with exception, not approved | Measured in operation |

@@ -50,7 +50,7 @@ with predictable workflows and progressing toward dynamic agent behavior.
 | 07 | Retrieval (RAG) | ✅ Complete | Retrieval ablation, cited answers, abstention and permission-aware retrieval, measured on CUAD |
 | 08 | Tools and MCP | ✅ Complete | Bounded, read only Jira tool; model router measured against rules on held-out questions; coverage check, tool guardrails and human approval in the main path; the tools over MCP with identity from the token |
 | 09 | Memory | ⬜ Planned | Retrieve relevant history instead of appending it |
-| 10 | Observability | ✅ Complete | One trace per run across 06, 07 and 08, with agent, generation, tool, guardrail and handoff spans; local by default, sensitive content off; 0 of 16 planted content markers in the trace file, an audit report from the file alone. (Tool guardrails are built in 08) |
+| 10 | Observability | ✅ Complete | One trace per run across 06, 07, 08 and 12, with agent, generation, tool, guardrail and handoff spans; local by default, sensitive content off; 0 of 17 planted content markers in the trace file, an audit report from the file alone. (Tool guardrails are built in 08) |
 | 11 | AI FinOps | ✅ Complete | Prices with sources and unpriced models refused; every run costed from its trace; cost per correct answer from recorded runs ($96 per million questions for +50 points of routing accuracy); per-identity budgets checked before every model call |
 | 12 | Integration | ✅ Complete | Agents started by events from a legacy batch file, a signed SaaS webhook and a cloud event bus, handled exactly once (measured against a control for each guarantee); a gateway with identity, scopes, rate limits, budgets and versions; API contracts gated in CI |
 
@@ -146,7 +146,7 @@ Every suite runs offline, with no API key, and CI runs all six on Python
 
 | Suite | Run from | Tests | What stands in for the model |
 |---|---|---|---|
-| Phase 1 patterns, the explorer app and the architecture docs | repo root: `pytest` | 184 | `ScriptedChatModel` in [`llm_provider.py`](llm_provider.py) |
+| Phase 1 patterns, the explorer app, the architecture docs and conformance | repo root: `pytest` | 200 | `ScriptedChatModel` in [`llm_provider.py`](llm_provider.py) |
 | 07 Retrieval | `07_rag`: `pytest` | 63 | fixtures; no model call in the suite |
 | 08 Tools | `08_tools`: `pytest` | 149 | `ScriptedChatModel` and scripted tool calls |
 | 10 Observability | `10_observability`: `pytest` | 14 | runs 06, 07 and 08 on the scripted model and fixtures |
@@ -297,7 +297,8 @@ and names the number that will prove each part.
 [docs/architecture](docs/architecture/) is what an architecture COE would publish
 for teams building on these modules:
 - **[Reference architecture](docs/architecture/reference-architecture.md):** every layer, its control and the number that shows it works.
-- **[Standards](docs/architecture/standards.md):** 26 standards, 24 of them enforced by named tests.
+- **[Standards](docs/architecture/standards.md):** 26 standards, 25 of them enforced by named tests or a static check.
+- **[Conformance scorecard](docs/architecture/scorecard.md):** computed from the repo. 53 of 61 standard-module pairs conform; the rest are 4 registered exceptions with owners and expiry dates, or are checked at design review. CI fails on an unregistered gap or an expired exception.
 - **[Decision records](docs/architecture/adr/README.md):** 15 ADRs.
 - **[Design review checklist](docs/architecture/design-review-checklist.md)**, an exception register, and a **[COE charter](docs/architecture/coe-charter.md)**.
 
@@ -315,8 +316,9 @@ and every exception has an owner and an end date.
 * **09 Memory**: retrieve relevant history instead of appending it to the prompt
 * **Handoff leakage test**: restricted context must not reach a worker that is
   not cleared for it, proven the same way 07 proves retrieval permissions
-* **Conformance check**: standards adoption per module computed from the repo,
-  the review-only standards turned into checks where they can be, and CI
-  failing on an expired exception
+* **Close the open exceptions** ([scorecard](docs/architecture/scorecard.md)):
+  route 07 through `llm_provider` (EXC-001, due 2026-12-31), the MCP server
+  behind the gateway, budgets for 06 and 07, and a repeated, baselined 07
+  evaluation
 * **Housekeeping**: one current file per pattern, tagged releases with a
   changelog, a single `pyproject.toml`
