@@ -27,6 +27,7 @@ with predictable workflows and progressing toward dynamic agent behavior.
 | Tools any agent can call, answering only as the signed-in user | [08_tools over MCP](08_tools/README.md#tools-over-mcp) |
 | Guardrails and human approval around a tool, with every claim counted | [Guardrails](08_tools/README.md#tool-guardrails), [approval](08_tools/README.md#human-approval) |
 | Traces an auditor can use that hold no prompt, document or tool result | [10_observability](10_observability/) |
+| What a correct answer costs, and what each extra one costs over free rules | [11_finops](11_finops/) |
 | The orchestration patterns themselves | [Architecture Progression](#architecture-progression) |
 | Everything above, interactively | `streamlit run app/Agent_Patterns.py` (Phase 2 results run offline, no API key) |
 
@@ -48,7 +49,7 @@ with predictable workflows and progressing toward dynamic agent behavior.
 | 08 | Tools and MCP | ✅ Complete | Bounded, read only Jira tool; model router measured against rules on held-out questions; coverage check, tool guardrails and human approval in the main path; the tools over MCP with identity from the token |
 | 09 | Memory | ⬜ Planned | Retrieve relevant history instead of appending it |
 | 10 | Observability | ✅ Complete | One trace per run across 06, 07 and 08, with agent, generation, tool, guardrail and handoff spans; local by default, sensitive content off; 0 of 16 planted content markers in the trace file, an audit report from the file alone. (Tool guardrails are built in 08) |
-| 11 | AI FinOps | ⬜ Planned | Cost per answer and cost per correct answer |
+| 11 | AI FinOps | 🔶 In progress | Prices with sources, every run costed from its trace, unpriced models refused; cost per correct answer from recorded runs. Budgets per identity next |
 
 ---
 
@@ -137,7 +138,7 @@ fences and surrounding prose, so switching providers does not break them.
 
 ## Tests
 
-Every suite runs offline, with no API key, and CI runs all four on Python
+Every suite runs offline, with no API key, and CI runs all five on Python
 3.12 and 3.13 for every push and pull request.
 
 | Suite | Run from | Tests | What stands in for the model |
@@ -146,6 +147,7 @@ Every suite runs offline, with no API key, and CI runs all four on Python
 | 07 Retrieval | `07_rag`: `pytest` | 63 | fixtures; no model call in the suite |
 | 08 Tools | `08_tools`: `pytest` | 144 | `ScriptedChatModel` and scripted tool calls |
 | 10 Observability | `10_observability`: `pytest` | 14 | runs 06, 07 and 08 on the scripted model and fixtures |
+| 11 AI FinOps | `11_finops`: `pytest` | 18 | none: prices recorded runs and trace files |
 
 Phase 1 tests assert on the **path the graph took**, not on model prose: which
 nodes ran, in what order, and what each node was given. `LLM_PROVIDER=scripted`
@@ -297,6 +299,7 @@ and names the number that will prove each part.
 * **09 Memory**: retrieve relevant history instead of appending it to the prompt
 * **Handoff leakage test**: restricted context must not reach a worker that is
   not cleared for it, proven the same way 07 proves retrieval permissions
-* **11 AI FinOps**: cost per answer and cost per correct answer
+* **11 AI FinOps**: [prices and costing](11_finops/) are built; next, per-identity
+  budgets checked before every model call, fed by the same spans
 * **Housekeeping**: one current file per pattern, tagged releases with a
   changelog, a single `pyproject.toml`

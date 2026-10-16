@@ -12,7 +12,10 @@ See spans.py for the taxonomy and exporters.py for where spans go.
 """
 
 from .exporters import FailingExporter, InMemoryExporter, JsonlExporter, SpanExporter
+from .files import load_traces
 from .spans import KINDS, Span, Trace, Tracer, get_tracer, set_tracer
+from .usage import model_name, usage
 
 __all__ = ["KINDS", "Span", "Trace", "Tracer", "get_tracer", "set_tracer",
-           "SpanExporter", "JsonlExporter", "InMemoryExporter", "FailingExporter"]
+           "SpanExporter", "JsonlExporter", "InMemoryExporter", "FailingExporter",
+           "load_traces", "usage", "model_name"]

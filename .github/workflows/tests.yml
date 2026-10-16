@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         python: ["3.12", "3.13"]
-        suite: [phase1, 07_rag, 08_tools, 10_observability]
+        suite: [phase1, 07_rag, 08_tools, 10_observability, 11_finops]
         include:
           - suite: phase1
             dir: .
@@ -35,6 +35,9 @@ jobs:
           - suite: 10_observability
             dir: 10_observability
             requirements: 10_observability/requirements-test.txt
+          - suite: 11_finops
+            dir: 11_finops
+            requirements: 11_finops/requirements-test.txt
     env:
       LLM_PROVIDER: scripted
     steps:

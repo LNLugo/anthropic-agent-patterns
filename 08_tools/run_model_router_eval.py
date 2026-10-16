@@ -38,8 +38,10 @@ def main() -> int:
     ap.add_argument("--questions", type=Path, default=QUESTIONS)
     ap.add_argument("--provider", default=None, help="openai or anthropic (default: $LLM_PROVIDER, then openai)")
     ap.add_argument("--model", default=None, help="defaults to $OPENAI_MODEL or $CLAUDE_MODEL")
-    ap.add_argument("--input-price", type=float, default=None, help="USD per million input tokens")
-    ap.add_argument("--output-price", type=float, default=None, help="USD per million output tokens")
+    ap.add_argument("--input-price", type=float, default=None,
+                    help="USD per million input tokens (default: 11_finops/prices.yaml)")
+    ap.add_argument("--output-price", type=float, default=None,
+                    help="USD per million output tokens (default: 11_finops/prices.yaml)")
     ap.add_argument("--out", type=Path, default=HERE / "results")
     ap.add_argument("--no-coverage", action="store_true",
                     help="run without the coverage check, as the router was measured before it existed")
@@ -73,6 +75,14 @@ def main() -> int:
     cost = None
     if args.input_price is not None and args.output_price is not None:
         cost = model.cost_usd(args.input_price, args.output_price)
+    else:
+        sys.path.insert(0, str(HERE.parent / "11_finops"))
+        from finops import PriceBook, Unpriced
+        try:
+            cost = PriceBook.load().cost(model_name, model.input_tokens, model.output_tokens)
+        except Unpriced as e:
+            print(f"{'Cost per question (USD)':28}{'0':>12}{'unpriced':>12}  ({e})")
+    if cost is not None:
         print(f"{'Cost per question (USD)':28}{'0':>12}{cost / n:>12.6f}")
 
     for title, items in (("Misroutes", model.misroutes), ("Extraction misses", model.extraction_misses),

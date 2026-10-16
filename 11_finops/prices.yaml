@@ -1,0 +1,38 @@
+# Model prices, USD per 1M tokens, Standard tier.
+#
+# A model missing from this file is unpriced. Every cost that includes an unpriced
+# model call is refused (reported as unpriced), never counted as $0. To price a
+# model, add it with the source you read the price from and the date you read it.
+#
+# Billing rules taken from the sources below:
+#   * output_tokens includes reasoning tokens, which bill as output
+#     (https://developers.openai.com/api/docs/guides/reasoning), so they are not added again.
+#   * cached input bills at the cached_input rate; the rest of input at the input rate.
+#   * long_context: a request whose input exceeds the threshold bills its whole
+#     request at the multiplied rates.
+#   * Cache writes (1.25x input for gpt-6-luna) are not recorded in usage yet and so
+#     are not priced; see Limits in README.md.
+
+currency: USD
+
+models:
+  gpt-6-luna:
+    input: 0.10
+    cached_input: 0.01
+    output: 0.50
+    long_context:
+      above_input_tokens: 272000   # "prompts over 272K input tokens"
+      input_multiplier: 2.0        # input and cached input
+      output_multiplier: 1.5
+    source: https://developers.openai.com/api/docs/models/gpt-6-luna
+    also: https://developers.openai.com/api/docs/pricing
+    checked: 2026-10-16
+    notes: Batch and Flex are 50% of Standard; Fast is 2x. Not modelled, since the repo calls Standard.
+
+  gpt-4o-mini:
+    input: 0.15
+    cached_input: 0.075
+    output: 0.60
+    source: https://developers.openai.com/api/docs/models/gpt-4o-mini
+    checked: 2026-10-16
+    status: deprecated   # still served; 07's answer evaluation ran on it

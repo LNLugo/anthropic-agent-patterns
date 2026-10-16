@@ -25,7 +25,7 @@ from datetime import date, timedelta
 
 from . import coverage as coverage_check
 from .jql_tool import BoundedJiraTool, QuerySpec, ToolRejected, validate
-from .observe import get_tracer
+from .observe import get_tracer, model_name, usage
 
 PROJECT_NAMES = {"BILL": "Billing Platform", "PAY": "Payments", "INFRA": "Infrastructure"}
 
@@ -148,7 +148,7 @@ class ModelRouter:
         if self.comments:
             tools.append(openai_style(comment_tool.schema))
         self.llm = llm.bind_tools(tools, tool_choice="any")
-        self.model = getattr(llm, "model_name", None) or getattr(llm, "model", None) or type(llm).__name__
+        self.model = model_name(llm)
 
     def decide(self, question: str, today: date) -> Decision:
         t0 = time.perf_counter()
@@ -156,10 +156,10 @@ class ModelRouter:
         with get_tracer().span("generation", "router", model=self.model) as span:
             msg = self.llm.invoke([("system", system), ("human", question)])
             latency = time.perf_counter() - t0
-            usage = getattr(msg, "usage_metadata", None) or {}
-            tokens = {"input_tokens": usage.get("input_tokens", 0), "output_tokens": usage.get("output_tokens", 0)}
+            counts = usage(msg)
+            tokens = {"input_tokens": counts["input_tokens"], "output_tokens": counts["output_tokens"]}
             calls = getattr(msg, "tool_calls", None) or []
-            span.set(**tokens, tool_choice=calls[0]["name"] if calls else None)
+            span.set(**counts, tool_choice=calls[0]["name"] if calls else None)
             span.content(input=question, output=[dict(c.get("args") or {}) for c in calls] or str(msg.content or ""))
 
         if not calls:
