@@ -25,7 +25,7 @@ from typing import Literal
 
 from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
 
-from .guardrails import GuardrailRecord, ToolCallData, ToolGuardrail, run_guardrails
+from .guardrails import GuardrailRecord, ModelBudget, ToolCallData, ToolGuardrail, check_model_budget, run_guardrails
 from .jira_mock import Caller
 from .jql_tool import BoundedJiraTool, ToolRejected, ToolResult
 from .observe import get_tracer, model_name, usage
@@ -40,7 +40,7 @@ starts with "Not run", follow its instruction instead of retrying the same call.
 
 @dataclass
 class LoopResult:
-    status: Literal["answered", "clarify", "knowledge", "max_turns"]
+    status: Literal["answered", "clarify", "knowledge", "max_turns", "budget"]
     text: str                                   # the answer, the clarifying question, or the wiki query
     turns: int
     tool_results: list[ToolResult] = field(default_factory=list)
@@ -48,8 +48,11 @@ class LoopResult:
 
 
 class ToolLoop:
-    def __init__(self, llm, tool: BoundedJiraTool, guardrails: list[ToolGuardrail] = (), max_turns: int = 4):
-        self.tool, self.guardrails, self.max_turns = tool, list(guardrails), max_turns
+    def __init__(self, llm, tool: BoundedJiraTool, guardrails: list[ToolGuardrail] = (), max_turns: int = 4,
+                 budget: ModelBudget | None = None):
+        """budget is asked before every turn's model call, so a loop that keeps calling the
+        model is stopped mid-run, not only at the start."""
+        self.tool, self.guardrails, self.max_turns, self.budget = tool, list(guardrails), max_turns, budget
         tools = [openai_style(with_evidence(tool.schema)), openai_style(SEARCH_WIKI), openai_style(ASK_CLARIFICATION)]
         self.llm = llm.bind_tools(tools)
         self.model = model_name(llm)
@@ -70,6 +73,10 @@ class ToolLoop:
         tracer = get_tracer()
         for turn in range(1, self.max_turns + 1):
             result.turns = turn
+            refused = check_model_budget(self.budget, caller, self.model, result.records)
+            if refused is not None:
+                result.status, result.text = "budget", refused
+                return result
             with tracer.span("generation", "turn", model=self.model, turn=turn) as gen:
                 msg = self.llm.invoke(messages)
                 calls = getattr(msg, "tool_calls", None) or []

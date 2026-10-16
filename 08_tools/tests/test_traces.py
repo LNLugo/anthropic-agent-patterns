@@ -173,3 +173,64 @@ def test_a_self_approval_is_recorded_as_declined(writes, traces):
     [approval] = [s for s in traces.of_kind("custom") if s["name"] == "approval"]
     assert approval["data"]["decision"] == "declined" and approval["data"]["self_approval"] is True
     assert traces.of_kind("tool") == [] and store.comments == []
+
+
+# ---------------------------------------------------------------- a budget before the model call
+
+class FixedBudget:
+    """Stands in for 11_finops BudgetPolicy: allows the first `calls` checks, then refuses."""
+
+    def __init__(self, calls):
+        self.left, self.asked = calls, []
+
+    def check(self, identity, model):
+        self.asked.append((identity, model))
+        if self.left > 0:
+            self.left -= 1
+            return "allow", "", {"left": self.left}
+        return "reject_content", "Not run: today's model budget is used.", {"reason": "over_budget"}
+
+
+def test_over_budget_the_model_is_never_called(env, traces):
+    tool, users = env
+    budget = FixedBudget(0)
+    app = build_assistant(tool, lambda q, c, k: [], ModelRouter(scripted_model(), tool), budget=budget)
+    with scripted([]) as model:  # any model call would fail: nothing is scripted
+        out = ask(app, "How many BILL issues in Q3?", users["billing_oncall"], TODAY)
+    assert model.calls == () and CountingJira.calls == 0
+    assert out["stop_reason"] == "budget" and out["answer"] == "Not run: today's model budget is used."
+    assert budget.asked == [("billing_oncall", "ScriptedChatModel")]
+    [verdict] = traces.of_kind("guardrail")
+    assert (verdict["name"], verdict["data"]["stage"], verdict["data"]["behavior"]) == ("model_budget", "model", "reject_content")
+    assert [(r.guardrail, r.behavior) for r in out["guardrail_records"]] == [("model_budget", "reject_content")]
+
+
+def test_within_budget_the_verdict_is_kept_with_the_others(env, traces):
+    tool, users = env
+    app = build_assistant(tool, lambda q, c, k: [], ModelRouter(scripted_model(), tool),
+                          guardrails=finance_assistant_policy(), budget=FixedBudget(1))
+    with scripted([count("BILL")]):
+        out = ask(app, "How many BILL issues in Q3?", users["billing_oncall"], TODAY)
+    names = [r.guardrail for r in out["guardrail_records"]]
+    assert names[0] == "model_budget" and len(names) == 5   # the budget, then the four tool guardrails
+    assert verdicts(traces.of_kind("guardrail")) == [(r.guardrail, r.stage, r.behavior) for r in out["guardrail_records"]]
+
+
+def test_the_rules_router_calls_no_model_so_no_budget_is_asked(env):
+    from agent_tools.router import RulesRouter
+
+    tool, users = env
+    budget = FixedBudget(0)
+    out = ask(build_assistant(tool, lambda q, c, k: [], RulesRouter(), budget=budget),
+              "How many P1 incidents in BILL last quarter?", users["billing_oncall"], TODAY)
+    assert budget.asked == [] and out.get("stop_reason") != "budget"
+
+
+def test_a_budget_stops_a_looping_model_mid_run(env, traces):
+    """The model keeps asking for an out-of-scope project; the budget allows two turns."""
+    tool, users = env
+    loop = ToolLoop(scripted_model(), tool, finance_assistant_policy(), budget=FixedBudget(2))
+    with scripted([count("INFRA"), count("INFRA", call_id="c2")]) as model:
+        result = loop.run("How many INFRA issues in Q3?", users["billing_oncall"], TODAY)
+    assert result.status == "budget" and result.turns == 3
+    assert len(model.calls) == 2 and len(traces.of_kind("generation")) == 2
