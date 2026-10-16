@@ -147,7 +147,7 @@ class RulesRouter:
     so the assistant graph takes either. The rules run offline and are free; the model
     router routed 18 to 19 of 20 held-out questions where the rules routed 9."""
 
-    def decide(self, question: str, today: date):
+    def decide(self, question: str, today: date, context: list[dict] | None = None):
         from .model_router import Decision  # deferred: model_router imports this module's names
 
         if classify(question) == "knowledge":

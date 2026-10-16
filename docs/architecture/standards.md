@@ -2,7 +2,7 @@
 
 <!-- Rendered from standards.yaml and exceptions.yaml by render_standards.py. Edit those, not this. -->
 
-26 standards. 25 are enforced by named tests or static checks that run in CI; 1 are enforced by design review only, and say so. A test checks that every test cited here exists. Conformance per module is in the [scorecard](scorecard.md).
+28 standards. 27 are enforced by named tests or static checks that run in CI; 1 is enforced by design review only, and says so. A test checks that every test cited here exists. Conformance per module is in the [scorecard](scorecard.md).
 
 Each standard has an ID used by the [design review checklist](design-review-checklist.md), the ADRs that explain it, and the modules it applies to. Where a module doesn't meet a standard yet, the gap is in the [exception register](#exception-register) with an owner and an expiry date.
 
@@ -96,19 +96,32 @@ A model-dependent component is measured on a held-out set written without seeing
 
 *Exception EXC-004* for 07, until 2027-04-16: 07's answer evaluation ran once, on one model (gpt-4o-mini), with no non-model baseline for answers.
 
+### AI-08 · Memory is selected, bounded, and never widens a check
+
+What a model sees from past turns is chosen by relevance within a bound, with the user's standing instructions pinned. Nothing from memory counts as evidence for a check except the user's own pinned instructions.
+
+*Why:* Appending everything grows cost without limit; a summary forgets; and a project named in passing earlier must not authorize a query now.
+
+*Applies to:* 09 · *ADRs:* [0016](adr/0016-memory-retrieved-and-pinned.md)
+
+*Enforced by:*
+
+- 09: [`test_retrieval_with_pins_recalls_most_at_a_fraction_of_the_cost`](../../09_memory/tests/test_strategies.py), [`test_pinning_is_what_keeps_the_standing_instruction`](../../09_memory/tests/test_strategies.py), [`test_a_project_named_earlier_is_not_evidence_for_a_new_question`](../../09_memory/tests/test_assistant_memory.py)
+
 ### OPS-01 · Every run is traced, and content stays out by default
 
 Every agent run is one trace with typed spans. Prompts, documents, model output and tool results are recorded only when explicitly enabled; metadata holds only identities, counts and values checked against a known format.
 
 *Why:* Traces are read by more people than the data they describe.
 
-*Applies to:* 06, 07, 08, 12 · *ADRs:* [0007](adr/0007-trace-content-off-by-default.md)
+*Applies to:* 06, 07, 08, 09, 12 · *ADRs:* [0007](adr/0007-trace-content-off-by-default.md)
 
 *Enforced by:*
 
 - 06: [`test_no_content_reaches_the_trace_file_and_the_control_sees_all_of_it`](../../10_observability/tests/test_leak_check.py)
 - 07: [`test_no_content_reaches_the_trace_file_and_the_control_sees_all_of_it`](../../10_observability/tests/test_leak_check.py)
 - 08: [`test_no_content_reaches_the_trace_file_and_the_control_sees_all_of_it`](../../10_observability/tests/test_leak_check.py), [`test_output_info_never_echoes_free_text_from_the_model`](../../08_tools/tests/test_guardrails.py), [`test_a_count_reconciles_span_for_span`](../../08_tools/tests/test_traces.py)
+- 09: [`test_history_reaches_the_model_but_not_the_trace`](../../09_memory/tests/test_assistant_memory.py), [`test_the_trace_names_which_turns_the_model_saw_by_position_only`](../../09_memory/tests/test_assistant_memory.py)
 - 12: [`test_no_content_reaches_the_trace_file_and_the_control_sees_all_of_it`](../../10_observability/tests/test_leak_check.py)
 
 ### OPS-02 · Costs come from a sourced price file
@@ -189,13 +202,14 @@ Every suite runs with no API key. A test that proves something never happens is 
 
 *Why:* A zero without a control is indistinguishable from a broken test.
 
-*Applies to:* 06, 07, 08, 10, 11, 12 · *ADRs:* [0013](adr/0013-offline-tests-measured-live-runs.md)
+*Applies to:* 06, 07, 08, 09, 10, 11, 12 · *ADRs:* [0013](adr/0013-offline-tests-measured-live-runs.md)
 
 *Enforced by:*
 
 - 06: [`test_a_call_with_no_step_left_raises`](../../tests/test_scripted_model.py)
 - 07: [`test_unfiltered_baseline_leaks`](../../07_rag/tests/test_permissions.py)
 - 08: [`test_without_the_guardrail_the_tool_would_have_run_it`](../../08_tools/tests/test_guardrails.py)
+- 09: [`test_without_the_pin_the_same_words_are_not_evidence`](../../09_memory/tests/test_assistant_memory.py)
 - 10: [`test_no_content_reaches_the_trace_file_and_the_control_sees_all_of_it`](../../10_observability/tests/test_leak_check.py)
 - 11: [`test_a_daily_budget_stops_at_the_expected_question_and_calls_nothing_after`](../../11_finops/tests/test_budget.py)
 - 12: [`test_without_the_marker_one_lost_response_posts_twice`](../../12_integration/tests/test_integration_check.py)
@@ -211,6 +225,18 @@ Modules get their model through llm_provider.get_chat_model, so the provider and
 *Checked by:* static check `model_construction` ([conformance.py](conformance.py)) over the code of every module it applies to.
 
 *Exception EXC-001* for 07, until 2026-12-31: 07_rag/rag/graph.py builds its OpenAI and Anthropic models itself instead of calling llm_provider.get_chat_model.
+
+### APP-06 · Memory belongs to one identity, can be deleted, and expires
+
+A session is bound to the identity that created it; opening another identity's session is refused. A user's history can be deleted, and expires after its retention period, deleted rather than hidden.
+
+*Why:* A session id is not a credential, and history kept forever is a liability, not a feature.
+
+*Applies to:* 09 · *ADRs:* [0016](adr/0016-memory-retrieved-and-pinned.md)
+
+*Enforced by:*
+
+- 09: [`test_a_sqlite_session_survives_a_restart_and_belongs_to_its_owner`](../../09_memory/tests/test_session.py), [`test_someone_elses_session_is_refused_before_anything_runs`](../../09_memory/tests/test_assistant_memory.py), [`test_expired_items_are_deleted_on_the_next_write_not_just_hidden`](../../09_memory/tests/test_session.py), [`test_pop_undoes_the_last_item_and_clear_deletes_everything`](../../09_memory/tests/test_session.py)
 
 ## API
 

@@ -40,11 +40,12 @@ KnowledgeSearch = Callable[[str, Caller, int], list[tuple[str, str]]]
 
 
 class Router(Protocol):
-    def decide(self, question: str, today: date): ...
+    def decide(self, question: str, today: date, context: list[dict] | None = None): ...
 
 
 class State(TypedDict, total=False):
     question: str
+    context: list[dict]     # earlier turns from memory, for the router to see (09_memory)
     caller: Caller
     today: date
     route: str
@@ -116,7 +117,7 @@ def build_assistant(tool: BoundedJiraTool, knowledge: KnowledgeSearch, router: R
         return update | {"guardrail_records": records} if records else update
 
     def _decide(s: State) -> State:
-        d = router.decide(s["question"], s["today"])
+        d = router.decide(s["question"], s["today"], context=s.get("context"))
         if d.route == "aggregation":
             if d.rejected:
                 # The bound refused the call, but the guardrails still see it first: an
@@ -296,14 +297,18 @@ def _ended(out: State) -> str:
     return out.get("stop_reason") or "answered"
 
 
-def ask(app, question: str, caller: Caller, today: date, thread_id: str | None = None) -> State:
+def ask(app, question: str, caller: Caller, today: date, thread_id: str | None = None,
+        context: list[dict] | None = None) -> State:
     """Run one question. With a checkpointer, pass a thread_id; a write then returns with
     "__interrupt__" set and waits for resume(). One trace per call, grouped by thread_id."""
     tracer = get_tracer()
     with tracer.trace("assistant", group_id=thread_id, metadata={"caller": caller.id}):
         with tracer.span("agent", "assistant", caller=caller.id) as span:
             span.content(input=question)
-            out = app.invoke({"question": question, "caller": caller, "today": today}, _config(thread_id))
+            inputs = {"question": question, "caller": caller, "today": today}
+            if context:
+                inputs["context"] = list(context)
+            out = app.invoke(inputs, _config(thread_id))
             span.set(route=out.get("route"), ended=_ended(out))
             span.content(output=out.get("answer"))
     return out

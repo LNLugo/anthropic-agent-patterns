@@ -150,11 +150,17 @@ class ModelRouter:
         self.llm = llm.bind_tools(tools, tool_choice="any")
         self.model = model_name(llm)
 
-    def decide(self, question: str, today: date) -> Decision:
+    def decide(self, question: str, today: date, context: list[dict] | None = None) -> Decision:
+        """context: earlier turns chosen from memory (09_memory), shown to the model before
+        the question. The coverage check still reads only the question, plus the user's
+        pinned standing instructions."""
         t0 = time.perf_counter()
         system = system_prompt(today) + (COMMENT_NOTE if self.comments else "")
+        context = context or []
+        history = [("human" if i["role"] == "user" else "ai", i["content"]) for i in context]
+        standing = [i["content"] for i in context if i["role"] == "user" and i.get("pinned")]
         with get_tracer().span("generation", "router", model=self.model) as span:
-            msg = self.llm.invoke([("system", system), ("human", question)])
+            msg = self.llm.invoke([("system", system), *history, ("human", question)])
             latency = time.perf_counter() - t0
             counts = usage(msg)
             tokens = {"input_tokens": counts["input_tokens"], "output_tokens": counts["output_tokens"]}
@@ -177,7 +183,7 @@ class ModelRouter:
             except ToolRejected as e:
                 spec, rejected = None, str(e)
             if spec is not None and self.coverage:
-                covered = coverage_check.check(question, spec.project, args.get(EVIDENCE_FIELD))
+                covered = coverage_check.check(question, spec.project, args.get(EVIDENCE_FIELD), standing)
                 if covered:
                     route, spec = "clarify", None
                     message = f"I can't count that as asked: {covered}. Which single project do you mean?"

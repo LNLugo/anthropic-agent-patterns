@@ -53,8 +53,13 @@ def projects_named(text: str) -> set[str]:
     return {code for name, code in NAMES.items() if re.search(rf"\b{re.escape(name)}s?\b", t)}
 
 
-def check(question: str, project: str, evidence: str | None) -> str | None:
-    """None when the query covers the question; otherwise the reason to ask instead."""
+def check(question: str, project: str, evidence: str | None, standing: list[str] | tuple = ()) -> str | None:
+    """None when the query covers the question; otherwise the reason to ask instead.
+
+    standing: the user's own standing instructions from memory ("from now on, only
+    Payments"). The evidence may come from one of them. Nothing else from the
+    conversation counts: a project named earlier is not evidence for this question,
+    and only the current question is checked for a second project."""
     named = projects_named(question)
     if named - {project}:
         listed = ", ".join(sorted(named | {project}))
@@ -62,7 +67,7 @@ def check(question: str, project: str, evidence: str | None) -> str | None:
     ev = _norm(evidence or "")
     if not ev:
         return "no words in the question identify the project"
-    if f" {ev} " not in f" {_norm(question)} ":
+    if not any(f" {ev} " in f" {_norm(text)} " for text in (question, *standing)):
         return f"the project evidence {evidence!r} is not in the question"
     if set(ev.split()) <= GENERIC:
         return f"the project evidence {evidence!r} does not name a project"

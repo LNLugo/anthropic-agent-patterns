@@ -54,7 +54,8 @@ def render() -> str:
         "<!-- Rendered from standards.yaml and exceptions.yaml by render_standards.py. Edit those, not this. -->",
         "",
         f"{len(standards)} standards. {tested} are enforced by named tests or static checks that run in CI; "
-        f"{len(standards) - tested} are enforced by design review only, and say so. "
+        f"{len(standards) - tested} {'is' if len(standards) - tested == 1 else 'are'} enforced by design review only, and "
+        f"{'says' if len(standards) - tested == 1 else 'say'} so. "
         "A test checks that every test cited here exists. Conformance per module is in the "
         "[scorecard](scorecard.md).",
         "",

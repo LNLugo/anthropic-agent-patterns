@@ -56,12 +56,19 @@ control and an expiry.
 | 20 | Which failures retry and which dead-letter at once? Can a dead letter be replayed? | INT-04 | The error classification and the replay test |
 | 21 | For batch files and webhooks: control totals checked? Signatures verified before parsing? | INT-05, INT-06 | The truncated-file and forged-signature tests |
 
+## Memory
+
+| # | Question | Standards | Bring |
+|---|---|---|---|
+| 24 | Whose memory is it? Can another identity open it? When does it expire, and can the user delete it? | APP-06 | The owner check, the retention setting and the delete test |
+| 25 | What does the model see from past turns, within what bound? Are standing instructions pinned? Can anything from memory satisfy a check? | AI-08 | Recall and context size against append-all, and the test that an earlier project is not evidence |
+
 ## Build
 
 | # | Question | Standards | Bring |
 |---|---|---|---|
-| 22 | Do the tests run with no API key? Does every "never happens" test have a run where it does? | APP-04 | The control for each zero |
-| 23 | Does the component get its model through `llm_provider`? | APP-05 | The import |
+| 26 | Do the tests run with no API key? Does every "never happens" test have a run where it does? | APP-04 | The control for each zero |
+| 27 | Does the component get its model through `llm_provider`? | APP-05 | The import |
 
 ## Outcome
 

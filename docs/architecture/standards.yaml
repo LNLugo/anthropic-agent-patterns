@@ -108,6 +108,19 @@ standards:
 
   # ---------------------------------------------------------------- Security and identity (application)
 
+
+  - id: AI-08
+    domain: AI
+    title: "Memory is selected, bounded, and never widens a check"
+    statement: "What a model sees from past turns is chosen by relevance within a bound, with the user's standing instructions pinned. Nothing from memory counts as evidence for a check except the user's own pinned instructions."
+    rationale: "Appending everything grows cost without limit; a summary forgets; and a project named in passing earlier must not authorize a query now."
+    adr: ["0016"]
+    applies_to: ["09"]
+    evidence:
+      "09":
+        - 09_memory/tests/test_strategies.py::test_retrieval_with_pins_recalls_most_at_a_fraction_of_the_cost
+        - 09_memory/tests/test_strategies.py::test_pinning_is_what_keeps_the_standing_instruction
+        - 09_memory/tests/test_assistant_memory.py::test_a_project_named_earlier_is_not_evidence_for_a_new_question
   - id: APP-01
     domain: Application
     title: "Every call is made as a named identity"
@@ -160,7 +173,7 @@ standards:
     statement: "Every suite runs with no API key. A test that proves something never happens is paired with a run where it does (the control), so a zero means the check works, not that it is blind."
     rationale: "A zero without a control is indistinguishable from a broken test."
     adr: ["0013"]
-    applies_to: ["06", "07", "08", "10", "11", "12"]
+    applies_to: ["06", "07", "08", "09", "10", "11", "12"]
     evidence:
       "06":
         - tests/test_scripted_model.py::test_a_call_with_no_step_left_raises
@@ -168,6 +181,8 @@ standards:
         - 07_rag/tests/test_permissions.py::test_unfiltered_baseline_leaks
       "08":
         - 08_tools/tests/test_guardrails.py::test_without_the_guardrail_the_tool_would_have_run_it
+      "09":
+        - 09_memory/tests/test_assistant_memory.py::test_without_the_pin_the_same_words_are_not_evidence
       "10":
         - 10_observability/tests/test_leak_check.py::test_no_content_reaches_the_trace_file_and_the_control_sees_all_of_it
       "11":
@@ -187,13 +202,27 @@ standards:
 
   # ---------------------------------------------------------------- Observability and cost (AI operations)
 
+
+  - id: APP-06
+    domain: Application
+    title: "Memory belongs to one identity, can be deleted, and expires"
+    statement: "A session is bound to the identity that created it; opening another identity's session is refused. A user's history can be deleted, and expires after its retention period, deleted rather than hidden."
+    rationale: "A session id is not a credential, and history kept forever is a liability, not a feature."
+    adr: ["0016"]
+    applies_to: ["09"]
+    evidence:
+      "09":
+        - 09_memory/tests/test_session.py::test_a_sqlite_session_survives_a_restart_and_belongs_to_its_owner
+        - 09_memory/tests/test_assistant_memory.py::test_someone_elses_session_is_refused_before_anything_runs
+        - 09_memory/tests/test_session.py::test_expired_items_are_deleted_on_the_next_write_not_just_hidden
+        - 09_memory/tests/test_session.py::test_pop_undoes_the_last_item_and_clear_deletes_everything
   - id: OPS-01
     domain: AI
     title: "Every run is traced, and content stays out by default"
     statement: "Every agent run is one trace with typed spans. Prompts, documents, model output and tool results are recorded only when explicitly enabled; metadata holds only identities, counts and values checked against a known format."
     rationale: "Traces are read by more people than the data they describe."
     adr: ["0007"]
-    applies_to: ["06", "07", "08", "12"]
+    applies_to: ["06", "07", "08", "09", "12"]
     evidence:
       "06":
         - 10_observability/tests/test_leak_check.py::test_no_content_reaches_the_trace_file_and_the_control_sees_all_of_it
@@ -203,6 +232,9 @@ standards:
         - 10_observability/tests/test_leak_check.py::test_no_content_reaches_the_trace_file_and_the_control_sees_all_of_it
         - 08_tools/tests/test_guardrails.py::test_output_info_never_echoes_free_text_from_the_model
         - 08_tools/tests/test_traces.py::test_a_count_reconciles_span_for_span
+      "09":
+        - 09_memory/tests/test_assistant_memory.py::test_history_reaches_the_model_but_not_the_trace
+        - 09_memory/tests/test_assistant_memory.py::test_the_trace_names_which_turns_the_model_saw_by_position_only
       "12":
         - 10_observability/tests/test_leak_check.py::test_no_content_reaches_the_trace_file_and_the_control_sees_all_of_it
 

@@ -115,3 +115,13 @@ def test_the_bound_still_runs_first(tool):
     args = {"project": "BILL", "jql": "project = SECOPS", EVIDENCE_FIELD: "billing", **SEPT}
     d = ModelRouter(ScriptedModel({q: ("count_jira_issues", args)}), tool).decide(q, TODAY)
     assert d.rejected and "unknown arguments" in d.rejected and d.coverage is None
+
+
+def test_a_pinned_standing_instruction_can_name_the_project_and_nothing_else_from_memory_can():
+    from agent_tools.coverage import check
+
+    q = "How many P1 incidents in Q3?"
+    assert check(q, "PAY", "Payments") == "the project evidence 'Payments' is not in the question"
+    assert check(q, "PAY", "Payments", standing=["From now on, only count Payments."]) is None
+    # the second-project rule still reads only the current question
+    assert check("Compare BILL and INFRA", "BILL", "BILL", standing=["From now on, only count Payments."]) is not None

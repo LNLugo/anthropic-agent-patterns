@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         python: ["3.12", "3.13"]
-        suite: [phase1, 07_rag, 08_tools, 10_observability, 11_finops, 12_integration]
+        suite: [phase1, 07_rag, 08_tools, 09_memory, 10_observability, 11_finops, 12_integration]
         include:
           - suite: phase1
             dir: .
@@ -32,6 +32,9 @@ jobs:
           - suite: 08_tools
             dir: 08_tools
             requirements: 08_tools/requirements.txt
+          - suite: 09_memory
+            dir: 09_memory
+            requirements: 09_memory/requirements-test.txt
           - suite: 10_observability
             dir: 10_observability
             requirements: 10_observability/requirements-test.txt
