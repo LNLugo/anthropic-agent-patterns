@@ -6,6 +6,7 @@ called the live model on every page refresh, and Run did nothing for them.
 """
 
 import json
+import os
 from pathlib import Path
 
 import pytest
@@ -62,3 +63,64 @@ def test_agents_page_shows_why_the_run_ended(steps, status):
         at.button[0].click().run()
     assert not at.exception
     assert ("Why the run ended", status) in [(m.label, m.value) for m in at.metric]
+
+
+# ---------------------------------------------------------------- Agents scenarios
+
+import importlib.util  # noqa: E402
+
+_spec = importlib.util.spec_from_file_location("demo_scenarios", Path(APP).parent / "demo_scenarios.py")
+_demo = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_demo)
+AGENT_SCENARIOS = _demo.AGENT_SCENARIOS
+
+REPLAYS = [name for name, s in AGENT_SCENARIOS.items() if "replay" in s]
+
+
+def open_agents_scenario(name):
+    at = open_page("Agents")
+    at.selectbox[1].set_value(name).run()
+    return at
+
+
+def ended(at):
+    return dict((m.label, m.value) for m in at.metric)["Why the run ended"]
+
+
+@pytest.mark.parametrize("name", AGENT_SCENARIOS)
+def test_selecting_an_agents_scenario_calls_no_model(name):
+    at = open_agents_scenario(name)
+    assert not at.exception
+    assert scripted_model().calls == ()
+
+
+@pytest.mark.parametrize("name", REPLAYS)
+def test_replays_abstain_offline_with_no_api_key(name, monkeypatch):
+    """A replay must run on a machine with no key: the page switches the module to the
+    scripted model itself, and puts the provider setting back afterwards."""
+    monkeypatch.setenv("LLM_PROVIDER", "openai")
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    at = open_agents_scenario(name)
+    at.button[0].click().run()
+    assert not at.exception
+    assert ended(at) == "invalid decision"
+    assert "No answer" in " ".join(m.value for m in at.markdown)
+    assert len(scripted_model().calls) == len(AGENT_SCENARIOS[name]["replay"])  # every reply used
+    assert os.environ["LLM_PROVIDER"] == "openai"
+
+
+def test_a_scenario_turn_limit_reaches_the_graph():
+    at = open_agents_scenario("Turn limit: too broad for one turn")
+    with scripted([{"decision": "act", "tool": "risk_analysis"}, "Partial."]) as model:
+        at.button[0].click().run()
+    assert len(model.calls) == 2  # one decision, then the capped answer; no second decision
+    assert ended(at) == "max turns"
+    assert any("designed to: max turns" in c.value for c in at.caption)
+
+
+def test_a_live_run_that_ends_otherwise_says_so():
+    at = open_agents_scenario("Hands off: a model risk question")
+    with scripted([{"decision": "finish"}, "Answer."]):
+        at.button[0].click().run()
+    assert ended(at) == "completed"
+    assert any("designed to end handed off and ended completed" in c.value for c in at.caption)

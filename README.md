@@ -141,7 +141,7 @@ Every suite runs offline, with no API key, and CI runs all three on Python
 
 | Suite | Run from | Tests | What stands in for the model |
 |---|---|---|---|
-| Phase 1 patterns and the explorer app | repo root: `pytest` | 75 | `ScriptedChatModel` in [`llm_provider.py`](llm_provider.py) |
+| Phase 1 patterns and the explorer app | repo root: `pytest` | 85 | `ScriptedChatModel` in [`llm_provider.py`](llm_provider.py) |
 | 07 Retrieval | `07_rag`: `pytest` | 60 | fixtures; no model call in the suite |
 | 08 Tools | `08_tools`: `pytest` | 134 | `ScriptedChatModel` and scripted tool calls |
 
@@ -160,7 +160,9 @@ A few tests pin down behaviour worth knowing, not just behaviour that works:
 the free text router in 02 sends "not news, it is research" to the news
 branch, and the loop cap in 05 ends a run without marking that the cap, not
 the evaluator, ended it. The explorer app is tested too: selecting a pattern
-must make no model call, and Run must execute it.
+must make no model call, and Run must execute it. Its Agents page has one
+scenario per way a run ends; the two where the agent abstains on a bad
+decision are replays of scripted model replies, so they need no API key.
 
 ### Turn outcomes in 06
 
