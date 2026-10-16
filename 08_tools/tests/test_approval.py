@@ -1,5 +1,6 @@
 """Human approval on the one write action: the run pauses, survives on disk, and resumes on a decision."""
 
+import json
 import sqlite3
 import sys
 from datetime import date
@@ -163,18 +164,25 @@ def test_the_count_tool_and_the_mock_stay_read_only():
     assert not hasattr(MockJira, "add_comment") and not hasattr(BoundedJiraTool, "post")
 
 
-def test_a_saved_approval_loads_under_strict_deserialization():
+def test_a_saved_approval_loads_under_strict_deserialization(tmp_path):
     """LangGraph is moving to blocking unregistered types when a checkpoint is loaded.
     Run the full restart and resume with that already switched on (it is read once, at
-    start-up, hence the subprocess): the comment must post, with nothing blocked."""
+    start-up, hence the subprocess): the comment must post, with nothing blocked. The
+    demo traces its runs, to a temporary folder rather than the working tree."""
     import os
     import subprocess
 
     here = Path(__file__).resolve().parents[1]
     env = {k: v for k, v in os.environ.items() if not k.endswith("_API_KEY")}
     run = subprocess.run([sys.executable, str(here / "demo_approval.py")], cwd=here, capture_output=True,
-                         text=True, timeout=120, env={**env, "LANGGRAPH_STRICT_MSGPACK": "true"})
+                         text=True, timeout=120, env={**env, "LANGGRAPH_STRICT_MSGPACK": "true",
+                                                         "TRACE_EXPORT_DIR": str(tmp_path / "traces")})
     out = run.stdout + run.stderr
     assert run.returncode == 0, out
     assert "Posted to BILL-101 as billing_oncall, approved by incident_lead." in out
     assert "Blocked" not in out and "unregistered" not in out
+    [trace_file] = (tmp_path / "traces").glob("traces-*.jsonl")
+    ended = [r for r in map(json.loads, trace_file.read_text().splitlines()) if r["type"] == "trace" and r["ended_at"]]
+    asks = [t["group_id"] for t in ended if t["workflow"] == "assistant"]
+    resumes = [t["group_id"] for t in ended if t["workflow"] == "assistant.resume"]
+    assert asks and asks == resumes and all(t["status"] == "ok" for t in ended)  # each request, then its decision

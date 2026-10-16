@@ -31,6 +31,7 @@ from .comments import Comment, CommentTool
 from .guardrails import GuardrailRecord, ToolCallData, ToolGuardrail, run_guardrails
 from .jira_mock import Caller
 from .jql_tool import BoundedJiraTool, QuerySpec, ToolRejected, ToolResult
+from .observe import get_tracer
 
 # Knowledge retrieval is injected: (question, caller, k) -> [(page_id, title), ...].
 # demo_assistant.py wires it to 07_rag's permission-filtered retriever.
@@ -130,13 +131,19 @@ def build_assistant(tool: BoundedJiraTool, knowledge: KnowledgeSearch, router: R
         rejected = run_guardrails(guardrails, "input", data, records)  # raise_exception propagates and halts
         if rejected is not None:
             return {"guardrail_records": records, "stop_reason": "guardrail", "answer": rejected}
-        if s.get("bound_rejection"):
-            return {"guardrail_records": records, "stop_reason": "rejected",
-                    "answer": f"I can't run that query: {s['bound_rejection']}."}
-        try:
-            result = tool.run(s["spec"], s["caller"])  # the tool's bound runs inside
-        except ToolRejected as e:
-            return {"guardrail_records": records, "stop_reason": "rejected", "answer": f"I can't run that query: {e}."}
+        with get_tracer().span("tool", tool.name, caller=s["caller"].id) as span:
+            span.content(input=s["arguments"])
+            if s.get("bound_rejection"):
+                span.set(outcome="rejected")  # the tool's own bound refused the arguments
+                return {"guardrail_records": records, "stop_reason": "rejected",
+                        "answer": f"I can't run that query: {s['bound_rejection']}."}
+            try:
+                result = tool.run(s["spec"], s["caller"])  # the tool's bound runs inside
+            except ToolRejected as e:
+                span.set(outcome="rejected")
+                return {"guardrail_records": records, "stop_reason": "rejected", "answer": f"I can't run that query: {e}."}
+            span.set(outcome="ok", truncated=result.truncated)
+            span.content(output={"count": result.count, "keys": list(result.keys), "jql": result.jql})
         rejected = run_guardrails(guardrails, "output", ToolCallData(
             tool.name, s["arguments"], s["question"], s["caller"], output=result), records)
         if rejected is not None:
@@ -157,6 +164,9 @@ def build_assistant(tool: BoundedJiraTool, knowledge: KnowledgeSearch, router: R
             key, body = comment_tool.check(args, s["caller"])
         except ToolRejected as e:
             return {"guardrail_records": records, "stop_reason": "rejected", "answer": f"Not posted: {e}."}
+        # Control passes to a person: the run pauses here until someone decides.
+        get_tracer().event("handoff", "approval_request", from_agent="assistant", to_agent="human_approver",
+                           action=comment_tool.name, issue_key=key, requested_by=s["caller"].id)
         return {"guardrail_records": records, "proposal": {
             "action": comment_tool.name, "issue_key": key, "body": body,
             "requested_by": s["caller"].id, "question": s["question"],
@@ -170,10 +180,17 @@ def build_assistant(tool: BoundedJiraTool, knowledge: KnowledgeSearch, router: R
 
     def post_node(s: State) -> State:
         p, a = s["proposal"], s["approval"]
-        try:
-            comment = comment_tool.post(p["issue_key"], p["body"], s["caller"], approved_by=a["approver"])
-        except ToolRejected as e:
-            return {"stop_reason": "rejected", "answer": f"Not posted: {e}."}
+        tracer = get_tracer()
+        tracer.event("custom", "approval", decision="approved", approver=a["approver"], requested_by=p["requested_by"],
+                     issue_key=p["issue_key"])
+        with tracer.span("tool", comment_tool.name, caller=s["caller"].id, issue_key=p["issue_key"]) as span:
+            span.content(input={"body": p["body"]})
+            try:
+                comment = comment_tool.post(p["issue_key"], p["body"], s["caller"], approved_by=a["approver"])
+            except ToolRejected as e:
+                span.set(outcome="rejected")
+                return {"stop_reason": "rejected", "answer": f"Not posted: {e}."}
+            span.set(outcome="posted")
         return {"comment": comment, "stop_reason": "posted",
                 "answer": f"Posted to {comment.issue_key} as {comment.author}, approved by {comment.approved_by}."}
 
@@ -189,10 +206,18 @@ def build_assistant(tool: BoundedJiraTool, knowledge: KnowledgeSearch, router: R
             why = "no approver was named"
         else:
             why = a.get("reason") or f"{a.get('approver') or 'the approver'} declined"
+        with get_tracer().span("custom", "approval", decision="declined", approver=a.get("approver"),
+                               requested_by=p["requested_by"], issue_key=p["issue_key"],
+                               self_approval=a.get("approved") is True and a.get("approver") == p["requested_by"]) as span:
+            span.content(reason=why)  # the approver's own words
         return {"stop_reason": "declined", "answer": f"Not posted to {p['issue_key']}: {why}."}
 
     def retrieve_node(s: State) -> State:
-        return {"pages": knowledge(s["question"], s["caller"], k)}
+        with get_tracer().span("tool", "search_wiki", caller=s["caller"].id, k=k) as span:
+            pages = knowledge(s["question"], s["caller"], k)
+            span.set(outcome="ok", page_ids=[pid for pid, _ in pages])
+            span.content(input=s["question"], output=[title for _, title in pages])
+        return {"pages": pages}
 
     def respond_node(s: State) -> State:
         if s.get("stop_reason"):
@@ -250,10 +275,23 @@ def _config(thread_id: str | None) -> dict | None:
     return {"configurable": {"thread_id": thread_id}} if thread_id else None
 
 
+def _ended(out: State) -> str:
+    if "__interrupt__" in out:
+        return "pending_approval"
+    return out.get("stop_reason") or "answered"
+
+
 def ask(app, question: str, caller: Caller, today: date, thread_id: str | None = None) -> State:
     """Run one question. With a checkpointer, pass a thread_id; a write then returns with
-    "__interrupt__" set and waits for resume()."""
-    return app.invoke({"question": question, "caller": caller, "today": today}, _config(thread_id))
+    "__interrupt__" set and waits for resume(). One trace per call, grouped by thread_id."""
+    tracer = get_tracer()
+    with tracer.trace("assistant", group_id=thread_id, metadata={"caller": caller.id}):
+        with tracer.span("agent", "assistant", caller=caller.id) as span:
+            span.content(input=question)
+            out = app.invoke({"question": question, "caller": caller, "today": today}, _config(thread_id))
+            span.set(route=out.get("route"), ended=_ended(out))
+            span.content(output=out.get("answer"))
+    return out
 
 
 def pending(app, thread_id: str) -> dict | None:
@@ -267,4 +305,11 @@ def pending(app, thread_id: str) -> dict | None:
 
 def resume(app, thread_id: str, approved: bool, approver: str, reason: str = "") -> State:
     """Answer a pending approval and finish the run. The model is not called again."""
-    return app.invoke(Command(resume={"approved": approved, "approver": approver, "reason": reason}), _config(thread_id))
+    tracer = get_tracer()
+    with tracer.trace("assistant.resume", group_id=thread_id, metadata={"approver": approver}):
+        with tracer.span("agent", "assistant", approver=approver) as span:
+            out = app.invoke(Command(resume={"approved": approved, "approver": approver, "reason": reason}),
+                             _config(thread_id))
+            span.set(route=out.get("route"), ended=_ended(out))
+            span.content(output=out.get("answer"))
+    return out

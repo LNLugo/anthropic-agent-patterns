@@ -14,6 +14,9 @@ Every run says why it ended.
 
 The outcome types follow the turn results in openai/openai-agents-python
 (final output, run again, handoff, interruption); only the contract is borrowed.
+
+run() makes each run one trace (10_observability): every decision and the answer
+are generation spans, every tool a tool span, and a handoff a handoff span.
 """
 
 from __future__ import annotations
@@ -30,7 +33,9 @@ import sys  # noqa: E402
 from pathlib import Path  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "10_observability"))
 from llm_provider import get_chat_model, parse_json  # noqa: E402  LLM_PROVIDER picks the model
+from tracing import get_tracer  # noqa: E402
 from langgraph.graph import END, StateGraph  # noqa: E402
 
 
@@ -119,6 +124,15 @@ class State(TypedDict, total=False):
 llm = get_chat_model()
 
 
+def _usage(response) -> dict:
+    usage = getattr(response, "usage_metadata", None) or {}
+    return {"input_tokens": usage.get("input_tokens", 0), "output_tokens": usage.get("output_tokens", 0)}
+
+
+def _model_name() -> str:
+    return getattr(llm, "model_name", None) or getattr(llm, "model", None) or type(llm).__name__
+
+
 # ---------------------------------------------------------
 # TOOLS
 # ---------------------------------------------------------
@@ -200,14 +214,18 @@ def agent_node(state: State):
         # spent on a decision that would be overruled.
         return {"outcome": Interruption("max_turns", f"{turns} of {limit} turns used")}
 
-    response = (AGENT_PROMPT | llm).invoke({
-        "question": state["question"],
-        "actions": state.get("actions", []),
-        "observations": state.get("observations", []),
-        "iteration": turns,
-        "max_turns": limit,
-    })
-    outcome = parse_outcome(response.content)
+    with get_tracer().span("generation", "decide", model=_model_name(), turn=turns + 1) as span:
+        response = (AGENT_PROMPT | llm).invoke({
+            "question": state["question"],
+            "actions": state.get("actions", []),
+            "observations": state.get("observations", []),
+            "iteration": turns,
+            "max_turns": limit,
+        })
+        outcome = parse_outcome(response.content)
+        span.set(**_usage(response), outcome=type(outcome).__name__)
+        # The detail can quote the model's reply ("unknown tool ..."), so it is content.
+        span.content(output=response.content, detail=getattr(outcome, "detail", None))
     update = {"outcome": outcome}
     if isinstance(outcome, RunAgain):
         update["actions"] = state.get("actions", []) + [outcome.tool]
@@ -220,7 +238,9 @@ def agent_node(state: State):
 
 def tool_executor_node(state: State):
     tool = state["outcome"].tool
-    observation = TOOL_FUNCTIONS[tool](state["question"])
+    with get_tracer().span("tool", tool, outcome="ok") as span:
+        observation = TOOL_FUNCTIONS[tool](state["question"])
+        span.content(output=observation)
     return {
         "observations": state.get("observations", []) + [observation],
         "iteration": state.get("iteration", 0) + 1,
@@ -256,14 +276,17 @@ Return only the final answer.
 """
     )
 
-    response = (prompt | llm).invoke({
-        "question": state["question"],
-        "observations": state.get("observations", []),
-        "limit_note": (
-            "\nThe agent reached its turn limit before deciding it was done. "
-            "Say plainly what remains unanalysed.\n" if capped else ""
-        ),
-    })
+    with get_tracer().span("generation", "final_answer", model=_model_name(), capped=capped) as span:
+        response = (prompt | llm).invoke({
+            "question": state["question"],
+            "observations": state.get("observations", []),
+            "limit_note": (
+                "\nThe agent reached its turn limit before deciding it was done. "
+                "Say plainly what remains unanalysed.\n" if capped else ""
+            ),
+        })
+        span.set(**_usage(response))
+        span.content(output=response.content)
 
     return {
         "final_answer": response.content.strip(),
@@ -276,6 +299,7 @@ Return only the final answer.
 # ---------------------------------------------------------
 
 def handoff_node(state: State):
+    get_tracer().event("handoff", "handoff", from_agent="agent", to_agent=state["outcome"].to)
     return {"status": "handed_off", "handoff_to": state["outcome"].to}
 
 
@@ -333,3 +357,16 @@ workflow.add_edge("handoff", END)
 workflow.add_edge("stop", END)
 
 app = workflow.compile()
+
+
+def run(question: str, max_turns: int = MAX_TURNS) -> State:
+    """One run as one trace. The agent span records why the run ended."""
+    tracer = get_tracer()
+    with tracer.trace("agents_06", metadata={"max_turns": max_turns}):
+        with tracer.span("agent", "agent", max_turns=max_turns) as span:
+            span.content(input=question)
+            state = app.invoke({"question": question, "actions": [], "observations": [], "iteration": 0,
+                                "max_turns": max_turns, "final_answer": ""})
+            span.set(status=state.get("status"), turns=state.get("iteration", 0))
+            span.content(output=state.get("final_answer"))
+    return state

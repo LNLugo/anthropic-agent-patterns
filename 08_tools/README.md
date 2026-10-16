@@ -302,6 +302,14 @@ evaluations measure. Every verdict, allow included, is kept as a
 still runs on every call the guardrails allow, so a guardrail can narrow
 what reaches Jira but never widen it.
 
+Every verdict is also a `guardrail` span in the run's trace
+([10_observability](../10_observability/)). A guardrail's `output_info` is
+exported as trace metadata, so it holds only identities, counts and values
+checked against a known format or set. A project the model sent is kept only
+if it has the shape of a Jira project key, a coverage reason becomes a fixed
+code, and stray keys are counted, not listed. 10's leak check found the
+earlier versions echoing the model's arguments and the user's words.
+
 What the tests show, with Jira calls counted rather than assumed:
 
 | Case | Model turns | Jira queries |
@@ -364,7 +372,7 @@ MCP client --Authorization: Bearer <token>--> token verifier --> subject --> cal
 | Least privilege per tool | Reads need `jira:read`; commenting also needs `jira:write`. |
 | The same controls as the assistant | Each call runs through the assistant graph, with a `PresetRouter` passing in the client's chosen tool: the bound, the guardrails and Jira's permissions apply exactly as they do in the assistant. |
 | Writes still need a person | `comment_on_issue` returns `pending_approval` and a request id. There is deliberately no approve tool, so no agent can approve its own write; a person decides through `ApprovalDesk`, outside MCP, on the same checkpoints as above. |
-| Every call is audited | Tool, token subject, arguments, outcome and guardrail verdicts. |
+| Every call is audited | Tool, token subject, arguments, outcome and guardrail verdicts, plus the `trace_id` of the call's trace, where the token check is a `token_scope` guardrail span. A refused scope is traced like any other halt ([10_observability](../10_observability/)). |
 
 Two limits stated plainly. A guardrail's `raise_exception` refuses the call and
 is recorded as a halt, but stopping the client's own agent run is the
@@ -438,6 +446,7 @@ set by eye on 8 pages, not calibrated.
 │   ├── comments.py      comment_on_issue, the one write; kept apart from the read only count tool
 │   ├── mcp_server.py    the tools over MCP; identity from the bearer token; ApprovalDesk for writes
 │   ├── evaluate.py      router and extraction accuracy on the labeled set, rules or model
+│   ├── observe.py       the tracer from 10_observability; every run is a trace
 │   └── assistant.py     LangGraph flow: classify, extract, run tool or retrieve, respond
 ├── run_router_eval.py
 ├── run_model_router_eval.py
@@ -446,7 +455,7 @@ set by eye on 8 pages, not calibrated.
 ├── demo_approval.py
 ├── demo_mcp.py
 ├── serve_mcp.py
-└── tests/               134 offline tests, synthetic Jira, development, held-out and coverage questions
+└── tests/               144 offline tests, synthetic Jira, development, held-out and coverage questions
 ```
 
 ## Limits

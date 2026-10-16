@@ -203,6 +203,15 @@ class Tracer:
             t.span_count += 1
             self._export(s.record())
 
+    def current_trace(self) -> Trace | None:
+        return None if self.disabled else _current_trace.get()
+
+    def current(self) -> Span | _NoopSpan:
+        """The innermost open span, for code that adds to a span it did not open."""
+        if self.disabled or _current_trace.get() is None:
+            return NOOP_SPAN
+        return _current_span.get() or NOOP_SPAN
+
     def event(self, kind: str, name: str, **data: Any) -> None:
         """A span with no duration, for something that happened rather than ran (a handoff)."""
         with self.span(kind, name, **data):

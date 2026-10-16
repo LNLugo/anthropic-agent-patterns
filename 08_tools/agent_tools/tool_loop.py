@@ -28,6 +28,7 @@ from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
 from .guardrails import GuardrailRecord, ToolCallData, ToolGuardrail, run_guardrails
 from .jira_mock import Caller
 from .jql_tool import BoundedJiraTool, ToolRejected, ToolResult
+from .observe import get_tracer
 from .model_router import ASK_CLARIFICATION, EVIDENCE_FIELD, SEARCH_WIKI, openai_style, system_prompt, with_evidence
 
 LOOP_INSTRUCTIONS = """
@@ -51,14 +52,31 @@ class ToolLoop:
         self.tool, self.guardrails, self.max_turns = tool, list(guardrails), max_turns
         tools = [openai_style(with_evidence(tool.schema)), openai_style(SEARCH_WIKI), openai_style(ASK_CLARIFICATION)]
         self.llm = llm.bind_tools(tools)
+        self.model = getattr(llm, "model_name", None) or getattr(llm, "model", None) or type(llm).__name__
 
     def run(self, question: str, caller: Caller, today: date) -> LoopResult:
+        tracer = get_tracer()
+        with tracer.trace("tool_loop", metadata={"caller": caller.id}):
+            with tracer.span("agent", "tool_loop", caller=caller.id, max_turns=self.max_turns) as span:
+                span.content(input=question)
+                result = self._run(question, caller, today)
+                span.set(status=result.status, turns=result.turns)
+                span.content(output=result.text)
+        return result
+
+    def _run(self, question: str, caller: Caller, today: date) -> LoopResult:
         messages = [SystemMessage(system_prompt(today) + LOOP_INSTRUCTIONS), HumanMessage(question)]
         result = LoopResult("max_turns", "", 0)
+        tracer = get_tracer()
         for turn in range(1, self.max_turns + 1):
             result.turns = turn
-            msg = self.llm.invoke(messages)
-            calls = getattr(msg, "tool_calls", None) or []
+            with tracer.span("generation", "turn", model=self.model, turn=turn) as gen:
+                msg = self.llm.invoke(messages)
+                calls = getattr(msg, "tool_calls", None) or []
+                usage = getattr(msg, "usage_metadata", None) or {}
+                gen.set(input_tokens=usage.get("input_tokens", 0), output_tokens=usage.get("output_tokens", 0),
+                        tool_choice=calls[0]["name"] if calls else None)
+                gen.content(output=[dict(c.get("args") or {}) for c in calls] or str(msg.content))
             if not calls:
                 result.status, result.text = "answered", str(msg.content)
                 return result
@@ -83,12 +101,21 @@ class ToolLoop:
         rejected = run_guardrails(self.guardrails, "input", data, result.records)
         if rejected is not None:
             return rejected
-        try:
-            spec = self.tool.spec_from_arguments({k: v for k, v in args.items() if k != EVIDENCE_FIELD})
-            out = self.tool.run(spec, caller)
-        except ToolRejected as e:
-            result.records.append(GuardrailRecord("tool_bound", "input", name, "reject_content", {"error": str(e)}))
-            return f"Not run: {e}."
+        tracer = get_tracer()
+        with tracer.span("tool", name, caller=caller.id) as span:
+            span.content(input=args)
+            try:
+                spec = self.tool.spec_from_arguments({k: v for k, v in args.items() if k != EVIDENCE_FIELD})
+                out = self.tool.run(spec, caller)
+            except ToolRejected as e:
+                span.set(outcome="rejected")
+                with tracer.span("guardrail", "tool_bound", stage="input", tool=name, behavior="reject_content",
+                                 triggered=True) as bound:
+                    bound.content(message=str(e))  # the bound's message quotes the arguments
+                result.records.append(GuardrailRecord("tool_bound", "input", name, "reject_content", {"error": str(e)}))
+                return f"Not run: {e}."
+            span.set(outcome="ok", truncated=out.truncated)
+            span.content(output={"count": out.count, "keys": list(out.keys), "jql": out.jql})
         rejected = run_guardrails(self.guardrails, "output", replace(data, output=out), result.records)
         if rejected is not None:
             return rejected

@@ -26,6 +26,7 @@ with predictable workflows and progressing toward dynamic agent behavior.
 | A model router measured against rules on questions nobody tuned for | [08_tools held-out results](08_tools/README.md#held-out-set) |
 | Tools any agent can call, answering only as the signed-in user | [08_tools over MCP](08_tools/README.md#tools-over-mcp) |
 | Guardrails and human approval around a tool, with every claim counted | [Guardrails](08_tools/README.md#tool-guardrails), [approval](08_tools/README.md#human-approval) |
+| Traces an auditor can use that hold no prompt, document or tool result | [10_observability](10_observability/) |
 | The orchestration patterns themselves | [Architecture Progression](#architecture-progression) |
 | Everything above, interactively | `streamlit run app/Agent_Patterns.py` (Phase 2 results run offline, no API key) |
 
@@ -46,7 +47,7 @@ with predictable workflows and progressing toward dynamic agent behavior.
 | 07 | Retrieval (RAG) | ✅ Complete | Retrieval ablation, cited answers, abstention and permission-aware retrieval, measured on CUAD |
 | 08 | Tools and MCP | ✅ Complete | Bounded, read only Jira tool; model router measured against rules on held-out questions; coverage check, tool guardrails and human approval in the main path; the tools over MCP with identity from the token |
 | 09 | Memory | ⬜ Planned | Retrieve relevant history instead of appending it |
-| 10 | Observability | 🔶 In progress | One trace per run with agent, generation, tool, guardrail and handoff spans; local by default, sensitive content off. Tracing core built; instrumenting 06 to 08 next. (Tool guardrails are built in 08) |
+| 10 | Observability | ✅ Complete | One trace per run across 06, 07 and 08, with agent, generation, tool, guardrail and handoff spans; local by default, sensitive content off; 0 of 16 planted content markers in the trace file, an audit report from the file alone. (Tool guardrails are built in 08) |
 | 11 | AI FinOps | ⬜ Planned | Cost per answer and cost per correct answer |
 
 ---
@@ -136,15 +137,15 @@ fences and surrounding prose, so switching providers does not break them.
 
 ## Tests
 
-Every suite runs offline, with no API key, and CI runs all three on Python
+Every suite runs offline, with no API key, and CI runs all four on Python
 3.12 and 3.13 for every push and pull request.
 
 | Suite | Run from | Tests | What stands in for the model |
 |---|---|---|---|
-| Phase 1 patterns and the explorer app | repo root: `pytest` | 85 | `ScriptedChatModel` in [`llm_provider.py`](llm_provider.py) |
-| 10 Observability | repo root: `pytest` (in the same run, 97 in all) | 12 | none: the tracing core makes no model calls |
-| 07 Retrieval | `07_rag`: `pytest` | 60 | fixtures; no model call in the suite |
-| 08 Tools | `08_tools`: `pytest` | 134 | `ScriptedChatModel` and scripted tool calls |
+| Phase 1 patterns and the explorer app | repo root: `pytest` | 90 | `ScriptedChatModel` in [`llm_provider.py`](llm_provider.py) |
+| 07 Retrieval | `07_rag`: `pytest` | 63 | fixtures; no model call in the suite |
+| 08 Tools | `08_tools`: `pytest` | 144 | `ScriptedChatModel` and scripted tool calls |
+| 10 Observability | `10_observability`: `pytest` | 14 | runs 06, 07 and 08 on the scripted model and fixtures |
 
 Phase 1 tests assert on the **path the graph took**, not on model prose: which
 nodes ran, in what order, and what each node was given. `LLM_PROVIDER=scripted`
@@ -293,10 +294,6 @@ and names the number that will prove each part.
   positive control, so deny rules can be proven the same way allow rules are
 * **Cross-matter contamination test**: a user on one matter must never retrieve
   another matter's documents
-* **10 Observability**: the [tracing core](10_observability/) is built; next,
-  instrument 06, 07 and 08 (07's context ledger and 08's guardrail and approval
-  records become spans), measure that no prompt, document or tool result
-  reaches the trace file, and answer audit questions from the file alone
 * **09 Memory**: retrieve relevant history instead of appending it to the prompt
 * **Handoff leakage test**: restricted context must not reach a worker that is
   not cleared for it, proven the same way 07 proves retrieval permissions

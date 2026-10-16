@@ -16,6 +16,17 @@ from llm_provider import scripted_model  # noqa: E402
 
 
 @pytest.fixture(autouse=True)
+def traces():
+    """Every test runs with an in-memory tracer, so no test writes a trace file."""
+    from tracing import InMemoryExporter, Tracer, set_tracer
+
+    exporter = InMemoryExporter()
+    previous = set_tracer(Tracer([exporter]))
+    yield exporter
+    set_tracer(previous)
+
+
+@pytest.fixture(autouse=True)
 def _clean_script():
     """No script or recorded call leaks from one test into the next."""
     scripted_model().reset()

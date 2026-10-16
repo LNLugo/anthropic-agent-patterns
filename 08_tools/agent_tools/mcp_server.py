@@ -54,6 +54,7 @@ from .guardrails import GuardrailRecord, ToolGuardrail, ToolGuardrailTripwireTri
 from .jira_mock import Caller, MockJira
 from .jql_tool import BoundedJiraTool, ToolRejected
 from .model_router import Decision
+from .observe import get_tracer
 
 READ, WRITE = "jira:read", "jira:write"
 
@@ -126,6 +127,7 @@ class AuditEntry:
     outcome: str                                   # ok, refused, halted, pending_approval
     detail: str = ""
     guardrails: list[GuardrailRecord] = field(default_factory=list)
+    trace_id: str | None = None                    # the full record of the call, in the trace file
 
 
 class ToolRefused(ToolError):
@@ -183,18 +185,31 @@ def build_mcp_server(jira: MockJira, users: dict[str, Caller], verifier: StaticT
     )
 
     def caller(scope: str) -> Caller:
+        """Who is asking, from the verified token. The scope check is recorded as a guardrail
+        verdict, so a refused call is in the trace file like any other."""
         token = get_access_token()
+        subject = token.subject if token is not None else None
+        held = list(token.scopes) if token is not None else []
+        ok = subject in users and scope in held
+        get_tracer().event("guardrail", "token_scope", stage="input", subject=subject, required=scope, held=held,
+                     behavior="allow" if ok else "raise_exception", triggered=not ok)
         if token is None or token.subject not in users:
             raise ToolRefused("no signed-in user")
         if scope not in token.scopes:
             raise ToolRefused(f"this token does not carry the {scope} scope")
         return users[token.subject]
 
+    def traced(name: str):
+        """One trace per MCP call. The assistant run inside joins it, so the token check,
+        the guardrails and the tool call are one record."""
+        return get_tracer().trace(f"mcp.{name}", metadata={"transport": "mcp"})
+
     def through_graph(name: str, args: dict, who: Caller, decision: Decision,
                       thread_id: str | None = None, **graph_kw) -> dict:
         app = build_assistant(tool, knowledge or (lambda q, c, k: []), PresetRouter(decision),
                               guardrails=guardrails, **graph_kw)
-        entry = AuditEntry(name, who.id, args, "ok")
+        current = get_tracer().current_trace()
+        entry = AuditEntry(name, who.id, args, "ok", trace_id=current.trace_id if current else None)
         audit.append(entry)
         try:
             out = ask(app, f"MCP {name} call", who, today(), thread_id=thread_id)
@@ -212,16 +227,17 @@ def build_mcp_server(jira: MockJira, users: dict[str, Caller], verifier: StaticT
                           priority: str | None = None, status: str | None = None, group_by: str | None = None) -> CountResult:
         """Count Jira issues the signed-in user can see, by project, type, priority, status and creation
         date (created_before is exclusive). Read only. Returns the count, up to 25 keys and the JQL run."""
-        who = caller(READ)
-        args = {k: v for k, v in {"project": project, "created_from": created_from, "created_before": created_before,
-                                  "issue_type": issue_type, "priority": priority, "status": status,
-                                  "group_by": group_by}.items() if v is not None}
-        try:
-            spec = tool.spec_from_arguments(args)
-            decision = Decision("aggregation", spec, arguments=args)
-        except ToolRejected as e:
-            decision = Decision("aggregation", None, str(e), tool.name, args)
-        out = through_graph("count_jira_issues", args, who, decision)
+        with traced("count_jira_issues"):
+            who = caller(READ)
+            args = {k: v for k, v in {"project": project, "created_from": created_from, "created_before": created_before,
+                                      "issue_type": issue_type, "priority": priority, "status": status,
+                                      "group_by": group_by}.items() if v is not None}
+            try:
+                spec = tool.spec_from_arguments(args)
+                decision = Decision("aggregation", spec, arguments=args)
+            except ToolRejected as e:
+                decision = Decision("aggregation", None, str(e), tool.name, args)
+            out = through_graph("count_jira_issues", args, who, decision)
         r = out["result"]
         return CountResult(count=r.count, keys=list(r.keys), truncated=r.truncated, groups=r.groups,
                            jql=r.jql, visible_to=who.id)
@@ -229,28 +245,30 @@ def build_mcp_server(jira: MockJira, users: dict[str, Caller], verifier: StaticT
     @server.tool(structured_output=True)
     def search_wiki(query: str) -> WikiResult:
         """Search the engineering wiki for pages the signed-in user can open."""
-        who = caller(READ)
-        if knowledge is None:
-            raise ToolRefused("no wiki is connected to this server")
-        out = through_graph("search_wiki", {"query": query}, who, Decision("knowledge"))
+        with traced("search_wiki"):
+            who = caller(READ)
+            if knowledge is None:
+                raise ToolRefused("no wiki is connected to this server")
+            out = through_graph("search_wiki", {"query": query}, who, Decision("knowledge"))
         return WikiResult(pages=[WikiPage(id=pid, title=title) for pid, title in out.get("pages", [])], visible_to=who.id)
 
     @server.tool(structured_output=True)
     def comment_on_issue(issue_key: str, body: str) -> CommentRequest:
         """Ask to add a comment to one issue, on the signed-in user's behalf. Nothing is posted until a
         person approves it; returns a request id to report back to the user."""
-        who = caller(WRITE)
-        request_id = f"req-{uuid.uuid4().hex[:12]}"
-        args = {"issue_key": issue_key, "body": body}
-        app_conn = sqlite3.connect(desk.db, check_same_thread=False)
-        try:
-            out = through_graph("comment_on_issue", args, who, Decision("comment", arguments=args),
-                                comment_tool=CommentTool(jira, desk.store),
-                                checkpointer=SqliteSaver(app_conn, serde=checkpoint_serde()), thread_id=request_id)
-        finally:
-            app_conn.close()
-        if "__interrupt__" not in out:
-            raise ToolRefused(out.get("answer", "not posted"))
+        with traced("comment_on_issue"):
+            who = caller(WRITE)
+            request_id = f"req-{uuid.uuid4().hex[:12]}"
+            args = {"issue_key": issue_key, "body": body}
+            app_conn = sqlite3.connect(desk.db, check_same_thread=False)
+            try:
+                out = through_graph("comment_on_issue", args, who, Decision("comment", arguments=args),
+                                    comment_tool=CommentTool(jira, desk.store),
+                                    checkpointer=SqliteSaver(app_conn, serde=checkpoint_serde()), thread_id=request_id)
+            finally:
+                app_conn.close()
+            if "__interrupt__" not in out:
+                raise ToolRefused(out.get("answer", "not posted"))
         audit[-1].outcome, audit[-1].detail = "pending_approval", request_id
         return CommentRequest(status="pending_approval", request_id=request_id, issue_key=issue_key,
                               message="A person must approve this comment before it is posted.")

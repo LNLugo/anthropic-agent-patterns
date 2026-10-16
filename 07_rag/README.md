@@ -42,6 +42,13 @@ has no non-compete" as much as they need the clause itself.
 The answer flow is a LangGraph `StateGraph` (`rag/graph.py`), consistent with
 patterns 01 to 06.
 
+`answer_query()` makes each query one trace ([10_observability](../10_observability/)),
+and the ledger's stages are its spans. Retrieval is a `tool` span with chunk ids
+only, generation a `generation` span with tokens, and citation validation a
+`guardrail` span on the output: `allow`, or `reject_content` when no citation
+resolves and the graph abstains. Chunk text, the prompt and the reply stay out
+of the trace unless sensitive data is enabled.
+
 ## Design decisions
 
 | Decision | Choice | Reason |

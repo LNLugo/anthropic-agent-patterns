@@ -178,3 +178,24 @@ def test_a_comment_on_an_issue_the_token_holder_cannot_see_is_refused(mcp):
 
 def test_every_call_is_audited_with_the_token_subject(mcp):
     assert mcp["audit"] and all(e.subject in {"billing_oncall", "new_hire", "sec_engineer"} for e in mcp["audit"])
+
+
+# ---------------------------------------------------------------- traces
+
+def test_each_mcp_call_is_one_trace_with_the_scope_check_in_it(mcp, traces):
+    is_error, _ = call(mcp, "t-hire", "count_jira_issues", Q3)
+    assert not is_error
+    ended = [t for t in traces.traces if t["ended_at"]]
+    assert [t["workflow"] for t in ended] == ["mcp.count_jira_issues"]  # the assistant run joined it
+    [scope] = [s for s in traces.of_kind("guardrail") if s["name"] == "token_scope"]
+    assert scope["data"]["subject"] == "new_hire" and scope["data"]["behavior"] == "allow"
+    assert len(traces.of_kind("tool")) == 1 and {s["trace_id"] for s in traces.spans} == {ended[0]["trace_id"]}
+    assert mcp["audit"][-1].trace_id == ended[0]["trace_id"]
+
+
+def test_a_missing_scope_is_a_traced_refusal(mcp, traces):
+    is_error, _ = call(mcp, "t-hire", "comment_on_issue", {"issue_key": "BILL-101", "body": "note"})
+    assert is_error
+    [scope] = traces.of_kind("guardrail")
+    assert scope["data"]["required"] == "jira:write" and scope["data"]["behavior"] == "raise_exception"
+    assert traces.traces[-1]["status"] == "error" and traces.of_kind("tool") == []

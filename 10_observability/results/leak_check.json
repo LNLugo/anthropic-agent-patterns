@@ -1,0 +1,64 @@
+{
+  "sensitive_off": {
+    "traces": 13,
+    "spans": 60,
+    "spans_by_kind": {
+      "agent": 13,
+      "custom": 2,
+      "generation": 17,
+      "guardrail": 19,
+      "handoff": 2,
+      "tool": 7
+    },
+    "marker_hits": {
+      "06 question": 0,
+      "06 model reply": 0,
+      "06 bad model reply": 0,
+      "06 tool result": 0,
+      "07 contract text": 0,
+      "07 model answer": 0,
+      "08 question": 0,
+      "08 restricted issue key": 0,
+      "08 wiki page title": 0,
+      "08 model clarification": 0,
+      "08 model final answer": 0,
+      "08 comment body": 0,
+      "08 approver reason": 0,
+      "08 model tool argument": 0,
+      "08 project evidence": 0,
+      "08 tool bound error": 0
+    }
+  },
+  "sensitive_on": {
+    "traces": 13,
+    "spans": 60,
+    "spans_by_kind": {
+      "agent": 13,
+      "custom": 2,
+      "generation": 17,
+      "guardrail": 19,
+      "handoff": 2,
+      "tool": 7
+    },
+    "marker_hits": {
+      "06 question": 2,
+      "06 model reply": 2,
+      "06 bad model reply": 1,
+      "06 tool result": 1,
+      "07 contract text": 2,
+      "07 model answer": 1,
+      "08 question": 15,
+      "08 restricted issue key": 3,
+      "08 wiki page title": 2,
+      "08 model clarification": 2,
+      "08 model final answer": 2,
+      "08 comment body": 3,
+      "08 approver reason": 2,
+      "08 model tool argument": 3,
+      "08 project evidence": 2,
+      "08 tool bound error": 3
+    }
+  },
+  "leaked": 0,
+  "unchecked_sources": []
+}

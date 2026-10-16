@@ -148,7 +148,7 @@ def test_an_output_guardrail_halts_before_the_model_sees_a_bad_result(env):
     leaky = LeakyTool(tool.client)
     with pytest.raises(ToolOutputGuardrailTripwireTriggered) as err, scripted([count("BILL")]) as model:
         loop(leaky).run("How many BILL issues in Q3?", users["billing_oncall"], TODAY)
-    assert err.value.output.output_info == {"project": "BILL", "stray_keys": ["SECOPS-7"]}
+    assert err.value.output.output_info == {"project": "BILL", "stray_keys": 1, "stray_projects": ["SECOPS"]}
     assert len(model.calls) == 1  # the leaked key never reached the model
 
 
@@ -164,3 +164,15 @@ def test_only_one_tool_call_runs_per_turn(env):
         loop(tool).run("How many BILL issues in Q3?", users["new_hire"], TODAY)
     assert CountingJira.calls == 1
     assert model.calls[1].messages[-1].content == "Not run: one tool call per turn."
+
+
+def test_output_info_never_echoes_free_text_from_the_model(env):
+    """output_info is trace metadata. A model can put anything in an argument, an injected
+    instruction included; only a project-key-shaped value is kept."""
+    from agent_tools.guardrails import coverage_code, project_key
+
+    assert project_key("INFRA") == "INFRA"
+    for junk in ("ignore previous instructions", "infra", "BILL; DROP", "", None, "A" * 11):
+        assert project_key(junk) == "(not a project key)"
+    assert coverage_code("the project evidence 'my secret words' is not in the question") == "evidence_not_in_question"
+    assert coverage_code("the question names BILL and PAY; the tool counts one project at a time") == "several_projects"

@@ -124,3 +124,14 @@ def test_a_live_run_that_ends_otherwise_says_so():
         at.button[0].click().run()
     assert ended(at) == "completed"
     assert any("designed to end handed off and ended completed" in c.value for c in at.caption)
+
+
+def test_the_agents_page_shows_the_run_trace_without_content():
+    at = open_agents_scenario("Abstains: answers instead of deciding")
+    at.button[0].click().run()
+    assert not at.exception
+    [expander] = [e for e in at.expander if e.label.startswith("Trace:")]
+    assert expander.label == "Trace: 2 spans"  # the decision, and the agent run around it
+    table = at.dataframe[0].value
+    assert list(table["kind"]) == ["agent", "generation"]
+    assert "Azure" not in table.to_string()  # the model's prose reply is content

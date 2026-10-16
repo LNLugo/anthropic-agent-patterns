@@ -1,0 +1,4 @@
+# The tracing core needs only the standard library (and langgraph for one test).
+# The leak check runs 06, 07 and 08, so it needs what their offline suites need.
+-r ../07_rag/requirements-test.txt
+-r ../08_tools/requirements.txt
