@@ -30,7 +30,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from rag.citations import citation_precision  # noqa: E402
 from rag.config import load_config  # noqa: E402
 from rag.data import load_cuad  # noqa: E402
-from rag.graph import PROVIDERS, build_graph, initial_state, make_llm  # noqa: E402
+from rag.graph import PROVIDERS, answer_query, build_graph, make_llm  # noqa: E402
 from rag.ledger import ContextLedger  # noqa: E402
 from rag.metrics import _pct  # noqa: E402
 from rag.pipeline import build_index  # noqa: E402
@@ -72,7 +72,7 @@ def main() -> None:
     with ledger_path.open("w") as fh:
         for i, q in enumerate(sample, 1):
             ledger = ContextLedger(q.id)
-            final = graph.invoke(initial_state(q, ledger))
+            final = answer_query(graph, q, ledger, group_id=tag)
             checked = final.get("checked", [])
             row = {
                 "query_id": q.id,

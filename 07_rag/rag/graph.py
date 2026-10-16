@@ -20,7 +20,7 @@ from langgraph.graph import END, StateGraph
 
 from .chunking import Chunk
 from .citations import CheckedCitation, Citation, validate
-from .ledger import ContextLedger
+from .ledger import ContextLedger, get_tracer
 from .retrievers import Retriever
 
 PROMPT = """You review commercial contracts. Use only the numbered excerpts below.
@@ -132,6 +132,7 @@ def build_graph(retriever: Retriever, llm: LLM, k: int = 5):
             chunks = [h.chunk for h in hits]
             rec.chunk_ids = [c.id for c in chunks]
             rec.context_chars = sum(len(c.text) for c in chunks)
+            get_tracer().current().set(outcome="ok", hits=len(chunks))
         return {"chunks": chunks}
 
     def generate(state: State) -> State:
@@ -140,6 +141,7 @@ def build_graph(retriever: Retriever, llm: LLM, k: int = 5):
         prompt = PROMPT.format(category=state["category"], details=state["details"], excerpts=excerpts)
         with ledger.stage("generate") as rec:
             reply = llm(prompt)
+            get_tracer().current().content(input=prompt, output=reply["text"])
             rec.chunk_ids = [c.id for c in state["chunks"]]
             rec.context_chars = len(prompt)
             rec.input_tokens, rec.output_tokens, rec.model_calls = reply["input_tokens"], reply["output_tokens"], 1
@@ -154,6 +156,10 @@ def build_graph(retriever: Retriever, llm: LLM, k: int = 5):
         ]
         with state["ledger"].stage("validate"):
             checked = validate(cits, state["chunks"])
+            valid = sum(c.status == "valid" for c in checked)
+            # An answer needs at least one citation that resolves to text the model was shown.
+            get_tracer().current().set(stage="output", behavior="allow" if valid else "reject_content",
+                                       triggered=not valid, valid=valid, invalid=len(checked) - valid)
         return {"checked": checked}
 
     def route(state: State) -> str:
@@ -181,6 +187,16 @@ def build_graph(retriever: Retriever, llm: LLM, k: int = 5):
     g.add_edge("answer", END)
     g.add_edge("abstain", END)
     return g.compile()
+
+
+def answer_query(graph, query, ledger: ContextLedger | None = None, group_id: str | None = None) -> State:
+    """Answer one query as one trace: the ledger's stages are its spans."""
+    tracer = get_tracer()
+    with tracer.trace("rag", group_id=group_id, metadata={"query_id": query.id}):
+        with tracer.span("agent", "rag", query_id=query.id, category=query.category) as span:
+            final = graph.invoke(initial_state(query, ledger))
+            span.set(status=final["status"], reason=final.get("reason") or None)
+    return final
 
 
 def initial_state(query, ledger: ContextLedger | None = None) -> State:

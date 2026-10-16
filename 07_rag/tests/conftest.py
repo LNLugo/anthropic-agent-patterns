@@ -20,3 +20,15 @@ def contract(mini):
 @pytest.fixture
 def queries(mini):
     return {q.category: q for q in mini[1]}
+
+
+@pytest.fixture(autouse=True)
+def traces():
+    """Every test runs with an in-memory tracer, so no test writes a trace file."""
+    from rag.ledger import get_tracer  # noqa: F401  puts 10_observability on the path
+    from tracing import InMemoryExporter, Tracer, set_tracer
+
+    exporter = InMemoryExporter()
+    previous = set_tracer(Tracer([exporter]))
+    yield exporter
+    set_tracer(previous)

@@ -854,26 +854,24 @@ if st.button(
             else:
                 os.environ["LLM_PROVIDER"] = provider
 
-        app = module.app
-        start = {
-            "question": question,
-            "actions": [],
-            "observations": [],
-            "iteration": 0,
-            "max_turns": max_turns,
-            "final_answer": ""
-        }
+        from tracing import InMemoryExporter, Tracer, set_tracer  # on the path once the module is loaded
+
+        trace = InMemoryExporter()  # this run's trace, shown below; sensitive content off
+        previous_tracer = set_tracer(Tracer([trace]))
 
         with st.spinner(
             "Running Agents..."
         ):
 
-            if replay_steps:
-                from llm_provider import scripted
-                with scripted(replay_steps):  # fails if a reply goes unused
-                    result = app.invoke(start)
-            else:
-                result = app.invoke(start)
+            try:
+                if replay_steps:
+                    from llm_provider import scripted
+                    with scripted(replay_steps):  # fails if a reply goes unused
+                        result = module.run(question, max_turns=max_turns)
+                else:
+                    result = module.run(question, max_turns=max_turns)
+            finally:
+                set_tracer(previous_tracer)
 
         status = result.get("status", "")
         outcome = result.get("outcome")
@@ -962,6 +960,27 @@ if st.button(
         st.write(
             result.get("final_answer") or "No answer: see why the run ended, above."
         )
+
+        with st.expander(f"Trace: {len(trace.spans)} spans", expanded=False):
+            st.caption(
+                "One span per model call, tool call and handoff (10_observability). "
+                "Sensitive content is off, so prompts, replies and tool results are not recorded: "
+                "only names, outcomes, tokens and timings."
+            )
+            keep = ("turn", "outcome", "capped", "to_agent", "status", "turns", "input_tokens", "output_tokens")
+            st.dataframe(
+                [
+                    {
+                        "kind": span["kind"],
+                        "name": span["name"],
+                        "ms": round(span["duration_ms"], 1),
+                        "data": ", ".join(f"{k}={v}" for k, v in span["data"].items() if k in keep),
+                    }
+                    for span in sorted(trace.spans, key=lambda x: x["started_at"])
+                ],
+                hide_index=True,
+                width="stretch",
+            )
 
         st.info(
             "Each turn ends in one typed outcome: run a tool again, give the final "

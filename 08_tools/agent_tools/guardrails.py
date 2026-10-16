@@ -10,6 +10,11 @@ Input guardrails see the model's raw arguments before the tool runs; output
 guardrails see the result before the model does. Every verdict is recorded in
 a GuardrailRecord, whatever the behaviour, so a run can be audited afterwards.
 
+output_info is exported to the trace as metadata, so it holds only identities,
+counts, and values checked against a known format or set (project_key below).
+Anything quoted from the question, the model's arguments or the tool's result
+belongs in the message, which the trace treats as content.
+
 The behaviour names, the input/output split and the tripwire exceptions follow
 tool_guardrails.py in openai/openai-agents-python v0.24.0; only the contract is
 borrowed. These guardrails sit beside the tool's own bound (jql_tool.validate),
@@ -19,11 +24,13 @@ deployment; guardrails are deployment policy.
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from typing import Any, Callable, Literal
 
 from .coverage import check as coverage_check
 from .jira_mock import Caller
+from .observe import get_tracer
 
 Behavior = Literal["allow", "reject_content", "raise_exception"]
 
@@ -93,8 +100,13 @@ def run_guardrails(guardrails, stage: str, data: ToolCallData, log: list[Guardra
     reject_content, None when every guardrail allows, and raises on raise_exception.
     The first guardrail that does not allow decides; later ones do not run."""
     tripwire = ToolInputGuardrailTripwireTriggered if stage == "input" else ToolOutputGuardrailTripwireTriggered
+    tracer = get_tracer()
     for g in (g for g in guardrails if g.stage == stage):
-        out = g.check(data)
+        with tracer.span("guardrail", g.name, stage=stage, tool=data.tool_name) as span:
+            out = g.check(data)
+            # output_info is exported as metadata, so a guardrail must not put content in it.
+            span.set(behavior=out.behavior, triggered=out.behavior != "allow", output_info=out.output_info)
+            span.content(message=out.message or None)
         log.append(GuardrailRecord(g.name, stage, data.tool_name, out.behavior, out.output_info))
         if out.behavior == "reject_content":
             return out.message
@@ -106,6 +118,29 @@ def run_guardrails(guardrails, stage: str, data: ToolCallData, log: list[Guardra
 # ---------------------------------------------------------------- the demo policy for the JQL tool
 
 RESTRICTED_PROJECTS = frozenset({"SECOPS"})
+_PROJECT_KEY = re.compile(r"[A-Z][A-Z0-9]{1,9}")
+
+
+def project_key(value) -> str:
+    """A model-supplied project, made safe for output_info: the value if it has the shape
+    of a Jira project key, else a placeholder. A model can put any text in an argument,
+    an injected instruction included; only a key-shaped value is kept for the audit."""
+    return value if isinstance(value, str) and _PROJECT_KEY.fullmatch(value) else "(not a project key)"
+
+
+def coverage_code(reason: str) -> str:
+    """The coverage check's reason as a fixed code: the reason itself quotes the question."""
+    if reason.startswith("the question names"):
+        return "several_projects"
+    if reason.startswith("no words"):
+        return "no_project_named"
+    if reason.endswith("is not in the question"):
+        return "evidence_not_in_question"
+    if reason.endswith("does not name a project"):
+        return "evidence_names_no_project"
+    if reason.startswith("the evidence"):
+        return "evidence_names_another_project"
+    return "other"
 
 
 def target_project(d: ToolCallData) -> str | None:
@@ -143,7 +178,7 @@ def deployment_scope(projects: frozenset[str]) -> ToolGuardrail:
         return ToolGuardrailFunctionOutput.reject_content(
             f"Not run: {project} is outside this assistant's scope ({allowed}). "
             "Do not retry with a different project. Tell the user which projects you can work with.",
-            {"project": project, "scope": sorted(projects)},
+            {"project": project_key(project), "scope": sorted(projects)},
         )
 
     return ToolGuardrail("deployment_scope", "input", check)
@@ -159,7 +194,7 @@ def question_coverage() -> ToolGuardrail:
         reason = coverage_check(d.question, d.arguments.get("project"), d.arguments.get("project_evidence"))
         if reason:
             return ToolGuardrailFunctionOutput.reject_content(
-                f"Not run: {reason}. Ask the user which single project they mean.", {"reason": reason}
+                f"Not run: {reason}. Ask the user which single project they mean.", {"reason": coverage_code(reason)}
             )
         return ToolGuardrailFunctionOutput.allow()
 
@@ -174,7 +209,11 @@ def keys_match_project() -> ToolGuardrail:
         project = d.arguments.get("project")
         stray = [k for k in getattr(d.output, "keys", ()) if not k.startswith(f"{project}-")]
         if stray:
-            return ToolGuardrailFunctionOutput.raise_exception({"project": project, "stray_keys": stray})
+            # The keys themselves are tool output, possibly of issues the caller may not see;
+            # the record keeps how many, and which projects they came from.
+            return ToolGuardrailFunctionOutput.raise_exception({
+                "project": project, "stray_keys": len(stray),
+                "stray_projects": sorted({project_key(k.split("-", 1)[0]) for k in stray})})
         return ToolGuardrailFunctionOutput.allow()
 
     return ToolGuardrail("keys_match_project", "output", check)
