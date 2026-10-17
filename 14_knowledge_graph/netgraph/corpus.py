@@ -270,6 +270,42 @@ def _held_out_2() -> list[tuple[str, datetime, str, set[str]]]:
     return s
 
 
+def _held_out_3() -> list[tuple[str, datetime, str, set[str]]]:
+    """Scenarios for the third held-out set, written after the third freeze. Scored once."""
+    s = []
+
+    def add(source, t, tags, event, **f):
+        s.append((source, t, _fmt(t, event, **f), set(tags)))
+
+    # m1 and m8: a rule change on the edge firewall cuts the application tier off its database.
+    add("syslog", _ts(15, 0, 0), ["m1"], "CONFIG_COMMIT", host="edge-fw-01", change="CHG-4521", by="net.admin2")
+    add("firewall", _ts(15, 5, 0), ["m1"], "FIREWALL_DENY", src=HOST_IP["srv-app-01"], dst=HOST_IP["srv-db-01"],
+        dport=1433, policy="DB_SEGMENT_DENY")
+    for mm in (10, 25):
+        add("syslog", _ts(15, mm, 0), ["m1", "m8"], "SERVICE_DEGRADED", host="srv-app-01", service="payments-api")
+    # m2: the address that went after john.doe comes back for another account.
+    add("vpn", _ts(19, 58, 0), ["m2"], "VPN_LOGIN_FAILED", user="hana.sato", ip="203.0.113.45", reason="bad_password")
+    add("firewall", _ts(20, 0, 0), ["m2"], "FIREWALL_DENY", src="203.0.113.45", dst="10.1.1.11", dport=443,
+        policy="GEO_BLOCK_INBOUND")
+    # m3: a change on a core router blocks internal DNS.
+    add("syslog", _ts(19, 0, 0), ["m3"], "CONFIG_COMMIT", host="core-rtr-01", change="CHG-4533", by="net.admin1")
+    for mm in (5, 20):
+        add("firewall", _ts(19, mm, 0), ["m3"], "FIREWALL_DENY", src=HOST_IP["srv-web-01"], dst="10.1.0.53", dport=53,
+            policy="DNS_INTERNAL_DENY")
+    # m4: george.kim locks himself out from his own address.
+    george_home = "98.77.14.9"
+    for mm in (10, 11, 12):
+        add("vpn", _ts(20, mm, 0), ["m4"], "VPN_LOGIN_FAILED", user="george.kim", ip=george_home, reason="bad_password")
+    add("vpn", _ts(20, 12, 30), ["m4"], "VPN_ACCOUNT_LOCKED", user="george.kim", ip=george_home, policy="VPN_LOCKOUT")
+    # m5 and m6: last night, a service account escalates on the second database server, which then calls out.
+    db2 = HOST_IP["srv-db-02"]
+    add("auth", _ts(23, 10, 0, day=-1), ["m5"], "SUDO_ESCALATION", host="srv-db-02", ip=db2, user="svc_backup")
+    add("auth", _ts(23, 15, 0, day=-1), ["m5"], "NEW_SSH_KEY", host="srv-db-02", ip=db2, user="svc_backup")
+    add("firewall", _ts(23, 30, 0, day=-1), ["m5", "m6"], "FIREWALL_DENY", src=db2, dst="45.33.32.156", dport=4444,
+        policy="OUTBOUND_BLOCK")
+    return s
+
+
 def _background(rng: random.Random) -> list[tuple[str, datetime, str, set[str]]]:
     """Ordinary traffic: logins, allows, routine denies, router health. Each staff member has
     their own home address, so no address but the attacker's fails for several users."""
@@ -386,6 +422,14 @@ DOCS = [
      "readers": ["netops", "security"], "applies_to": ["change:CHG-4510", "host:srv-files-01", "host:core-rtr-01"],
      "body": ["## Change\nMove srv-files-01 to VLAN 340 on core-rtr-01 at noon.",
               "## Known risk\nThe server is unreachable until its gateway address is updated."]},
+    {"id": "CHG-4521", "title": "Change record CHG-4521: tighten database segment rules", "readers": ["netops", "security"],
+     "applies_to": ["change:CHG-4521", "policy:DB_SEGMENT_DENY"], "body": [
+         "## Change\nReplace the application tier's database rule with per-host entries on edge-fw-01.",
+         "## Known risk\nA host missing from the new entries loses database access."]},
+    {"id": "CHG-4533", "title": "Change record CHG-4533: segment internal resolvers", "readers": ["netops", "security"],
+     "applies_to": ["change:CHG-4533", "policy:DNS_INTERNAL_DENY"], "body": [
+         "## Change\nRestrict the internal resolvers at 10.1.0.53 to the management VLAN, from core-rtr-01.",
+         "## Known risk\nServers outside the VLAN can no longer resolve names until they move to the new resolver."]},
     {"id": "POL-WEB_ALLOW", "title": "Policy: outbound web", "readers": ["netops", "security"],
      "applies_to": ["policy:WEB_ALLOW"], "body": ["## What it does\nAllows servers to reach the web on 80 and 443."]},
 ]
@@ -443,6 +487,29 @@ NOTES_HELD_OUT_2 = {
     "k6": "Answered by lines that name the host.",
 }
 
+HELD_OUT_3 = [
+    ("m1", "netops_analyst", "multi_hop", "Why did the payments API on srv-app-01 start degrading this afternoon?",
+     ["CHG-4521"]),
+    ("m2", "secops_analyst", "multi_hop", "Where else has the address that went after john.doe shown up?",
+     ["POL-GEO_BLOCK_INBOUND"]),
+    ("m3", "netops_analyst", "multi_hop", "Which change broke internal DNS this evening?", ["CHG-4533"]),
+    ("m4", "netops_analyst", "multi_hop", "Why was george.kim locked out this evening?", ["RB-VPN-LOCKOUT"]),
+    ("m5", "secops_analyst", "multi_hop", "What did svc_backup do on srv-db-02 last night?", ["SEC-IR-PLAYBOOK"]),
+    ("m6", "netops_analyst", "multi_hop", "What did srv-db-02 do last night?", ["POL-OUTBOUND_BLOCK"]),
+    ("m7", "netops_analyst", "single_hop", "List the BGP neighbor down events on edge-rtr-01", []),
+    ("m8", "netops_analyst", "single_hop", "Show the SERVICE_DEGRADED alerts for srv-app-01", []),
+]
+NOTES_HELD_OUT_3 = {
+    "m1": "The degradation names the server; the deny names its address; the change record ties the commit to the policy.",
+    "m2": "Asked about an address the question does not give: it is the one on john.doe's failures.",
+    "m3": "No entity named: the change, the denies and the change record share the DNS policy.",
+    "m4": "His own address, his own lockout; the lockout runbook explains it.",
+    "m5": "The escalation names the account and host; the outbound deny names only the host's address.",
+    "m6": "As m5, from network operations: the auth lines are not theirs to read.",
+    "m7": "Answered by lines that name the router.",
+    "m8": "Answered by lines that name the host and the alert.",
+}
+
 NOTES = {
     "q1": "The failures for john.doe come from one address that also failed for maria.chen and raj.patel and was "
           "geo-blocked: the link is the address, which no line about john.doe states.",
@@ -459,17 +526,19 @@ NOTES = {
 
 def generate(folder: Path = FIXTURES, seed: int = 14) -> None:
     rng = random.Random(seed)
-    rows = _scenarios() + _held_out() + _held_out_2() + _inventory() + _background(rng)
+    rows = _scenarios() + _held_out() + _held_out_2() + _held_out_3() + _inventory() + _background(rng)
     by_source: dict[str, list] = {s: [] for s in SOURCES}
     for source, t, line, tags in rows:
         by_source[source].append((t, line, tags))
-    evidence: dict[str, list[str]] = {q[0]: [] for q in QUESTIONS + HELD_OUT + HELD_OUT_2}
+    evidence: dict[str, list[str]] = {q[0]: [] for q in QUESTIONS + HELD_OUT + HELD_OUT_2 + HELD_OUT_3}
+    line_of: dict[str, str] = {}
     (folder / "logs").mkdir(parents=True, exist_ok=True)
     for source, lines in by_source.items():
         lines.sort(key=lambda r: (r[0], r[1]))
         (folder / "logs" / f"{source}.log").write_text("\n".join(line for _, line, _ in lines) + "\n",
                                                         encoding="utf-8")
-        for n, (_, _, tags) in enumerate(lines, 1):
+        for n, (_, line, tags) in enumerate(lines, 1):
+            line_of[f"{source}:{n}"] = line
             for tag in tags:
                 evidence[tag].append(f"{source}:{n}")
     docs = folder / "docs"
@@ -484,6 +553,9 @@ def generate(folder: Path = FIXTURES, seed: int = 14) -> None:
     for qid, who, kind, q, pages in HELD_OUT:
         questions.append({"id": qid, "as": who, "kind": kind, "question": q, "set": "held_out_1",
                           "expected": evidence[qid] + [f"doc:{p}" for p in pages], "note": NOTES_HELD_OUT[qid]})
+    for qid, who, kind, q, pages in HELD_OUT_3:
+        questions.append({"id": qid, "as": who, "kind": kind, "question": q, "set": "held_out_3",
+                          "expected": evidence[qid] + [f"doc:{p}" for p in pages], "note": NOTES_HELD_OUT_3[qid]})
     for qid, who, kind, q, pages in HELD_OUT_2:
         questions.append({"id": qid, "as": who, "kind": kind, "question": q, "set": "held_out_2",
                           "expected": evidence[qid] + [f"doc:{p}" for p in pages], "note": NOTES_HELD_OUT_2[qid]})
@@ -491,6 +563,13 @@ def generate(folder: Path = FIXTURES, seed: int = 14) -> None:
     by_id = {q["id"]: q for q in questions}
     by_id["h7"]["forbidden"] = [k for k in evidence["h6"] if k.startswith("auth:")] + ["doc:SEC-IR-PLAYBOOK"]
     by_id["k4"]["forbidden"] = [k for k in evidence["k3"] if k.startswith("auth:")]
+    by_id["m6"]["forbidden"] = [k for k in evidence["m5"] if k.startswith("auth:")] + ["doc:SEC-IR-PLAYBOOK"]
+    # m2: every line naming the address except john.doe's own, from q1 and m2.
+    by_id["m2"]["expected"] = sorted(set(by_id["m2"]["expected"]) | {
+        k for k in evidence["q1"] if k.startswith("firewall:")} | {k for k in evidence["q1"] if k.startswith("vpn:")
+                                                                   and "user=john.doe" not in line_of[k]})
+    # m7: the router's BGP drops, planted for h2.
+    by_id["m7"]["expected"] = [k for k in evidence["h2"] if "BGP_NEIGHBOR_DOWN" in line_of[k]]
     (folder / "questions.yaml").write_text(
         "# Generated by netgraph/corpus.py. expected: the log lines (source:line) and pages (doc:ID) that answer\n"
         "# the question, as the asker may see them. A page counts as found when any of its sections is returned.\n"

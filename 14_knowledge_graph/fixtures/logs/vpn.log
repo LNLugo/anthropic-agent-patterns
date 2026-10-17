@@ -345,3 +345,8 @@
 2026-10-14 19:32:58 VPN_LOGIN_SUCCESS user=julia.costa ip=10.20.11.95
 2026-10-14 19:39:01 VPN_LOGIN_SUCCESS user=raj.patel ip=10.20.9.174
 2026-10-14 19:49:25 VPN_DISCONNECT user=raj.patel ip=10.20.9.174
+2026-10-14 19:58:00 VPN_LOGIN_FAILED user=hana.sato ip=203.0.113.45 reason=bad_password
+2026-10-14 20:10:00 VPN_LOGIN_FAILED user=george.kim ip=98.77.14.9 reason=bad_password
+2026-10-14 20:11:00 VPN_LOGIN_FAILED user=george.kim ip=98.77.14.9 reason=bad_password
+2026-10-14 20:12:00 VPN_LOGIN_FAILED user=george.kim ip=98.77.14.9 reason=bad_password
+2026-10-14 20:12:30 VPN_ACCOUNT_LOCKED user=george.kim ip=98.77.14.9 policy=VPN_LOCKOUT

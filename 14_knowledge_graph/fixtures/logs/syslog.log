@@ -134,6 +134,9 @@
 2026-10-14 13:52:24 HEALTH_OK host=edge-rtr-01
 2026-10-14 14:08:23 HEALTH_OK host=edge-rtr-01
 2026-10-14 14:59:03 HEALTH_OK host=core-rtr-02
+2026-10-14 15:00:00 CONFIG_COMMIT host=edge-fw-01 change=CHG-4521 by=net.admin2
+2026-10-14 15:10:00 SERVICE_DEGRADED host=srv-app-01 service=payments-api
+2026-10-14 15:25:00 SERVICE_DEGRADED host=srv-app-01 service=payments-api
 2026-10-14 15:25:20 CONFIG_COMMIT host=core-rtr-02 change=CHG-4326 by=net.admin1
 2026-10-14 15:41:17 HEALTH_OK host=edge-rtr-01
 2026-10-14 15:41:31 HEALTH_OK host=core-rtr-02
@@ -143,6 +146,7 @@
 2026-10-14 18:26:09 HEALTH_OK host=core-rtr-01
 2026-10-14 18:28:58 HEALTH_OK host=core-rtr-01
 2026-10-14 18:47:44 BGP_NEIGHBOR_UP host=core-rtr-01 neighbor=10.255.0.5
+2026-10-14 19:00:00 CONFIG_COMMIT host=core-rtr-01 change=CHG-4533 by=net.admin1
 2026-10-14 19:09:24 HEALTH_OK host=core-rtr-01
 2026-10-14 19:31:56 HEALTH_OK host=edge-rtr-01
 2026-10-14 19:40:25 HEALTH_OK host=core-rtr-01
