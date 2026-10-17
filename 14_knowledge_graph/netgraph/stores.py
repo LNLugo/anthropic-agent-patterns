@@ -109,15 +109,20 @@ class UpstashVectorStore:
     def dimension(self) -> int:
         return self.index.info().dimension
 
+    def check_dimension(self, embedder) -> None:
+        """Fail before indexing when the index was created for another model's vectors."""
+        want, have = len(embedder.embed_query("dimension check")), self.dimension()
+        if want != have:
+            raise ValueError(f"the Upstash index has {have} dimensions; {getattr(embedder, 'model', 'the model')} "
+                             f"makes {want}. Create the index with {want} dimensions and cosine similarity.")
+
     def reset(self):
         self.index.reset(namespace=self.namespace)
 
     def upsert(self, rows, batch: int = 100):
-        from upstash_vector import Vector
-
         rows = list(rows)
         for i in range(0, len(rows), batch):
-            self.index.upsert([Vector(id=k, vector=v, metadata=m) for k, v, m in rows[i:i + batch]],
+            self.index.upsert([{"id": k, "vector": list(v), "metadata": m} for k, v, m in rows[i:i + batch]],
                               namespace=self.namespace)
 
     def query(self, vector, top_k, readers):

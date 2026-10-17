@@ -42,6 +42,7 @@ def setup(live: bool):
         from netgraph.stores import UpstashGraphStore, UpstashVectorStore
 
         store, gstore, embedder = UpstashVectorStore(), UpstashGraphStore(), get_embeddings("openai")
+        store.check_dimension(embedder)
     else:
         store, gstore, embedder = InMemoryVectorStore(), InMemoryGraphStore(), get_embeddings("scripted")
     gstore.save(graph)

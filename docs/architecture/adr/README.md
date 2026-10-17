@@ -22,3 +22,4 @@ strongest objection with its answer. Standards cite these by number ([standards]
 | [0015](0015-in-process-stand-ins.md) | Stand-ins in process, mapped to managed services | INT-01, INT-04 |
 | [0016](0016-memory-retrieved-and-pinned.md) | Memory is retrieved by relevance, with standing instructions pinned | AI-08, APP-06 |
 | [0017](0017-paved-road-configuration-over-copies.md) | A new use case is configuration on a paved road, gated offline | ENB-01, ENB-02 |
+| [0018](0018-graph-walk-kept-on-held-out-evidence.md) | Graph-expanded retrieval over logs, kept on held-out evidence only | AI-07, AI-04, APP-01 |
