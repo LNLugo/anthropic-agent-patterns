@@ -1,0 +1,7 @@
+2026-10-01 00:00:00 ASSET host=srv-app-01 ip=10.45.1.21 role=application
+2026-10-01 00:01:00 ASSET host=srv-app-02 ip=10.45.1.22 role=application
+2026-10-01 00:02:00 ASSET host=srv-db-01 ip=10.50.2.8 role=database
+2026-10-01 00:03:00 ASSET host=srv-db-02 ip=10.50.2.9 role=database
+2026-10-01 00:04:00 ASSET host=srv-files-01 ip=10.60.3.5 role=file_share
+2026-10-01 00:05:00 ASSET host=srv-web-01 ip=10.40.1.11 role=web
+2026-10-01 00:06:00 ASSET host=srv-web-02 ip=10.40.1.12 role=web
