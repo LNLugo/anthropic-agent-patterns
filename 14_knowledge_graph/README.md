@@ -56,7 +56,20 @@ All results are recall@10 of the expected evidence. Log lines and pages each cou
 
 These are offline results. The vector half uses a lexical stand-in (hashed words), not a real embedding model. So these numbers compare the retrievers over a word-matching baseline. OpenAI's numbers come from `--live`, which has not been run yet.
 
-**How the questions were kept honest.** The retriever was frozen three times, and the commits show it. After each freeze, a new set of questions was written and scored once.
+**How the questions were kept honest.** The retriever was frozen three times. After each freeze, a new set of questions was written and scored once. The pull request was squash-merged, so `main` holds one commit; the original commits are kept under the tag [`kg-freeze-history`](https://github.com/LNLugo/anthropic-agent-patterns/commits/kg-freeze-history):
+
+| Commit | Step |
+|---|---|
+| `d57b0cd` | Retriever frozen before any held-out question is scored |
+| `0b8cce4` | Held-out 1 scored; result kept before any change |
+| `4770091` | Second freeze, with the fixes held-out 1 exposed |
+| `d875102` | Held-out 2 questions written, not yet scored |
+| `6a6127b` | Held-out 2 scored once; result kept |
+| `2bbeeb7` | Third freeze, with the fixes held-out 2 exposed |
+| `26d0844` | Held-out 3 questions written, not yet scored |
+| `25fa665` | Held-out 3 scored once; result kept |
+
+What each set exposed:
 - **Held-out 1** exposed three faults: the stand-in matched common words, pages outranked everything, and named entities were ignored. They were fixed.
 - **Held-out 2** exposed two more. "Rare" is not the same as "unusual for this person", and the time words did nothing. They were fixed too.
 - **Held-out 3** was scored once, by the retriever as it is now. A test fails if the retriever changes and that result no longer reproduces.
