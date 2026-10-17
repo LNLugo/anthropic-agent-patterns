@@ -38,9 +38,12 @@ def configs(r: Retriever, k: int) -> dict:
     return {
         "vector": lambda q, g: r.vector_only(q, g, k),
         "vector + rarity": lambda q, g: r.rerank_by_rarity(r.vector_only(q, g, 50), k),
-        "vector + rarity + entity match": lambda q, g: r.vector_with_entities(q, g, k),
+        "vector + priors": lambda q, g: r.rerank(r.vector_only(q, g, 50), k, q),
+        "vector + priors + entity match": lambda q, g: r.vector_with_entities(q, g, k),
         "graph (default)": lambda q, g: r.graph_expanded(q, g, k),
-        "graph, no rarity": lambda q, g: r.graph_expanded(q, g, k, rarity=False),
+        "graph, no priors": lambda q, g: r.graph_expanded(q, g, k, rarity=False),
+        "graph, no novelty": lambda q, g: r.graph_expanded(q, g, k, novelty=False),
+        "graph, no time window": lambda q, g: r.graph_expanded(q, g, k, time=False),
         "graph + idf": lambda q, g: r.graph_expanded(q, g, k, idf=True),
         "graph, no entity links": lambda q, g: r.graph_expanded(q, g, k, link=False),
     }

@@ -32,6 +32,7 @@ import yaml
 HERE = Path(__file__).resolve().parents[1]
 FIXTURES = HERE / "fixtures"
 DAY = datetime(2026, 10, 14)
+NOW = datetime(2026, 10, 14, 23, 0)   # when the questions are asked
 
 # Who may read each source. Auth logs and the incident playbook are the security team's.
 SOURCES = {
