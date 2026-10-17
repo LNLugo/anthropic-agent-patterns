@@ -55,6 +55,6 @@ All runs use the offline lexical stand-in. Across every set, no retriever return
 
 "You wrote the questions, the data and the retriever, and the graph lost twice before it won once. Isn't the third result the same overfitting?"
 
-Partly, and the README says so. What changed between sets were fixes for named failures: common words matching, people with routine histories, and time words being ignored. None of them was a setting turned until a number moved. Each fix was committed before the next set was written; the commits are kept under the tag `kg-freeze-history`, since the pull request was squash-merged.
+Partly, and the README says so. What changed between sets were fixes for named failures: common words matching, people with routine histories, and time words being ignored. None of them was a setting turned until a number moved. Each fix was committed before the next set was written; the commits are kept under the tag `kg-freeze-history`, since the pull request was squash-merged. Held-out 3 is reproduced by a test against the retriever as it stands.
 
 The honest claim is narrow: on fresh questions, the walk adds about three found items in 26 over the same signals without a walk, and it costs single-hop accuracy. A live run with a real embedding model, and questions written by someone else, would settle more.
