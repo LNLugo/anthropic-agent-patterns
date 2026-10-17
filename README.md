@@ -31,6 +31,7 @@ with predictable workflows and progressing toward dynamic agent behavior.
 | What a correct answer costs, and what each extra one costs over free rules | [11_finops](11_finops/) |
 | What the model sees from a long conversation, and whose history it is | [09_memory](09_memory/) |
 | Agents started by events from legacy, SaaS and cloud sources, handled exactly once; a governed, versioned API in front | [12_integration](12_integration/) |
+| A new use case from configuration, a golden set and a merge-blocking evaluation gate, with reuse counted | [13_paved_road](13_paved_road/) |
 | The orchestration patterns themselves | [Architecture Progression](#architecture-progression) |
 | Everything above, interactively | `streamlit run app/Agent_Patterns.py` (Phase 2 results run offline, no API key) |
 
@@ -54,6 +55,8 @@ with predictable workflows and progressing toward dynamic agent behavior.
 | 10 | Observability | ✅ Complete | One trace per run across 06, 07, 08 and 12, with agent, generation, tool, guardrail and handoff spans; local by default, sensitive content off; 0 of 17 planted content markers in the trace file, an audit report from the file alone. (Tool guardrails are built in 08) |
 | 11 | AI FinOps | ✅ Complete | Prices with sources and unpriced models refused; every run costed from its trace; cost per correct answer from recorded runs ($96 per million questions for +50 points of routing accuracy); per-identity budgets checked before every model call |
 | 12 | Integration | ✅ Complete | Agents started by events from a legacy batch file, a signed SaaS webhook and a cloud event bus, handled exactly once (measured against a control for each guarantee); a gateway with identity, scopes, rate limits, budgets and versions; API contracts gated in CI |
+| **Enablement** | **Paved road** | | |
+| 13 | Paved road | ✅ Complete | A use case is configuration, prompts and a golden set, assembled from 07 to 11; the build refuses configuration that breaks a standard; an offline gate per use case blocks merges. Finance moved on with 0 code lines (85 before); transit built with 0 code lines and 31 of configuration, reusing 1,582 platform lines |
 
 ---
 
@@ -142,18 +145,20 @@ fences and surrounding prose, so switching providers does not break them.
 
 ## Tests
 
-Every suite runs offline, with no API key, and CI runs all seven on Python
-3.12 and 3.13 for every push and pull request.
+Every suite runs offline, with no API key, and CI runs all eight on Python
+3.12 and 3.13 for every push and pull request. A separate "Evaluation gate" job
+replays every use case's golden set and fails below its threshold.
 
 | Suite | Run from | Tests | What stands in for the model |
 |---|---|---|---|
-| Phase 1 patterns, the explorer app, the architecture docs and conformance | repo root: `pytest` | 200 | `ScriptedChatModel` in [`llm_provider.py`](llm_provider.py) |
+| Phase 1 patterns, the explorer app, the architecture docs and conformance | repo root: `pytest` | 234 | `ScriptedChatModel` in [`llm_provider.py`](llm_provider.py) |
 | 07 Retrieval | `07_rag`: `pytest` | 63 | fixtures; no model call in the suite |
 | 08 Tools | `08_tools`: `pytest` | 150 | `ScriptedChatModel` and scripted tool calls |
 | 09 Memory | `09_memory`: `pytest` | 40 | `ScriptedChatModel`; no model call in the benchmark |
 | 10 Observability | `10_observability`: `pytest` | 14 | runs 06, 07 and 08 on the scripted model and fixtures |
 | 11 AI FinOps | `11_finops`: `pytest` | 28 | prices recorded runs and trace files; budgets through 08 on `ScriptedChatModel` |
 | 12 Integration | `12_integration`: `pytest` | 56 | the worker routes in code; synthetic sources, an in-process broker, the gateway over Starlette's test client |
+| 13 Paved road | `13_paved_road`: `pytest` | 45 | each golden case's reference call, replayed by `ScriptedChatModel` through the real pipeline |
 
 Phase 1 tests assert on the **path the graph took**, not on model prose: which
 nodes ran, in what order, and what each node was given. `LLM_PROVIDER=scripted`
@@ -293,15 +298,18 @@ and names the number that will prove each part.
 |---|---|---|
 | [Matter-Aware Legal AI](docs/designs/legal-matter-rag.md) | Research, drafting and playbook review for a law firm: matter scoping, ethical walls as deny rules, firm know-how kept apart from client files, fail-closed wall enforcement | 07, 08, Phase 1 routing, parallelization and evaluator-optimizer |
 | [Permission-Aware RAG over Atlassian](docs/designs/atlassian-rag.md) | Knowledge and aggregation questions over Confluence and Jira Data Center, with replicated ACLs for retrieval and delegated permissions for queries | 07, 08, 10, 11 |
+| [A paved road for new use cases](docs/designs/paved-road.md) (built: [13](13_paved_road/)) | How a new use case composes 07 to 11 from configuration, prompts, a golden set and minimal glue, with an evaluation gate in CI and reuse measured from real counts | 07, 08, 09, 10, 11, 12 |
+
+Design documents and decision records follow the [templates](docs/templates/README.md).
 
 ## Architecture standards
 
 [docs/architecture](docs/architecture/) is what an architecture COE would publish
 for teams building on these modules:
 - **[Reference architecture](docs/architecture/reference-architecture.md):** every layer, its control and the number that shows it works.
-- **[Standards](docs/architecture/standards.md):** 28 standards, 27 of them enforced by named tests or a static check.
-- **[Conformance scorecard](docs/architecture/scorecard.md):** computed from the repo. 57 of 65 standard-module pairs conform; the rest are 4 registered exceptions with owners and expiry dates, or are checked at design review. CI fails on an unregistered gap or an expired exception.
-- **[Decision records](docs/architecture/adr/README.md):** 15 ADRs.
+- **[Standards](docs/architecture/standards.md):** 30 standards, 29 of them enforced by named tests or a static check.
+- **[Conformance scorecard](docs/architecture/scorecard.md):** computed from the repo. 65 of 73 standard-module pairs conform; the rest are 4 registered exceptions with owners and expiry dates, or are checked at design review. CI fails on an unregistered gap or an expired exception.
+- **[Decision records](docs/architecture/adr/README.md):** 17 ADRs.
 - **[Design review checklist](docs/architecture/design-review-checklist.md)**, an exception register, and a **[COE charter](docs/architecture/coe-charter.md)**.
 
 A test checks that every test a standard cites exists, every link resolves,

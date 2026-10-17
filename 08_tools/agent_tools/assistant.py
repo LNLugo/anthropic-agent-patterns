@@ -28,6 +28,7 @@ from langchain_core.runnables import RunnableConfig
 from langgraph.graph import END, StateGraph
 from langgraph.types import Command, interrupt
 
+from .catalog import FINANCE, Catalog
 from .comments import Comment, CommentTool
 from .guardrails import GuardrailRecord, ModelBudget, ToolCallData, ToolGuardrail, check_model_budget, run_guardrails
 from .jira_mock import Caller
@@ -99,7 +100,8 @@ def _describe(spec) -> str:
 
 def build_assistant(tool: BoundedJiraTool, knowledge: KnowledgeSearch, router: Router,
                     guardrails: list[ToolGuardrail] = (), k: int = 3,
-                    comment_tool: CommentTool | None = None, checkpointer=None, budget: ModelBudget | None = None):
+                    comment_tool: CommentTool | None = None, checkpointer=None, budget: ModelBudget | None = None,
+                    catalog: Catalog = FINANCE):
     """comment_tool enables the write path, which pauses for human approval; that pause
     has to survive until someone answers, so a checkpointer is required with it.
     budget (e.g. 11_finops BudgetPolicy) is asked before the router calls its model; a
@@ -133,7 +135,7 @@ def build_assistant(tool: BoundedJiraTool, knowledge: KnowledgeSearch, router: R
             return {"route": "comment", "arguments": dict(d.arguments or {})}
         if d.route == "clarify":
             return {"route": "clarify", "stop_reason": "clarify",
-                    "answer": d.message or "Which project do you mean: Billing Platform, Payments or Infrastructure?"}
+                    "answer": d.message or catalog.clarifying_question}
         return {"route": "none", "stop_reason": "none",
                 "answer": "I couldn't tell whether that is a count or a documentation question. Could you rephrase it?"}
 

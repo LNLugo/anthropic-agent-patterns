@@ -32,7 +32,7 @@ def test_standards_md_is_rendered_from_the_yaml():
 def test_ids_are_unique_and_well_formed():
     assert len(IDS) == len(STANDARDS)
     for s in STANDARDS:
-        assert re.fullmatch(r"(AI|APP|OPS|API|INT)-\d\d", s["id"]) and s["domain"] in render.DOMAINS
+        assert re.fullmatch(r"(AI|APP|OPS|API|INT|ENB)-\d\d", s["id"]) and s["domain"] in render.DOMAINS
         assert s["statement"].strip() and s["rationale"].strip() and s["applies_to"]
 
 
@@ -70,7 +70,7 @@ def test_every_standard_an_adr_names_exists():
 
 def test_every_standard_is_asked_about_at_design_review():
     checklist = (ARCH / "design-review-checklist.md").read_text()
-    asked = set(re.findall(r"\b(?:AI|APP|OPS|API|INT)-\d\d\b", checklist))
+    asked = set(re.findall(r"\b(?:AI|APP|OPS|API|INT|ENB)-\d\d\b", checklist))
     assert asked <= IDS, f"the checklist names {sorted(asked - IDS)}, which are not standards"
     assert IDS <= asked, f"no checklist question covers {sorted(IDS - asked)}"
 
@@ -94,10 +94,10 @@ def _anchors(path: Path) -> set[str]:
     return {_slug(m.group(1)) for m in re.finditer(r"^#+ (.+)$", path.read_text(), re.M)}
 
 
-DOCS = sorted(ARCH.rglob("*.md"))
+DOCS = sorted((ROOT / "docs").rglob("*.md"))
 
 
-@pytest.mark.parametrize("doc", DOCS, ids=lambda p: str(p.relative_to(ARCH)))
+@pytest.mark.parametrize("doc", DOCS, ids=lambda p: str(p.relative_to(ROOT / "docs")))
 def test_every_relative_link_and_anchor_resolves(doc):
     for target in re.findall(r"\]\(([^)\s]+)\)", doc.read_text()):
         if re.match(r"[a-z]+://", target):

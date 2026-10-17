@@ -22,7 +22,8 @@ from pathlib import Path
 
 from agent_tools.assistant import ask, build_assistant
 from agent_tools.jira_mock import Caller, MockJira
-from agent_tools.guardrails import ToolGuardrailTripwireTriggered, finance_assistant_policy
+from agent_tools.catalog import FINANCE
+from agent_tools.guardrails import ToolGuardrailTripwireTriggered, catalog_policy
 from agent_tools.jql_tool import BoundedJiraTool
 from agent_tools.model_router import ModelRouter
 from agent_tools.router import RulesRouter
@@ -82,7 +83,9 @@ def main() -> int:
         router = ModelRouter(get_chat_model(), tool)
     else:
         router = RulesRouter()
-    policy = finance_assistant_policy() if args.policy == "finance" else []
+    # The coverage guardrail checks the words the model quotes; the rules quote none, so with
+    # the rules it would refuse every count. (Found by the paved road's configuration check.)
+    policy = catalog_policy(FINANCE, coverage=args.router == "model") if args.policy == "finance" else []
     app = build_assistant(tool, wiki_search(), router, guardrails=policy)
     print(f"router: {args.router}   policy: {args.policy}")
 

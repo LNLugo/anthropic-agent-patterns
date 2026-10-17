@@ -28,6 +28,7 @@ import re
 from dataclasses import dataclass
 from typing import Any, Callable, Literal, Protocol
 
+from .catalog import FINANCE, Catalog
 from .coverage import check as coverage_check
 from .jira_mock import Caller
 from .observe import get_tracer
@@ -140,7 +141,7 @@ def check_model_budget(budget: ModelBudget | None, caller: Caller, model: str | 
 
 # ---------------------------------------------------------------- the demo policy for the JQL tool
 
-RESTRICTED_PROJECTS = frozenset({"SECOPS"})
+RESTRICTED_PROJECTS = FINANCE.restricted  # the default catalog
 _PROJECT_KEY = re.compile(r"[A-Z][A-Z0-9]{1,9}")
 
 
@@ -207,14 +208,15 @@ def deployment_scope(projects: frozenset[str]) -> ToolGuardrail:
     return ToolGuardrail("deployment_scope", "input", check)
 
 
-def question_coverage() -> ToolGuardrail:
+def question_coverage(catalog: Catalog = FINANCE) -> ToolGuardrail:
     """The coverage check from coverage.py, expressed as a guardrail: a query that would
     answer only part of the question is blocked, and the model is told to ask."""
 
     def check(d: ToolCallData) -> ToolGuardrailFunctionOutput:
         if d.tool_name != "count_jira_issues":
             return ToolGuardrailFunctionOutput.allow()  # coverage is about counts
-        reason = coverage_check(d.question, d.arguments.get("project"), d.arguments.get("project_evidence"))
+        reason = coverage_check(d.question, d.arguments.get("project"), d.arguments.get("project_evidence"),
+                                catalog=catalog)
         if reason:
             return ToolGuardrailFunctionOutput.reject_content(
                 f"Not run: {reason}. Ask the user which single project they mean.", {"reason": coverage_code(reason)}
@@ -242,13 +244,16 @@ def keys_match_project() -> ToolGuardrail:
     return ToolGuardrail("keys_match_project", "output", check)
 
 
+def catalog_policy(catalog: Catalog, coverage: bool = True) -> list[ToolGuardrail]:
+    """The standard policy for a deployment over a catalog. Order matters: the restricted
+    check runs first, so an attempt on a restricted project halts rather than being
+    politely redirected (standard AI-05)."""
+    policy = [restricted_project(catalog.restricted), deployment_scope(catalog.served)]
+    if coverage:
+        policy.append(question_coverage(catalog))
+    return [*policy, keys_match_project()]
+
+
 def finance_assistant_policy() -> list[ToolGuardrail]:
-    """The demo deployment: a finance assistant serving BILL and PAY. Order matters:
-    the restricted check runs first, so a SECOPS attempt halts rather than being
-    politely redirected."""
-    return [
-        restricted_project(),
-        deployment_scope(frozenset({"BILL", "PAY"})),
-        question_coverage(),
-        keys_match_project(),
-    ]
+    """The demo deployment: the finance assistant, serving the finance catalog's scope."""
+    return catalog_policy(FINANCE)

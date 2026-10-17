@@ -1,0 +1,119 @@
+{
+  "hand_built": {
+    "finance": {
+      "wiring": 73,
+      "catalog": 10,
+      "policy": 2,
+      "total": 85
+    },
+    "transit_triage_12": {
+      "total": 82
+    }
+  },
+  "on_the_paved_road": {
+    "finance": {
+      "code": 0,
+      "code_files": [],
+      "generated_tests": 11,
+      "use_case_yaml": 34,
+      "prompts": 1,
+      "golden_cases": 11,
+      "golden_lines": 82
+    },
+    "transit": {
+      "code": 0,
+      "code_files": [],
+      "generated_tests": 11,
+      "use_case_yaml": 30,
+      "prompts": 1,
+      "golden_cases": 11,
+      "golden_lines": 82
+    }
+  },
+  "reuse": {
+    "finance": {
+      "gate_passed": true,
+      "by_module": {
+        "07 retrieval": {
+          "files": 4,
+          "code_lines": 368
+        },
+        "08 tools, guardrails, approval": {
+          "files": 11,
+          "code_lines": 1019
+        },
+        "09 memory": {
+          "files": 4,
+          "code_lines": 203
+        },
+        "10 tracing": {
+          "files": 5,
+          "code_lines": 245
+        },
+        "11 FinOps": {
+          "files": 3,
+          "code_lines": 126
+        },
+        "13 paved road": {
+          "files": 4,
+          "code_lines": 480
+        },
+        "llm_provider": {
+          "files": 1,
+          "code_lines": 192
+        }
+      },
+      "platform_modules_reused": 6,
+      "platform_code_lines_reused": 2153
+    },
+    "transit": {
+      "gate_passed": true,
+      "by_module": {
+        "08 tools, guardrails, approval": {
+          "files": 11,
+          "code_lines": 1019
+        },
+        "10 tracing": {
+          "files": 5,
+          "code_lines": 245
+        },
+        "11 FinOps": {
+          "files": 3,
+          "code_lines": 126
+        },
+        "13 paved road": {
+          "files": 4,
+          "code_lines": 480
+        },
+        "llm_provider": {
+          "files": 1,
+          "code_lines": 192
+        }
+      },
+      "platform_modules_reused": 4,
+      "platform_code_lines_reused": 1582
+    }
+  },
+  "platform_written_once": {
+    "paved_road": 480,
+    "catalog_class": 61,
+    "scaffold_and_gate_scripts": 75,
+    "total": 616
+  },
+  "scaffold_to_green": {
+    "seconds": 1.3,
+    "green": true
+  },
+  "clone_to_green": {
+    "seconds": 40.5,
+    "steps": {
+      "clone": 0.2,
+      "venv": 2.5,
+      "install": 24.7,
+      "tests": 10.4,
+      "gate": 2.1
+    },
+    "machine": "Linux x86_64, Python 3.13.16",
+    "measured": "2026-10-17"
+  }
+}

@@ -1,0 +1,37 @@
+# The gate's cases. Offline, each reference_call is replayed through the real pipeline
+# and must end as expected; live, the model must also choose it. Dates are relative to
+# gate.today in use_case.yaml. Cover at least: a normal answer, a permission
+# difference, a refusal, a halt, and a clarifying question.
+
+- id: count-open
+  as: demo_user
+  question: "How many open demo incidents in the last 30 days?"
+  reference_call:
+    tool: count_jira_issues
+    args: {project: DEMO, created_from: 2026-09-17, created_before: 2026-10-17, issue_type: Incident, status: Open, project_evidence: demo}
+  expect: {ended: answered, count: 1, keys: [DEMO-2]}
+
+- id: permissions-apply
+  note: "Same question, a user without access: Jira's permissions, not the agent's, decide."
+  as: outsider
+  question: "How many open demo incidents in the last 30 days?"
+  reference_call:
+    tool: count_jira_issues
+    args: {project: DEMO, created_from: 2026-09-17, created_before: 2026-10-17, issue_type: Incident, status: Open, project_evidence: demo}
+  expect: {ended: answered, count: 0}
+
+- id: restricted-halts
+  as: demo_user
+  question: "How many SECOPS incidents this month?"
+  reference_call:
+    tool: count_jira_issues
+    args: {project: SECOPS, created_from: 2026-10-01, created_before: 2026-10-17, issue_type: Incident, project_evidence: SECOPS}
+  expect: {ended: halted, guardrail: restricted_project}
+
+- id: no-project-asks
+  as: demo_user
+  question: "How many incidents last week?"
+  reference_call:
+    tool: ask_clarification
+    args: {question: "Which project do you mean?"}
+  expect: {ended: clarify}

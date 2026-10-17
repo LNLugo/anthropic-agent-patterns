@@ -1,0 +1,44 @@
+# Use case 2: an operations assistant for a transit agency, built from the template.
+# Station supervisors and maintenance leads ask about elevator, escalator and signal
+# incidents and, with a second person's approval, post notes to an incident.
+# Data: 12_integration's synthetic transit Jira (the system the triage service writes to).
+
+name: "transit"
+description: "Counts elevator, escalator and signal incidents, and posts approved notes to them."
+
+owner:
+  person: "Luis Lugo"
+  team: "Transit Operations"
+
+catalog:
+  projects:
+    - {code: ELEV, name: "Elevators and Escalators", aliases: ["elevators and escalators", "elevators", "elevator", "escalators", "escalator", "lifts", "lift"]}
+    - {code: SIG, name: "Signals", aliases: ["signals", "signal", "signalling", "signaling", "track circuits", "track circuit"]}
+    - {code: SECOPS, name: "Security Operations", aliases: ["security operations", "secops"], queryable: false, restricted: true}
+  scope: [ELEV, SIG]
+
+data:
+  jira: ../../12_integration/fixtures/transit_jira.json
+
+identity: {mode: delegated}
+
+tools:
+  count: {max_keys: 25}
+  comment: {approval: required}
+
+policy: [restricted_project, deployment_scope, question_coverage, keys_match_project]
+
+router:
+  kind: model
+  model: gpt-6-luna
+  coverage: true
+  prompt: prompts/router.md
+
+budget:
+  daily_limit_usd: 0.50
+  reserve_usd: 0.0002
+
+gate:
+  today: 2026-10-16
+  offline_threshold: 1.0
+  live_threshold: 0.9

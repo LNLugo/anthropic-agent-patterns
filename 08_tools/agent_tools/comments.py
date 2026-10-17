@@ -62,6 +62,8 @@ class CommentTool:
 
     def __init__(self, client: MockJira, store: CommentStore, allowed_projects: frozenset[str] = ALLOWED_PROJECTS):
         self.client, self.store, self.allowed_projects = client, store, frozenset(allowed_projects)
+        # An example key from this deployment's own projects: another use case's key would be a hint to try it.
+        self.example_key = f"{min(self.allowed_projects)}-107" if self.allowed_projects else "KEY-1"
 
     @property
     def schema(self) -> dict:
@@ -76,7 +78,7 @@ class CommentTool:
                 "additionalProperties": False,
                 "required": ["issue_key", "body"],
                 "properties": {
-                    "issue_key": {"type": "string", "description": "for example BILL-107"},
+                    "issue_key": {"type": "string", "description": f"for example {self.example_key}"},
                     "body": {"type": "string", "description": f"the comment text, at most {MAX_BODY} characters"},
                 },
             },
@@ -90,7 +92,7 @@ class CommentTool:
         key, body = str(args.get("issue_key", "")).strip(), str(args.get("body", "")).strip()
         m = KEY.match(key)
         if not m:
-            raise ToolRejected(f"{key!r} is not an issue key like BILL-107")
+            raise ToolRejected(f"{key!r} is not an issue key like {self.example_key}")
         if m.group(1) not in self.allowed_projects:
             raise ToolRejected(f"project {m.group(1)!r} is not available to this tool")
         if not body:

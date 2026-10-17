@@ -30,10 +30,12 @@ from __future__ import annotations
 
 import re
 
-from .router import PROJECT_ALIASES
+from .catalog import FINANCE, Catalog
 
-CODES = {"BILL", "PAY", "INFRA", "SECOPS"}
-NAMES = {**{alias: code for alias, code in PROJECT_ALIASES.items()}, **{c.lower(): c for c in CODES}}
+
+def _names(catalog: Catalog) -> dict[str, str]:
+    """Every word that names a project, its code included, restricted ones too."""
+    return {**catalog.aliases, **{c.lower(): c for c in catalog.codes}}
 
 GENERIC = {
     "incident", "incidents", "outage", "outages", "bug", "bugs", "ticket", "tickets", "tix",
@@ -47,20 +49,21 @@ def _norm(text: str) -> str:
     return re.sub(r"\s+", " ", re.sub(r"[^\w\s]", " ", text.lower())).strip()
 
 
-def projects_named(text: str) -> set[str]:
+def projects_named(text: str, catalog: Catalog = FINANCE) -> set[str]:
     """Known projects named in the text, by code or alias, as whole words."""
     t = _norm(text)
-    return {code for name, code in NAMES.items() if re.search(rf"\b{re.escape(name)}s?\b", t)}
+    return {code for name, code in _names(catalog).items() if re.search(rf"\b{re.escape(name)}s?\b", t)}
 
 
-def check(question: str, project: str, evidence: str | None, standing: list[str] | tuple = ()) -> str | None:
+def check(question: str, project: str, evidence: str | None, standing: list[str] | tuple = (),
+          catalog: Catalog = FINANCE) -> str | None:
     """None when the query covers the question; otherwise the reason to ask instead.
 
     standing: the user's own standing instructions from memory ("from now on, only
     Payments"). The evidence may come from one of them. Nothing else from the
     conversation counts: a project named earlier is not evidence for this question,
     and only the current question is checked for a second project."""
-    named = projects_named(question)
+    named = projects_named(question, catalog)
     if named - {project}:
         listed = ", ".join(sorted(named | {project}))
         return f"the question names {listed}; the tool counts one project at a time"
@@ -71,7 +74,7 @@ def check(question: str, project: str, evidence: str | None, standing: list[str]
         return f"the project evidence {evidence!r} is not in the question"
     if set(ev.split()) <= GENERIC:
         return f"the project evidence {evidence!r} does not name a project"
-    ev_named = projects_named(evidence)
+    ev_named = projects_named(evidence, catalog)
     if ev_named and project not in ev_named:
         return f"the evidence {evidence!r} names {', '.join(sorted(ev_named))}, not {project}"
     return None

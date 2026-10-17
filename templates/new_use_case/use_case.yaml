@@ -1,0 +1,52 @@
+# A use case on the paved road (docs/designs/paved-road.md). Everything not declared
+# here comes from the platform: the bounded tool and guardrails (08), retrieval (07),
+# memory (09), tracing with content off (10), prices and budgets (11).
+# Unknown keys are refused, and so is a configuration that breaks a standard.
+
+name: "{{name}}"
+description: "What this assistant is for, in one line."
+
+owner:
+  person: "{{person}}"
+  team: "{{team}}"
+
+# The projects this use case knows. Aliases are the words people use for them.
+# restricted: any attempt halts the run (a security event). queryable: false keeps a
+# project out of the tool's allowlist while the coverage check still recognises it.
+catalog:
+  projects:
+    - {code: DEMO, name: "Demo Service", aliases: ["demo service", "demo"]}
+    - {code: SECOPS, name: "Security Operations", aliases: ["security operations", "secops"], queryable: false, restricted: true}
+  scope: [DEMO]               # what this deployment serves; deployment_scope coaches on the rest
+
+data:
+  jira: data/jira.json        # replace with your system's fixture; production swaps in the real client
+  # wiki: ../../07_rag/tests/fixtures/mini_confluence.json
+
+# delegated: each user's own Jira permissions. service: one named service identity (APP-01).
+identity: {mode: delegated}
+
+tools:
+  count: {max_keys: 25}
+  # comment: {approval: required}     # a write; approval: required is the only accepted value (AI-06)
+  # wiki: {min_score: 1.0}
+
+# From the platform's set, in order. restricted_project must come first (AI-05).
+policy: [restricted_project, deployment_scope, question_coverage, keys_match_project]
+
+router:
+  kind: model                 # model, or rules (offline, free, narrower)
+  model: gpt-6-luna           # must be in 11_finops/prices.yaml (OPS-02)
+  coverage: true
+  prompt: prompts/router.md   # your wording, added after the platform's routing rules
+
+# memory: {strategy: retrieve_pinned, retention_days: 30}   # retention is required (APP-06)
+
+budget:                       # required with a model router (OPS-03)
+  daily_limit_usd: 0.50
+  reserve_usd: 0.0002
+
+gate:
+  today: 2026-10-16           # the golden set's dates are relative to this day
+  offline_threshold: 1.0      # deterministic, so anything below 100% is a regression
+  live_threshold: 0.9
