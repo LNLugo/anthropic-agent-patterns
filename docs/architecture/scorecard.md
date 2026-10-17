@@ -2,17 +2,17 @@
 
 <!-- Written by conformance.py --write. Do not edit by hand. -->
 
-Computed from the repository: 30 standards, 73 standard-module pairs.
+Computed from the repository: 30 standards, 80 standard-module pairs.
 
 | Status | Pairs | Meaning |
 |---|---|---|
-| Tested | 58 | Named tests enforce it for that module |
-| Checked | 7 | A static check over the module's code passes |
+| Tested | 64 | Named tests enforce it for that module |
+| Checked | 8 | A static check over the module's code passes |
 | Excepted | 5 | Not met; a registered exception owns the gap |
 | Attested | 3 | Enforced by design review only |
 | Gap | 0 | Not met and not registered |
 
-**Conforming: 65 of 73 pairs (89%).** Attested pairs are not counted as conforming.
+**Conforming: 72 of 80 pairs (90%).** Attested pairs are not counted as conforming.
 
 ## By module
 
@@ -31,41 +31,42 @@ Computed from the repository: 30 standards, 73 standard-module pairs.
 | 11_finops | 3 | 3 (100%) | 0 | 0 | 0 |
 | 12_integration | 20 | 19 (95%) | 0 | 1 | 0 |
 | 13_paved_road | 8 | 8 (100%) | 0 | 0 | 0 |
+| 14_knowledge_graph | 7 | 7 (100%) | 0 | 0 | 0 |
 
 ## By standard
 
-| Standard | 01 | 02 | 03 | 04 | 05 | 06 | 07 | 08 | 09 | 10 | 11 | 12 | 13 |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| AI-01 |  |  |  |  |  | review |  | review |  |  |  | review |  |
-| AI-02 |  |  |  |  |  |  |  | tested |  |  |  |  |  |
-| AI-03 |  |  |  |  |  | tested |  | tested |  |  |  |  |  |
-| AI-04 |  |  |  |  |  |  | tested | tested |  |  |  |  |  |
-| AI-05 |  |  |  |  |  |  |  | tested |  |  |  | tested | tested |
-| AI-06 |  |  |  |  |  |  |  | tested |  |  |  | tested | tested |
-| AI-07 |  |  |  |  |  |  | exception | tested |  |  |  |  |  |
-| AI-08 |  |  |  |  |  |  |  |  | tested |  |  |  |  |
-| APP-01 |  |  |  |  |  |  | tested | tested |  |  |  | tested |  |
-| APP-02 |  |  |  |  |  |  |  | tested |  |  |  | tested |  |
-| APP-03 |  |  |  |  |  |  | tested |  |  |  | tested | tested |  |
-| APP-04 |  |  |  |  |  | tested | tested | tested | tested | tested | tested | tested | tested |
-| APP-05 | checked | checked | checked | checked | checked | checked | exception | checked |  |  |  |  |  |
-| APP-06 |  |  |  |  |  |  |  |  | tested |  |  |  |  |
-| OPS-01 |  |  |  |  |  | tested | tested | tested | tested |  |  | tested | tested |
-| OPS-02 |  |  |  |  |  |  | tested | tested |  |  | tested |  | tested |
-| OPS-03 |  |  |  |  |  | exception | exception | tested |  |  |  | tested | tested |
-| API-01 |  |  |  |  |  |  |  | exception |  |  |  | tested |  |
-| API-02 |  |  |  |  |  |  |  |  |  |  |  | tested |  |
-| API-03 |  |  |  |  |  |  |  |  |  |  |  | tested |  |
-| API-04 |  |  |  |  |  |  |  |  |  |  |  | tested |  |
-| API-05 |  |  |  |  |  |  |  | tested |  |  |  | tested |  |
-| INT-01 |  |  |  |  |  |  |  |  |  |  |  | tested |  |
-| INT-02 |  |  |  |  |  |  |  |  |  |  |  | tested |  |
-| INT-03 |  |  |  |  |  |  |  | tested |  |  |  | tested |  |
-| INT-04 |  |  |  |  |  |  |  |  |  |  |  | tested |  |
-| INT-05 |  |  |  |  |  |  |  |  |  |  |  | tested |  |
-| INT-06 |  |  |  |  |  |  |  |  |  |  |  | tested |  |
-| ENB-01 |  |  |  |  |  |  |  |  |  |  |  |  | tested |
-| ENB-02 |  |  |  |  |  |  |  |  |  |  |  |  | tested |
+| Standard | 01 | 02 | 03 | 04 | 05 | 06 | 07 | 08 | 09 | 10 | 11 | 12 | 13 | 14 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| AI-01 |  |  |  |  |  | review |  | review |  |  |  | review |  |  |
+| AI-02 |  |  |  |  |  |  |  | tested |  |  |  |  |  |  |
+| AI-03 |  |  |  |  |  | tested |  | tested |  |  |  |  |  |  |
+| AI-04 |  |  |  |  |  |  | tested | tested |  |  |  |  |  | tested |
+| AI-05 |  |  |  |  |  |  |  | tested |  |  |  | tested | tested |  |
+| AI-06 |  |  |  |  |  |  |  | tested |  |  |  | tested | tested |  |
+| AI-07 |  |  |  |  |  |  | exception | tested |  |  |  |  |  | tested |
+| AI-08 |  |  |  |  |  |  |  |  | tested |  |  |  |  |  |
+| APP-01 |  |  |  |  |  |  | tested | tested |  |  |  | tested |  | tested |
+| APP-02 |  |  |  |  |  |  |  | tested |  |  |  | tested |  |  |
+| APP-03 |  |  |  |  |  |  | tested |  |  |  | tested | tested |  | tested |
+| APP-04 |  |  |  |  |  | tested | tested | tested | tested | tested | tested | tested | tested | tested |
+| APP-05 | checked | checked | checked | checked | checked | checked | exception | checked |  |  |  |  |  | checked |
+| APP-06 |  |  |  |  |  |  |  |  | tested |  |  |  |  |  |
+| OPS-01 |  |  |  |  |  | tested | tested | tested | tested |  |  | tested | tested | tested |
+| OPS-02 |  |  |  |  |  |  | tested | tested |  |  | tested |  | tested |  |
+| OPS-03 |  |  |  |  |  | exception | exception | tested |  |  |  | tested | tested |  |
+| API-01 |  |  |  |  |  |  |  | exception |  |  |  | tested |  |  |
+| API-02 |  |  |  |  |  |  |  |  |  |  |  | tested |  |  |
+| API-03 |  |  |  |  |  |  |  |  |  |  |  | tested |  |  |
+| API-04 |  |  |  |  |  |  |  |  |  |  |  | tested |  |  |
+| API-05 |  |  |  |  |  |  |  | tested |  |  |  | tested |  |  |
+| INT-01 |  |  |  |  |  |  |  |  |  |  |  | tested |  |  |
+| INT-02 |  |  |  |  |  |  |  |  |  |  |  | tested |  |  |
+| INT-03 |  |  |  |  |  |  |  | tested |  |  |  | tested |  |  |
+| INT-04 |  |  |  |  |  |  |  |  |  |  |  | tested |  |  |
+| INT-05 |  |  |  |  |  |  |  |  |  |  |  | tested |  |  |
+| INT-06 |  |  |  |  |  |  |  |  |  |  |  | tested |  |  |
+| ENB-01 |  |  |  |  |  |  |  |  |  |  |  |  | tested |  |
+| ENB-02 |  |  |  |  |  |  |  |  |  |  |  |  | tested |  |
 
 ## Exceptions
 

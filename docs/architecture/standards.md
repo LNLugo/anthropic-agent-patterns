@@ -49,12 +49,13 @@ An answer ships only with evidence that resolves to what the model was shown (a 
 
 *Why:* A confident wrong answer is the expensive failure.
 
-*Applies to:* 07, 08 · *ADRs:* none
+*Applies to:* 07, 08, 14 · *ADRs:* none
 
 *Enforced by:*
 
 - 07: [`test_graph_abstains_when_citation_is_fabricated`](../../07_rag/tests/test_citations_and_graph.py)
 - 08: [`test_the_coverage_check_stops_a_half_answer_in_the_main_path`](../../08_tools/tests/test_assistant_model_router.py), [`test_missing_project_asks_a_question_and_runs_nothing`](../../08_tools/tests/test_assistant.py)
+- 14: [`test_a_grounded_answer_cites_only_what_it_was_shown`](../../14_knowledge_graph/tests/test_netgraph.py), [`test_no_evidence_means_no_model_call`](../../14_knowledge_graph/tests/test_netgraph.py)
 
 ### AI-05 · Guardrails return one of three behaviours, in a defined order
 
@@ -90,11 +91,12 @@ A model-dependent component is measured on a held-out set written without seeing
 
 *Why:* A score on the development set measures the prompt's fit to it.
 
-*Applies to:* 07, 08 · *ADRs:* [0001](adr/0001-model-router-over-rules.md), [0013](adr/0013-offline-tests-measured-live-runs.md)
+*Applies to:* 07, 08, 14 · *ADRs:* [0001](adr/0001-model-router-over-rules.md), [0013](adr/0013-offline-tests-measured-live-runs.md), [0018](adr/0018-graph-walk-kept-on-held-out-evidence.md)
 
 *Enforced by:*
 
 - 08: [`test_template_placeholders_are_refused`](../../08_tools/tests/test_model_router.py), [`test_rules_are_free_but_each_extra_correct_route_has_a_price`](../../11_finops/tests/test_cost_per_correct.py)
+- 14: [`test_held_out_3_was_scored_by_the_retriever_as_it_is_now`](../../14_knowledge_graph/tests/test_netgraph.py), [`test_the_published_numbers_are_what_the_code_produces_now`](../../14_knowledge_graph/tests/test_netgraph.py)
 
 *Exception EXC-004* for 07, until 2027-04-16: 07's answer evaluation ran once, on one model (gpt-4o-mini), with no non-model baseline for answers.
 
@@ -116,7 +118,7 @@ Every agent run is one trace with typed spans. Prompts, documents, model output 
 
 *Why:* Traces are read by more people than the data they describe.
 
-*Applies to:* 06, 07, 08, 09, 12, 13 · *ADRs:* [0007](adr/0007-trace-content-off-by-default.md)
+*Applies to:* 06, 07, 08, 09, 12, 13, 14 · *ADRs:* [0007](adr/0007-trace-content-off-by-default.md)
 
 *Enforced by:*
 
@@ -126,6 +128,7 @@ Every agent run is one trace with typed spans. Prompts, documents, model output 
 - 09: [`test_history_reaches_the_model_but_not_the_trace`](../../09_memory/tests/test_assistant_memory.py), [`test_the_trace_names_which_turns_the_model_saw_by_position_only`](../../09_memory/tests/test_assistant_memory.py)
 - 12: [`test_no_content_reaches_the_trace_file_and_the_control_sees_all_of_it`](../../10_observability/tests/test_leak_check.py)
 - 13: [`test_every_run_is_traced_with_content_off_and_spend_metered`](../../13_paved_road/tests/test_paved_road.py), [`test_unknown_or_contradictory_configuration_is_refused`](../../13_paved_road/tests/test_paved_road.py)
+- 14: [`test_retrieval_traces_counts_not_content`](../../14_knowledge_graph/tests/test_netgraph.py)
 
 ### OPS-02 · Costs come from a sourced price file
 
@@ -166,13 +169,14 @@ Every call to a system of record names the user it acts for, or a service identi
 
 *Why:* Delegated permissions cannot drift; a replicated copy can.
 
-*Applies to:* 07, 08, 12 · *ADRs:* [0003](adr/0003-delegated-permissions.md), [0012](adr/0012-service-identity-and-idempotent-writes.md)
+*Applies to:* 07, 08, 12, 14 · *ADRs:* [0003](adr/0003-delegated-permissions.md), [0012](adr/0012-service-identity-and-idempotent-writes.md)
 
 *Enforced by:*
 
 - 07: [`test_zero_leakage_with_filter`](../../07_rag/tests/test_permissions.py)
 - 08: [`test_jira_refuses_calls_without_a_named_user`](../../08_tools/tests/test_jql_tool.py), [`test_count_depends_on_who_asks`](../../08_tools/tests/test_jql_tool.py)
 - 12: [`test_jira_permissions_still_apply_through_the_gateway`](../../12_integration/tests/test_gateway.py)
+- 14: [`test_no_retriever_ever_returns_what_the_asker_may_not_read`](../../14_knowledge_graph/tests/test_netgraph.py), [`test_a_path_goes_only_through_what_the_asker_may_read`](../../14_knowledge_graph/tests/test_netgraph.py)
 
 ### APP-02 · Identity comes from the credential, never from the arguments
 
@@ -193,13 +197,14 @@ Unknown permissions, missing ancestors, unpriced models and unverifiable inputs 
 
 *Why:* Every default-open path is a leak waiting for its input.
 
-*Applies to:* 07, 11, 12 · *ADRs:* [0008](adr/0008-prices-from-a-sourced-file.md)
+*Applies to:* 07, 11, 12, 14 · *ADRs:* [0008](adr/0008-prices-from-a-sourced-file.md)
 
 *Enforced by:*
 
 - 07: [`test_unknown_space_fails_closed`](../../07_rag/tests/test_permissions.py), [`test_chunk_without_gates_is_never_returned`](../../07_rag/tests/test_permissions.py)
 - 11: [`test_an_unpriced_model_is_refused_before_it_is_called`](../../11_finops/tests/test_budget.py)
 - 12: [`test_an_unsigned_or_forged_webhook_is_refused`](../../12_integration/tests/test_adapters.py)
+- 14: [`test_the_vector_filter_is_built_from_checked_group_names`](../../14_knowledge_graph/tests/test_netgraph.py), [`test_an_index_made_for_another_model_is_refused_before_indexing`](../../14_knowledge_graph/tests/test_netgraph.py), [`test_someone_in_no_group_gets_nothing`](../../14_knowledge_graph/tests/test_netgraph.py)
 
 ### APP-04 · Tests run offline, and every control has a positive control
 
@@ -207,7 +212,7 @@ Every suite runs with no API key. A test that proves something never happens is 
 
 *Why:* A zero without a control is indistinguishable from a broken test.
 
-*Applies to:* 06, 07, 08, 09, 10, 11, 12, 13 · *ADRs:* [0013](adr/0013-offline-tests-measured-live-runs.md)
+*Applies to:* 06, 07, 08, 09, 10, 11, 12, 13, 14 · *ADRs:* [0013](adr/0013-offline-tests-measured-live-runs.md)
 
 *Enforced by:*
 
@@ -219,6 +224,7 @@ Every suite runs with no API key. A test that proves something never happens is 
 - 11: [`test_a_daily_budget_stops_at_the_expected_question_and_calls_nothing_after`](../../11_finops/tests/test_budget.py)
 - 12: [`test_without_the_marker_one_lost_response_posts_twice`](../../12_integration/tests/test_integration_check.py)
 - 13: [`test_the_gate_catches_a_regression_in_shared_code`](../../13_paved_road/tests/test_paved_road.py)
+- 14: [`test_the_permission_check_sees_forbidden_items_when_the_filter_is_widened`](../../14_knowledge_graph/tests/test_netgraph.py)
 
 ### APP-05 · One way to choose a model
 
@@ -226,7 +232,7 @@ Modules get their model through llm_provider.get_chat_model, so the provider and
 
 *Why:* Two selection paths drift: change the default in one and the other keeps the old one.
 
-*Applies to:* 01, 02, 03, 04, 05, 06, 07, 08 · *ADRs:* none
+*Applies to:* 01, 02, 03, 04, 05, 06, 07, 08, 14 · *ADRs:* none
 
 *Checked by:* static check `model_construction` ([conformance.py](conformance.py)) over the code of every module it applies to.
 

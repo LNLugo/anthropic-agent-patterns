@@ -57,13 +57,16 @@ standards:
     statement: "An answer ships only with evidence that resolves to what the model was shown (a citation, or the words that named the query's scope); otherwise the system abstains or asks."
     rationale: "A confident wrong answer is the expensive failure."
     adr: []
-    applies_to: ["07", "08"]
+    applies_to: ["07", "08", "14"]
     evidence:
       "07":
         - 07_rag/tests/test_citations_and_graph.py::test_graph_abstains_when_citation_is_fabricated
       "08":
         - 08_tools/tests/test_assistant_model_router.py::test_the_coverage_check_stops_a_half_answer_in_the_main_path
         - 08_tools/tests/test_assistant.py::test_missing_project_asks_a_question_and_runs_nothing
+      "14":
+        - 14_knowledge_graph/tests/test_netgraph.py::test_a_grounded_answer_cites_only_what_it_was_shown
+        - 14_knowledge_graph/tests/test_netgraph.py::test_no_evidence_means_no_model_call
 
   - id: AI-05
     domain: AI
@@ -105,14 +108,17 @@ standards:
     title: "Measured on questions nobody tuned for"
     statement: "A model-dependent component is measured on a held-out set written without seeing the prompt, over more than one run, against a non-model baseline."
     rationale: "A score on the development set measures the prompt's fit to it."
-    adr: ["0001", "0013"]
-    applies_to: ["07", "08"]
+    adr: ["0001", "0013", "0018"]
+    applies_to: ["07", "08", "14"]
     evidence:
       "08":
         - 08_tools/tests/test_model_router.py::test_template_placeholders_are_refused
         - 11_finops/tests/test_cost_per_correct.py::test_rules_are_free_but_each_extra_correct_route_has_a_price
 
   # ---------------------------------------------------------------- Security and identity (application)
+      "14":
+        - 14_knowledge_graph/tests/test_netgraph.py::test_held_out_3_was_scored_by_the_retriever_as_it_is_now
+        - 14_knowledge_graph/tests/test_netgraph.py::test_the_published_numbers_are_what_the_code_produces_now
 
 
   - id: AI-08
@@ -133,7 +139,7 @@ standards:
     statement: "Every call to a system of record names the user it acts for, or a service identity for work no person started. Permissions are the system's own, never replicated into the agent."
     rationale: "Delegated permissions cannot drift; a replicated copy can."
     adr: ["0003", "0012"]
-    applies_to: ["07", "08", "12"]
+    applies_to: ["07", "08", "12", "14"]
     evidence:
       "07":
         - 07_rag/tests/test_permissions.py::test_zero_leakage_with_filter
@@ -142,6 +148,9 @@ standards:
         - 08_tools/tests/test_jql_tool.py::test_count_depends_on_who_asks
       "12":
         - 12_integration/tests/test_gateway.py::test_jira_permissions_still_apply_through_the_gateway
+      "14":
+        - 14_knowledge_graph/tests/test_netgraph.py::test_no_retriever_ever_returns_what_the_asker_may_not_read
+        - 14_knowledge_graph/tests/test_netgraph.py::test_a_path_goes_only_through_what_the_asker_may_read
 
   - id: APP-02
     domain: Application
@@ -163,7 +172,7 @@ standards:
     statement: "Unknown permissions, missing ancestors, unpriced models and unverifiable inputs are refused, not defaulted to open."
     rationale: "Every default-open path is a leak waiting for its input."
     adr: ["0008"]
-    applies_to: ["07", "11", "12"]
+    applies_to: ["07", "11", "12", "14"]
     evidence:
       "07":
         - 07_rag/tests/test_permissions.py::test_unknown_space_fails_closed
@@ -172,6 +181,10 @@ standards:
         - 11_finops/tests/test_budget.py::test_an_unpriced_model_is_refused_before_it_is_called
       "12":
         - 12_integration/tests/test_adapters.py::test_an_unsigned_or_forged_webhook_is_refused
+      "14":
+        - 14_knowledge_graph/tests/test_netgraph.py::test_the_vector_filter_is_built_from_checked_group_names
+        - 14_knowledge_graph/tests/test_netgraph.py::test_an_index_made_for_another_model_is_refused_before_indexing
+        - 14_knowledge_graph/tests/test_netgraph.py::test_someone_in_no_group_gets_nothing
 
   - id: APP-04
     domain: Application
@@ -179,7 +192,7 @@ standards:
     statement: "Every suite runs with no API key. A test that proves something never happens is paired with a run where it does (the control), so a zero means the check works, not that it is blind."
     rationale: "A zero without a control is indistinguishable from a broken test."
     adr: ["0013"]
-    applies_to: ["06", "07", "08", "09", "10", "11", "12", "13"]
+    applies_to: ["06", "07", "08", "09", "10", "11", "12", "13", "14"]
     evidence:
       "06":
         - tests/test_scripted_model.py::test_a_call_with_no_step_left_raises
@@ -197,6 +210,8 @@ standards:
         - 12_integration/tests/test_integration_check.py::test_without_the_marker_one_lost_response_posts_twice
       "13":
         - 13_paved_road/tests/test_paved_road.py::test_the_gate_catches_a_regression_in_shared_code
+      "14":
+        - 14_knowledge_graph/tests/test_netgraph.py::test_the_permission_check_sees_forbidden_items_when_the_filter_is_widened
 
   - id: APP-05
     domain: Application
@@ -204,7 +219,7 @@ standards:
     statement: "Modules get their model through llm_provider.get_chat_model, so the provider and model are one run setting."
     rationale: "Two selection paths drift: change the default in one and the other keeps the old one."
     adr: []
-    applies_to: ["01", "02", "03", "04", "05", "06", "07", "08"]
+    applies_to: ["01", "02", "03", "04", "05", "06", "07", "08", "14"]
     evidence: {}
     checks: [model_construction]
 
@@ -230,7 +245,7 @@ standards:
     statement: "Every agent run is one trace with typed spans. Prompts, documents, model output and tool results are recorded only when explicitly enabled; metadata holds only identities, counts and values checked against a known format."
     rationale: "Traces are read by more people than the data they describe."
     adr: ["0007"]
-    applies_to: ["06", "07", "08", "09", "12", "13"]
+    applies_to: ["06", "07", "08", "09", "12", "13", "14"]
     evidence:
       "06":
         - 10_observability/tests/test_leak_check.py::test_no_content_reaches_the_trace_file_and_the_control_sees_all_of_it
@@ -248,6 +263,8 @@ standards:
       "13":
         - 13_paved_road/tests/test_paved_road.py::test_every_run_is_traced_with_content_off_and_spend_metered
         - 13_paved_road/tests/test_paved_road.py::test_unknown_or_contradictory_configuration_is_refused
+      "14":
+        - 14_knowledge_graph/tests/test_netgraph.py::test_retrieval_traces_counts_not_content
 
   - id: OPS-02
     domain: AI

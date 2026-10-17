@@ -1,0 +1,352 @@
+2026-10-12 06:03:28 VPN_LOGIN_SUCCESS user=maria.chen ip=10.20.14.126
+2026-10-12 06:04:45 VPN_DISCONNECT user=john.doe ip=10.20.4.71
+2026-10-12 06:09:49 VPN_LOGIN_SUCCESS user=dana.white ip=10.20.8.231
+2026-10-12 06:11:48 VPN_LOGIN_SUCCESS user=raj.patel ip=10.20.9.174
+2026-10-12 06:22:45 VPN_LOGIN_SUCCESS user=paula.reyes ip=10.20.13.74
+2026-10-12 06:54:44 VPN_LOGIN_SUCCESS user=alice.smith ip=10.20.4.220
+2026-10-12 07:22:57 VPN_LOGIN_FAILED user=fatima.ali ip=98.125.78.121 reason=bad_password
+2026-10-12 07:24:56 VPN_LOGIN_SUCCESS user=john.doe ip=10.20.4.71
+2026-10-12 07:48:14 VPN_LOGIN_SUCCESS user=omar.haddad ip=10.20.4.126
+2026-10-12 07:49:47 VPN_LOGIN_FAILED user=dana.white ip=98.198.66.76 reason=bad_password
+2026-10-12 07:51:41 VPN_LOGIN_FAILED user=paula.reyes ip=98.17.22.72 reason=bad_password
+2026-10-12 08:06:31 VPN_LOGIN_SUCCESS user=dana.white ip=10.20.8.231
+2026-10-12 08:19:58 VPN_LOGIN_SUCCESS user=alice.smith ip=10.20.4.220
+2026-10-12 08:21:47 VPN_LOGIN_FAILED user=ivan.petrov ip=98.40.68.59 reason=bad_password
+2026-10-12 08:26:41 VPN_LOGIN_SUCCESS user=bob.jones ip=10.20.7.105
+2026-10-12 08:29:49 VPN_LOGIN_FAILED user=george.kim ip=98.185.224.103 reason=bad_password
+2026-10-12 08:35:13 VPN_LOGIN_FAILED user=john.doe ip=98.179.71.44 reason=bad_password
+2026-10-12 08:51:01 VPN_LOGIN_SUCCESS user=fatima.ali ip=10.20.14.166
+2026-10-12 08:54:41 VPN_LOGIN_FAILED user=nina.lopez ip=98.12.167.19 reason=bad_password
+2026-10-12 08:56:37 VPN_LOGIN_FAILED user=charlie.brown ip=98.250.64.71 reason=bad_password
+2026-10-12 09:00:38 VPN_LOGIN_SUCCESS user=julia.costa ip=10.20.11.95
+2026-10-12 09:15:06 VPN_LOGIN_FAILED user=bob.jones ip=98.203.167.136 reason=bad_password
+2026-10-12 09:19:01 VPN_LOGIN_SUCCESS user=bob.jones ip=10.20.7.105
+2026-10-12 09:25:16 VPN_LOGIN_SUCCESS user=eli.ross ip=10.20.10.26
+2026-10-12 09:36:11 VPN_LOGIN_SUCCESS user=nina.lopez ip=10.20.8.161
+2026-10-12 09:46:32 VPN_LOGIN_SUCCESS user=alice.smith ip=10.20.4.220
+2026-10-12 09:57:06 VPN_LOGIN_SUCCESS user=hana.sato ip=10.20.2.150
+2026-10-12 10:06:07 VPN_LOGIN_SUCCESS user=omar.haddad ip=10.20.4.126
+2026-10-12 10:31:28 VPN_LOGIN_SUCCESS user=george.kim ip=10.20.11.228
+2026-10-12 10:35:15 VPN_LOGIN_SUCCESS user=bob.jones ip=10.20.7.105
+2026-10-12 10:38:28 VPN_LOGIN_SUCCESS user=maria.chen ip=10.20.14.126
+2026-10-12 10:38:30 VPN_LOGIN_SUCCESS user=fatima.ali ip=10.20.14.166
+2026-10-12 10:43:30 VPN_LOGIN_SUCCESS user=julia.costa ip=10.20.11.95
+2026-10-12 10:52:58 VPN_LOGIN_SUCCESS user=hana.sato ip=10.20.2.150
+2026-10-12 10:55:52 VPN_DISCONNECT user=hana.sato ip=10.20.2.150
+2026-10-12 11:03:19 VPN_LOGIN_SUCCESS user=eli.ross ip=10.20.10.26
+2026-10-12 11:04:33 VPN_DISCONNECT user=bob.jones ip=10.20.7.105
+2026-10-12 11:07:42 VPN_LOGIN_SUCCESS user=ivan.petrov ip=10.20.10.165
+2026-10-12 11:18:28 VPN_LOGIN_SUCCESS user=nina.lopez ip=10.20.8.161
+2026-10-12 11:24:32 VPN_DISCONNECT user=nina.lopez ip=10.20.8.161
+2026-10-12 11:51:24 VPN_LOGIN_SUCCESS user=bob.jones ip=10.20.7.105
+2026-10-12 11:57:31 VPN_DISCONNECT user=maria.chen ip=10.20.14.126
+2026-10-12 12:20:52 VPN_LOGIN_SUCCESS user=maria.chen ip=10.20.14.126
+2026-10-12 12:30:56 VPN_LOGIN_SUCCESS user=lena.berg ip=10.20.2.193
+2026-10-12 12:33:50 VPN_LOGIN_FAILED user=julia.costa ip=98.232.231.82 reason=bad_password
+2026-10-12 12:38:52 VPN_LOGIN_SUCCESS user=raj.patel ip=10.20.9.174
+2026-10-12 12:44:25 VPN_LOGIN_SUCCESS user=alice.smith ip=10.20.4.220
+2026-10-12 13:10:02 VPN_DISCONNECT user=ivan.petrov ip=10.20.10.165
+2026-10-12 13:18:08 VPN_LOGIN_SUCCESS user=bob.jones ip=10.20.7.105
+2026-10-12 13:28:49 VPN_DISCONNECT user=ivan.petrov ip=10.20.10.165
+2026-10-12 13:30:45 VPN_DISCONNECT user=fatima.ali ip=10.20.14.166
+2026-10-12 13:40:25 VPN_LOGIN_SUCCESS user=dana.white ip=10.20.8.231
+2026-10-12 13:45:29 VPN_LOGIN_SUCCESS user=kofi.mensah ip=10.20.3.223
+2026-10-12 13:49:21 VPN_LOGIN_SUCCESS user=raj.patel ip=10.20.9.174
+2026-10-12 13:49:38 VPN_DISCONNECT user=dana.white ip=10.20.8.231
+2026-10-12 13:51:16 VPN_LOGIN_SUCCESS user=paula.reyes ip=10.20.13.74
+2026-10-12 13:58:39 VPN_LOGIN_SUCCESS user=kofi.mensah ip=10.20.3.223
+2026-10-12 14:03:09 VPN_LOGIN_SUCCESS user=julia.costa ip=10.20.11.95
+2026-10-12 14:09:37 VPN_LOGIN_FAILED user=charlie.brown ip=98.250.64.71 reason=bad_password
+2026-10-12 14:12:42 VPN_LOGIN_SUCCESS user=ivan.petrov ip=10.20.10.165
+2026-10-12 14:18:35 VPN_LOGIN_SUCCESS user=julia.costa ip=10.20.11.95
+2026-10-12 14:28:20 VPN_DISCONNECT user=bob.jones ip=10.20.7.105
+2026-10-12 14:30:20 VPN_LOGIN_SUCCESS user=paula.reyes ip=10.20.13.74
+2026-10-12 14:41:53 VPN_LOGIN_SUCCESS user=fatima.ali ip=10.20.14.166
+2026-10-12 14:42:32 VPN_LOGIN_SUCCESS user=omar.haddad ip=10.20.4.126
+2026-10-12 14:50:15 VPN_LOGIN_SUCCESS user=paula.reyes ip=10.20.13.74
+2026-10-12 14:53:19 VPN_LOGIN_SUCCESS user=nina.lopez ip=10.20.8.161
+2026-10-12 15:08:07 VPN_DISCONNECT user=hana.sato ip=10.20.2.150
+2026-10-12 15:28:17 VPN_LOGIN_FAILED user=paula.reyes ip=98.17.22.72 reason=bad_password
+2026-10-12 15:49:03 VPN_LOGIN_FAILED user=eli.ross ip=98.197.19.170 reason=bad_password
+2026-10-12 15:51:33 VPN_LOGIN_SUCCESS user=ivan.petrov ip=10.20.10.165
+2026-10-12 15:59:09 VPN_LOGIN_SUCCESS user=dana.white ip=10.20.8.231
+2026-10-12 16:04:57 VPN_LOGIN_SUCCESS user=eli.ross ip=10.20.10.26
+2026-10-12 16:23:31 VPN_LOGIN_FAILED user=ivan.petrov ip=98.40.68.59 reason=bad_password
+2026-10-12 16:30:05 VPN_LOGIN_SUCCESS user=fatima.ali ip=10.20.14.166
+2026-10-12 16:42:20 VPN_LOGIN_SUCCESS user=hana.sato ip=10.20.2.150
+2026-10-12 16:48:38 VPN_LOGIN_SUCCESS user=alice.smith ip=10.20.4.220
+2026-10-12 17:13:36 VPN_DISCONNECT user=nina.lopez ip=10.20.8.161
+2026-10-12 17:14:31 VPN_DISCONNECT user=john.doe ip=10.20.4.71
+2026-10-12 17:21:07 VPN_LOGIN_SUCCESS user=charlie.brown ip=10.20.10.241
+2026-10-12 17:50:59 VPN_LOGIN_FAILED user=omar.haddad ip=98.41.153.88 reason=bad_password
+2026-10-12 17:59:27 VPN_LOGIN_FAILED user=omar.haddad ip=98.41.153.88 reason=bad_password
+2026-10-12 18:01:46 VPN_LOGIN_SUCCESS user=bob.jones ip=10.20.7.105
+2026-10-12 18:12:53 VPN_LOGIN_SUCCESS user=maria.chen ip=10.20.14.126
+2026-10-12 18:13:29 VPN_LOGIN_FAILED user=nina.lopez ip=98.12.167.19 reason=bad_password
+2026-10-12 18:15:33 VPN_DISCONNECT user=lena.berg ip=10.20.2.193
+2026-10-12 18:25:46 VPN_LOGIN_SUCCESS user=alice.smith ip=10.20.4.220
+2026-10-12 18:26:30 VPN_DISCONNECT user=paula.reyes ip=10.20.13.74
+2026-10-12 18:27:29 VPN_LOGIN_FAILED user=julia.costa ip=98.232.231.82 reason=bad_password
+2026-10-12 18:27:49 VPN_LOGIN_SUCCESS user=julia.costa ip=10.20.11.95
+2026-10-12 18:30:52 VPN_DISCONNECT user=dana.white ip=10.20.8.231
+2026-10-12 18:42:20 VPN_LOGIN_SUCCESS user=john.doe ip=10.20.4.71
+2026-10-12 18:45:47 VPN_LOGIN_SUCCESS user=lena.berg ip=10.20.2.193
+2026-10-12 18:46:11 VPN_LOGIN_SUCCESS user=eli.ross ip=10.20.10.26
+2026-10-12 18:46:52 VPN_LOGIN_SUCCESS user=eli.ross ip=10.20.10.26
+2026-10-12 18:58:01 VPN_LOGIN_SUCCESS user=fatima.ali ip=10.20.14.166
+2026-10-12 19:03:01 VPN_DISCONNECT user=alice.smith ip=10.20.4.220
+2026-10-12 19:05:06 VPN_LOGIN_SUCCESS user=charlie.brown ip=10.20.10.241
+2026-10-12 19:06:58 VPN_LOGIN_SUCCESS user=paula.reyes ip=10.20.13.74
+2026-10-12 19:12:19 VPN_LOGIN_FAILED user=maria.chen ip=98.171.133.40 reason=bad_password
+2026-10-12 19:13:06 VPN_LOGIN_FAILED user=lena.berg ip=98.102.206.163 reason=bad_password
+2026-10-12 19:18:48 VPN_LOGIN_SUCCESS user=raj.patel ip=10.20.9.174
+2026-10-12 19:28:53 VPN_DISCONNECT user=george.kim ip=10.20.11.228
+2026-10-12 19:30:26 VPN_LOGIN_FAILED user=ivan.petrov ip=98.40.68.59 reason=bad_password
+2026-10-12 19:32:16 VPN_LOGIN_SUCCESS user=ivan.petrov ip=10.20.10.165
+2026-10-12 19:33:27 VPN_LOGIN_SUCCESS user=kofi.mensah ip=10.20.3.223
+2026-10-12 19:40:42 VPN_LOGIN_FAILED user=lena.berg ip=98.102.206.163 reason=bad_password
+2026-10-12 19:41:07 VPN_LOGIN_SUCCESS user=ivan.petrov ip=10.20.10.165
+2026-10-12 19:54:41 VPN_LOGIN_SUCCESS user=kofi.mensah ip=10.20.3.223
+2026-10-12 19:57:17 VPN_LOGIN_SUCCESS user=julia.costa ip=10.20.11.95
+2026-10-12 19:59:15 VPN_LOGIN_SUCCESS user=paula.reyes ip=10.20.13.74
+2026-10-13 06:08:46 VPN_LOGIN_SUCCESS user=fatima.ali ip=10.20.14.166
+2026-10-13 06:10:47 VPN_LOGIN_SUCCESS user=dana.white ip=10.20.8.231
+2026-10-13 06:27:51 VPN_LOGIN_SUCCESS user=george.kim ip=10.20.11.228
+2026-10-13 06:30:55 VPN_LOGIN_SUCCESS user=george.kim ip=10.20.11.228
+2026-10-13 06:32:49 VPN_LOGIN_SUCCESS user=maria.chen ip=10.20.14.126
+2026-10-13 06:36:17 VPN_LOGIN_SUCCESS user=eli.ross ip=10.20.10.26
+2026-10-13 06:50:06 VPN_DISCONNECT user=maria.chen ip=10.20.14.126
+2026-10-13 06:50:43 VPN_LOGIN_SUCCESS user=charlie.brown ip=10.20.10.241
+2026-10-13 06:52:45 VPN_LOGIN_FAILED user=john.doe ip=98.179.71.44 reason=bad_password
+2026-10-13 07:21:05 VPN_DISCONNECT user=kofi.mensah ip=10.20.3.223
+2026-10-13 07:25:52 VPN_DISCONNECT user=maria.chen ip=10.20.14.126
+2026-10-13 07:36:23 VPN_DISCONNECT user=omar.haddad ip=10.20.4.126
+2026-10-13 07:51:03 VPN_LOGIN_SUCCESS user=george.kim ip=10.20.11.228
+2026-10-13 07:54:07 VPN_LOGIN_SUCCESS user=lena.berg ip=10.20.2.193
+2026-10-13 07:57:32 VPN_DISCONNECT user=lena.berg ip=10.20.2.193
+2026-10-13 08:08:04 VPN_DISCONNECT user=dana.white ip=10.20.8.231
+2026-10-13 08:20:45 VPN_LOGIN_SUCCESS user=alice.smith ip=10.20.4.220
+2026-10-13 08:25:10 VPN_LOGIN_SUCCESS user=bob.jones ip=10.20.7.105
+2026-10-13 08:50:39 VPN_DISCONNECT user=alice.smith ip=10.20.4.220
+2026-10-13 08:55:23 VPN_LOGIN_SUCCESS user=hana.sato ip=10.20.2.150
+2026-10-13 08:57:54 VPN_LOGIN_SUCCESS user=john.doe ip=10.20.4.71
+2026-10-13 09:00:09 VPN_DISCONNECT user=lena.berg ip=10.20.2.193
+2026-10-13 09:00:44 VPN_LOGIN_SUCCESS user=kofi.mensah ip=10.20.3.223
+2026-10-13 09:03:51 VPN_DISCONNECT user=eli.ross ip=10.20.10.26
+2026-10-13 09:10:12 VPN_LOGIN_SUCCESS user=charlie.brown ip=10.20.10.241
+2026-10-13 09:11:02 VPN_LOGIN_SUCCESS user=john.doe ip=10.20.4.71
+2026-10-13 09:12:49 VPN_LOGIN_SUCCESS user=omar.haddad ip=10.20.4.126
+2026-10-13 09:25:17 VPN_LOGIN_SUCCESS user=ivan.petrov ip=10.20.10.165
+2026-10-13 09:50:05 VPN_LOGIN_FAILED user=charlie.brown ip=98.250.64.71 reason=bad_password
+2026-10-13 10:18:28 VPN_LOGIN_SUCCESS user=john.doe ip=10.20.4.71
+2026-10-13 10:22:04 VPN_DISCONNECT user=george.kim ip=10.20.11.228
+2026-10-13 10:22:36 VPN_LOGIN_SUCCESS user=dana.white ip=10.20.8.231
+2026-10-13 10:42:10 VPN_DISCONNECT user=hana.sato ip=10.20.2.150
+2026-10-13 10:43:48 VPN_LOGIN_FAILED user=raj.patel ip=98.51.142.172 reason=bad_password
+2026-10-13 10:45:15 VPN_LOGIN_SUCCESS user=raj.patel ip=10.20.9.174
+2026-10-13 10:46:48 VPN_LOGIN_SUCCESS user=kofi.mensah ip=10.20.3.223
+2026-10-13 10:48:06 VPN_DISCONNECT user=george.kim ip=10.20.11.228
+2026-10-13 10:55:24 VPN_LOGIN_SUCCESS user=maria.chen ip=10.20.14.126
+2026-10-13 11:00:03 VPN_LOGIN_SUCCESS user=paula.reyes ip=10.20.13.74
+2026-10-13 11:20:01 VPN_LOGIN_SUCCESS user=eli.ross ip=10.20.10.26
+2026-10-13 11:27:20 VPN_LOGIN_SUCCESS user=paula.reyes ip=10.20.13.74
+2026-10-13 11:30:48 VPN_LOGIN_SUCCESS user=george.kim ip=10.20.11.228
+2026-10-13 11:43:28 VPN_LOGIN_FAILED user=bob.jones ip=98.203.167.136 reason=bad_password
+2026-10-13 11:46:59 VPN_LOGIN_SUCCESS user=julia.costa ip=10.20.11.95
+2026-10-13 11:56:49 VPN_DISCONNECT user=lena.berg ip=10.20.2.193
+2026-10-13 11:59:04 VPN_LOGIN_SUCCESS user=nina.lopez ip=10.20.8.161
+2026-10-13 12:02:13 VPN_LOGIN_SUCCESS user=fatima.ali ip=10.20.14.166
+2026-10-13 12:16:12 VPN_DISCONNECT user=nina.lopez ip=10.20.8.161
+2026-10-13 12:22:07 VPN_LOGIN_FAILED user=ivan.petrov ip=98.40.68.59 reason=bad_password
+2026-10-13 12:26:08 VPN_LOGIN_SUCCESS user=paula.reyes ip=10.20.13.74
+2026-10-13 12:31:14 VPN_LOGIN_SUCCESS user=eli.ross ip=10.20.10.26
+2026-10-13 12:48:37 VPN_LOGIN_SUCCESS user=paula.reyes ip=10.20.13.74
+2026-10-13 12:54:36 VPN_LOGIN_SUCCESS user=john.doe ip=10.20.4.71
+2026-10-13 12:55:45 VPN_LOGIN_SUCCESS user=alice.smith ip=10.20.4.220
+2026-10-13 13:12:10 VPN_LOGIN_SUCCESS user=julia.costa ip=10.20.11.95
+2026-10-13 13:21:36 VPN_DISCONNECT user=charlie.brown ip=10.20.10.241
+2026-10-13 13:23:40 VPN_LOGIN_SUCCESS user=julia.costa ip=10.20.11.95
+2026-10-13 13:25:28 VPN_LOGIN_SUCCESS user=george.kim ip=10.20.11.228
+2026-10-13 13:26:46 VPN_LOGIN_FAILED user=george.kim ip=98.185.224.103 reason=bad_password
+2026-10-13 13:27:47 VPN_LOGIN_SUCCESS user=julia.costa ip=10.20.11.95
+2026-10-13 13:32:45 VPN_LOGIN_SUCCESS user=kofi.mensah ip=10.20.3.223
+2026-10-13 13:34:51 VPN_LOGIN_SUCCESS user=julia.costa ip=10.20.11.95
+2026-10-13 13:35:07 VPN_LOGIN_FAILED user=raj.patel ip=98.51.142.172 reason=bad_password
+2026-10-13 13:38:15 VPN_LOGIN_SUCCESS user=ivan.petrov ip=10.20.10.165
+2026-10-13 13:44:12 VPN_LOGIN_SUCCESS user=lena.berg ip=10.20.2.193
+2026-10-13 13:52:24 VPN_LOGIN_SUCCESS user=eli.ross ip=10.20.10.26
+2026-10-13 13:52:51 VPN_LOGIN_SUCCESS user=ivan.petrov ip=10.20.10.165
+2026-10-13 13:54:14 VPN_LOGIN_FAILED user=bob.jones ip=98.203.167.136 reason=bad_password
+2026-10-13 14:04:43 VPN_LOGIN_SUCCESS user=julia.costa ip=10.20.11.95
+2026-10-13 14:24:29 VPN_LOGIN_SUCCESS user=fatima.ali ip=10.20.14.166
+2026-10-13 14:30:58 VPN_DISCONNECT user=raj.patel ip=10.20.9.174
+2026-10-13 14:37:53 VPN_LOGIN_SUCCESS user=george.kim ip=10.20.11.228
+2026-10-13 14:54:37 VPN_DISCONNECT user=maria.chen ip=10.20.14.126
+2026-10-13 14:54:52 VPN_DISCONNECT user=alice.smith ip=10.20.4.220
+2026-10-13 14:58:34 VPN_LOGIN_SUCCESS user=raj.patel ip=10.20.9.174
+2026-10-13 14:59:51 VPN_LOGIN_FAILED user=julia.costa ip=98.232.231.82 reason=bad_password
+2026-10-13 15:05:27 VPN_LOGIN_FAILED user=omar.haddad ip=98.41.153.88 reason=bad_password
+2026-10-13 15:09:00 VPN_LOGIN_SUCCESS user=maria.chen ip=10.20.14.126
+2026-10-13 15:11:21 VPN_LOGIN_SUCCESS user=george.kim ip=10.20.11.228
+2026-10-13 15:12:27 VPN_DISCONNECT user=lena.berg ip=10.20.2.193
+2026-10-13 15:21:40 VPN_LOGIN_FAILED user=eli.ross ip=98.197.19.170 reason=bad_password
+2026-10-13 15:28:01 VPN_LOGIN_SUCCESS user=kofi.mensah ip=10.20.3.223
+2026-10-13 15:35:51 VPN_LOGIN_SUCCESS user=dana.white ip=10.20.8.231
+2026-10-13 15:48:51 VPN_LOGIN_SUCCESS user=john.doe ip=10.20.4.71
+2026-10-13 15:51:44 VPN_LOGIN_SUCCESS user=alice.smith ip=10.20.4.220
+2026-10-13 16:03:14 VPN_LOGIN_FAILED user=nina.lopez ip=98.12.167.19 reason=bad_password
+2026-10-13 16:04:38 VPN_DISCONNECT user=lena.berg ip=10.20.2.193
+2026-10-13 16:17:03 VPN_LOGIN_SUCCESS user=omar.haddad ip=10.20.4.126
+2026-10-13 16:32:39 VPN_LOGIN_SUCCESS user=dana.white ip=10.20.8.231
+2026-10-13 16:35:18 VPN_LOGIN_SUCCESS user=ivan.petrov ip=10.20.10.165
+2026-10-13 16:43:37 VPN_LOGIN_FAILED user=hana.sato ip=98.110.200.234 reason=bad_password
+2026-10-13 16:45:16 VPN_LOGIN_SUCCESS user=ivan.petrov ip=10.20.10.165
+2026-10-13 16:53:51 VPN_DISCONNECT user=eli.ross ip=10.20.10.26
+2026-10-13 16:55:42 VPN_LOGIN_FAILED user=hana.sato ip=98.110.200.234 reason=bad_password
+2026-10-13 16:57:35 VPN_DISCONNECT user=eli.ross ip=10.20.10.26
+2026-10-13 16:59:57 VPN_LOGIN_SUCCESS user=kofi.mensah ip=10.20.3.223
+2026-10-13 17:01:23 VPN_LOGIN_SUCCESS user=fatima.ali ip=10.20.14.166
+2026-10-13 17:02:36 VPN_LOGIN_SUCCESS user=paula.reyes ip=10.20.13.74
+2026-10-13 17:03:04 VPN_LOGIN_SUCCESS user=hana.sato ip=10.20.2.150
+2026-10-13 17:09:55 VPN_LOGIN_SUCCESS user=hana.sato ip=10.20.2.150
+2026-10-13 17:13:22 VPN_LOGIN_FAILED user=ivan.petrov ip=98.40.68.59 reason=bad_password
+2026-10-13 17:24:48 VPN_LOGIN_SUCCESS user=nina.lopez ip=10.20.8.161
+2026-10-13 17:33:01 VPN_LOGIN_SUCCESS user=nina.lopez ip=10.20.8.161
+2026-10-13 17:47:16 VPN_LOGIN_SUCCESS user=nina.lopez ip=10.20.8.161
+2026-10-13 17:51:29 VPN_LOGIN_SUCCESS user=raj.patel ip=10.20.9.174
+2026-10-13 18:14:35 VPN_LOGIN_SUCCESS user=alice.smith ip=10.20.4.220
+2026-10-13 18:17:00 VPN_DISCONNECT user=nina.lopez ip=10.20.8.161
+2026-10-13 18:25:31 VPN_LOGIN_SUCCESS user=dana.white ip=10.20.8.231
+2026-10-13 18:39:25 VPN_LOGIN_SUCCESS user=fatima.ali ip=10.20.14.166
+2026-10-13 18:51:50 VPN_LOGIN_FAILED user=bob.jones ip=98.203.167.136 reason=bad_password
+2026-10-13 19:07:02 VPN_LOGIN_SUCCESS user=dana.white ip=10.20.8.231
+2026-10-13 19:25:37 VPN_DISCONNECT user=julia.costa ip=10.20.11.95
+2026-10-13 19:29:57 VPN_LOGIN_SUCCESS user=fatima.ali ip=10.20.14.166
+2026-10-13 19:45:04 VPN_LOGIN_SUCCESS user=hana.sato ip=10.20.2.150
+2026-10-13 19:45:56 VPN_LOGIN_SUCCESS user=hana.sato ip=10.20.2.150
+2026-10-13 19:51:48 VPN_LOGIN_SUCCESS user=ivan.petrov ip=10.20.10.165
+2026-10-14 03:02:00 VPN_LOGIN_SUCCESS user=omar.haddad ip=203.0.113.99
+2026-10-14 06:01:12 VPN_DISCONNECT user=paula.reyes ip=10.20.13.74
+2026-10-14 06:04:15 VPN_DISCONNECT user=charlie.brown ip=10.20.10.241
+2026-10-14 06:22:45 VPN_LOGIN_SUCCESS user=raj.patel ip=10.20.9.174
+2026-10-14 06:25:33 VPN_LOGIN_SUCCESS user=hana.sato ip=10.20.2.150
+2026-10-14 06:27:25 VPN_DISCONNECT user=julia.costa ip=10.20.11.95
+2026-10-14 06:30:13 VPN_LOGIN_SUCCESS user=dana.white ip=10.20.8.231
+2026-10-14 06:31:47 VPN_LOGIN_SUCCESS user=george.kim ip=10.20.11.228
+2026-10-14 06:35:10 VPN_LOGIN_SUCCESS user=omar.haddad ip=10.20.4.126
+2026-10-14 06:51:00 VPN_DISCONNECT user=alice.smith ip=10.20.4.220
+2026-10-14 07:08:23 VPN_LOGIN_SUCCESS user=paula.reyes ip=10.20.13.74
+2026-10-14 07:10:51 VPN_DISCONNECT user=dana.white ip=10.20.8.231
+2026-10-14 07:17:38 VPN_LOGIN_FAILED user=eli.ross ip=98.197.19.170 reason=bad_password
+2026-10-14 07:29:30 VPN_DISCONNECT user=john.doe ip=10.20.4.71
+2026-10-14 07:31:09 VPN_LOGIN_FAILED user=bob.jones ip=98.114.7.20 reason=bad_password
+2026-10-14 07:32:09 VPN_LOGIN_FAILED user=bob.jones ip=98.114.7.20 reason=bad_password
+2026-10-14 07:32:54 VPN_LOGIN_SUCCESS user=george.kim ip=10.20.11.228
+2026-10-14 07:34:09 VPN_LOGIN_FAILED user=bob.jones ip=98.114.7.20 reason=bad_password
+2026-10-14 07:35:00 VPN_LOGIN_SUCCESS user=eli.ross ip=10.20.10.26
+2026-10-14 07:37:53 VPN_DISCONNECT user=raj.patel ip=10.20.9.174
+2026-10-14 07:44:47 VPN_DISCONNECT user=paula.reyes ip=10.20.13.74
+2026-10-14 07:46:05 VPN_LOGIN_FAILED user=alice.smith ip=98.37.158.181 reason=bad_password
+2026-10-14 08:01:05 VPN_LOGIN_FAILED user=john.doe ip=203.0.113.45 reason=bad_password
+2026-10-14 08:03:12 VPN_LOGIN_FAILED user=john.doe ip=203.0.113.45 reason=bad_password
+2026-10-14 08:04:19 VPN_LOGIN_FAILED user=maria.chen ip=203.0.113.45 reason=bad_password
+2026-10-14 08:06:26 VPN_LOGIN_FAILED user=john.doe ip=203.0.113.45 reason=bad_password
+2026-10-14 08:06:30 VPN_ACCOUNT_LOCKED user=john.doe ip=203.0.113.45 policy=VPN_LOCKOUT
+2026-10-14 08:06:48 VPN_LOGIN_FAILED user=fatima.ali ip=98.125.78.121 reason=bad_password
+2026-10-14 08:07:33 VPN_LOGIN_FAILED user=raj.patel ip=203.0.113.45 reason=bad_password
+2026-10-14 08:12:03 VPN_LOGIN_FAILED user=dana.white ip=98.198.66.76 reason=bad_password
+2026-10-14 08:22:15 VPN_DISCONNECT user=lena.berg ip=10.20.2.193
+2026-10-14 08:29:13 VPN_DISCONNECT user=nina.lopez ip=10.20.8.161
+2026-10-14 08:30:35 VPN_LOGIN_SUCCESS user=bob.jones ip=10.20.7.105
+2026-10-14 08:42:17 VPN_LOGIN_SUCCESS user=dana.white ip=10.20.8.231
+2026-10-14 08:46:46 VPN_LOGIN_SUCCESS user=charlie.brown ip=10.20.10.241
+2026-10-14 08:48:35 VPN_DISCONNECT user=raj.patel ip=10.20.9.174
+2026-10-14 09:07:08 VPN_LOGIN_FAILED user=maria.chen ip=98.171.133.40 reason=bad_password
+2026-10-14 09:14:02 VPN_LOGIN_SUCCESS user=alice.smith ip=10.20.15.21
+2026-10-14 09:18:43 VPN_DISCONNECT user=ivan.petrov ip=10.20.10.165
+2026-10-14 09:20:39 VPN_DISCONNECT user=john.doe ip=10.20.4.71
+2026-10-14 09:24:34 VPN_DISCONNECT user=maria.chen ip=10.20.14.126
+2026-10-14 09:28:55 VPN_LOGIN_FAILED user=maria.chen ip=98.171.133.40 reason=bad_password
+2026-10-14 09:30:17 VPN_LOGIN_FAILED user=nina.lopez ip=98.12.167.19 reason=bad_password
+2026-10-14 09:32:37 VPN_LOGIN_SUCCESS user=ivan.petrov ip=10.20.10.165
+2026-10-14 09:42:33 VPN_DISCONNECT user=raj.patel ip=10.20.9.174
+2026-10-14 09:47:43 VPN_DISCONNECT user=alice.smith ip=10.20.4.220
+2026-10-14 09:48:31 VPN_LOGIN_FAILED user=fatima.ali ip=98.125.78.121 reason=bad_password
+2026-10-14 09:51:55 VPN_LOGIN_SUCCESS user=eli.ross ip=10.20.10.26
+2026-10-14 10:15:32 VPN_LOGIN_SUCCESS user=dana.white ip=10.20.8.231
+2026-10-14 10:22:19 VPN_LOGIN_SUCCESS user=nina.lopez ip=10.20.8.161
+2026-10-14 10:25:10 VPN_LOGIN_SUCCESS user=julia.costa ip=10.20.11.95
+2026-10-14 10:31:08 VPN_LOGIN_SUCCESS user=bob.jones ip=10.20.7.105
+2026-10-14 10:31:16 VPN_DISCONNECT user=lena.berg ip=10.20.2.193
+2026-10-14 10:33:56 VPN_LOGIN_SUCCESS user=alice.smith ip=10.20.4.220
+2026-10-14 10:36:51 VPN_LOGIN_SUCCESS user=eli.ross ip=10.20.10.26
+2026-10-14 10:55:20 VPN_DISCONNECT user=maria.chen ip=10.20.14.126
+2026-10-14 10:59:02 VPN_LOGIN_SUCCESS user=raj.patel ip=10.20.9.174
+2026-10-14 11:01:02 VPN_DISCONNECT user=julia.costa ip=10.20.11.95
+2026-10-14 11:14:51 VPN_LOGIN_FAILED user=julia.costa ip=98.232.231.82 reason=bad_password
+2026-10-14 11:20:04 VPN_LOGIN_FAILED user=bob.jones ip=98.203.167.136 reason=bad_password
+2026-10-14 11:21:36 VPN_DISCONNECT user=bob.jones ip=10.20.7.105
+2026-10-14 11:26:57 VPN_LOGIN_FAILED user=charlie.brown ip=98.250.64.71 reason=bad_password
+2026-10-14 11:34:03 VPN_DISCONNECT user=omar.haddad ip=10.20.4.126
+2026-10-14 11:59:52 VPN_LOGIN_FAILED user=charlie.brown ip=98.250.64.71 reason=bad_password
+2026-10-14 12:12:15 VPN_LOGIN_SUCCESS user=paula.reyes ip=10.20.13.74
+2026-10-14 12:14:20 VPN_LOGIN_FAILED user=nina.lopez ip=10.20.11.30 host=vpn-gw-01 reason=tls_handshake
+2026-10-14 12:28:01 VPN_DISCONNECT user=fatima.ali ip=10.20.14.166
+2026-10-14 12:41:20 VPN_LOGIN_FAILED user=nina.lopez ip=10.20.11.30 host=vpn-gw-01 reason=tls_handshake
+2026-10-14 12:47:24 VPN_LOGIN_SUCCESS user=nina.lopez ip=10.20.8.161
+2026-10-14 13:06:52 VPN_LOGIN_SUCCESS user=bob.jones ip=10.20.7.105
+2026-10-14 13:11:11 VPN_LOGIN_SUCCESS user=kofi.mensah ip=10.20.3.223
+2026-10-14 13:13:48 VPN_LOGIN_SUCCESS user=lena.berg ip=10.20.2.193
+2026-10-14 13:15:29 VPN_LOGIN_SUCCESS user=kofi.mensah ip=10.20.3.223
+2026-10-14 13:28:30 VPN_LOGIN_SUCCESS user=nina.lopez ip=10.20.8.161
+2026-10-14 13:41:30 VPN_LOGIN_SUCCESS user=john.doe ip=10.20.4.71
+2026-10-14 13:42:23 VPN_LOGIN_SUCCESS user=john.doe ip=10.20.4.71
+2026-10-14 13:49:53 VPN_LOGIN_SUCCESS user=ivan.petrov ip=10.20.10.165
+2026-10-14 13:52:12 VPN_LOGIN_FAILED user=kofi.mensah ip=98.101.207.68 reason=bad_password
+2026-10-14 13:54:16 VPN_LOGIN_SUCCESS user=lena.berg ip=10.20.2.193
+2026-10-14 14:11:50 VPN_LOGIN_SUCCESS user=george.kim ip=10.20.11.228
+2026-10-14 14:13:16 VPN_DISCONNECT user=raj.patel ip=10.20.9.174
+2026-10-14 14:15:49 VPN_DISCONNECT user=john.doe ip=10.20.4.71
+2026-10-14 14:16:51 VPN_LOGIN_FAILED user=lena.berg ip=98.102.206.163 reason=bad_password
+2026-10-14 14:20:29 VPN_LOGIN_SUCCESS user=charlie.brown ip=10.20.10.241
+2026-10-14 14:25:12 VPN_LOGIN_SUCCESS user=george.kim ip=10.20.11.228
+2026-10-14 14:34:48 VPN_LOGIN_SUCCESS user=george.kim ip=10.20.11.228
+2026-10-14 14:44:31 VPN_LOGIN_SUCCESS user=charlie.brown ip=10.20.10.241
+2026-10-14 14:50:15 VPN_LOGIN_FAILED user=alice.smith ip=98.37.158.181 reason=bad_password
+2026-10-14 14:53:29 VPN_DISCONNECT user=john.doe ip=10.20.4.71
+2026-10-14 15:02:00 VPN_LOGIN_SUCCESS user=paula.reyes ip=10.20.9.40
+2026-10-14 15:07:10 VPN_DISCONNECT user=alice.smith ip=10.20.4.220
+2026-10-14 15:09:31 VPN_LOGIN_SUCCESS user=charlie.brown ip=10.20.10.241
+2026-10-14 15:10:01 VPN_LOGIN_FAILED user=maria.chen ip=98.171.133.40 reason=bad_password
+2026-10-14 15:11:30 VPN_LOGIN_FAILED user=maria.chen ip=98.171.133.40 reason=bad_password
+2026-10-14 15:13:34 VPN_LOGIN_SUCCESS user=maria.chen ip=10.20.14.126
+2026-10-14 15:38:00 VPN_LOGIN_SUCCESS user=george.kim ip=10.20.11.228
+2026-10-14 16:04:45 VPN_LOGIN_SUCCESS user=charlie.brown ip=10.20.10.241
+2026-10-14 16:14:23 VPN_LOGIN_SUCCESS user=bob.jones ip=10.20.7.105
+2026-10-14 16:17:23 VPN_LOGIN_SUCCESS user=lena.berg ip=10.20.2.193
+2026-10-14 16:33:16 VPN_LOGIN_SUCCESS user=dana.white ip=10.20.8.231
+2026-10-14 16:48:23 VPN_DISCONNECT user=hana.sato ip=10.20.2.150
+2026-10-14 16:53:44 VPN_LOGIN_FAILED user=dana.white ip=98.198.66.76 reason=bad_password
+2026-10-14 17:01:02 VPN_LOGIN_SUCCESS user=ivan.petrov ip=10.20.10.165
+2026-10-14 17:03:44 VPN_LOGIN_SUCCESS user=julia.costa ip=10.20.11.95
+2026-10-14 17:04:02 VPN_LOGIN_FAILED user=ivan.petrov ip=98.40.68.59 reason=bad_password
+2026-10-14 17:09:31 VPN_LOGIN_SUCCESS user=ivan.petrov ip=10.20.10.165
+2026-10-14 17:12:03 VPN_LOGIN_FAILED user=kofi.mensah ip=198.51.100.77 reason=bad_password
+2026-10-14 17:13:03 VPN_LOGIN_FAILED user=lena.berg ip=198.51.100.77 reason=bad_password
+2026-10-14 17:15:03 VPN_LOGIN_FAILED user=kofi.mensah ip=198.51.100.77 reason=bad_password
+2026-10-14 17:35:01 VPN_DISCONNECT user=alice.smith ip=10.20.4.220
+2026-10-14 17:43:51 VPN_LOGIN_SUCCESS user=george.kim ip=10.20.11.228
+2026-10-14 18:09:37 VPN_LOGIN_SUCCESS user=omar.haddad ip=10.20.4.126
+2026-10-14 18:42:47 VPN_LOGIN_SUCCESS user=george.kim ip=10.20.11.228
+2026-10-14 18:49:14 VPN_LOGIN_SUCCESS user=paula.reyes ip=10.20.13.74
+2026-10-14 18:58:16 VPN_LOGIN_SUCCESS user=ivan.petrov ip=10.20.10.165
+2026-10-14 19:00:18 VPN_LOGIN_SUCCESS user=john.doe ip=10.20.4.71
+2026-10-14 19:03:53 VPN_LOGIN_FAILED user=dana.white ip=98.198.66.76 reason=bad_password
+2026-10-14 19:32:58 VPN_LOGIN_SUCCESS user=julia.costa ip=10.20.11.95
+2026-10-14 19:39:01 VPN_LOGIN_SUCCESS user=raj.patel ip=10.20.9.174
+2026-10-14 19:49:25 VPN_DISCONNECT user=raj.patel ip=10.20.9.174
+2026-10-14 19:58:00 VPN_LOGIN_FAILED user=hana.sato ip=203.0.113.45 reason=bad_password
+2026-10-14 20:10:00 VPN_LOGIN_FAILED user=george.kim ip=98.77.14.9 reason=bad_password
+2026-10-14 20:11:00 VPN_LOGIN_FAILED user=george.kim ip=98.77.14.9 reason=bad_password
+2026-10-14 20:12:00 VPN_LOGIN_FAILED user=george.kim ip=98.77.14.9 reason=bad_password
+2026-10-14 20:12:30 VPN_ACCOUNT_LOCKED user=george.kim ip=98.77.14.9 policy=VPN_LOCKOUT

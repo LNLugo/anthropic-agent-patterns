@@ -1,0 +1,161 @@
+2026-10-12 00:09:07 HEALTH_OK host=core-rtr-01
+2026-10-12 00:32:52 HEALTH_OK host=core-rtr-02
+2026-10-12 01:14:38 HEALTH_OK host=core-rtr-01
+2026-10-12 01:58:34 HEALTH_OK host=edge-rtr-01
+2026-10-12 01:59:40 HEALTH_OK host=core-rtr-02
+2026-10-12 03:41:54 HEALTH_OK host=core-rtr-01
+2026-10-12 04:25:30 HEALTH_OK host=core-rtr-01
+2026-10-12 05:16:04 BGP_NEIGHBOR_UP host=edge-rtr-01 neighbor=10.255.0.3
+2026-10-12 05:54:10 HEALTH_OK host=core-rtr-01
+2026-10-12 06:10:28 HEALTH_OK host=core-rtr-01
+2026-10-12 06:23:01 CONFIG_COMMIT host=edge-rtr-01 change=CHG-4255 by=net.admin1
+2026-10-12 06:40:05 HEALTH_OK host=edge-rtr-01
+2026-10-12 06:52:39 BGP_NEIGHBOR_UP host=edge-rtr-01 neighbor=10.255.0.1
+2026-10-12 07:08:13 HEALTH_OK host=edge-rtr-01
+2026-10-12 07:22:56 HEALTH_OK host=core-rtr-02
+2026-10-12 07:42:39 HEALTH_OK host=edge-rtr-01
+2026-10-12 09:03:37 HEALTH_OK host=core-rtr-01
+2026-10-12 09:38:14 HEALTH_OK host=core-rtr-02
+2026-10-12 09:46:21 HEALTH_OK host=core-rtr-01
+2026-10-12 10:18:41 HEALTH_OK host=edge-rtr-01
+2026-10-12 10:29:26 HEALTH_OK host=core-rtr-01
+2026-10-12 10:30:18 HEALTH_OK host=core-rtr-02
+2026-10-12 11:31:10 HEALTH_OK host=edge-rtr-01
+2026-10-12 11:46:14 BGP_NEIGHBOR_UP host=core-rtr-02 neighbor=10.255.0.2
+2026-10-12 12:19:43 HEALTH_OK host=edge-rtr-01
+2026-10-12 12:24:29 BGP_NEIGHBOR_UP host=core-rtr-01 neighbor=10.255.0.1
+2026-10-12 13:20:19 HEALTH_OK host=edge-rtr-01
+2026-10-12 13:28:28 BGP_NEIGHBOR_UP host=core-rtr-01 neighbor=10.255.0.8
+2026-10-12 13:54:07 CONFIG_COMMIT host=core-rtr-02 change=CHG-4189 by=net.admin1
+2026-10-12 15:19:18 HEALTH_OK host=core-rtr-01
+2026-10-12 16:44:23 HEALTH_OK host=core-rtr-01
+2026-10-12 17:34:44 CONFIG_COMMIT host=core-rtr-01 change=CHG-4299 by=net.admin1
+2026-10-12 17:36:08 HEALTH_OK host=core-rtr-02
+2026-10-12 18:06:55 BGP_NEIGHBOR_UP host=edge-rtr-01 neighbor=10.255.0.9
+2026-10-12 19:40:18 BGP_NEIGHBOR_UP host=core-rtr-02 neighbor=10.255.0.7
+2026-10-12 19:53:51 HEALTH_OK host=core-rtr-02
+2026-10-12 19:57:18 BGP_NEIGHBOR_UP host=core-rtr-01 neighbor=10.255.0.8
+2026-10-12 20:18:10 HEALTH_OK host=core-rtr-02
+2026-10-12 20:23:34 HEALTH_OK host=core-rtr-01
+2026-10-12 20:33:34 HEALTH_OK host=core-rtr-02
+2026-10-12 20:42:15 CONFIG_COMMIT host=edge-rtr-01 change=CHG-4157 by=net.admin2
+2026-10-12 20:55:57 HEALTH_OK host=edge-rtr-01
+2026-10-12 21:11:18 HEALTH_OK host=edge-rtr-01
+2026-10-12 21:30:33 HEALTH_OK host=edge-rtr-01
+2026-10-12 21:35:25 CONFIG_COMMIT host=core-rtr-01 change=CHG-4112 by=net.admin2
+2026-10-12 21:48:20 HEALTH_OK host=core-rtr-02
+2026-10-12 22:46:41 BGP_NEIGHBOR_UP host=edge-rtr-01 neighbor=10.255.0.7
+2026-10-13 00:03:35 HEALTH_OK host=core-rtr-01
+2026-10-13 00:43:07 HEALTH_OK host=edge-rtr-01
+2026-10-13 00:55:52 HEALTH_OK host=edge-rtr-01
+2026-10-13 01:35:40 BGP_NEIGHBOR_UP host=core-rtr-01 neighbor=10.255.0.6
+2026-10-13 02:30:47 HEALTH_OK host=core-rtr-01
+2026-10-13 03:40:10 HEALTH_OK host=edge-rtr-01
+2026-10-13 04:04:57 HEALTH_OK host=core-rtr-02
+2026-10-13 04:10:36 HEALTH_OK host=core-rtr-02
+2026-10-13 04:14:20 HEALTH_OK host=core-rtr-01
+2026-10-13 04:24:02 BGP_NEIGHBOR_UP host=core-rtr-02 neighbor=10.255.0.3
+2026-10-13 04:26:10 HEALTH_OK host=core-rtr-01
+2026-10-13 04:35:43 HEALTH_OK host=core-rtr-01
+2026-10-13 04:40:49 HEALTH_OK host=edge-rtr-01
+2026-10-13 05:12:20 HEALTH_OK host=core-rtr-01
+2026-10-13 05:48:57 HEALTH_OK host=edge-rtr-01
+2026-10-13 07:03:18 BGP_NEIGHBOR_UP host=core-rtr-02 neighbor=10.255.0.9
+2026-10-13 08:15:51 HEALTH_OK host=core-rtr-01
+2026-10-13 08:39:55 HEALTH_OK host=edge-rtr-01
+2026-10-13 08:46:02 BGP_NEIGHBOR_UP host=core-rtr-02 neighbor=10.255.0.8
+2026-10-13 08:55:21 HEALTH_OK host=edge-rtr-01
+2026-10-13 09:41:17 HEALTH_OK host=core-rtr-02
+2026-10-13 10:08:15 HEALTH_OK host=edge-rtr-01
+2026-10-13 10:52:31 HEALTH_OK host=core-rtr-01
+2026-10-13 10:57:59 CONFIG_COMMIT host=core-rtr-01 change=CHG-4160 by=net.admin1
+2026-10-13 11:03:27 CONFIG_COMMIT host=edge-rtr-01 change=CHG-4358 by=net.admin1
+2026-10-13 12:01:04 BGP_NEIGHBOR_UP host=core-rtr-01 neighbor=10.255.0.3
+2026-10-13 12:38:29 CONFIG_COMMIT host=edge-rtr-01 change=CHG-4315 by=net.admin2
+2026-10-13 12:54:57 BGP_NEIGHBOR_UP host=core-rtr-02 neighbor=10.255.0.6
+2026-10-13 13:03:44 HEALTH_OK host=core-rtr-01
+2026-10-13 13:12:24 HEALTH_OK host=edge-rtr-01
+2026-10-13 13:32:35 HEALTH_OK host=core-rtr-01
+2026-10-13 13:38:40 HEALTH_OK host=edge-rtr-01
+2026-10-13 14:32:21 HEALTH_OK host=core-rtr-01
+2026-10-13 14:52:55 HEALTH_OK host=core-rtr-02
+2026-10-13 14:55:37 HEALTH_OK host=core-rtr-01
+2026-10-13 15:39:37 BGP_NEIGHBOR_UP host=core-rtr-02 neighbor=10.255.0.1
+2026-10-13 15:46:59 HEALTH_OK host=core-rtr-02
+2026-10-13 15:53:54 HEALTH_OK host=core-rtr-02
+2026-10-13 16:26:53 BGP_NEIGHBOR_UP host=edge-rtr-01 neighbor=10.255.0.8
+2026-10-13 17:19:58 HEALTH_OK host=core-rtr-01
+2026-10-13 18:23:41 HEALTH_OK host=core-rtr-01
+2026-10-13 19:02:34 HEALTH_OK host=core-rtr-02
+2026-10-13 19:18:04 HEALTH_OK host=edge-rtr-01
+2026-10-13 19:56:42 HEALTH_OK host=core-rtr-01
+2026-10-13 20:05:39 CONFIG_COMMIT host=core-rtr-02 change=CHG-4042 by=net.admin1
+2026-10-13 21:32:58 HEALTH_OK host=core-rtr-02
+2026-10-13 21:55:53 HEALTH_OK host=core-rtr-02
+2026-10-13 22:27:08 HEALTH_OK host=core-rtr-01
+2026-10-14 00:17:46 HEALTH_OK host=core-rtr-02
+2026-10-14 00:31:15 BGP_NEIGHBOR_UP host=edge-rtr-01 neighbor=10.255.0.2
+2026-10-14 01:02:01 HEALTH_OK host=core-rtr-01
+2026-10-14 01:30:00 BACKUP_FAILED host=srv-db-02 reason=timeout
+2026-10-14 01:31:00 BACKUP_FAILED host=srv-db-02 reason=timeout
+2026-10-14 01:51:42 HEALTH_OK host=core-rtr-02
+2026-10-14 02:00:12 CONFIG_COMMIT host=core-rtr-02 change=CHG-4471 by=net.admin1
+2026-10-14 02:03:41 BGP_NEIGHBOR_DOWN host=core-rtr-02 neighbor=10.255.0.2 reason=hold_timer_expired
+2026-10-14 02:04:58 INTERFACE_FLAP host=core-rtr-02 interface=Ethernet1/3
+2026-10-14 02:09:17 BGP_NEIGHBOR_DOWN host=core-rtr-02 neighbor=10.255.0.2 reason=hold_timer_expired
+2026-10-14 02:09:30 INTERFACE_FLAP host=core-rtr-02 interface=Ethernet1/3
+2026-10-14 02:13:57 HEALTH_OK host=core-rtr-01
+2026-10-14 03:12:12 HEALTH_OK host=core-rtr-01
+2026-10-14 04:00:30 CONFIG_COMMIT host=edge-rtr-01 change=CHG-4502 by=net.admin2
+2026-10-14 04:02:02 BGP_NEIGHBOR_UP host=core-rtr-01 neighbor=10.255.0.4
+2026-10-14 04:02:10 BGP_NEIGHBOR_DOWN host=edge-rtr-01 neighbor=192.0.2.1 reason=prefix_limit_exceeded
+2026-10-14 04:06:45 BGP_NEIGHBOR_DOWN host=edge-rtr-01 neighbor=192.0.2.1 reason=prefix_limit_exceeded
+2026-10-14 05:22:12 HEALTH_OK host=edge-rtr-01
+2026-10-14 05:54:20 HEALTH_OK host=core-rtr-01
+2026-10-14 07:09:16 HEALTH_OK host=core-rtr-01
+2026-10-14 07:21:59 BGP_NEIGHBOR_UP host=core-rtr-01 neighbor=10.255.0.3
+2026-10-14 07:22:18 HEALTH_OK host=edge-rtr-01
+2026-10-14 07:25:36 HEALTH_OK host=core-rtr-01
+2026-10-14 08:02:10 HEALTH_OK host=core-rtr-01
+2026-10-14 08:12:29 HEALTH_OK host=core-rtr-01
+2026-10-14 08:46:28 HEALTH_OK host=core-rtr-02
+2026-10-14 08:50:55 HEALTH_OK host=core-rtr-02
+2026-10-14 08:55:15 HEALTH_OK host=core-rtr-02
+2026-10-14 10:12:00 DISK_FULL host=srv-web-02 partition=/var/log threshold=95%
+2026-10-14 10:47:00 DISK_FULL host=srv-web-02 partition=/var/log threshold=99%
+2026-10-14 11:04:44 CONFIG_COMMIT host=core-rtr-02 change=CHG-4337 by=net.admin2
+2026-10-14 11:30:30 CONFIG_COMMIT host=core-rtr-02 change=CHG-4104 by=net.admin1
+2026-10-14 11:55:11 HEALTH_OK host=core-rtr-01
+2026-10-14 11:58:00 CONFIG_COMMIT host=core-rtr-01 change=CHG-4510 by=net.admin1
+2026-10-14 12:00:00 CERT_EXPIRED host=vpn-gw-01 subject=vpn.bank.example
+2026-10-14 12:01:30 HOST_UNREACHABLE host=srv-files-01 probe=icmp
+2026-10-14 12:56:14 HEALTH_OK host=edge-rtr-01
+2026-10-14 13:09:58 BGP_NEIGHBOR_UP host=core-rtr-02 neighbor=10.255.0.4
+2026-10-14 13:52:24 HEALTH_OK host=edge-rtr-01
+2026-10-14 14:08:23 HEALTH_OK host=edge-rtr-01
+2026-10-14 14:59:03 HEALTH_OK host=core-rtr-02
+2026-10-14 15:00:00 CONFIG_COMMIT host=edge-fw-01 change=CHG-4521 by=net.admin2
+2026-10-14 15:10:00 SERVICE_DEGRADED host=srv-app-01 service=payments-api
+2026-10-14 15:25:00 SERVICE_DEGRADED host=srv-app-01 service=payments-api
+2026-10-14 15:25:20 CONFIG_COMMIT host=core-rtr-02 change=CHG-4326 by=net.admin1
+2026-10-14 15:41:17 HEALTH_OK host=edge-rtr-01
+2026-10-14 15:41:31 HEALTH_OK host=core-rtr-02
+2026-10-14 15:46:21 HEALTH_OK host=core-rtr-01
+2026-10-14 16:20:00 DISK_FULL host=srv-app-01 partition=/opt threshold=97%
+2026-10-14 16:55:00 DISK_FULL host=srv-app-01 partition=/opt threshold=97%
+2026-10-14 18:26:09 HEALTH_OK host=core-rtr-01
+2026-10-14 18:28:58 HEALTH_OK host=core-rtr-01
+2026-10-14 18:47:44 BGP_NEIGHBOR_UP host=core-rtr-01 neighbor=10.255.0.5
+2026-10-14 19:00:00 CONFIG_COMMIT host=core-rtr-01 change=CHG-4533 by=net.admin1
+2026-10-14 19:09:24 HEALTH_OK host=core-rtr-01
+2026-10-14 19:31:56 HEALTH_OK host=edge-rtr-01
+2026-10-14 19:40:25 HEALTH_OK host=core-rtr-01
+2026-10-14 19:46:35 HEALTH_OK host=core-rtr-01
+2026-10-14 22:01:10 HEALTH_OK host=edge-rtr-01
+2026-10-14 22:02:13 CONFIG_COMMIT host=edge-rtr-01 change=CHG-4227 by=net.admin1
+2026-10-14 22:17:12 HEALTH_OK host=core-rtr-02
+2026-10-14 22:29:26 CONFIG_COMMIT host=core-rtr-01 change=CHG-4305 by=net.admin1
+2026-10-14 22:44:25 HEALTH_OK host=core-rtr-01
+2026-10-14 22:58:09 HEALTH_OK host=edge-rtr-01
+2026-10-14 23:20:15 CONFIG_COMMIT host=edge-rtr-01 change=CHG-4058 by=net.admin1
+2026-10-14 23:44:29 HEALTH_OK host=core-rtr-01

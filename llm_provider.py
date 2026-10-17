@@ -326,3 +326,63 @@ def scripted(steps: Iterable[Any]) -> Iterator[ScriptedChatModel]:
         model.assert_complete()
     finally:
         model.discard_steps()
+
+
+# ---------------------------------------------------------------- embeddings
+
+def get_embeddings(provider: str | None = None, model: str | None = None):
+    """The embedding model, chosen the same way as the chat model (one run setting).
+
+        openai     OPENAI_EMBEDDING_MODEL, default text-embedding-3-small (needs OPENAI_API_KEY)
+        scripted   HashingEmbeddings: deterministic, offline, no key; for tests only
+
+    Both expose embed_documents(texts) and embed_query(text), LangChain's Embeddings interface."""
+    provider = (provider or os.environ.get("LLM_PROVIDER") or DEFAULT_PROVIDER).lower()
+    if provider == "openai":
+        from langchain_openai import OpenAIEmbeddings
+
+        return OpenAIEmbeddings(model=model or os.environ.get("OPENAI_EMBEDDING_MODEL", "text-embedding-3-small"))
+    if provider == "scripted":
+        return HashingEmbeddings()
+    raise ValueError(f"no embedding model for LLM_PROVIDER {provider!r}; choose openai or scripted")
+
+
+_STOPWORDS = frozenset(
+    "a an and are as at be but by did do does for from had has have how i in is it its of on or s that the "
+    "this to was were what when where which who why will with".split())
+
+
+class HashingEmbeddings:
+    """A deterministic stand-in for an embedding model: words (and compounds such as
+    bob.jones or 10.20.15.21, kept whole as well as split) hashed into signed buckets, then
+    normalised. Short numbers and common words are dropped, so timestamps don't make every
+    log line alike and prose pages don't match a question on "which" and "was". It matches shared words, nothing more,
+    so a result measured with it is a lexical baseline, never a claim about a real model."""
+
+    model = "hashing-4096"
+
+    def __init__(self, dimensions: int = 4096):
+        self.dimensions = dimensions
+
+    def _vector(self, text: str) -> list[float]:
+        import hashlib
+        import math
+
+        grams = []
+        for compound in re.findall(r"[a-z0-9]+(?:[._/-][a-z0-9]+)*", text.lower()):
+            parts = [w[:-1] if len(w) > 3 and w.endswith("s") else w        # logins -> login
+                     for w in re.split(r"[._/-]", compound)
+                     if not (w.isdigit() and len(w) <= 4) and w not in _STOPWORDS]
+            grams += parts + ([compound] if len(parts) > 1 or compound not in parts else [])
+        v = [0.0] * self.dimensions
+        for g in grams:
+            h = int.from_bytes(hashlib.blake2b(g.encode(), digest_size=8).digest(), "big")
+            v[h % self.dimensions] += 1.0 if (h >> 32) & 1 else -1.0
+        norm = math.sqrt(sum(x * x for x in v)) or 1.0
+        return [x / norm for x in v]
+
+    def embed_documents(self, texts: list[str]) -> list[list[float]]:
+        return [self._vector(t) for t in texts]
+
+    def embed_query(self, text: str) -> list[float]:
+        return self._vector(text)

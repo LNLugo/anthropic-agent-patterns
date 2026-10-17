@@ -1,0 +1,5 @@
+# Offline: the graph, the stand-in embeddings, the in-memory stores and the app tab.
+-r ../requirements.txt
+networkx>=3.2
+numpy>=1.26
+scipy>=1.11            # networkx computes PageRank with scipy

@@ -1,0 +1,1902 @@
+{
+  "measured": "2026-10-17",
+  "embedding_model": "hashing-4096",
+  "k": 10,
+  "store": "memory",
+  "index_seconds": 0.6,
+  "retrievers": {
+    "vector": {
+      "summary": {
+        "development": {
+          "all": {
+            "questions": 8,
+            "found": 12,
+            "expected": 43,
+            "recall": 0.279,
+            "precision": 0.15,
+            "forbidden": 0
+          },
+          "multi_hop": {
+            "questions": 5,
+            "found": 3,
+            "expected": 33,
+            "recall": 0.091,
+            "precision": 0.06,
+            "forbidden": 0
+          },
+          "single_hop": {
+            "questions": 3,
+            "found": 9,
+            "expected": 10,
+            "recall": 0.9,
+            "precision": 0.3,
+            "forbidden": 0
+          }
+        },
+        "held_out_1": {
+          "all": {
+            "questions": 7,
+            "found": 8,
+            "expected": 27,
+            "recall": 0.296,
+            "precision": 0.121,
+            "forbidden": 0
+          },
+          "multi_hop": {
+            "questions": 6,
+            "found": 7,
+            "expected": 26,
+            "recall": 0.269,
+            "precision": 0.123,
+            "forbidden": 0
+          },
+          "single_hop": {
+            "questions": 1,
+            "found": 1,
+            "expected": 1,
+            "recall": 1.0,
+            "precision": 0.111,
+            "forbidden": 0
+          }
+        },
+        "held_out_2": {
+          "all": {
+            "questions": 6,
+            "found": 8,
+            "expected": 18,
+            "recall": 0.444,
+            "precision": 0.14,
+            "forbidden": 0
+          },
+          "multi_hop": {
+            "questions": 4,
+            "found": 4,
+            "expected": 14,
+            "recall": 0.286,
+            "precision": 0.103,
+            "forbidden": 0
+          },
+          "single_hop": {
+            "questions": 2,
+            "found": 4,
+            "expected": 4,
+            "recall": 1.0,
+            "precision": 0.222,
+            "forbidden": 0
+          }
+        }
+      },
+      "questions": {
+        "q1": {
+          "found": 0,
+          "expected": 9,
+          "missed": [
+            "doc:POL-GEO_BLOCK_INBOUND",
+            "doc:RB-VPN-LOCKOUT",
+            "firewall:493",
+            "vpn:250",
+            "vpn:251",
+            "vpn:252",
+            "vpn:253",
+            "vpn:254",
+            "vpn:256"
+          ],
+          "forbidden": []
+        },
+        "q2": {
+          "found": 1,
+          "expected": 6,
+          "missed": [
+            "doc:POL-DB_SEGMENT_DENY",
+            "firewall:506",
+            "firewall:507",
+            "firewall:509",
+            "vpn:265"
+          ],
+          "forbidden": []
+        },
+        "q3": {
+          "found": 2,
+          "expected": 7,
+          "missed": [
+            "doc:CHG-4471",
+            "syslog:102",
+            "syslog:104",
+            "syslog:105",
+            "syslog:106"
+          ],
+          "forbidden": []
+        },
+        "q4": {
+          "found": 0,
+          "expected": 7,
+          "missed": [
+            "auth:82",
+            "auth:83",
+            "doc:POL-OUTBOUND_BLOCK",
+            "doc:SEC-IR-PLAYBOOK",
+            "firewall:449",
+            "firewall:452",
+            "firewall:456"
+          ],
+          "forbidden": []
+        },
+        "q5": {
+          "found": 0,
+          "expected": 4,
+          "missed": [
+            "doc:POL-OUTBOUND_BLOCK",
+            "firewall:449",
+            "firewall:452",
+            "firewall:456"
+          ],
+          "forbidden": []
+        },
+        "q6": {
+          "found": 2,
+          "expected": 3,
+          "missed": [
+            "doc:RB-DISK-FULL"
+          ],
+          "forbidden": []
+        },
+        "q7": {
+          "found": 3,
+          "expected": 3,
+          "missed": [],
+          "forbidden": []
+        },
+        "q8": {
+          "found": 4,
+          "expected": 4,
+          "missed": [],
+          "forbidden": []
+        },
+        "h1": {
+          "found": 2,
+          "expected": 5,
+          "missed": [
+            "doc:POL-FILESHARE_SEGMENT_DENY",
+            "firewall:433",
+            "firewall:434"
+          ],
+          "forbidden": []
+        },
+        "h2": {
+          "found": 1,
+          "expected": 4,
+          "missed": [
+            "doc:CHG-4502",
+            "syslog:109",
+            "syslog:111"
+          ],
+          "forbidden": []
+        },
+        "h3": {
+          "found": 2,
+          "expected": 5,
+          "missed": [
+            "vpn:334",
+            "vpn:335",
+            "vpn:336"
+          ],
+          "forbidden": []
+        },
+        "h4": {
+          "found": 1,
+          "expected": 5,
+          "missed": [
+            "doc:RB-DB-ACCESS-REQUEST",
+            "firewall:546",
+            "firewall:547",
+            "vpn:317"
+          ],
+          "forbidden": []
+        },
+        "h5": {
+          "found": 1,
+          "expected": 1,
+          "missed": [],
+          "forbidden": []
+        },
+        "h6": {
+          "found": 0,
+          "expected": 4,
+          "missed": [
+            "auth:114",
+            "doc:SEC-IR-PLAYBOOK",
+            "firewall:625",
+            "firewall:627"
+          ],
+          "forbidden": []
+        },
+        "h7": {
+          "found": 1,
+          "expected": 3,
+          "missed": [
+            "firewall:625",
+            "firewall:627"
+          ],
+          "forbidden": []
+        },
+        "k1": {
+          "found": 0,
+          "expected": 4,
+          "missed": [
+            "doc:RB-VPN-CERT",
+            "syslog:130",
+            "vpn:293",
+            "vpn:295"
+          ],
+          "forbidden": []
+        },
+        "k2": {
+          "found": 2,
+          "expected": 3,
+          "missed": [
+            "syslog:129"
+          ],
+          "forbidden": []
+        },
+        "k3": {
+          "found": 1,
+          "expected": 4,
+          "missed": [
+            "auth:81",
+            "doc:POL-GEO_BLOCK_INBOUND",
+            "firewall:453"
+          ],
+          "forbidden": []
+        },
+        "k4": {
+          "found": 1,
+          "expected": 3,
+          "missed": [
+            "doc:POL-GEO_BLOCK_INBOUND",
+            "firewall:453"
+          ],
+          "forbidden": []
+        },
+        "k5": {
+          "found": 2,
+          "expected": 2,
+          "missed": [],
+          "forbidden": []
+        },
+        "k6": {
+          "found": 2,
+          "expected": 2,
+          "missed": [],
+          "forbidden": []
+        }
+      }
+    },
+    "vector + rarity": {
+      "summary": {
+        "development": {
+          "all": {
+            "questions": 8,
+            "found": 21,
+            "expected": 43,
+            "recall": 0.488,
+            "precision": 0.263,
+            "forbidden": 0
+          },
+          "multi_hop": {
+            "questions": 5,
+            "found": 12,
+            "expected": 33,
+            "recall": 0.364,
+            "precision": 0.24,
+            "forbidden": 0
+          },
+          "single_hop": {
+            "questions": 3,
+            "found": 9,
+            "expected": 10,
+            "recall": 0.9,
+            "precision": 0.3,
+            "forbidden": 0
+          }
+        },
+        "held_out_1": {
+          "all": {
+            "questions": 7,
+            "found": 10,
+            "expected": 27,
+            "recall": 0.37,
+            "precision": 0.154,
+            "forbidden": 0
+          },
+          "multi_hop": {
+            "questions": 6,
+            "found": 9,
+            "expected": 26,
+            "recall": 0.346,
+            "precision": 0.161,
+            "forbidden": 0
+          },
+          "single_hop": {
+            "questions": 1,
+            "found": 1,
+            "expected": 1,
+            "recall": 1.0,
+            "precision": 0.111,
+            "forbidden": 0
+          }
+        },
+        "held_out_2": {
+          "all": {
+            "questions": 6,
+            "found": 9,
+            "expected": 18,
+            "recall": 0.5,
+            "precision": 0.158,
+            "forbidden": 0
+          },
+          "multi_hop": {
+            "questions": 4,
+            "found": 5,
+            "expected": 14,
+            "recall": 0.357,
+            "precision": 0.128,
+            "forbidden": 0
+          },
+          "single_hop": {
+            "questions": 2,
+            "found": 4,
+            "expected": 4,
+            "recall": 1.0,
+            "precision": 0.222,
+            "forbidden": 0
+          }
+        }
+      },
+      "questions": {
+        "q1": {
+          "found": 4,
+          "expected": 9,
+          "missed": [
+            "doc:POL-GEO_BLOCK_INBOUND",
+            "doc:RB-VPN-LOCKOUT",
+            "firewall:493",
+            "vpn:252",
+            "vpn:256"
+          ],
+          "forbidden": []
+        },
+        "q2": {
+          "found": 2,
+          "expected": 6,
+          "missed": [
+            "firewall:506",
+            "firewall:507",
+            "firewall:509",
+            "vpn:265"
+          ],
+          "forbidden": []
+        },
+        "q3": {
+          "found": 4,
+          "expected": 7,
+          "missed": [
+            "doc:CHG-4471",
+            "doc:RB-BGP-FLAP",
+            "syslog:102"
+          ],
+          "forbidden": []
+        },
+        "q4": {
+          "found": 2,
+          "expected": 7,
+          "missed": [
+            "doc:POL-OUTBOUND_BLOCK",
+            "doc:SEC-IR-PLAYBOOK",
+            "firewall:449",
+            "firewall:452",
+            "firewall:456"
+          ],
+          "forbidden": []
+        },
+        "q5": {
+          "found": 0,
+          "expected": 4,
+          "missed": [
+            "doc:POL-OUTBOUND_BLOCK",
+            "firewall:449",
+            "firewall:452",
+            "firewall:456"
+          ],
+          "forbidden": []
+        },
+        "q6": {
+          "found": 2,
+          "expected": 3,
+          "missed": [
+            "doc:RB-DISK-FULL"
+          ],
+          "forbidden": []
+        },
+        "q7": {
+          "found": 3,
+          "expected": 3,
+          "missed": [],
+          "forbidden": []
+        },
+        "q8": {
+          "found": 4,
+          "expected": 4,
+          "missed": [],
+          "forbidden": []
+        },
+        "h1": {
+          "found": 2,
+          "expected": 5,
+          "missed": [
+            "doc:POL-FILESHARE_SEGMENT_DENY",
+            "firewall:433",
+            "firewall:434"
+          ],
+          "forbidden": []
+        },
+        "h2": {
+          "found": 3,
+          "expected": 4,
+          "missed": [
+            "doc:CHG-4502"
+          ],
+          "forbidden": []
+        },
+        "h3": {
+          "found": 1,
+          "expected": 5,
+          "missed": [
+            "firewall:563",
+            "vpn:334",
+            "vpn:335",
+            "vpn:336"
+          ],
+          "forbidden": []
+        },
+        "h4": {
+          "found": 2,
+          "expected": 5,
+          "missed": [
+            "firewall:546",
+            "firewall:547",
+            "vpn:317"
+          ],
+          "forbidden": []
+        },
+        "h5": {
+          "found": 1,
+          "expected": 1,
+          "missed": [],
+          "forbidden": []
+        },
+        "h6": {
+          "found": 1,
+          "expected": 4,
+          "missed": [
+            "doc:SEC-IR-PLAYBOOK",
+            "firewall:625",
+            "firewall:627"
+          ],
+          "forbidden": []
+        },
+        "h7": {
+          "found": 0,
+          "expected": 3,
+          "missed": [
+            "doc:POL-OUTBOUND_BLOCK",
+            "firewall:625",
+            "firewall:627"
+          ],
+          "forbidden": []
+        },
+        "k1": {
+          "found": 2,
+          "expected": 4,
+          "missed": [
+            "doc:RB-VPN-CERT",
+            "syslog:130"
+          ],
+          "forbidden": []
+        },
+        "k2": {
+          "found": 2,
+          "expected": 3,
+          "missed": [
+            "syslog:129"
+          ],
+          "forbidden": []
+        },
+        "k3": {
+          "found": 1,
+          "expected": 4,
+          "missed": [
+            "doc:POL-GEO_BLOCK_INBOUND",
+            "firewall:453",
+            "vpn:228"
+          ],
+          "forbidden": []
+        },
+        "k4": {
+          "found": 0,
+          "expected": 3,
+          "missed": [
+            "doc:POL-GEO_BLOCK_INBOUND",
+            "firewall:453",
+            "vpn:228"
+          ],
+          "forbidden": []
+        },
+        "k5": {
+          "found": 2,
+          "expected": 2,
+          "missed": [],
+          "forbidden": []
+        },
+        "k6": {
+          "found": 2,
+          "expected": 2,
+          "missed": [],
+          "forbidden": []
+        }
+      }
+    },
+    "vector + rarity + entity match": {
+      "summary": {
+        "development": {
+          "all": {
+            "questions": 8,
+            "found": 24,
+            "expected": 43,
+            "recall": 0.558,
+            "precision": 0.304,
+            "forbidden": 0
+          },
+          "multi_hop": {
+            "questions": 5,
+            "found": 14,
+            "expected": 33,
+            "recall": 0.424,
+            "precision": 0.286,
+            "forbidden": 0
+          },
+          "single_hop": {
+            "questions": 3,
+            "found": 10,
+            "expected": 10,
+            "recall": 1.0,
+            "precision": 0.333,
+            "forbidden": 0
+          }
+        },
+        "held_out_1": {
+          "all": {
+            "questions": 7,
+            "found": 10,
+            "expected": 27,
+            "recall": 0.37,
+            "precision": 0.154,
+            "forbidden": 0
+          },
+          "multi_hop": {
+            "questions": 6,
+            "found": 9,
+            "expected": 26,
+            "recall": 0.346,
+            "precision": 0.161,
+            "forbidden": 0
+          },
+          "single_hop": {
+            "questions": 1,
+            "found": 1,
+            "expected": 1,
+            "recall": 1.0,
+            "precision": 0.111,
+            "forbidden": 0
+          }
+        },
+        "held_out_2": {
+          "all": {
+            "questions": 6,
+            "found": 9,
+            "expected": 18,
+            "recall": 0.5,
+            "precision": 0.158,
+            "forbidden": 0
+          },
+          "multi_hop": {
+            "questions": 4,
+            "found": 5,
+            "expected": 14,
+            "recall": 0.357,
+            "precision": 0.128,
+            "forbidden": 0
+          },
+          "single_hop": {
+            "questions": 2,
+            "found": 4,
+            "expected": 4,
+            "recall": 1.0,
+            "precision": 0.222,
+            "forbidden": 0
+          }
+        }
+      },
+      "questions": {
+        "q1": {
+          "found": 4,
+          "expected": 9,
+          "missed": [
+            "doc:POL-GEO_BLOCK_INBOUND",
+            "doc:RB-VPN-LOCKOUT",
+            "firewall:493",
+            "vpn:252",
+            "vpn:256"
+          ],
+          "forbidden": []
+        },
+        "q2": {
+          "found": 2,
+          "expected": 6,
+          "missed": [
+            "firewall:506",
+            "firewall:507",
+            "firewall:509",
+            "vpn:265"
+          ],
+          "forbidden": []
+        },
+        "q3": {
+          "found": 5,
+          "expected": 7,
+          "missed": [
+            "doc:CHG-4471",
+            "doc:RB-BGP-FLAP"
+          ],
+          "forbidden": []
+        },
+        "q4": {
+          "found": 3,
+          "expected": 7,
+          "missed": [
+            "doc:POL-OUTBOUND_BLOCK",
+            "firewall:449",
+            "firewall:452",
+            "firewall:456"
+          ],
+          "forbidden": []
+        },
+        "q5": {
+          "found": 0,
+          "expected": 4,
+          "missed": [
+            "doc:POL-OUTBOUND_BLOCK",
+            "firewall:449",
+            "firewall:452",
+            "firewall:456"
+          ],
+          "forbidden": []
+        },
+        "q6": {
+          "found": 3,
+          "expected": 3,
+          "missed": [],
+          "forbidden": []
+        },
+        "q7": {
+          "found": 3,
+          "expected": 3,
+          "missed": [],
+          "forbidden": []
+        },
+        "q8": {
+          "found": 4,
+          "expected": 4,
+          "missed": [],
+          "forbidden": []
+        },
+        "h1": {
+          "found": 2,
+          "expected": 5,
+          "missed": [
+            "doc:POL-FILESHARE_SEGMENT_DENY",
+            "firewall:433",
+            "firewall:434"
+          ],
+          "forbidden": []
+        },
+        "h2": {
+          "found": 3,
+          "expected": 4,
+          "missed": [
+            "doc:CHG-4502"
+          ],
+          "forbidden": []
+        },
+        "h3": {
+          "found": 1,
+          "expected": 5,
+          "missed": [
+            "firewall:563",
+            "vpn:334",
+            "vpn:335",
+            "vpn:336"
+          ],
+          "forbidden": []
+        },
+        "h4": {
+          "found": 2,
+          "expected": 5,
+          "missed": [
+            "firewall:546",
+            "firewall:547",
+            "vpn:317"
+          ],
+          "forbidden": []
+        },
+        "h5": {
+          "found": 1,
+          "expected": 1,
+          "missed": [],
+          "forbidden": []
+        },
+        "h6": {
+          "found": 1,
+          "expected": 4,
+          "missed": [
+            "doc:SEC-IR-PLAYBOOK",
+            "firewall:625",
+            "firewall:627"
+          ],
+          "forbidden": []
+        },
+        "h7": {
+          "found": 0,
+          "expected": 3,
+          "missed": [
+            "doc:POL-OUTBOUND_BLOCK",
+            "firewall:625",
+            "firewall:627"
+          ],
+          "forbidden": []
+        },
+        "k1": {
+          "found": 2,
+          "expected": 4,
+          "missed": [
+            "doc:RB-VPN-CERT",
+            "syslog:130"
+          ],
+          "forbidden": []
+        },
+        "k2": {
+          "found": 2,
+          "expected": 3,
+          "missed": [
+            "syslog:129"
+          ],
+          "forbidden": []
+        },
+        "k3": {
+          "found": 1,
+          "expected": 4,
+          "missed": [
+            "doc:POL-GEO_BLOCK_INBOUND",
+            "firewall:453",
+            "vpn:228"
+          ],
+          "forbidden": []
+        },
+        "k4": {
+          "found": 0,
+          "expected": 3,
+          "missed": [
+            "doc:POL-GEO_BLOCK_INBOUND",
+            "firewall:453",
+            "vpn:228"
+          ],
+          "forbidden": []
+        },
+        "k5": {
+          "found": 2,
+          "expected": 2,
+          "missed": [],
+          "forbidden": []
+        },
+        "k6": {
+          "found": 2,
+          "expected": 2,
+          "missed": [],
+          "forbidden": []
+        }
+      }
+    },
+    "graph (default)": {
+      "summary": {
+        "development": {
+          "all": {
+            "questions": 8,
+            "found": 28,
+            "expected": 43,
+            "recall": 0.651,
+            "precision": 0.35,
+            "forbidden": 0
+          },
+          "multi_hop": {
+            "questions": 5,
+            "found": 18,
+            "expected": 33,
+            "recall": 0.545,
+            "precision": 0.36,
+            "forbidden": 0
+          },
+          "single_hop": {
+            "questions": 3,
+            "found": 10,
+            "expected": 10,
+            "recall": 1.0,
+            "precision": 0.333,
+            "forbidden": 0
+          }
+        },
+        "held_out_1": {
+          "all": {
+            "questions": 7,
+            "found": 16,
+            "expected": 27,
+            "recall": 0.593,
+            "precision": 0.229,
+            "forbidden": 0
+          },
+          "multi_hop": {
+            "questions": 6,
+            "found": 15,
+            "expected": 26,
+            "recall": 0.577,
+            "precision": 0.25,
+            "forbidden": 0
+          },
+          "single_hop": {
+            "questions": 1,
+            "found": 1,
+            "expected": 1,
+            "recall": 1.0,
+            "precision": 0.1,
+            "forbidden": 0
+          }
+        },
+        "held_out_2": {
+          "all": {
+            "questions": 6,
+            "found": 7,
+            "expected": 18,
+            "recall": 0.389,
+            "precision": 0.117,
+            "forbidden": 0
+          },
+          "multi_hop": {
+            "questions": 4,
+            "found": 3,
+            "expected": 14,
+            "recall": 0.214,
+            "precision": 0.075,
+            "forbidden": 0
+          },
+          "single_hop": {
+            "questions": 2,
+            "found": 4,
+            "expected": 4,
+            "recall": 1.0,
+            "precision": 0.2,
+            "forbidden": 0
+          }
+        }
+      },
+      "questions": {
+        "q1": {
+          "found": 5,
+          "expected": 9,
+          "missed": [
+            "doc:POL-GEO_BLOCK_INBOUND",
+            "firewall:493",
+            "vpn:252",
+            "vpn:256"
+          ],
+          "forbidden": []
+        },
+        "q2": {
+          "found": 5,
+          "expected": 6,
+          "missed": [
+            "vpn:265"
+          ],
+          "forbidden": []
+        },
+        "q3": {
+          "found": 5,
+          "expected": 7,
+          "missed": [
+            "doc:CHG-4471",
+            "doc:RB-BGP-FLAP"
+          ],
+          "forbidden": []
+        },
+        "q4": {
+          "found": 3,
+          "expected": 7,
+          "missed": [
+            "doc:POL-OUTBOUND_BLOCK",
+            "firewall:449",
+            "firewall:452",
+            "firewall:456"
+          ],
+          "forbidden": []
+        },
+        "q5": {
+          "found": 0,
+          "expected": 4,
+          "missed": [
+            "doc:POL-OUTBOUND_BLOCK",
+            "firewall:449",
+            "firewall:452",
+            "firewall:456"
+          ],
+          "forbidden": []
+        },
+        "q6": {
+          "found": 3,
+          "expected": 3,
+          "missed": [],
+          "forbidden": []
+        },
+        "q7": {
+          "found": 3,
+          "expected": 3,
+          "missed": [],
+          "forbidden": []
+        },
+        "q8": {
+          "found": 4,
+          "expected": 4,
+          "missed": [],
+          "forbidden": []
+        },
+        "h1": {
+          "found": 2,
+          "expected": 5,
+          "missed": [
+            "doc:POL-FILESHARE_SEGMENT_DENY",
+            "firewall:433",
+            "firewall:434"
+          ],
+          "forbidden": []
+        },
+        "h2": {
+          "found": 3,
+          "expected": 4,
+          "missed": [
+            "doc:CHG-4502"
+          ],
+          "forbidden": []
+        },
+        "h3": {
+          "found": 5,
+          "expected": 5,
+          "missed": [],
+          "forbidden": []
+        },
+        "h4": {
+          "found": 4,
+          "expected": 5,
+          "missed": [
+            "vpn:317"
+          ],
+          "forbidden": []
+        },
+        "h5": {
+          "found": 1,
+          "expected": 1,
+          "missed": [],
+          "forbidden": []
+        },
+        "h6": {
+          "found": 1,
+          "expected": 4,
+          "missed": [
+            "doc:SEC-IR-PLAYBOOK",
+            "firewall:625",
+            "firewall:627"
+          ],
+          "forbidden": []
+        },
+        "h7": {
+          "found": 0,
+          "expected": 3,
+          "missed": [
+            "doc:POL-OUTBOUND_BLOCK",
+            "firewall:625",
+            "firewall:627"
+          ],
+          "forbidden": []
+        },
+        "k1": {
+          "found": 0,
+          "expected": 4,
+          "missed": [
+            "doc:RB-VPN-CERT",
+            "syslog:130",
+            "vpn:293",
+            "vpn:295"
+          ],
+          "forbidden": []
+        },
+        "k2": {
+          "found": 3,
+          "expected": 3,
+          "missed": [],
+          "forbidden": []
+        },
+        "k3": {
+          "found": 0,
+          "expected": 4,
+          "missed": [
+            "auth:81",
+            "doc:POL-GEO_BLOCK_INBOUND",
+            "firewall:453",
+            "vpn:228"
+          ],
+          "forbidden": []
+        },
+        "k4": {
+          "found": 0,
+          "expected": 3,
+          "missed": [
+            "doc:POL-GEO_BLOCK_INBOUND",
+            "firewall:453",
+            "vpn:228"
+          ],
+          "forbidden": []
+        },
+        "k5": {
+          "found": 2,
+          "expected": 2,
+          "missed": [],
+          "forbidden": []
+        },
+        "k6": {
+          "found": 2,
+          "expected": 2,
+          "missed": [],
+          "forbidden": []
+        }
+      }
+    },
+    "graph, no rarity": {
+      "summary": {
+        "development": {
+          "all": {
+            "questions": 8,
+            "found": 13,
+            "expected": 43,
+            "recall": 0.302,
+            "precision": 0.163,
+            "forbidden": 0
+          },
+          "multi_hop": {
+            "questions": 5,
+            "found": 3,
+            "expected": 33,
+            "recall": 0.091,
+            "precision": 0.06,
+            "forbidden": 0
+          },
+          "single_hop": {
+            "questions": 3,
+            "found": 10,
+            "expected": 10,
+            "recall": 1.0,
+            "precision": 0.333,
+            "forbidden": 0
+          }
+        },
+        "held_out_1": {
+          "all": {
+            "questions": 7,
+            "found": 10,
+            "expected": 27,
+            "recall": 0.37,
+            "precision": 0.143,
+            "forbidden": 0
+          },
+          "multi_hop": {
+            "questions": 6,
+            "found": 9,
+            "expected": 26,
+            "recall": 0.346,
+            "precision": 0.15,
+            "forbidden": 0
+          },
+          "single_hop": {
+            "questions": 1,
+            "found": 1,
+            "expected": 1,
+            "recall": 1.0,
+            "precision": 0.1,
+            "forbidden": 0
+          }
+        },
+        "held_out_2": {
+          "all": {
+            "questions": 6,
+            "found": 9,
+            "expected": 18,
+            "recall": 0.5,
+            "precision": 0.15,
+            "forbidden": 0
+          },
+          "multi_hop": {
+            "questions": 4,
+            "found": 5,
+            "expected": 14,
+            "recall": 0.357,
+            "precision": 0.125,
+            "forbidden": 0
+          },
+          "single_hop": {
+            "questions": 2,
+            "found": 4,
+            "expected": 4,
+            "recall": 1.0,
+            "precision": 0.2,
+            "forbidden": 0
+          }
+        }
+      },
+      "questions": {
+        "q1": {
+          "found": 0,
+          "expected": 9,
+          "missed": [
+            "doc:POL-GEO_BLOCK_INBOUND",
+            "doc:RB-VPN-LOCKOUT",
+            "firewall:493",
+            "vpn:250",
+            "vpn:251",
+            "vpn:252",
+            "vpn:253",
+            "vpn:254",
+            "vpn:256"
+          ],
+          "forbidden": []
+        },
+        "q2": {
+          "found": 1,
+          "expected": 6,
+          "missed": [
+            "doc:POL-DB_SEGMENT_DENY",
+            "firewall:506",
+            "firewall:507",
+            "firewall:509",
+            "vpn:265"
+          ],
+          "forbidden": []
+        },
+        "q3": {
+          "found": 2,
+          "expected": 7,
+          "missed": [
+            "doc:CHG-4471",
+            "doc:RB-BGP-FLAP",
+            "syslog:102",
+            "syslog:104",
+            "syslog:106"
+          ],
+          "forbidden": []
+        },
+        "q4": {
+          "found": 0,
+          "expected": 7,
+          "missed": [
+            "auth:82",
+            "auth:83",
+            "doc:POL-OUTBOUND_BLOCK",
+            "doc:SEC-IR-PLAYBOOK",
+            "firewall:449",
+            "firewall:452",
+            "firewall:456"
+          ],
+          "forbidden": []
+        },
+        "q5": {
+          "found": 0,
+          "expected": 4,
+          "missed": [
+            "doc:POL-OUTBOUND_BLOCK",
+            "firewall:449",
+            "firewall:452",
+            "firewall:456"
+          ],
+          "forbidden": []
+        },
+        "q6": {
+          "found": 3,
+          "expected": 3,
+          "missed": [],
+          "forbidden": []
+        },
+        "q7": {
+          "found": 3,
+          "expected": 3,
+          "missed": [],
+          "forbidden": []
+        },
+        "q8": {
+          "found": 4,
+          "expected": 4,
+          "missed": [],
+          "forbidden": []
+        },
+        "h1": {
+          "found": 2,
+          "expected": 5,
+          "missed": [
+            "doc:POL-FILESHARE_SEGMENT_DENY",
+            "firewall:433",
+            "firewall:434"
+          ],
+          "forbidden": []
+        },
+        "h2": {
+          "found": 0,
+          "expected": 4,
+          "missed": [
+            "doc:CHG-4502",
+            "syslog:109",
+            "syslog:111",
+            "syslog:112"
+          ],
+          "forbidden": []
+        },
+        "h3": {
+          "found": 5,
+          "expected": 5,
+          "missed": [],
+          "forbidden": []
+        },
+        "h4": {
+          "found": 1,
+          "expected": 5,
+          "missed": [
+            "doc:RB-DB-ACCESS-REQUEST",
+            "firewall:546",
+            "firewall:547",
+            "vpn:317"
+          ],
+          "forbidden": []
+        },
+        "h5": {
+          "found": 1,
+          "expected": 1,
+          "missed": [],
+          "forbidden": []
+        },
+        "h6": {
+          "found": 1,
+          "expected": 4,
+          "missed": [
+            "doc:SEC-IR-PLAYBOOK",
+            "firewall:625",
+            "firewall:627"
+          ],
+          "forbidden": []
+        },
+        "h7": {
+          "found": 0,
+          "expected": 3,
+          "missed": [
+            "doc:POL-OUTBOUND_BLOCK",
+            "firewall:625",
+            "firewall:627"
+          ],
+          "forbidden": []
+        },
+        "k1": {
+          "found": 0,
+          "expected": 4,
+          "missed": [
+            "doc:RB-VPN-CERT",
+            "syslog:130",
+            "vpn:293",
+            "vpn:295"
+          ],
+          "forbidden": []
+        },
+        "k2": {
+          "found": 3,
+          "expected": 3,
+          "missed": [],
+          "forbidden": []
+        },
+        "k3": {
+          "found": 1,
+          "expected": 4,
+          "missed": [
+            "auth:81",
+            "doc:POL-GEO_BLOCK_INBOUND",
+            "firewall:453"
+          ],
+          "forbidden": []
+        },
+        "k4": {
+          "found": 1,
+          "expected": 3,
+          "missed": [
+            "doc:POL-GEO_BLOCK_INBOUND",
+            "firewall:453"
+          ],
+          "forbidden": []
+        },
+        "k5": {
+          "found": 2,
+          "expected": 2,
+          "missed": [],
+          "forbidden": []
+        },
+        "k6": {
+          "found": 2,
+          "expected": 2,
+          "missed": [],
+          "forbidden": []
+        }
+      }
+    },
+    "graph + idf": {
+      "summary": {
+        "development": {
+          "all": {
+            "questions": 8,
+            "found": 27,
+            "expected": 43,
+            "recall": 0.628,
+            "precision": 0.338,
+            "forbidden": 0
+          },
+          "multi_hop": {
+            "questions": 5,
+            "found": 17,
+            "expected": 33,
+            "recall": 0.515,
+            "precision": 0.34,
+            "forbidden": 0
+          },
+          "single_hop": {
+            "questions": 3,
+            "found": 10,
+            "expected": 10,
+            "recall": 1.0,
+            "precision": 0.333,
+            "forbidden": 0
+          }
+        },
+        "held_out_1": {
+          "all": {
+            "questions": 7,
+            "found": 16,
+            "expected": 27,
+            "recall": 0.593,
+            "precision": 0.229,
+            "forbidden": 0
+          },
+          "multi_hop": {
+            "questions": 6,
+            "found": 15,
+            "expected": 26,
+            "recall": 0.577,
+            "precision": 0.25,
+            "forbidden": 0
+          },
+          "single_hop": {
+            "questions": 1,
+            "found": 1,
+            "expected": 1,
+            "recall": 1.0,
+            "precision": 0.1,
+            "forbidden": 0
+          }
+        },
+        "held_out_2": {
+          "all": {
+            "questions": 6,
+            "found": 7,
+            "expected": 18,
+            "recall": 0.389,
+            "precision": 0.117,
+            "forbidden": 0
+          },
+          "multi_hop": {
+            "questions": 4,
+            "found": 3,
+            "expected": 14,
+            "recall": 0.214,
+            "precision": 0.075,
+            "forbidden": 0
+          },
+          "single_hop": {
+            "questions": 2,
+            "found": 4,
+            "expected": 4,
+            "recall": 1.0,
+            "precision": 0.2,
+            "forbidden": 0
+          }
+        }
+      },
+      "questions": {
+        "q1": {
+          "found": 5,
+          "expected": 9,
+          "missed": [
+            "doc:POL-GEO_BLOCK_INBOUND",
+            "firewall:493",
+            "vpn:252",
+            "vpn:256"
+          ],
+          "forbidden": []
+        },
+        "q2": {
+          "found": 4,
+          "expected": 6,
+          "missed": [
+            "firewall:509",
+            "vpn:265"
+          ],
+          "forbidden": []
+        },
+        "q3": {
+          "found": 5,
+          "expected": 7,
+          "missed": [
+            "doc:CHG-4471",
+            "doc:RB-BGP-FLAP"
+          ],
+          "forbidden": []
+        },
+        "q4": {
+          "found": 3,
+          "expected": 7,
+          "missed": [
+            "doc:POL-OUTBOUND_BLOCK",
+            "firewall:449",
+            "firewall:452",
+            "firewall:456"
+          ],
+          "forbidden": []
+        },
+        "q5": {
+          "found": 0,
+          "expected": 4,
+          "missed": [
+            "doc:POL-OUTBOUND_BLOCK",
+            "firewall:449",
+            "firewall:452",
+            "firewall:456"
+          ],
+          "forbidden": []
+        },
+        "q6": {
+          "found": 3,
+          "expected": 3,
+          "missed": [],
+          "forbidden": []
+        },
+        "q7": {
+          "found": 3,
+          "expected": 3,
+          "missed": [],
+          "forbidden": []
+        },
+        "q8": {
+          "found": 4,
+          "expected": 4,
+          "missed": [],
+          "forbidden": []
+        },
+        "h1": {
+          "found": 2,
+          "expected": 5,
+          "missed": [
+            "doc:POL-FILESHARE_SEGMENT_DENY",
+            "firewall:433",
+            "firewall:434"
+          ],
+          "forbidden": []
+        },
+        "h2": {
+          "found": 3,
+          "expected": 4,
+          "missed": [
+            "doc:CHG-4502"
+          ],
+          "forbidden": []
+        },
+        "h3": {
+          "found": 5,
+          "expected": 5,
+          "missed": [],
+          "forbidden": []
+        },
+        "h4": {
+          "found": 4,
+          "expected": 5,
+          "missed": [
+            "vpn:317"
+          ],
+          "forbidden": []
+        },
+        "h5": {
+          "found": 1,
+          "expected": 1,
+          "missed": [],
+          "forbidden": []
+        },
+        "h6": {
+          "found": 1,
+          "expected": 4,
+          "missed": [
+            "doc:SEC-IR-PLAYBOOK",
+            "firewall:625",
+            "firewall:627"
+          ],
+          "forbidden": []
+        },
+        "h7": {
+          "found": 0,
+          "expected": 3,
+          "missed": [
+            "doc:POL-OUTBOUND_BLOCK",
+            "firewall:625",
+            "firewall:627"
+          ],
+          "forbidden": []
+        },
+        "k1": {
+          "found": 0,
+          "expected": 4,
+          "missed": [
+            "doc:RB-VPN-CERT",
+            "syslog:130",
+            "vpn:293",
+            "vpn:295"
+          ],
+          "forbidden": []
+        },
+        "k2": {
+          "found": 3,
+          "expected": 3,
+          "missed": [],
+          "forbidden": []
+        },
+        "k3": {
+          "found": 0,
+          "expected": 4,
+          "missed": [
+            "auth:81",
+            "doc:POL-GEO_BLOCK_INBOUND",
+            "firewall:453",
+            "vpn:228"
+          ],
+          "forbidden": []
+        },
+        "k4": {
+          "found": 0,
+          "expected": 3,
+          "missed": [
+            "doc:POL-GEO_BLOCK_INBOUND",
+            "firewall:453",
+            "vpn:228"
+          ],
+          "forbidden": []
+        },
+        "k5": {
+          "found": 2,
+          "expected": 2,
+          "missed": [],
+          "forbidden": []
+        },
+        "k6": {
+          "found": 2,
+          "expected": 2,
+          "missed": [],
+          "forbidden": []
+        }
+      }
+    },
+    "graph, no entity links": {
+      "summary": {
+        "development": {
+          "all": {
+            "questions": 8,
+            "found": 31,
+            "expected": 43,
+            "recall": 0.721,
+            "precision": 0.388,
+            "forbidden": 0
+          },
+          "multi_hop": {
+            "questions": 5,
+            "found": 21,
+            "expected": 33,
+            "recall": 0.636,
+            "precision": 0.42,
+            "forbidden": 0
+          },
+          "single_hop": {
+            "questions": 3,
+            "found": 10,
+            "expected": 10,
+            "recall": 1.0,
+            "precision": 0.333,
+            "forbidden": 0
+          }
+        },
+        "held_out_1": {
+          "all": {
+            "questions": 7,
+            "found": 11,
+            "expected": 27,
+            "recall": 0.407,
+            "precision": 0.157,
+            "forbidden": 0
+          },
+          "multi_hop": {
+            "questions": 6,
+            "found": 10,
+            "expected": 26,
+            "recall": 0.385,
+            "precision": 0.167,
+            "forbidden": 0
+          },
+          "single_hop": {
+            "questions": 1,
+            "found": 1,
+            "expected": 1,
+            "recall": 1.0,
+            "precision": 0.1,
+            "forbidden": 0
+          }
+        },
+        "held_out_2": {
+          "all": {
+            "questions": 6,
+            "found": 7,
+            "expected": 18,
+            "recall": 0.389,
+            "precision": 0.117,
+            "forbidden": 0
+          },
+          "multi_hop": {
+            "questions": 4,
+            "found": 3,
+            "expected": 14,
+            "recall": 0.214,
+            "precision": 0.075,
+            "forbidden": 0
+          },
+          "single_hop": {
+            "questions": 2,
+            "found": 4,
+            "expected": 4,
+            "recall": 1.0,
+            "precision": 0.2,
+            "forbidden": 0
+          }
+        }
+      },
+      "questions": {
+        "q1": {
+          "found": 8,
+          "expected": 9,
+          "missed": [
+            "doc:POL-GEO_BLOCK_INBOUND"
+          ],
+          "forbidden": []
+        },
+        "q2": {
+          "found": 5,
+          "expected": 6,
+          "missed": [
+            "vpn:265"
+          ],
+          "forbidden": []
+        },
+        "q3": {
+          "found": 5,
+          "expected": 7,
+          "missed": [
+            "doc:CHG-4471",
+            "doc:RB-BGP-FLAP"
+          ],
+          "forbidden": []
+        },
+        "q4": {
+          "found": 3,
+          "expected": 7,
+          "missed": [
+            "doc:POL-OUTBOUND_BLOCK",
+            "firewall:449",
+            "firewall:452",
+            "firewall:456"
+          ],
+          "forbidden": []
+        },
+        "q5": {
+          "found": 0,
+          "expected": 4,
+          "missed": [
+            "doc:POL-OUTBOUND_BLOCK",
+            "firewall:449",
+            "firewall:452",
+            "firewall:456"
+          ],
+          "forbidden": []
+        },
+        "q6": {
+          "found": 3,
+          "expected": 3,
+          "missed": [],
+          "forbidden": []
+        },
+        "q7": {
+          "found": 3,
+          "expected": 3,
+          "missed": [],
+          "forbidden": []
+        },
+        "q8": {
+          "found": 4,
+          "expected": 4,
+          "missed": [],
+          "forbidden": []
+        },
+        "h1": {
+          "found": 2,
+          "expected": 5,
+          "missed": [
+            "doc:POL-FILESHARE_SEGMENT_DENY",
+            "firewall:433",
+            "firewall:434"
+          ],
+          "forbidden": []
+        },
+        "h2": {
+          "found": 3,
+          "expected": 4,
+          "missed": [
+            "doc:CHG-4502"
+          ],
+          "forbidden": []
+        },
+        "h3": {
+          "found": 1,
+          "expected": 5,
+          "missed": [
+            "firewall:563",
+            "vpn:334",
+            "vpn:335",
+            "vpn:336"
+          ],
+          "forbidden": []
+        },
+        "h4": {
+          "found": 3,
+          "expected": 5,
+          "missed": [
+            "firewall:547",
+            "vpn:317"
+          ],
+          "forbidden": []
+        },
+        "h5": {
+          "found": 1,
+          "expected": 1,
+          "missed": [],
+          "forbidden": []
+        },
+        "h6": {
+          "found": 1,
+          "expected": 4,
+          "missed": [
+            "doc:SEC-IR-PLAYBOOK",
+            "firewall:625",
+            "firewall:627"
+          ],
+          "forbidden": []
+        },
+        "h7": {
+          "found": 0,
+          "expected": 3,
+          "missed": [
+            "doc:POL-OUTBOUND_BLOCK",
+            "firewall:625",
+            "firewall:627"
+          ],
+          "forbidden": []
+        },
+        "k1": {
+          "found": 0,
+          "expected": 4,
+          "missed": [
+            "doc:RB-VPN-CERT",
+            "syslog:130",
+            "vpn:293",
+            "vpn:295"
+          ],
+          "forbidden": []
+        },
+        "k2": {
+          "found": 3,
+          "expected": 3,
+          "missed": [],
+          "forbidden": []
+        },
+        "k3": {
+          "found": 0,
+          "expected": 4,
+          "missed": [
+            "auth:81",
+            "doc:POL-GEO_BLOCK_INBOUND",
+            "firewall:453",
+            "vpn:228"
+          ],
+          "forbidden": []
+        },
+        "k4": {
+          "found": 0,
+          "expected": 3,
+          "missed": [
+            "doc:POL-GEO_BLOCK_INBOUND",
+            "firewall:453",
+            "vpn:228"
+          ],
+          "forbidden": []
+        },
+        "k5": {
+          "found": 2,
+          "expected": 2,
+          "missed": [],
+          "forbidden": []
+        },
+        "k6": {
+          "found": 2,
+          "expected": 2,
+          "missed": [],
+          "forbidden": []
+        }
+      }
+    }
+  }
+}

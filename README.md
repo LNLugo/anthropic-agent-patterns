@@ -32,6 +32,7 @@ with predictable workflows and progressing toward dynamic agent behavior.
 | What the model sees from a long conversation, and whose history it is | [09_memory](09_memory/) |
 | Agents started by events from legacy, SaaS and cloud sources, handled exactly once; a governed, versioned API in front | [12_integration](12_integration/) |
 | A new use case from configuration, a golden set and a merge-blocking evaluation gate, with reuse counted | [13_paved_road](13_paved_road/) |
+| Questions over network logs answered by walking a graph of the addresses, users and hosts they share, measured against vector search on three held-out sets | [14_knowledge_graph](14_knowledge_graph/) |
 | The orchestration patterns themselves | [Architecture Progression](#architecture-progression) |
 | Everything above, interactively | `streamlit run app/Agent_Patterns.py` (Phase 2 results run offline, no API key) |
 
@@ -57,6 +58,8 @@ with predictable workflows and progressing toward dynamic agent behavior.
 | 12 | Integration | ✅ Complete | Agents started by events from a legacy batch file, a signed SaaS webhook and a cloud event bus, handled exactly once (measured against a control for each guarantee); a gateway with identity, scopes, rate limits, budgets and versions; API contracts gated in CI |
 | **Enablement** | **Paved road** | | |
 | 13 | Paved road | ✅ Complete | A use case is configuration, prompts and a golden set, assembled from 07 to 11; the build refuses configuration that breaks a standard; an offline gate per use case blocks merges. Finance moved on with 0 code lines (85 before); transit built with 0 code lines and 31 of configuration, reusing 1,582 platform lines |
+| **Applied** | **Network operations** | | |
+| 14 | Knowledge navigation | ✅ Complete | Firewall, VPN, auth and system logs and their runbooks as a graph in Upstash Redis, vectors in Upstash Vector; a PageRank walk with rarity, novelty and time-window priors. On a third held-out set it found 16 of 26 multi-hop evidence items against 13 for the same signals without a walk and 9 for vector search, and lost 2 of 4 single-hop items |
 
 ---
 
@@ -145,13 +148,13 @@ fences and surrounding prose, so switching providers does not break them.
 
 ## Tests
 
-Every suite runs offline, with no API key, and CI runs all eight on Python
+Every suite runs offline, with no API key, and CI runs all nine on Python
 3.12 and 3.13 for every push and pull request. A separate "Evaluation gate" job
 replays every use case's golden set and fails below its threshold.
 
 | Suite | Run from | Tests | What stands in for the model |
 |---|---|---|---|
-| Phase 1 patterns, the explorer app, the architecture docs and conformance | repo root: `pytest` | 234 | `ScriptedChatModel` in [`llm_provider.py`](llm_provider.py) |
+| Phase 1 patterns, the explorer app, the architecture docs and conformance | repo root: `pytest` | 246 | `ScriptedChatModel` in [`llm_provider.py`](llm_provider.py) |
 | 07 Retrieval | `07_rag`: `pytest` | 63 | fixtures; no model call in the suite |
 | 08 Tools | `08_tools`: `pytest` | 150 | `ScriptedChatModel` and scripted tool calls |
 | 09 Memory | `09_memory`: `pytest` | 40 | `ScriptedChatModel`; no model call in the benchmark |
@@ -159,6 +162,7 @@ replays every use case's golden set and fails below its threshold.
 | 11 AI FinOps | `11_finops`: `pytest` | 28 | prices recorded runs and trace files; budgets through 08 on `ScriptedChatModel` |
 | 12 Integration | `12_integration`: `pytest` | 56 | the worker routes in code; synthetic sources, an in-process broker, the gateway over Starlette's test client |
 | 13 Paved road | `13_paved_road`: `pytest` | 45 | each golden case's reference call, replayed by `ScriptedChatModel` through the real pipeline |
+| 14 Knowledge navigation | `14_knowledge_graph`: `pytest` | 37 | `HashingEmbeddings` (a lexical stand-in) and in-memory stores for Upstash; `ScriptedChatModel` for answers |
 
 Phase 1 tests assert on the **path the graph took**, not on model prose: which
 nodes ran, in what order, and what each node was given. `LLM_PROVIDER=scripted`
@@ -308,8 +312,8 @@ Design documents and decision records follow the [templates](docs/templates/READ
 for teams building on these modules:
 - **[Reference architecture](docs/architecture/reference-architecture.md):** every layer, its control and the number that shows it works.
 - **[Standards](docs/architecture/standards.md):** 30 standards, 29 of them enforced by named tests or a static check.
-- **[Conformance scorecard](docs/architecture/scorecard.md):** computed from the repo. 65 of 73 standard-module pairs conform; the rest are 4 registered exceptions with owners and expiry dates, or are checked at design review. CI fails on an unregistered gap or an expired exception.
-- **[Decision records](docs/architecture/adr/README.md):** 17 ADRs.
+- **[Conformance scorecard](docs/architecture/scorecard.md):** computed from the repo. 72 of 80 standard-module pairs conform; the rest are 4 registered exceptions with owners and expiry dates, or are checked at design review. CI fails on an unregistered gap or an expired exception.
+- **[Decision records](docs/architecture/adr/README.md):** 18 ADRs.
 - **[Design review checklist](docs/architecture/design-review-checklist.md)**, an exception register, and a **[COE charter](docs/architecture/coe-charter.md)**.
 
 A test checks that every test a standard cites exists, every link resolves,

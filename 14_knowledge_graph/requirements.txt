@@ -1,0 +1,4 @@
+# Live runs: OpenAI embeddings and chat (langchain-openai, from the root requirements), Upstash Vector and Redis.
+-r requirements-test.txt
+upstash-vector>=0.8
+upstash-redis>=1.4

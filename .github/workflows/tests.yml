@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         python: ["3.12", "3.13"]
-        suite: [phase1, 07_rag, 08_tools, 09_memory, 10_observability, 11_finops, 12_integration, 13_paved_road]
+        suite: [phase1, 07_rag, 08_tools, 09_memory, 10_observability, 11_finops, 12_integration, 13_paved_road, 14_knowledge_graph]
         include:
           - suite: phase1
             dir: .
@@ -47,6 +47,9 @@ jobs:
           - suite: 13_paved_road
             dir: 13_paved_road
             requirements: 13_paved_road/requirements-test.txt
+          - suite: 14_knowledge_graph
+            dir: 14_knowledge_graph
+            requirements: 14_knowledge_graph/requirements-test.txt
     env:
       LLM_PROVIDER: scripted
     steps:
