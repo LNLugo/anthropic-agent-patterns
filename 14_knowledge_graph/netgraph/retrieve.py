@@ -12,6 +12,7 @@ inside the query, and the walk runs on the visible graph only.
 from __future__ import annotations
 
 import math
+import re
 from collections import Counter
 from dataclasses import dataclass
 
@@ -39,23 +40,48 @@ class Retriever:
         self.store, self.embedder, self.graph = store, embedder, graph
         self.tracer = tracer
         self._type_counts: Counter | None = None
+        self._entity_names: dict | None = None
 
     def rarity(self, key: str) -> float:
         """How unusual an item's type is in the corpus, from 0 (every item) to 1 (one item).
-        Pages count as rare: there are few, and each is written about one thing."""
+        Page sections count as one type, "page"."""
         if self._type_counts is None:
-            self._type_counts = Counter(self.graph.nodes[n].get("type") for n, d in self.graph.nodes(data=True)
-                                        if d["kind"] == "event")
-            self._events = sum(self._type_counts.values())
+            self._type_counts = Counter(self._type(n) for n, d in self.graph.nodes(data=True)
+                                        if d["kind"] != "entity")
+            self._total = sum(self._type_counts.values())
+        return math.log(self._total / self._type_counts[self._type(key)]) / math.log(self._total)
+
+    def _type(self, key: str) -> str:
         node = self.graph.nodes[key]
-        if node["kind"] == "doc":
-            return 1.0
-        return math.log(self._events / self._type_counts[node["type"]]) / math.log(self._events)
+        return "page" if node["kind"] == "doc" else node["type"]
+
+    def linked_entities(self, question: str) -> list[str]:
+        """Entities the question names, by exact match on a whole word: "john.doe's" names
+        user:john.doe, "198.51.100.77" names ip:198.51.100.77. Generic words never match,
+        because entity names here are identifiers, not words."""
+        if self._entity_names is None:
+            self._entity_names = {}
+            for n, d in self.graph.nodes(data=True):
+                if d["kind"] == "entity":
+                    self._entity_names.setdefault(n.split(":", 1)[1].lower(), []).append(n)
+        words = set(re.findall(r"[a-z0-9]+(?:[._-][a-z0-9]+)*", question.lower()))
+        return sorted(e for w in words for e in self._entity_names.get(w, ()))
 
     def rerank_by_rarity(self, hits: list[Hit], k: int) -> list[Hit]:
         """The control for the rarity prior: the same prior applied to vector results, with no graph."""
         scored = sorted(((h, h.score * self.rarity(h.key)) for h in hits), key=lambda r: (-r[1], r[0].key))
         return [Hit(h.key, s, "vector") for h, s in scored[:k]]
+
+    def vector_with_entities(self, question: str, groups, k: int = 10, pool: int = 50) -> list[Hit]:
+        """The control for the walk: everything the graph retriever uses except the walk. The rarity
+        prior, plus every readable item that names a linked entity directly (one hop, no further)."""
+        hits = {h.key: h for h in self.vector_only(question, groups, pool)}
+        top = max((h.score for h in hits.values()), default=1.0)
+        vg = visible(self.graph, groups)
+        for e in self.linked_entities(question):
+            for n in (vg.neighbors(e) if e in vg else ()):
+                hits.setdefault(n, Hit(n, top, "vector"))
+        return self.rerank_by_rarity(list(hits.values()), k)
 
     def index(self, batch: int = 256) -> int:
         items = list(self.items.values())
@@ -79,21 +105,25 @@ class Retriever:
         return [Hit(key, score, "vector") for key, score in hits]
 
     def graph_expanded(self, question: str, groups, k: int = 10, seeds: int = 5, hops: int = 4,
-                       alpha: float = 0.5, idf: bool = False, rarity: bool = True, pool: int = 50) -> list[Hit]:
+                       alpha: float = 0.5, idf: bool = False, rarity: bool = True, pool: int = 50,
+                       link: bool = True) -> list[Hit]:
         """alpha is the walk's chance of continuing at each step (1 - alpha jumps back to a seed),
         so most of the score stays within a few hops of what the question matched.
         idf: an edge through a common entity (an office address on hundreds of logins) carries
         less than one through a rare one (an address seen five times). rarity: an item of a rare
         type (a privilege escalation) outranks one of a routine type (a successful login) the walk
         reaches equally. Both are switchable, so each is measured on its own. idf is off by
-        default: on the development questions it changed nothing (33 of 43 with or without it)."""
+        default: on the development questions it changed nothing (33 of 43 with or without it).
+        link: entities the question names outright (an address, a user, a host, a change) are
+        seeds too, matched exactly against the graph's entity names; no model is involved."""
         # Seeds: the nearest items, reranked by the same prior the walk uses (pool -> seeds).
         start = self.vector_only(question, groups, pool if rarity else seeds)
         if rarity:
             start = self.rerank_by_rarity(start, seeds)
         with self._span("graph_walk", seeds=len(start), hops=hops) as span:
             vg = visible(self.graph, groups)
-            seed_keys = [h.key for h in start if h.key in vg]
+            linked = self.linked_entities(question) if link else []
+            seed_keys = [h.key for h in start if h.key in vg] + [e for e in linked if e in vg]
             if not seed_keys:
                 span.set(returned=0)
                 return []
@@ -105,6 +135,8 @@ class Retriever:
                 e = a if self.graph.nodes[a]["kind"] == "entity" else b
                 sub[a][b]["w"] = 1 / math.log(2 + self.graph.degree(e)) if idf else 1.0
             weights = {h.key: max(h.score, 1e-6) for h in start if h.key in sub}
+            top = max(weights.values(), default=1.0)
+            weights.update({e: top for e in linked if e in sub})       # a named entity counts as the best match
             ranks = nx.pagerank(sub, alpha=alpha, personalization=weights, weight="w")
             prior = self.rarity if rarity else (lambda n: 1.0)
             items = sorted(((n, r * prior(n)) for n, r in ranks.items() if sub.nodes[n]["kind"] != "entity"),

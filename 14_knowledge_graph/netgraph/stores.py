@@ -20,6 +20,7 @@ import os
 from typing import Iterable, Protocol
 
 import networkx as nx
+import numpy as np
 
 
 class VectorStore(Protocol):
@@ -36,23 +37,36 @@ class GraphStore(Protocol):
 
 class InMemoryVectorStore:
     def __init__(self):
-        self.rows: dict[str, tuple[list[float], dict]] = {}
+        self.keys: list[str] = []
+        self.meta: list[dict] = []
+        self._rows: list[np.ndarray] = []
+        self._matrix: np.ndarray | None = None
         self.queries = 0
 
     def upsert(self, rows):
+        index = {k: i for i, k in enumerate(self.keys)}
         for key, vector, meta in rows:
-            self.rows[key] = (list(vector), dict(meta))
+            v = np.asarray(vector, dtype=np.float32)
+            v = v / (np.linalg.norm(v) or 1.0)
+            if key in index:
+                self._rows[index[key]], self.meta[index[key]] = v, dict(meta)
+            else:
+                index[key] = len(self.keys)
+                self.keys.append(key)
+                self.meta.append(dict(meta))
+                self._rows.append(v)
+        self._matrix = None
 
     def query(self, vector, top_k, readers):
         self.queries += 1
         allowed = set(readers)
-        scored = []
-        for key, (v, meta) in self.rows.items():
-            if not allowed & set(meta["readers"]):        # filtered before ranking
-                continue
-            scored.append((key, sum(a * b for a, b in zip(vector, v)) / (_norm(vector) * _norm(v) or 1.0)))
-        scored.sort(key=lambda r: (-r[1], r[0]))
-        return scored[:top_k]
+        mask = np.array([bool(allowed & set(m["readers"])) for m in self.meta])   # filtered before ranking
+        if self._matrix is None:
+            self._matrix = np.vstack(self._rows) if self._rows else np.zeros((0, 1), dtype=np.float32)
+        q = np.asarray(vector, dtype=np.float32)
+        scores = self._matrix @ (q / (np.linalg.norm(q) or 1.0))
+        order = sorted((i for i in range(len(self.keys)) if mask[i]), key=lambda i: (-scores[i], self.keys[i]))
+        return [(self.keys[i], float(scores[i])) for i in order[:top_k]]
 
 
 def _norm(v) -> float:

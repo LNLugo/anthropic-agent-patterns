@@ -403,11 +403,11 @@ NOTES = {
 
 def generate(folder: Path = FIXTURES, seed: int = 14) -> None:
     rng = random.Random(seed)
-    rows = _scenarios() + _held_out() + _inventory() + _background(rng)
+    rows = _scenarios() + _held_out() + _held_out_2() + _inventory() + _background(rng)
     by_source: dict[str, list] = {s: [] for s in SOURCES}
     for source, t, line, tags in rows:
         by_source[source].append((t, line, tags))
-    evidence: dict[str, list[str]] = {q[0]: [] for q in QUESTIONS + HELD_OUT}
+    evidence: dict[str, list[str]] = {q[0]: [] for q in QUESTIONS + HELD_OUT + HELD_OUT_2}
     (folder / "logs").mkdir(parents=True, exist_ok=True)
     for source, lines in by_source.items():
         lines.sort(key=lambda r: (r[0], r[1]))
@@ -422,12 +422,15 @@ def generate(folder: Path = FIXTURES, seed: int = 14) -> None:
         meta = {k: d[k] for k in ("id", "title", "readers", "applies_to")}
         (docs / f"{d['id']}.md").write_text("---\n" + yaml.safe_dump(meta, sort_keys=False) + "---\n"
                                             + "\n\n".join(d["body"]) + "\n", encoding="utf-8")
-    questions = [{"id": qid, "as": who, "kind": kind, "question": q,
+    questions = [{"id": qid, "as": who, "kind": kind, "question": q, "set": "development",
                   "expected": evidence[qid] + [f"doc:{p}" for p in pages], "note": NOTES[qid]}
                  for qid, who, kind, q, pages in QUESTIONS]
     for qid, who, kind, q, pages in HELD_OUT:
-        questions.append({"id": qid, "as": who, "kind": kind, "question": q, "held_out": True,
+        questions.append({"id": qid, "as": who, "kind": kind, "question": q, "set": "held_out_1",
                           "expected": evidence[qid] + [f"doc:{p}" for p in pages], "note": NOTES_HELD_OUT[qid]})
+    for qid, who, kind, q, pages in HELD_OUT_2:
+        questions.append({"id": qid, "as": who, "kind": kind, "question": q, "set": "held_out_2",
+                          "expected": evidence[qid] + [f"doc:{p}" for p in pages], "note": NOTES_HELD_OUT_2[qid]})
     questions[4]["forbidden"] = [k for k in evidence["q4"] if k.startswith("auth:")] + ["doc:SEC-IR-PLAYBOOK"]
     by_id = {q["id"]: q for q in questions}
     by_id["h7"]["forbidden"] = [k for k in evidence["h6"] if k.startswith("auth:")] + ["doc:SEC-IR-PLAYBOOK"]
