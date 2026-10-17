@@ -78,6 +78,7 @@
 2026-10-14 00:29:26 SESSION_OPEN host=srv-db-01 ip=10.50.2.8 user=deploy
 2026-10-14 00:41:24 SESSION_OPEN host=srv-files-01 ip=10.60.3.5 user=svc_backup
 2026-10-14 02:05:07 SESSION_OPEN host=srv-app-02 ip=10.45.1.22 user=deploy
+2026-10-14 03:05:00 SESSION_OPEN host=srv-db-02 ip=10.50.2.9 user=omar.haddad
 2026-10-14 03:12:44 SUDO_ESCALATION host=srv-db-01 ip=10.50.2.8 user=svc_backup
 2026-10-14 03:13:02 NEW_SSH_KEY host=srv-db-01 ip=10.50.2.8 user=svc_backup
 2026-10-14 03:56:12 SESSION_OPEN host=srv-db-01 ip=10.50.2.8 user=deploy

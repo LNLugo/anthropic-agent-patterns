@@ -126,6 +126,9 @@
 2026-10-14 11:04:44 CONFIG_COMMIT host=core-rtr-02 change=CHG-4337 by=net.admin2
 2026-10-14 11:30:30 CONFIG_COMMIT host=core-rtr-02 change=CHG-4104 by=net.admin1
 2026-10-14 11:55:11 HEALTH_OK host=core-rtr-01
+2026-10-14 11:58:00 CONFIG_COMMIT host=core-rtr-01 change=CHG-4510 by=net.admin1
+2026-10-14 12:00:00 CERT_EXPIRED host=vpn-gw-01 subject=vpn.bank.example
+2026-10-14 12:01:30 HOST_UNREACHABLE host=srv-files-01 probe=icmp
 2026-10-14 12:56:14 HEALTH_OK host=edge-rtr-01
 2026-10-14 13:09:58 BGP_NEIGHBOR_UP host=core-rtr-02 neighbor=10.255.0.4
 2026-10-14 13:52:24 HEALTH_OK host=edge-rtr-01
@@ -135,6 +138,8 @@
 2026-10-14 15:41:17 HEALTH_OK host=edge-rtr-01
 2026-10-14 15:41:31 HEALTH_OK host=core-rtr-02
 2026-10-14 15:46:21 HEALTH_OK host=core-rtr-01
+2026-10-14 16:20:00 DISK_FULL host=srv-app-01 partition=/opt threshold=97%
+2026-10-14 16:55:00 DISK_FULL host=srv-app-01 partition=/opt threshold=97%
 2026-10-14 18:26:09 HEALTH_OK host=core-rtr-01
 2026-10-14 18:28:58 HEALTH_OK host=core-rtr-01
 2026-10-14 18:47:44 BGP_NEIGHBOR_UP host=core-rtr-01 neighbor=10.255.0.5

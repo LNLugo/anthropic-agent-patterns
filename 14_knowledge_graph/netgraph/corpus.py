@@ -241,6 +241,34 @@ def _held_out() -> list[tuple[str, datetime, str, set[str]]]:
     return s
 
 
+def _held_out_2() -> list[tuple[str, datetime, str, set[str]]]:
+    """Scenarios for the second held-out set, written after the second freeze (the commit
+    before the one that added them). Scored once."""
+    s = []
+
+    def add(source, t, tags, event, **f):
+        s.append((source, t, _fmt(t, event, **f), set(tags)))
+
+    # k1 and k5: the VPN gateway's certificate expires; nina.lopez is refused from then on.
+    add("syslog", _ts(12, 0, 0), ["k1", "k5"], "CERT_EXPIRED", host="vpn-gw-01", subject="vpn.bank.example")
+    for mm in (14, 41):
+        add("vpn", _ts(12, mm, 20), ["k1"], "VPN_LOGIN_FAILED", user="nina.lopez", ip="10.20.11.30",
+            host="vpn-gw-01", reason="tls_handshake")
+    # k2: a VLAN move on a core router takes the file server off the network.
+    add("syslog", _ts(11, 58, 0), ["k2"], "CONFIG_COMMIT", host="core-rtr-01", change="CHG-4510", by="net.admin1")
+    add("syslog", _ts(12, 1, 30), ["k2"], "HOST_UNREACHABLE", host="srv-files-01", probe="icmp")
+    # k3 and k4: omar.haddad signs in from an outside address at night, opens a database session,
+    # and the same address is later geo-blocked.
+    add("vpn", _ts(3, 2, 0), ["k3", "k4"], "VPN_LOGIN_SUCCESS", user="omar.haddad", ip="203.0.113.99")
+    add("auth", _ts(3, 5, 0), ["k3"], "SESSION_OPEN", host="srv-db-02", ip=HOST_IP["srv-db-02"], user="omar.haddad")
+    add("firewall", _ts(3, 40, 0), ["k3", "k4"], "FIREWALL_DENY", src="203.0.113.99", dst="10.1.1.10", dport=443,
+        policy="GEO_BLOCK_INBOUND")
+    # k6: a disk fills on an application server.
+    for mm in (20, 55):
+        add("syslog", _ts(16, mm, 0), ["k6"], "DISK_FULL", host="srv-app-01", partition="/opt", threshold="97%")
+    return s
+
+
 def _background(rng: random.Random) -> list[tuple[str, datetime, str, set[str]]]:
     """Ordinary traffic: logins, allows, routine denies, router health. Each staff member has
     their own home address, so no address but the attacker's fails for several users."""
@@ -349,6 +377,14 @@ DOCS = [
      "applies_to": ["change:CHG-4502", "host:edge-rtr-01"], "body": [
          "## Change\nTighten the maximum-prefix limit on the edge router's upstream session.",
          "## Known risk\nIf the upstream announces more prefixes than the new limit, the session is torn down."]},
+    {"id": "RB-VPN-CERT", "title": "Runbook: VPN gateway certificate", "readers": ["netops", "security"],
+     "applies_to": ["host:vpn-gw-01"], "body": [
+         "## Symptom\nEvery client fails the TLS handshake with the gateway from the moment its certificate expires.",
+         "## Steps\nInstall the renewed certificate from the PKI team and restart the gateway's TLS listener."]},
+    {"id": "CHG-4510", "title": "Change record CHG-4510: move file servers to a new VLAN",
+     "readers": ["netops", "security"], "applies_to": ["change:CHG-4510", "host:srv-files-01", "host:core-rtr-01"],
+     "body": ["## Change\nMove srv-files-01 to VLAN 340 on core-rtr-01 at noon.",
+              "## Known risk\nThe server is unreachable until its gateway address is updated."]},
     {"id": "POL-WEB_ALLOW", "title": "Policy: outbound web", "readers": ["netops", "security"],
      "applies_to": ["policy:WEB_ALLOW"], "body": ["## What it does\nAllows servers to reach the web on 80 and 443."]},
 ]
@@ -385,6 +421,25 @@ NOTES_HELD_OUT = {
     "h5": "Answered by the line that names the change.",
     "h6": "The escalation names the account and the host; the outbound denies name only the host's address.",
     "h7": "From network operations, who cannot read the auth log: the inventory joins the host to its address.",
+}
+
+HELD_OUT_2 = [
+    ("k1", "netops_analyst", "multi_hop", "Why can't nina.lopez connect to the VPN since lunchtime?", ["RB-VPN-CERT"]),
+    ("k2", "netops_analyst", "multi_hop", "Why did srv-files-01 drop off the network around noon?", ["CHG-4510"]),
+    ("k3", "secops_analyst", "multi_hop", "Is omar.haddad's account being misused?", ["POL-GEO_BLOCK_INBOUND"]),
+    ("k4", "netops_analyst", "multi_hop", "Is omar.haddad's account being misused?", ["POL-GEO_BLOCK_INBOUND"]),
+    ("k5", "netops_analyst", "single_hop", "When did the certificate on vpn-gw-01 expire?", ["RB-VPN-CERT"]),
+    ("k6", "netops_analyst", "single_hop", "Show the disk alerts for srv-app-01", []),
+]
+NOTES_HELD_OUT_2 = {
+    "k1": "Her failures name the gateway; the gateway's expired certificate and its runbook explain them.",
+    "k2": "The outage names the file server; the change record names the server and the change, whose commit is "
+          "on the router.",
+    "k3": "The night login names the address; the same address is geo-blocked later. Security also sees his "
+          "database session.",
+    "k4": "As k3, from network operations: the auth line is not theirs to read.",
+    "k5": "Answered by the line that names the gateway.",
+    "k6": "Answered by lines that name the host.",
 }
 
 NOTES = {
@@ -434,6 +489,7 @@ def generate(folder: Path = FIXTURES, seed: int = 14) -> None:
     questions[4]["forbidden"] = [k for k in evidence["q4"] if k.startswith("auth:")] + ["doc:SEC-IR-PLAYBOOK"]
     by_id = {q["id"]: q for q in questions}
     by_id["h7"]["forbidden"] = [k for k in evidence["h6"] if k.startswith("auth:")] + ["doc:SEC-IR-PLAYBOOK"]
+    by_id["k4"]["forbidden"] = [k for k in evidence["k3"] if k.startswith("auth:")]
     (folder / "questions.yaml").write_text(
         "# Generated by netgraph/corpus.py. expected: the log lines (source:line) and pages (doc:ID) that answer\n"
         "# the question, as the asker may see them. A page counts as found when any of its sections is returned.\n"
