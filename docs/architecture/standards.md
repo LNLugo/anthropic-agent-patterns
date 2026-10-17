@@ -2,7 +2,7 @@
 
 <!-- Rendered from standards.yaml and exceptions.yaml by render_standards.py. Edit those, not this. -->
 
-28 standards. 27 are enforced by named tests or static checks that run in CI; 1 is enforced by design review only, and says so. A test checks that every test cited here exists. Conformance per module is in the [scorecard](scorecard.md).
+30 standards. 29 are enforced by named tests or static checks that run in CI; 1 is enforced by design review only, and says so. A test checks that every test cited here exists. Conformance per module is in the [scorecard](scorecard.md).
 
 Each standard has an ID used by the [design review checklist](design-review-checklist.md), the ADRs that explain it, and the modules it applies to. Where a module doesn't meet a standard yet, the gap is in the [exception register](#exception-register) with an owner and an expiry date.
 
@@ -62,12 +62,13 @@ A tool guardrail allows, rejects with a message the model can act on, or halts t
 
 *Why:* A security event must not be politely redirected into a retry.
 
-*Applies to:* 08, 12 · *ADRs:* [0004](adr/0004-guardrail-behaviours-and-order.md)
+*Applies to:* 08, 12, 13 · *ADRs:* [0004](adr/0004-guardrail-behaviours-and-order.md)
 
 *Enforced by:*
 
 - 08: [`test_order_matters_restricted_halts_before_scope_could_redirect`](../../08_tools/tests/test_guardrails.py), [`test_raise_exception_halts_the_graph_even_for_a_call_the_bound_refuses`](../../08_tools/tests/test_assistant_model_router.py)
 - 12: [`test_an_event_cannot_point_the_service_at_a_restricted_project`](../../12_integration/tests/test_triage.py)
+- 13: [`test_a_configuration_that_breaks_a_standard_is_a_build_error`](../../13_paved_road/tests/test_paved_road.py), [`test_the_policy_is_built_over_the_use_cases_catalog`](../../13_paved_road/tests/test_paved_road.py)
 
 ### AI-06 · A write waits for a person who is not the requester
 
@@ -75,12 +76,13 @@ Any action that changes data pauses for approval, survives a restart while waiti
 
 *Why:* Accountability for a change belongs to a person.
 
-*Applies to:* 08, 12 · *ADRs:* [0005](adr/0005-approval-as-interrupt.md)
+*Applies to:* 08, 12, 13 · *ADRs:* [0005](adr/0005-approval-as-interrupt.md)
 
 *Enforced by:*
 
 - 08: [`test_the_requester_cannot_approve_their_own_write`](../../08_tools/tests/test_approval.py), [`test_resume_from_a_saved_checkpoint_after_a_restart`](../../08_tools/tests/test_approval.py), [`test_a_comment_over_mcp_waits_for_a_person_and_there_is_no_approve_tool`](../../08_tools/tests/test_mcp_server.py)
 - 12: [`test_the_service_cannot_approve_itself_and_a_person_posts_it_once`](../../12_integration/tests/test_triage.py)
+- 13: [`test_a_configuration_that_breaks_a_standard_is_a_build_error`](../../13_paved_road/tests/test_paved_road.py), [`test_an_approval_waits_across_a_restart`](../../13_paved_road/tests/test_paved_road.py)
 
 ### AI-07 · Measured on questions nobody tuned for
 
@@ -114,7 +116,7 @@ Every agent run is one trace with typed spans. Prompts, documents, model output 
 
 *Why:* Traces are read by more people than the data they describe.
 
-*Applies to:* 06, 07, 08, 09, 12 · *ADRs:* [0007](adr/0007-trace-content-off-by-default.md)
+*Applies to:* 06, 07, 08, 09, 12, 13 · *ADRs:* [0007](adr/0007-trace-content-off-by-default.md)
 
 *Enforced by:*
 
@@ -123,6 +125,7 @@ Every agent run is one trace with typed spans. Prompts, documents, model output 
 - 08: [`test_no_content_reaches_the_trace_file_and_the_control_sees_all_of_it`](../../10_observability/tests/test_leak_check.py), [`test_output_info_never_echoes_free_text_from_the_model`](../../08_tools/tests/test_guardrails.py), [`test_a_count_reconciles_span_for_span`](../../08_tools/tests/test_traces.py)
 - 09: [`test_history_reaches_the_model_but_not_the_trace`](../../09_memory/tests/test_assistant_memory.py), [`test_the_trace_names_which_turns_the_model_saw_by_position_only`](../../09_memory/tests/test_assistant_memory.py)
 - 12: [`test_no_content_reaches_the_trace_file_and_the_control_sees_all_of_it`](../../10_observability/tests/test_leak_check.py)
+- 13: [`test_every_run_is_traced_with_content_off_and_spend_metered`](../../13_paved_road/tests/test_paved_road.py), [`test_unknown_or_contradictory_configuration_is_refused`](../../13_paved_road/tests/test_paved_road.py)
 
 ### OPS-02 · Costs come from a sourced price file
 
@@ -130,13 +133,14 @@ Every price has a source and a date. A cost that includes an unpriced model is r
 
 *Why:* A wrong number that looks real is worse than a missing one.
 
-*Applies to:* 07, 08, 11 · *ADRs:* [0008](adr/0008-prices-from-a-sourced-file.md)
+*Applies to:* 07, 08, 11, 13 · *ADRs:* [0008](adr/0008-prices-from-a-sourced-file.md)
 
 *Enforced by:*
 
 - 07: [`test_rag_cost_per_correct_answer`](../../11_finops/tests/test_cost_per_correct.py)
 - 08: [`test_the_price_file_reproduces_every_cost_recorded_in_08`](../../11_finops/tests/test_cost_per_correct.py)
 - 11: [`test_a_model_missing_from_the_file_is_refused`](../../11_finops/tests/test_prices_and_costing.py), [`test_one_unpriced_call_makes_the_run_and_every_total_unpriced`](../../11_finops/tests/test_prices_and_costing.py)
+- 13: [`test_a_configuration_that_breaks_a_standard_is_a_build_error`](../../13_paved_road/tests/test_paved_road.py)
 
 ### OPS-03 · Model spend is held to a budget before the call
 
@@ -144,12 +148,13 @@ Every model call on behalf of an identity is checked against that identity's bud
 
 *Why:* A budget reported after the fact is a bill, not a control.
 
-*Applies to:* 06, 07, 08, 12 · *ADRs:* [0009](adr/0009-budgets-before-the-call.md)
+*Applies to:* 06, 07, 08, 12, 13 · *ADRs:* [0009](adr/0009-budgets-before-the-call.md)
 
 *Enforced by:*
 
 - 08: [`test_a_daily_budget_stops_at_the_expected_question_and_calls_nothing_after`](../../11_finops/tests/test_budget.py), [`test_a_budget_stops_a_runaway_loop_mid_run`](../../11_finops/tests/test_budget.py)
 - 12: [`test_the_model_route_is_held_to_the_callers_budget`](../../12_integration/tests/test_gateway.py)
+- 13: [`test_the_budget_is_checked_before_the_model_is_called`](../../13_paved_road/tests/test_paved_road.py)
 
 *Exception EXC-003* for 06, 07, until 2027-03-31: 06's agents and 07's answers carry no caller identity, so their model calls are not held to a per-identity budget.
 
@@ -202,7 +207,7 @@ Every suite runs with no API key. A test that proves something never happens is 
 
 *Why:* A zero without a control is indistinguishable from a broken test.
 
-*Applies to:* 06, 07, 08, 09, 10, 11, 12 · *ADRs:* [0013](adr/0013-offline-tests-measured-live-runs.md)
+*Applies to:* 06, 07, 08, 09, 10, 11, 12, 13 · *ADRs:* [0013](adr/0013-offline-tests-measured-live-runs.md)
 
 *Enforced by:*
 
@@ -213,6 +218,7 @@ Every suite runs with no API key. A test that proves something never happens is 
 - 10: [`test_no_content_reaches_the_trace_file_and_the_control_sees_all_of_it`](../../10_observability/tests/test_leak_check.py)
 - 11: [`test_a_daily_budget_stops_at_the_expected_question_and_calls_nothing_after`](../../11_finops/tests/test_budget.py)
 - 12: [`test_without_the_marker_one_lost_response_posts_twice`](../../12_integration/tests/test_integration_check.py)
+- 13: [`test_the_gate_catches_a_regression_in_shared_code`](../../13_paved_road/tests/test_paved_road.py)
 
 ### APP-05 · One way to choose a model
 
@@ -377,6 +383,32 @@ A webhook's signature over the raw body is verified in constant time before the 
 *Enforced by:*
 
 - 12: [`test_an_unsigned_or_forged_webhook_is_refused`](../../12_integration/tests/test_adapters.py), [`test_a_body_changed_after_signing_is_refused`](../../12_integration/tests/test_adapters.py)
+
+## Enablement
+
+### ENB-01 · A new use case takes the paved road
+
+A new agent use case is a folder of configuration, prompts and a golden set, built by paved_road.build from the platform modules. It does not copy platform code, and no use case's project or space names appear in shared code.
+
+*Why:* A copy forks the controls: the next fix to a guardrail reaches the original and not the copy.
+
+*Applies to:* 13 · *ADRs:* [0017](adr/0017-paved-road-configuration-over-copies.md)
+
+*Enforced by:*
+
+- 13: [`test_no_project_code_appears_in_shared_code`](../../13_paved_road/tests/test_paved_road.py), [`test_the_static_check_sees_a_planted_code`](../../13_paved_road/tests/test_paved_road.py), [`test_a_scaffolded_use_case_is_green_before_it_is_edited`](../../13_paved_road/tests/test_paved_road.py)
+
+### ENB-02 · A use case merges only when its golden set passes offline
+
+Every use case has a golden set covering an answer, a permission difference, a refusal, a halt and a clarifying question. The offline gate replays it through the real pipeline on every pull request and blocks the merge below the threshold (100% by default). The live gate measures the model's choices and reports.
+
+*Why:* A gate that needs a key or varies from run to run gets switched off; one that is deterministic can be required.
+
+*Applies to:* 13 · *ADRs:* [0017](adr/0017-paved-road-configuration-over-copies.md)
+
+*Enforced by:*
+
+- 13: [`test_both_use_cases_pass_the_offline_gate`](../../13_paved_road/tests/test_paved_road.py), [`test_the_gate_fails_a_wrong_expectation`](../../13_paved_road/tests/test_paved_road.py), [`test_the_gate_catches_a_regression_in_shared_code`](../../13_paved_road/tests/test_paved_road.py), [`test_the_gate_script_exits_nonzero_below_the_threshold`](../../13_paved_road/tests/test_paved_road.py), [`test_live_mode_scores_the_models_choice_and_does_not_block`](../../13_paved_road/tests/test_paved_road.py)
 
 ## Exception register
 

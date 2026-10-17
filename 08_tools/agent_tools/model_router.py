@@ -24,10 +24,11 @@ from dataclasses import dataclass
 from datetime import date, timedelta
 
 from . import coverage as coverage_check
+from .catalog import FINANCE, Catalog
 from .jql_tool import BoundedJiraTool, QuerySpec, ToolRejected, validate
 from .observe import get_tracer, model_name, usage
 
-PROJECT_NAMES = {"BILL": "Billing Platform", "PAY": "Payments", "INFRA": "Infrastructure"}
+PROJECT_NAMES = FINANCE.names  # the default catalog
 
 SEARCH_WIKI = {
     "name": "search_wiki",
@@ -62,8 +63,8 @@ ROUTES = {"count_jira_issues": "aggregation", "search_wiki": "knowledge", "ask_c
           "comment_on_issue": "comment"}
 
 
-def system_prompt(today: date) -> str:
-    projects = ", ".join(f"{k} = {v}" for k, v in PROJECT_NAMES.items())
+def system_prompt(today: date, catalog: Catalog = FINANCE) -> str:
+    projects = ", ".join(f"{k} = {v}" for k, v in catalog.names.items())
     default_from = today - timedelta(days=89)
     return f"""You route questions from engineers. Call exactly one tool.
 
@@ -138,10 +139,12 @@ class Decision:
 
 
 class ModelRouter:
-    def __init__(self, llm, tool: BoundedJiraTool, coverage: bool = True, comment_tool=None):
+    def __init__(self, llm, tool: BoundedJiraTool, coverage: bool = True, comment_tool=None,
+                 catalog: Catalog = FINANCE, instructions: str = ""):
         """coverage=False reproduces the router measured before the check existed: same schema, no check.
-        comment_tool adds the write action; the evaluations run without it, as they were measured."""
-        self.tool, self.coverage = tool, coverage
+        comment_tool adds the write action; the evaluations run without it, as they were measured.
+        catalog names the projects; instructions are a use case's own lines, added after the rules."""
+        self.tool, self.coverage, self.catalog, self.instructions = tool, coverage, catalog, instructions
         count_schema = with_evidence(tool.schema) if coverage else tool.schema
         tools = [openai_style(count_schema), openai_style(SEARCH_WIKI), openai_style(ASK_CLARIFICATION)]
         self.comments = comment_tool is not None
@@ -155,7 +158,7 @@ class ModelRouter:
         the question. The coverage check still reads only the question, plus the user's
         pinned standing instructions."""
         t0 = time.perf_counter()
-        system = system_prompt(today) + (COMMENT_NOTE if self.comments else "")
+        system = system_prompt(today, self.catalog) + (COMMENT_NOTE if self.comments else "") + self.instructions
         context = context or []
         history = [("human" if i["role"] == "user" else "ai", i["content"]) for i in context]
         standing = [i["content"] for i in context if i["role"] == "user" and i.get("pinned")]
@@ -183,7 +186,8 @@ class ModelRouter:
             except ToolRejected as e:
                 spec, rejected = None, str(e)
             if spec is not None and self.coverage:
-                covered = coverage_check.check(question, spec.project, args.get(EVIDENCE_FIELD), standing)
+                covered = coverage_check.check(question, spec.project, args.get(EVIDENCE_FIELD), standing,
+                                               self.catalog)
                 if covered:
                     route, spec = "clarify", None
                     message = f"I can't count that as asked: {covered}. Which single project do you mean?"

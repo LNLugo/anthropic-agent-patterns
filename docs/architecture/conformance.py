@@ -31,7 +31,8 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 MODULES = {"01": "01_prompt_chaining", "02": "02_routing", "03": "03_parallelization",
            "04": "04_orchestrator_workers", "05": "05_evaluator_optimizer", "06": "06_agents",
-           "07": "07_rag", "08": "08_tools", "09": "09_memory", "10": "10_observability", "11": "11_finops", "12": "12_integration"}
+           "07": "07_rag", "08": "08_tools", "09": "09_memory", "10": "10_observability", "11": "11_finops", "12": "12_integration",
+           "13": "13_paved_road"}
 
 
 # ---------------------------------------------------------------- static checks
@@ -181,3 +182,7 @@ def main() -> int:
     for e in report.unknown:
         print(f"FAIL {e['id']} names a standard or module that does not apply")
     return 0 if report.ok else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,7 +1,9 @@
 # Design: a paved road for new agent use cases
 
-> **Status:** design only. Nothing here is built yet. Each section names the
-> evidence that will show it works, and the build will mark it built.
+> **Status:** built, 2026-10-17: [13_paved_road](../../13_paved_road/README.md),
+> [use_cases/finance](../../use_cases/finance/), [use_cases/transit](../../use_cases/transit/),
+> [templates/new_use_case](../../templates/new_use_case/), [ADR 0017](../architecture/adr/0017-paved-road-configuration-over-copies.md).
+> The live gate is built but has not been run (no key yet).
 
 ## The problem
 
@@ -136,6 +138,8 @@ same rule the conformance check enforces for adoption.
 
 ## Build order
 
+All six are built.
+
 1. Extract the catalog from 08, with the finance catalog as the default; 08's tests unchanged.
 2. `paved_road.build` and the template in `templates/new_use_case/`, with a scaffold script.
 3. Use case 1, the finance assistant, moved onto the template: this proves the template fits what exists.
@@ -151,9 +155,9 @@ Taken on 2026-10-16:
 2. **The offline gate blocks merges; the live gate reports.** Blocking on a live model run would need a key in CI and make merges depend on run-to-run variation.
 3. **A standard-library scaffold script.** Cookiecutter would add a dependency for little gain at this size.
 
-## Evidence that will show it works
+## Evidence that it works
 
-- **Reuse:** 08's tests pass unchanged after the catalog is extracted.
-- **Generality:** both use cases run on `paved_road.build` with no use-case code in shared modules. A static check fails if a project code appears in shared code.
-- **The gate:** it blocks a pull request that breaks a golden case (tested with a deliberate breakage).
-- **The metrics:** the three counts above, from the counter.
+- **Reuse:** 08's 150 tests pass unchanged after the catalog is extracted. **Built.**
+- **Generality:** both use cases run on `paved_road.build` with no use-case code in shared modules. A static check, with a planted-code control, fails if a project code appears in shared code. It found one leak: the comment tool's example key. **Built.**
+- **The gate:** it fails a wrong expectation and a regression in shared code (the coverage check switched off), and `run_gate.py` exits 1. **Built.** It blocks merges once the owner marks "Evaluation gate" as a required check.
+- **The metrics:** counted in [13_paved_road/results/reuse.json](../../13_paved_road/results/reuse.json). Finance needed 85 hand-wired code lines in 08 and needs 0 on the road, with 35 lines of configuration and prompt. Transit needs 0 code lines and 31 of configuration and prompt, and reuses 1,582 platform code lines. The road itself is 616 lines. A clean clone reaches green in 40.5 s, 24.7 of them installing packages. Install time depends on the network; an earlier run took 193.6 s. **Built.**

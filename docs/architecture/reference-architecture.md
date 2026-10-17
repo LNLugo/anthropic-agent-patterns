@@ -70,7 +70,8 @@ flowchart TB
 | Capability | Memory | [09](../../09_memory/README.md) | A session owned by one identity; relevant turns plus pinned instructions; never evidence for a check except the user's own pinned words | 28 of 30 recalled at 240 exchanges with 34 times fewer tokens than appending everything |
 | Across | Tracing | [10](../../10_observability/README.md) | One trace per run; content off by default | 0 of 17 planted markers in the trace file; 17 of 17 with content on |
 | Across | Costing | [11](../../11_finops/README.md) | Priced from a sourced file; unpriced is unknown, not $0 | Reproduces 9 recorded costs within 0.8% |
-| Across | Standards | [standards](standards.md), [scorecard](scorecard.md) | Each standard names the tests or static check that enforce it, per module | 57 of 65 standard-module pairs conform; CI fails on an unregistered gap or an expired exception |
+| Across | Paved road | [13](../../13_paved_road/README.md) | A use case is configuration on the platform; the build refuses a configuration that breaks a standard; an offline gate per use case blocks merges | Two use cases with 0 code lines each; the gate fails on a shared-code regression; 10 of 10 mutants killed |
+| Across | Standards | [standards](standards.md), [scorecard](scorecard.md) | Each standard names the tests or static check that enforce it, per module | 65 of 73 standard-module pairs conform; CI fails on an unregistered gap or an expired exception |
 
 ## Who acts, and as whom
 

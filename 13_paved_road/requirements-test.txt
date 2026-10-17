@@ -1,0 +1,3 @@
+# The paved road composes 08 (and through it 07's retrieval and llm_provider), 09, 10 and 11.
+-r ../08_tools/requirements.txt
+pyyaml>=6.0

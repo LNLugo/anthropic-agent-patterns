@@ -70,6 +70,13 @@ control and an expiry.
 | 26 | Do the tests run with no API key? Does every "never happens" test have a run where it does? | APP-04 | The control for each zero |
 | 27 | Does the component get its model through `llm_provider`? | APP-05 | The import |
 
+## Enablement
+
+| # | Question | Standards | Bring |
+|---|---|---|---|
+| 28 | Is the use case a folder on the paved road, or does it copy platform code? Does anything in `hooks.py` belong in the platform instead? | ENB-01 | `use_case.yaml`, and the static check's result |
+| 29 | Does the golden set cover an answer, a permission difference, a refusal, a halt and a clarifying question? What did the live gate measure? | ENB-02 | The offline gate's table and the latest live report |
+
 ## Outcome
 
 | Result | Meaning |

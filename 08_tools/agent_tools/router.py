@@ -23,6 +23,7 @@ import re
 from dataclasses import dataclass, field
 from datetime import date, timedelta
 
+from .catalog import FINANCE, Catalog
 from .jql_tool import QuerySpec
 
 COUNTING = re.compile(
@@ -30,12 +31,7 @@ COUNTING = re.compile(
 )
 ISSUE = re.compile(r"\b(incidents?|bugs?|issues?|tickets?|changes?|outages?|p[1-4]s?)\b", re.I)
 
-PROJECT_ALIASES = {
-    "billing platform": "BILL", "billing": "BILL", "bill": "BILL",
-    "payments": "PAY", "payment": "PAY", "pay": "PAY",
-    "infrastructure": "INFRA", "infra": "INFRA",
-    "security operations": "SECOPS", "secops": "SECOPS",
-}
+PROJECT_ALIASES = FINANCE.aliases  # the default catalog's words; pass a Catalog for another use case
 TYPE_WORDS = {"incident": "Incident", "outage": "Incident", "bug": "Bug", "task": "Task", "change": "Change"}
 STATUS_WORDS = {"open": "Open", "in progress": "In Progress", "resolved": "Resolved", "closed": "Closed"}
 
@@ -110,11 +106,11 @@ def _first_alias(q: str, table: dict[str, str]) -> str | None:
     return None
 
 
-def extract(question: str, today: date) -> Extraction:
+def extract(question: str, today: date, catalog: Catalog = FINANCE) -> Extraction:
     q = question.lower()
-    project = _first_alias(q, PROJECT_ALIASES)
+    project = _first_alias(q, catalog.aliases)
     if project is None:
-        raise NeedsClarification("Which project do you mean: Billing Platform, Payments or Infrastructure?")
+        raise NeedsClarification(catalog.clarifying_question)
 
     priority = None
     m = re.search(r"\bp([1-4])s?\b", q)
@@ -147,13 +143,16 @@ class RulesRouter:
     so the assistant graph takes either. The rules run offline and are free; the model
     router routed 18 to 19 of 20 held-out questions where the rules routed 9."""
 
+    def __init__(self, catalog: Catalog = FINANCE):
+        self.catalog = catalog
+
     def decide(self, question: str, today: date, context: list[dict] | None = None):
         from .model_router import Decision  # deferred: model_router imports this module's names
 
         if classify(question) == "knowledge":
             return Decision("knowledge")
         try:
-            ex = extract(question, today)
+            ex = extract(question, today, self.catalog)
         except NeedsClarification as e:
             return Decision("clarify", message=str(e))
         return Decision("aggregation", ex.spec, assumptions=tuple(ex.assumptions))

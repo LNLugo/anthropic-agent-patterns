@@ -22,9 +22,10 @@ from collections import Counter
 from dataclasses import dataclass
 from datetime import date
 
+from .catalog import FINANCE
 from .jira_mock import Caller, MockJira
 
-ALLOWED_PROJECTS = frozenset({"BILL", "PAY", "INFRA"})
+ALLOWED_PROJECTS = FINANCE.queryable  # the default catalog; BoundedJiraTool takes any allowlist
 ISSUE_TYPES = ("Incident", "Bug", "Task", "Change")
 PRIORITIES = ("P1", "P2", "P3", "P4")
 STATUSES = ("Open", "In Progress", "Resolved", "Closed")

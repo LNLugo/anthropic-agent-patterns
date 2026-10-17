@@ -4,3 +4,4 @@ __pycache__/
 *.pyc
 ai_agent_project.py
 traces/
+.state/

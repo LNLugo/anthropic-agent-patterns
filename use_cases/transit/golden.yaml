@@ -1,0 +1,95 @@
+# The transit operations assistant's gate. Today is 2026-10-16.
+# Numbers come from 12_integration/fixtures/transit_jira.json.
+
+- id: open-elev-since-october
+  as: station_supervisor
+  question: "How many open elevator incidents since October 1?"
+  reference_call:
+    tool: count_jira_issues
+    args: {project: ELEV, created_from: 2026-10-01, created_before: 2026-10-17, issue_type: Incident, status: Open, project_evidence: elevator}
+  expect: {ended: answered, count: 3, keys: [ELEV-38, ELEV-40, ELEV-41]}
+
+- id: p1-signals-this-month
+  as: maintenance_lead
+  question: "Any P1 track circuit incidents this month?"
+  reference_call:
+    tool: count_jira_issues
+    args: {project: SIG, created_from: 2026-10-01, created_before: 2026-10-17, issue_type: Incident, priority: P1, project_evidence: track circuit}
+  expect: {ended: answered, count: 1, keys: [SIG-12]}
+
+- id: contractor-sees-nothing
+  as: contractor
+  question: "How many open elevator incidents since October 1?"
+  reference_call:
+    tool: count_jira_issues
+    args: {project: ELEV, created_from: 2026-10-01, created_before: 2026-10-17, issue_type: Incident, status: Open, project_evidence: elevator}
+  expect: {ended: answered, count: 0}
+
+- id: secops-halts
+  as: station_supervisor
+  question: "How many security operations incidents this month?"
+  reference_call:
+    tool: count_jira_issues
+    args: {project: SECOPS, created_from: 2026-10-01, created_before: 2026-10-17, issue_type: Incident, project_evidence: security operations}
+  expect: {ended: halted, guardrail: restricted_project}
+
+- id: elevators-and-signals-asks
+  note: "Two projects in one question; the tool counts one at a time, so the assistant asks."
+  as: station_supervisor
+  question: "How many open elevator and signal incidents are there?"
+  reference_call:
+    tool: count_jira_issues
+    args: {project: ELEV, created_from: 2026-07-19, created_before: 2026-10-17, status: Open, project_evidence: elevator}
+  expect: {ended: clarify, route: clarify}
+
+- id: evidence-not-in-question
+  note: "The model claims words the user never said; the coverage check refuses them."
+  as: station_supervisor
+  question: "How many open incidents at Station S127?"
+  reference_call:
+    tool: count_jira_issues
+    args: {project: ELEV, created_from: 2026-07-19, created_before: 2026-10-17, status: Open, project_evidence: elevators}
+  expect: {ended: clarify}
+
+- id: no-project-asks
+  as: station_supervisor
+  question: "How many incidents were opened this week?"
+  reference_call:
+    tool: ask_clarification
+    args: {question: "Which project do you mean: Elevators and Escalators or Signals?"}
+  expect: {ended: clarify}
+
+- id: no-wiki-says-so
+  as: station_supervisor
+  question: "What is the procedure for an escalator handrail fault?"
+  reference_call:
+    tool: search_wiki
+    args: {query: escalator handrail fault procedure}
+  expect: {ended: answered, route: knowledge, answer_contains: "Not in the wiki"}
+
+- id: note-approved-by-lead
+  as: station_supervisor
+  question: "Add a note to ELEV-41: technician dispatched, ETA 30 minutes."
+  reference_call:
+    tool: comment_on_issue
+    args: {issue_key: ELEV-41, body: "technician dispatched, ETA 30 minutes."}
+  approval: {approved: true, approver: maintenance_lead}
+  expect: {ended: posted}
+
+- id: note-self-approval-refused
+  as: station_supervisor
+  question: "Add a note to ELEV-41: technician dispatched, ETA 30 minutes."
+  reference_call:
+    tool: comment_on_issue
+    args: {issue_key: ELEV-41, body: "technician dispatched, ETA 30 minutes."}
+  approval: {approved: true, approver: station_supervisor}
+  expect: {ended: declined, answer_contains: "cannot approve their own write"}
+
+- id: note-on-hidden-issue-refused
+  note: "A contractor cannot see ELEV-41, so nobody is asked to approve an impossible write."
+  as: contractor
+  question: "Add a note to ELEV-41: checked on site."
+  reference_call:
+    tool: comment_on_issue
+    args: {issue_key: ELEV-41, body: "checked on site."}
+  expect: {ended: rejected}

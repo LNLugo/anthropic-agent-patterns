@@ -15,7 +15,7 @@ import yaml
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-DOMAINS = ("AI", "Application", "API", "Integration")
+DOMAINS = ("AI", "Application", "API", "Integration", "Enablement")
 
 
 def load() -> tuple[list[dict], list[dict]]:

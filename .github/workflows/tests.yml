@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         python: ["3.12", "3.13"]
-        suite: [phase1, 07_rag, 08_tools, 09_memory, 10_observability, 11_finops, 12_integration]
+        suite: [phase1, 07_rag, 08_tools, 09_memory, 10_observability, 11_finops, 12_integration, 13_paved_road]
         include:
           - suite: phase1
             dir: .
@@ -44,6 +44,9 @@ jobs:
           - suite: 12_integration
             dir: 12_integration
             requirements: 12_integration/requirements-test.txt
+          - suite: 13_paved_road
+            dir: 13_paved_road
+            requirements: 13_paved_road/requirements-test.txt
     env:
       LLM_PROVIDER: scripted
     steps:
@@ -70,3 +73,25 @@ jobs:
           git fetch --depth=1 origin "${{ github.base_ref }}"
           git show FETCH_HEAD:12_integration/contracts/openapi-v2.json > "$RUNNER_TEMP/base-v2.json" 2>/dev/null || echo '{}' > "$RUNNER_TEMP/base-v2.json"
           python run_contract_check.py --baseline-v2 "$RUNNER_TEMP/base-v2.json"
+
+  # The evaluation gate: every use case's golden set, replayed offline through its real
+  # pipeline. Mark "Evaluation gate" as a required status check in the repository's branch
+  # protection, and a pull request that breaks a golden case cannot merge.
+  eval-gate:
+    name: Evaluation gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      LLM_PROVIDER: scripted
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: 13_paved_road/requirements-test.txt
+      - name: Install
+        run: python -m pip install -r 13_paved_road/requirements-test.txt
+      - name: Offline gate, every use case
+        working-directory: 13_paved_road
+        run: python run_gate.py --report "$RUNNER_TEMP/gate.json"

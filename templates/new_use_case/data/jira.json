@@ -1,0 +1,17 @@
+{
+  "_note": "Synthetic example data for the template. Replace it with your use case's fixture.",
+  "projects": {
+    "DEMO":   {"name": "Demo Service",        "browse_groups": ["demo-all"]},
+    "SECOPS": {"name": "Security Operations", "browse_groups": ["security-team"]}
+  },
+  "security_levels": {},
+  "issues": [
+    {"key": "DEMO-1", "project": "DEMO", "type": "Incident", "priority": "P2", "status": "Resolved", "created": "2026-09-20", "summary": "Example resolved incident"},
+    {"key": "DEMO-2", "project": "DEMO", "type": "Incident", "priority": "P1", "status": "Open",     "created": "2026-10-01", "summary": "Example open incident"},
+    {"key": "SECOPS-1", "project": "SECOPS", "type": "Incident", "priority": "P1", "status": "Open", "created": "2026-10-05", "summary": "Example restricted incident"}
+  ],
+  "users": [
+    {"id": "demo_user", "groups": ["demo-all"]},
+    {"id": "outsider",  "groups": []}
+  ]
+}

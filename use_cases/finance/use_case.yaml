@@ -1,0 +1,48 @@
+# Use case 1: the finance engineering assistant from 08, moved onto the paved road.
+# Before: hand-wired in 08_tools (demo_assistant.py plus finance specifics in six shared
+# modules). After: this file, its golden set and a two-line prompt. Same assistant.
+
+name: "finance"
+description: "Counts Jira issues and finds wiki pages for the billing and payments teams."
+
+owner:
+  person: "Luis Lugo"
+  team: "AI Engineering"
+
+catalog:
+  projects:
+    - {code: BILL, name: "Billing Platform", aliases: ["billing platform", "billing", "bill"]}
+    - {code: PAY, name: "Payments", aliases: ["payments", "payment", "pay"]}
+    - {code: INFRA, name: "Infrastructure", aliases: ["infrastructure", "infra"]}
+    - {code: SECOPS, name: "Security Operations", aliases: ["security operations", "secops"], queryable: false, restricted: true}
+  scope: [BILL, PAY]
+
+data:
+  jira: ../../08_tools/tests/fixtures/mini_jira.json
+  wiki: ../../07_rag/tests/fixtures/mini_confluence.json
+
+identity: {mode: delegated}
+
+tools:
+  count: {max_keys: 25}
+  comment: {approval: required}
+  wiki: {min_score: 1.0}
+
+policy: [restricted_project, deployment_scope, question_coverage, keys_match_project]
+
+router:
+  kind: model
+  model: gpt-6-luna
+  coverage: true
+  prompt: prompts/router.md
+
+memory: {strategy: retrieve_pinned, retention_days: 30}
+
+budget:
+  daily_limit_usd: 0.50
+  reserve_usd: 0.0002
+
+gate:
+  today: 2026-10-12
+  offline_threshold: 1.0
+  live_threshold: 0.9

@@ -21,3 +21,4 @@ strongest objection with its answer. Standards cite these by number ([standards]
 | [0014](0014-api-versions-and-sunset.md) | A breaking change is a new version, with a dated end for the old one | API-02, API-03, API-04 |
 | [0015](0015-in-process-stand-ins.md) | Stand-ins in process, mapped to managed services | INT-01, INT-04 |
 | [0016](0016-memory-retrieved-and-pinned.md) | Memory is retrieved by relevance, with standing instructions pinned | AI-08, APP-06 |
+| [0017](0017-paved-road-configuration-over-copies.md) | A new use case is configuration on a paved road, gated offline | ENB-01, ENB-02 |
