@@ -313,10 +313,37 @@ def test_the_in_memory_graph_store_round_trips(items):
 
 # ---------------------------------------------------------------- the app tab
 
-def test_the_app_tab_runs_offline():
+def _page():
     pytest.importorskip("streamlit")
     from streamlit.testing.v1 import AppTest
 
-    at = AppTest.from_file(str(HERE.parent / "app" / "pages" / "3_Knowledge_Navigation.py"), default_timeout=120).run()
+    return AppTest.from_file(str(HERE.parent / "app" / "pages" / "3_Knowledge_Navigation.py"),
+                             default_timeout=120).run()
+
+
+def test_the_demo_opens_on_the_join_side_by_side():
+    at = _page()
     assert not at.exception
-    assert at.metric[0].value == "8 of 9"           # q1, the graph retriever
+    assert [m.value for m in at.metric[:2]] == ["0 of 9", "8 of 9"]      # q1: vector, then the graph walk
+
+
+@pytest.mark.parametrize("step", [1, 2, 3, 4])
+def test_every_demo_step_runs_and_never_shows_what_the_asker_may_not_read(step):
+    at = _page()
+    steps = at.radio(key="demo_step")
+    steps.set_value(steps.options[step]).run()
+    assert not at.exception
+    assert not at.error                                   # the leak check renders as an error box
+    assert len(at.metric) == 2
+
+
+def test_the_demo_steps_show_what_the_writeup_says():
+    """The walkthrough quotes these, so the demo must still show them."""
+    at = _page()
+    found = {}
+    for label in at.radio(key="demo_step").options:
+        at.radio(key="demo_step").set_value(label).run()
+        found[label[:2]] = tuple(m.value for m in at.metric)
+    assert found["3."] != found["2."]                     # security sees more than the network team
+    vec, graph = found["5."]
+    assert int(graph.split()[0]) < int(vec.split()[0])    # the lookup where the walk loses

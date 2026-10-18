@@ -52,35 +52,82 @@ ask_tab, findings_tab, path_tab, results_tab = st.tabs(["Ask", "Network findings
 
 QUESTIONS = load_questions()
 
-with ask_tab:
-    c1, c2, c3 = st.columns([3, 1, 1])
-    examples = {f"{q['id']}: {q['question']}": q for q in QUESTIONS}
-    picked = c1.selectbox("Question", list(examples))
-    question = c1.text_input("Or type your own", value=examples[picked]["question"])
-    who = c2.selectbox("Ask as", list(USERS), index=list(USERS).index(examples[picked]["as"]))
-    method = c3.radio("Retriever", ["graph", "vector"], help="graph: the nearest items, then a walk over the "
-                      "entities they name. vector: the nearest items only (the article's pipeline).")
-    res = nav.ask(question, who, method)
-    expected = set(examples[picked]["expected"]) if question == examples[picked]["question"] else set()
+# A short path through the demo: the join, the permission boundary from both sides, a question
+# written after the retriever was frozen, and one where the walk loses. Results are computed live.
+DEMO = [
+    ("q1", "netops_analyst", "1. The join: one address ties three people's failed logins to a geo-block"),
+    ("q5", "netops_analyst", "2. Permissions: the network team asks about a server"),
+    ("q4", "secops_analyst", "3. Permissions: security asks the same question and sees more"),
+    ("m3", "netops_analyst", "4. Held-out: a question written after the design was frozen"),
+    ("m7", "netops_analyst", "5. Where the walk loses: a plain lookup"),
+]
+SET_LABEL = {"development": "development", "held_out_1": "held-out 1", "held_out_2": "held-out 2",
+             "held_out_3": "held-out 3"}
+BY_ID = {q["id"]: q for q in QUESTIONS}
+
+
+def side(column, title, hits, expected, forbidden):
+    units = list(dict.fromkeys(unit(h.key) for h in hits))
+    found = expected & set(units)
+    column.markdown(f"**{title}**")
     if expected:
-        found = expected & {unit(h.key) for h in res.hits}
-        st.metric("Expected evidence found", f"{len(found)} of {len(expected)}")
-    if res.answer is not None:
-        (st.success if res.answer.grounded else st.warning)(res.answer.text)
+        column.metric("Expected evidence found", f"{len(found)} of {len(expected)}")
+    leaked = forbidden & set(units)
+    if forbidden:
+        (column.error if leaked else column.success)(
+            f"{len(leaked)} items this person may not read" if leaked else "Nothing this person may not read")
+    column.dataframe([{"": "✓" if unit(h.key) in expected else "", "key": h.key,
+                       "text": nav.items[h.key].text.replace("\n", " ")[:110]} for h in hits],
+                     width="stretch", hide_index=True, height=390,
+                     column_config={"": st.column_config.TextColumn(width=30),
+                                    "key": st.column_config.TextColumn(width=120)})
+
+
+with ask_tab:
+    mode_pick = st.radio("Questions", ["Demo path", "All questions", "Type your own"], horizontal=True)
+    if mode_pick == "Demo path":
+        labels = {label: (qid, who) for qid, who, label in DEMO}
+        qid, who = labels[st.radio("Step", list(labels), label_visibility="collapsed", key="demo_step")]
+        q = BY_ID[qid]
+        question = q["question"]
+    elif mode_pick == "All questions":
+        options = {f"{x['id']} ({SET_LABEL[x['set']]}): {x['question']}": x for x in QUESTIONS}
+        q = options[st.selectbox("Question", list(options))]
+        question = q["question"]
+        who = st.selectbox("Ask as", list(USERS), index=list(USERS).index(q["as"]))
     else:
-        st.info("Offline: no model writes an answer. The evidence below is what the model would be given.")
-    st.dataframe([{"key": h.key, "reached by": h.via, "expected": unit(h.key) in expected,
-                   "text": nav.items[h.key].text.replace("\n", " ")[:160]} for h in res.hits],
-                 width="stretch", hide_index=True)
-    sub = res.subgraph
+        q = None
+        question = st.text_input("Question", value="Why can't alice.smith reach the database server?")
+        who = st.selectbox("Ask as", list(USERS))
+    if q is not None and mode_pick == "Demo path":
+        st.markdown(f"> **{question}**  \n> asked as **{who}** ({', '.join(USERS[who]) or 'no groups'}) · "
+                    f"{SET_LABEL[q['set']]} question · {q['kind'].replace('_', '-')}")
+        st.caption(q["note"])
+    same = q is not None and who == q["as"]
+    expected = set(q["expected"]) if same else set()
+    forbidden = set(q.get("forbidden", ())) if same else set()
+    if q is not None and not same:
+        st.caption("Asked as someone other than the question's author, so there is no expected evidence to score.")
+    vec, gra = nav.ask(question, who, "vector"), nav.ask(question, who, "graph")
+    left, right = st.columns(2)
+    side(left, "Vector search (the article's pipeline)", vec.hits, expected, forbidden)
+    side(right, "Graph walk", gra.hits, expected, forbidden)
+    if gra.answer is not None:
+        (st.success if gra.answer.grounded else st.warning)(gra.answer.text)
+    else:
+        st.caption("Offline: no model writes an answer. Each column is the evidence a model would be given.")
+    sub = gra.subgraph
     if sub.number_of_edges():
-        dot = ["graph G { rankdir=LR; node [fontsize=10];"]
-        for n, d in sub.nodes(data=True):
-            shape = "ellipse" if d["kind"] == "entity" else ("note" if d["kind"] == "doc" else "box")
-            dot.append(f'"{n}" [shape={shape}];')
-        dot += [f'"{a}" -- "{b}";' for a, b in sub.edges()]
-        st.graphviz_chart("\n".join(dot + ["}"]))
-        st.caption("Boxes are log lines, notes are pages, ellipses are the entities that join two or more of them.")
+        with st.expander("How the graph walk's results connect", expanded=mode_pick == "Demo path"):
+            dot = ["graph G { rankdir=LR; node [fontsize=10];"]
+            for n, d in sub.nodes(data=True):
+                shape = "ellipse" if d["kind"] == "entity" else ("note" if d["kind"] == "doc" else "box")
+                style = ', style=filled, fillcolor="#dff0d8"' if unit(n) in expected else ""
+                dot.append(f'"{n}" [shape={shape}{style}];')
+            dot += [f'"{a}" -- "{b}";' for a, b in sub.edges()]
+            st.graphviz_chart("\n".join(dot + ["}"]))
+            st.caption("Boxes are log lines, notes are pages, ellipses are the entities that join two or more of "
+                       "them. Green: expected evidence.")
 
 with findings_tab:
     groups = USERS[st.selectbox("As", list(USERS), key="findings_as")]
