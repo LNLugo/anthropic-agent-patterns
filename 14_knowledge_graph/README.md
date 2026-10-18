@@ -16,6 +16,16 @@ python run_evaluation.py --live      # OpenAI embeddings, Upstash Vector and Ups
 streamlit run ../app/Agent_Patterns.py   # then "Knowledge Navigation" in the sidebar
 ```
 
+## The demo
+
+In the app's "Knowledge Navigation" tab, "Ask" runs both retrievers side by side on the same question, as the same person, each with its count of expected evidence found. A five-step demo path covers:
+1. **The join:** john.doe's failures, where vector search finds 0 of 9 and the graph walk 8 of 9 (a development question, so an illustration, not evidence).
+2. and 3. **The permission boundary from both sides:** the same question asked by network operations and by security.
+4. **A held-out question.**
+5. **Where the walk loses:** a plain lookup it gets wrong.
+
+Every result is computed live, and tests check that each step still shows what this README says.
+
 ## The data
 
 The data is synthetic and deterministic (seed 14). It contains 1,281 log lines:

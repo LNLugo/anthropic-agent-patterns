@@ -162,7 +162,7 @@ replays every use case's golden set and fails below its threshold.
 | 11 AI FinOps | `11_finops`: `pytest` | 28 | prices recorded runs and trace files; budgets through 08 on `ScriptedChatModel` |
 | 12 Integration | `12_integration`: `pytest` | 56 | the worker routes in code; synthetic sources, an in-process broker, the gateway over Starlette's test client |
 | 13 Paved road | `13_paved_road`: `pytest` | 45 | each golden case's reference call, replayed by `ScriptedChatModel` through the real pipeline |
-| 14 Knowledge navigation | `14_knowledge_graph`: `pytest` | 37 | `HashingEmbeddings` (a lexical stand-in) and in-memory stores for Upstash; `ScriptedChatModel` for answers |
+| 14 Knowledge navigation | `14_knowledge_graph`: `pytest` | 42 | `HashingEmbeddings` (a lexical stand-in) and in-memory stores for Upstash; `ScriptedChatModel` for answers |
 
 Phase 1 tests assert on the **path the graph took**, not on model prose: which
 nodes ran, in what order, and what each node was given. `LLM_PROVIDER=scripted`
