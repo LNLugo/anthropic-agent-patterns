@@ -128,6 +128,17 @@ So the difference in the last two columns is the walk. On held-out 3, the walk b
 
 Nine mutations to these controls were tried. The suite caught the seven that still applied; two no longer matched the code.
 
+## Operating it
+
+[RUNBOOK.md](RUNBOOK.md) lists each failure mode with its signal, how to confirm it, the action, the owner and the fallback. `python run_health_check.py` runs the five health checks: parse rate and freshness per feed, the graph store's completeness, permissions, and the held-out regression gate. It runs them on the data as it is, then plants five faults on a copy:
+- a vendor changes the VPN log format;
+- the firewall feed stops;
+- the auth log is tagged readable by network operations;
+- a graph save stops partway;
+- the walk is retuned without re-measuring.
+
+Healthy data raises no alarm. Every fault is caught by the check meant for it, and `tests/test_health.py` keeps it that way.
+
 ## Running live
 
 1. Create an Upstash Vector index with **1536 dimensions and cosine similarity** (text-embedding-3-small's size), and an Upstash Redis database.

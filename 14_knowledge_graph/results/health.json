@@ -1,0 +1,525 @@
+{
+  "scenarios": [
+    {
+      "scenario": "healthy",
+      "checks": [
+        {
+          "name": "parse:vpn",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 352 lines unparsed"
+        },
+        {
+          "name": "parse:firewall",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 643 lines unparsed"
+        },
+        {
+          "name": "parse:syslog",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 161 lines unparsed"
+        },
+        {
+          "name": "parse:auth",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 118 lines unparsed"
+        },
+        {
+          "name": "parse:inventory",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 7 lines unparsed"
+        },
+        {
+          "name": "fresh:vpn",
+          "ok": true,
+          "value": 2.8,
+          "threshold": "<= 6h",
+          "detail": "newest line 2026-10-14 20:12:30"
+        },
+        {
+          "name": "fresh:firewall",
+          "ok": true,
+          "value": 0.0,
+          "threshold": "<= 6h",
+          "detail": "newest line 2026-10-14 23:59:58"
+        },
+        {
+          "name": "fresh:syslog",
+          "ok": true,
+          "value": 0.0,
+          "threshold": "<= 6h",
+          "detail": "newest line 2026-10-14 23:44:29"
+        },
+        {
+          "name": "fresh:auth",
+          "ok": true,
+          "value": 0.0,
+          "threshold": "<= 6h",
+          "detail": "newest line 2026-10-14 23:43:25"
+        },
+        {
+          "name": "fresh:inventory",
+          "ok": true,
+          "value": 334.9,
+          "threshold": "<= 744h",
+          "detail": "newest line 2026-10-01 00:06:00"
+        },
+        {
+          "name": "graph store",
+          "ok": true,
+          "value": 1612.0,
+          "threshold": "= 1612 nodes, 3275 edges",
+          "detail": "read back 1612 nodes, 3275 edges"
+        },
+        {
+          "name": "permissions",
+          "ok": true,
+          "value": 0.0,
+          "threshold": "= 0",
+          "detail": ""
+        },
+        {
+          "name": "regression",
+          "ok": true,
+          "value": 16.0,
+          "threshold": ">= 16",
+          "detail": "16 of 26 expected items found"
+        }
+      ]
+    },
+    {
+      "scenario": "vendor changes the VPN log format",
+      "checks": [
+        {
+          "name": "parse:vpn",
+          "ok": false,
+          "value": 0.8267,
+          "threshold": ">= 0.99",
+          "detail": "61 of 352 lines unparsed, first at line 292"
+        },
+        {
+          "name": "parse:firewall",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 643 lines unparsed"
+        },
+        {
+          "name": "parse:syslog",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 161 lines unparsed"
+        },
+        {
+          "name": "parse:auth",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 118 lines unparsed"
+        },
+        {
+          "name": "parse:inventory",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 7 lines unparsed"
+        }
+      ],
+      "not_run": "the rebuild stops: vpn:292: not a log line: '2026-10-14T12:12:15Z vpn-gw vpn_login_success user=paula.reyes ip=10.20.13.74'"
+    },
+    {
+      "scenario": "firewall feed stops",
+      "checks": [
+        {
+          "name": "parse:vpn",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 352 lines unparsed"
+        },
+        {
+          "name": "parse:firewall",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 521 lines unparsed"
+        },
+        {
+          "name": "parse:syslog",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 161 lines unparsed"
+        },
+        {
+          "name": "parse:auth",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 118 lines unparsed"
+        },
+        {
+          "name": "parse:inventory",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 7 lines unparsed"
+        },
+        {
+          "name": "fresh:vpn",
+          "ok": true,
+          "value": 2.8,
+          "threshold": "<= 6h",
+          "detail": "newest line 2026-10-14 20:12:30"
+        },
+        {
+          "name": "fresh:firewall",
+          "ok": false,
+          "value": 12.0,
+          "threshold": "<= 6h",
+          "detail": "newest line 2026-10-14 10:58:08"
+        },
+        {
+          "name": "fresh:syslog",
+          "ok": true,
+          "value": 0.0,
+          "threshold": "<= 6h",
+          "detail": "newest line 2026-10-14 23:44:29"
+        },
+        {
+          "name": "fresh:auth",
+          "ok": true,
+          "value": 0.0,
+          "threshold": "<= 6h",
+          "detail": "newest line 2026-10-14 23:43:25"
+        },
+        {
+          "name": "fresh:inventory",
+          "ok": true,
+          "value": 334.9,
+          "threshold": "<= 744h",
+          "detail": "newest line 2026-10-01 00:06:00"
+        },
+        {
+          "name": "graph store",
+          "ok": true,
+          "value": 1458.0,
+          "threshold": "= 1458 nodes, 2909 edges",
+          "detail": "read back 1458 nodes, 2909 edges"
+        },
+        {
+          "name": "permissions",
+          "ok": true,
+          "value": 0.0,
+          "threshold": "= 0",
+          "detail": ""
+        },
+        {
+          "name": "regression",
+          "ok": false,
+          "value": 14.0,
+          "threshold": ">= 16",
+          "detail": "14 of 26 expected items found"
+        }
+      ]
+    },
+    {
+      "scenario": "auth log tagged readable by netops",
+      "checks": [
+        {
+          "name": "parse:vpn",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 352 lines unparsed"
+        },
+        {
+          "name": "parse:firewall",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 643 lines unparsed"
+        },
+        {
+          "name": "parse:syslog",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 161 lines unparsed"
+        },
+        {
+          "name": "parse:auth",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 118 lines unparsed"
+        },
+        {
+          "name": "parse:inventory",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 7 lines unparsed"
+        },
+        {
+          "name": "fresh:vpn",
+          "ok": true,
+          "value": 2.8,
+          "threshold": "<= 6h",
+          "detail": "newest line 2026-10-14 20:12:30"
+        },
+        {
+          "name": "fresh:firewall",
+          "ok": true,
+          "value": 0.0,
+          "threshold": "<= 6h",
+          "detail": "newest line 2026-10-14 23:59:58"
+        },
+        {
+          "name": "fresh:syslog",
+          "ok": true,
+          "value": 0.0,
+          "threshold": "<= 6h",
+          "detail": "newest line 2026-10-14 23:44:29"
+        },
+        {
+          "name": "fresh:auth",
+          "ok": true,
+          "value": 0.0,
+          "threshold": "<= 6h",
+          "detail": "newest line 2026-10-14 23:43:25"
+        },
+        {
+          "name": "fresh:inventory",
+          "ok": true,
+          "value": 334.9,
+          "threshold": "<= 744h",
+          "detail": "newest line 2026-10-01 00:06:00"
+        },
+        {
+          "name": "graph store",
+          "ok": true,
+          "value": 1612.0,
+          "threshold": "= 1612 nodes, 3275 edges",
+          "detail": "read back 1612 nodes, 3275 edges"
+        },
+        {
+          "name": "permissions",
+          "ok": false,
+          "value": 6.0,
+          "threshold": "= 0",
+          "detail": "auth:116, auth:77, auth:78, auth:83, auth:84 ..."
+        },
+        {
+          "name": "regression",
+          "ok": false,
+          "value": 14.0,
+          "threshold": ">= 16",
+          "detail": "14 of 26 expected items found"
+        }
+      ]
+    },
+    {
+      "scenario": "graph store save stops partway",
+      "checks": [
+        {
+          "name": "parse:vpn",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 352 lines unparsed"
+        },
+        {
+          "name": "parse:firewall",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 643 lines unparsed"
+        },
+        {
+          "name": "parse:syslog",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 161 lines unparsed"
+        },
+        {
+          "name": "parse:auth",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 118 lines unparsed"
+        },
+        {
+          "name": "parse:inventory",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 7 lines unparsed"
+        },
+        {
+          "name": "fresh:vpn",
+          "ok": true,
+          "value": 2.8,
+          "threshold": "<= 6h",
+          "detail": "newest line 2026-10-14 20:12:30"
+        },
+        {
+          "name": "fresh:firewall",
+          "ok": true,
+          "value": 0.0,
+          "threshold": "<= 6h",
+          "detail": "newest line 2026-10-14 23:59:58"
+        },
+        {
+          "name": "fresh:syslog",
+          "ok": true,
+          "value": 0.0,
+          "threshold": "<= 6h",
+          "detail": "newest line 2026-10-14 23:44:29"
+        },
+        {
+          "name": "fresh:auth",
+          "ok": true,
+          "value": 0.0,
+          "threshold": "<= 6h",
+          "detail": "newest line 2026-10-14 23:43:25"
+        },
+        {
+          "name": "fresh:inventory",
+          "ok": true,
+          "value": 334.9,
+          "threshold": "<= 744h",
+          "detail": "newest line 2026-10-01 00:06:00"
+        },
+        {
+          "name": "graph store",
+          "ok": false,
+          "value": 1531.0,
+          "threshold": "= 1612 nodes, 3275 edges",
+          "detail": "read back 1531 nodes, 3112 edges"
+        },
+        {
+          "name": "permissions",
+          "ok": false,
+          "value": null,
+          "threshold": "runs",
+          "detail": "raised KeyError: 'vpn:343'"
+        },
+        {
+          "name": "regression",
+          "ok": false,
+          "value": null,
+          "threshold": "runs",
+          "detail": "raised KeyError: 'vpn:79'"
+        }
+      ]
+    },
+    {
+      "scenario": "walk retuned without re-measuring (4 hops to 1)",
+      "checks": [
+        {
+          "name": "parse:vpn",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 352 lines unparsed"
+        },
+        {
+          "name": "parse:firewall",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 643 lines unparsed"
+        },
+        {
+          "name": "parse:syslog",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 161 lines unparsed"
+        },
+        {
+          "name": "parse:auth",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 118 lines unparsed"
+        },
+        {
+          "name": "parse:inventory",
+          "ok": true,
+          "value": 1.0,
+          "threshold": ">= 0.99",
+          "detail": "0 of 7 lines unparsed"
+        },
+        {
+          "name": "fresh:vpn",
+          "ok": true,
+          "value": 2.8,
+          "threshold": "<= 6h",
+          "detail": "newest line 2026-10-14 20:12:30"
+        },
+        {
+          "name": "fresh:firewall",
+          "ok": true,
+          "value": 0.0,
+          "threshold": "<= 6h",
+          "detail": "newest line 2026-10-14 23:59:58"
+        },
+        {
+          "name": "fresh:syslog",
+          "ok": true,
+          "value": 0.0,
+          "threshold": "<= 6h",
+          "detail": "newest line 2026-10-14 23:44:29"
+        },
+        {
+          "name": "fresh:auth",
+          "ok": true,
+          "value": 0.0,
+          "threshold": "<= 6h",
+          "detail": "newest line 2026-10-14 23:43:25"
+        },
+        {
+          "name": "fresh:inventory",
+          "ok": true,
+          "value": 334.9,
+          "threshold": "<= 744h",
+          "detail": "newest line 2026-10-01 00:06:00"
+        },
+        {
+          "name": "graph store",
+          "ok": true,
+          "value": 1612.0,
+          "threshold": "= 1612 nodes, 3275 edges",
+          "detail": "read back 1612 nodes, 3275 edges"
+        },
+        {
+          "name": "permissions",
+          "ok": true,
+          "value": 0.0,
+          "threshold": "= 0",
+          "detail": ""
+        },
+        {
+          "name": "regression",
+          "ok": false,
+          "value": 12.0,
+          "threshold": ">= 16",
+          "detail": "12 of 26 expected items found"
+        }
+      ]
+    }
+  ]
+}
