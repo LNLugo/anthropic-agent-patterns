@@ -1,0 +1,68 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Length 1284 >>
+stream
+BT
+/F1 10 Tf
+12 TL
+50 760 Td
+(STANDARD OPERATING PROCEDURE) Tj T*
+(Warehouse temperature mapping) Tj T*
+(Document No.: SOP-QA-0022) Tj T*
+(Revision: 03) Tj T*
+(Effective date: 2024-02-16) Tj T*
+(Site: Brookvale) Tj T*
+(Owner: Ana Lindqvist) Tj T*
+(Approved by: Ana Quiroga) Tj T*
+() Tj T*
+(Purpose) Tj T*
+(This procedure defines how warehouse temperature mapping is carried out at Brookvale.) Tj T*
+() Tj T*
+(Scope) Tj T*
+(Applies to all warehouse temperature mapping activities in production and quality control at Brookvale.) Tj T*
+() Tj T*
+(Responsibilities) Tj T*
+(The process owner, Ana Lindqvist, maintains this procedure. Quality approves it \(revised in revision 02\).) Tj T*
+() Tj T*
+(Procedure) Tj T*
+(Step 1: Inspect deviations to Quality within one day, and record the result on form F-223.) Tj T*
+(Step 2: Confirm the area is free of previous materials.) Tj T*
+(Step 3: Clean the result against the acceptance criterion.) Tj T*
+() Tj T*
+(Records) Tj T*
+(Records of warehouse temperature mapping are kept for five years after batch expiry \(revised in revision 02\).) Tj T*
+() Tj T*
+(Revision history) Tj T*
+(Revision   Change) Tj T*
+(01         Revision 01: first issue.) Tj T*
+(02         Revision 02: updated.) Tj T*
+(03         Revision 03: updated.) Tj T*
+() Tj T*
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 4 0 R >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000210 00000 n 
+0000001546 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1672
+%%EOF

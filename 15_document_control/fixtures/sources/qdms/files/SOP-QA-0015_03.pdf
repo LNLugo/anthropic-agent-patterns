@@ -1,0 +1,69 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Length 1257 >>
+stream
+BT
+/F1 10 Tf
+12 TL
+50 760 Td
+(STANDARD OPERATING PROCEDURE) Tj T*
+(Complaint handling) Tj T*
+(Document No.: SOP-QA-0015) Tj T*
+(Revision: 03) Tj T*
+(Effective date: 2025-03-19) Tj T*
+(Site: Northfield) Tj T*
+(Owner: Jonas Quiroga) Tj T*
+(Approved by: Owen Nakamura) Tj T*
+() Tj T*
+(1. PURPOSE) Tj T*
+(This procedure defines how complaint handling is carried out at Northfield.) Tj T*
+() Tj T*
+(2. SCOPE) Tj T*
+(Applies to all complaint handling activities in production and quality control at Northfield \(revised in revision 02\).) Tj T*
+() Tj T*
+(3. RESPONSIBILITIES) Tj T*
+(The process owner, Jonas Quiroga, maintains this procedure. Quality approves it \(revised in revision 03\).) Tj T*
+() Tj T*
+(4. PROCEDURE) Tj T*
+(Step 1: Document the area is free of previous materials.) Tj T*
+(Step 2: Escalate the result against the acceptance criterion.) Tj T*
+(Step 3: Verify the second-person check.) Tj T*
+(Step 4: Record the batch number.) Tj T*
+() Tj T*
+(5. RECORDS) Tj T*
+(Records of complaint handling are kept for five years after batch expiry.) Tj T*
+() Tj T*
+(6. REVISION HISTORY) Tj T*
+(Revision   Change) Tj T*
+(01         Revision 01: first issue.) Tj T*
+(02         Revision 02: updated.) Tj T*
+(03         Revision 03: updated.) Tj T*
+() Tj T*
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 4 0 R >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000210 00000 n 
+0000001519 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1645
+%%EOF

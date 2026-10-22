@@ -1,0 +1,299 @@
+{
+ "apiVersion": "stand-in",
+ "modelId": "prebuilt-layout",
+ "pages": [
+  {
+   "pageNumber": 1,
+   "unit": "inch",
+   "lines": [
+    {
+     "content": "Analysis Certificate",
+     "confidence": 0.968,
+     "polygon": [
+      1.0,
+      1.0,
+      7.5,
+      1.0,
+      7.5,
+      1.2,
+      1.0,
+      1.2
+     ]
+    },
+    {
+     "content": "Cert. ref: COA-2003-L26-0166",
+     "confidence": 0.982,
+     "polygon": [
+      1.0,
+      1.25,
+      7.5,
+      1.25,
+      7.5,
+      1.45,
+      1.0,
+      1.45
+     ]
+    },
+    {
+     "content": "Vendor: Ostrava Botanicals (fictional) (SUP-2003)",
+     "confidence": 0.954,
+     "polygon": [
+      1.0,
+      1.5,
+      7.5,
+      1.5,
+      7.5,
+      1.7,
+      1.0,
+      1.7
+     ]
+    },
+    {
+     "content": "Item: RM-10011",
+     "confidence": 0.965,
+     "polygon": [
+      1.0,
+      1.75,
+      7.5,
+      1.75,
+      7.5,
+      1.95,
+      1.0,
+      1.95
+     ]
+    },
+    {
+     "content": "Batch: L26-0166",
+     "confidence": 0.62,
+     "polygon": [
+      1.0,
+      2.0,
+      7.5,
+      2.0,
+      7.5,
+      2.2,
+      1.0,
+      2.2
+     ]
+    },
+    {
+     "content": "Date of manufacture: 2026-08-19",
+     "confidence": 0.986,
+     "polygon": [
+      1.0,
+      2.25,
+      7.5,
+      2.25,
+      7.5,
+      2.45,
+      1.0,
+      2.45
+     ]
+    },
+    {
+     "content": "1. STATEMENT",
+     "confidence": 0.946,
+     "polygon": [
+      1.0,
+      2.75,
+      7.5,
+      2.75,
+      7.5,
+      2.95,
+      1.0,
+      2.95
+     ]
+    },
+    {
+     "content": "We certify that the lot below was tested and meets the stated results.",
+     "confidence": 0.958,
+     "polygon": [
+      1.0,
+      3.0,
+      7.5,
+      3.0,
+      7.5,
+      3.2,
+      1.0,
+      3.2
+     ]
+    },
+    {
+     "content": "2. RESULTS",
+     "confidence": 0.954,
+     "polygon": [
+      1.0,
+      3.5,
+      7.5,
+      3.5,
+      7.5,
+      3.7,
+      1.0,
+      3.7
+     ]
+    },
+    {
+     "content": "Test             Result   Unit",
+     "confidence": 0.986,
+     "polygon": [
+      1.0,
+      3.75,
+      7.5,
+      3.75,
+      7.5,
+      3.95,
+      1.0,
+      3.95
+     ]
+    },
+    {
+     "content": "Acid value       1.20     mg KOH/g",
+     "confidence": 0.968,
+     "polygon": [
+      1.0,
+      4.0,
+      7.5,
+      4.0,
+      7.5,
+      4.2,
+      1.0,
+      4.2
+     ]
+    },
+    {
+     "content": "Peroxide value   4.5      meq/kg",
+     "confidence": 0.938,
+     "polygon": [
+      1.0,
+      4.25,
+      7.5,
+      4.25,
+      7.5,
+      4.45,
+      1.0,
+      4.45
+     ]
+    },
+    {
+     "content": "Water            0.16     %",
+     "confidence": 0.933,
+     "polygon": [
+      1.0,
+      4.5,
+      7.5,
+      4.5,
+      7.5,
+      4.7,
+      1.0,
+      4.7
+     ]
+    },
+    {
+     "content": "3. RELEASE",
+     "confidence": 0.953,
+     "polygon": [
+      1.0,
+      5.0,
+      7.5,
+      5.0,
+      7.5,
+      5.2,
+      1.0,
+      5.2
+     ]
+    },
+    {
+     "content": "Released by supplier QA on 2026-08-19.",
+     "confidence": 0.971,
+     "polygon": [
+      1.0,
+      5.25,
+      7.5,
+      5.25,
+      7.5,
+      5.45,
+      1.0,
+      5.45
+     ]
+    }
+   ]
+  }
+ ],
+ "tables": [
+  {
+   "rowCount": 4,
+   "columnCount": 3,
+   "cells": [
+    {
+     "rowIndex": 0,
+     "columnIndex": 0,
+     "content": "Test",
+     "kind": "columnHeader"
+    },
+    {
+     "rowIndex": 0,
+     "columnIndex": 1,
+     "content": "Result",
+     "kind": "columnHeader"
+    },
+    {
+     "rowIndex": 0,
+     "columnIndex": 2,
+     "content": "Unit",
+     "kind": "columnHeader"
+    },
+    {
+     "rowIndex": 1,
+     "columnIndex": 0,
+     "content": "Acid value"
+    },
+    {
+     "rowIndex": 1,
+     "columnIndex": 1,
+     "content": "1.20"
+    },
+    {
+     "rowIndex": 1,
+     "columnIndex": 2,
+     "content": "mg KOH/g"
+    },
+    {
+     "rowIndex": 2,
+     "columnIndex": 0,
+     "content": "Peroxide value"
+    },
+    {
+     "rowIndex": 2,
+     "columnIndex": 1,
+     "content": "4.5"
+    },
+    {
+     "rowIndex": 2,
+     "columnIndex": 2,
+     "content": "meq/kg"
+    },
+    {
+     "rowIndex": 3,
+     "columnIndex": 0,
+     "content": "Water"
+    },
+    {
+     "rowIndex": 3,
+     "columnIndex": 1,
+     "content": "0.16"
+    },
+    {
+     "rowIndex": 3,
+     "columnIndex": 2,
+     "content": "%"
+    }
+   ],
+   "caption": "Results",
+   "boundingRegions": [
+    {
+     "pageNumber": 1
+    }
+   ]
+  }
+ ]
+}

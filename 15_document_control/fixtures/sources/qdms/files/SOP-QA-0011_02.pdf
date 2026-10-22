@@ -1,0 +1,67 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Length 1115 >>
+stream
+BT
+/F1 10 Tf
+12 TL
+50 760 Td
+(STANDARD OPERATING PROCEDURE) Tj T*
+(Pest control) Tj T*
+(Document No.: SOP-QA-0011) Tj T*
+(Revision: 02) Tj T*
+(Effective date: 2024-01-22) Tj T*
+(Site: Lakemoor) Tj T*
+(Owner: Tara Rasmussen) Tj T*
+(Approved by: Ana Moreau) Tj T*
+() Tj T*
+(1 Purpose) Tj T*
+(This procedure defines how pest control is carried out at Lakemoor.) Tj T*
+() Tj T*
+(2 Scope) Tj T*
+(Applies to all pest control activities in production and quality control at Lakemoor.) Tj T*
+() Tj T*
+(3 Responsibilities) Tj T*
+(The process owner, Tara Rasmussen, maintains this procedure. Quality approves it.) Tj T*
+() Tj T*
+(4 Procedure) Tj T*
+(Step 1: Escalate the equipment status label.) Tj T*
+(Step 2: Verify deviations to Quality within one day.) Tj T*
+(Step 3: Record the area is free of previous materials, and record the result on form F-112.) Tj T*
+() Tj T*
+(5 Records) Tj T*
+(Records of pest control are kept for five years after batch expiry.) Tj T*
+() Tj T*
+(6 Revision history) Tj T*
+(Revision   Change) Tj T*
+(01         Revision 01: first issue.) Tj T*
+(02         Revision 02: updated.) Tj T*
+() Tj T*
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 4 0 R >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000210 00000 n 
+0000001377 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1503
+%%EOF

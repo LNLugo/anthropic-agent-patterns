@@ -375,3 +375,36 @@ Findings carry type, severity, confidence and citations; the reviewer accepts, e
 6.  Which markets and languages are in scope for phase one?
 
 7.  Who owns the taxonomy, and who signs off acceptance criteria?
+
+## Appendix: controls, evidence and decisions
+
+The repository's [design template](../templates/design-doc.md) asks for three things the sections above do not state directly. They are given here; build status is in the [module README](../../15_document_control/README.md#build-status).
+
+### Controls
+
+| Standard | How SmartDMS meets it | Proof |
+|---|---|---|
+| AI-01 · The simplest pattern that reliably works | Rules classify, extract and validate; a model is added only where a held-out measurement shows rules fall short | `15_document_control/results/intake.json`; the model path is plumbing only until then |
+| AI-04 · Answers are grounded or withheld | Every claim cites document, revision and section, or the system abstains | PR 2 |
+| AI-06 · A write waits for a person | Review decisions are approved by a qualified person through 08's approval; write-back to the DMS only after | PR 3 |
+| APP-01 · Every call is made as a named identity | Retrieval filtered by the asker's groups before ranking, as 07 and 14 do | PR 2 |
+| APP-03 · Fail closed | A record outside its contract, a reply outside the schema or a score below threshold is quarantined or sent to review, never defaulted | `test_below_the_threshold_a_document_goes_to_intake_review`, `test_the_model_path_accepts_only_a_reply_that_fits_the_schema` |
+| APP-04 · Offline tests, with positive controls | 52 tests offline, no key; the redaction and contract checks each have a control | `test_personal_data_is_redacted_and_approvers_are_kept`, `test_a_record_that_breaks_its_contract_is_quarantined_and_the_rest_flow` |
+| INT-01, INT-02, INT-04 · One envelope, exactly once, dead-letter what cannot recover | 12's envelope, processed store and dead-letter queue; work keyed on document number, revision and content | `test_shuffled_duplicated_and_crashed_delivery_reaches_the_same_outcome` and the INT tests named in [standards](../architecture/standards.md) |
+| OPS-01, OPS-02, OPS-03 · Traced, priced, budgeted | Through 10 and 11, with OCR and embedding prices added to the sourced price file | PR 4 |
+
+### Evidence that will show it works
+
+| Claim | Measured as | Control | Would prove the design wrong |
+|---|---|---|---|
+| Effective versions only | Superseded or obsolete content returned to a default query | The same queries asking for history do return them | Any superseded chunk in a default result |
+| At most one effective revision | Effective revisions per document number at every step of a shuffled, duplicated status replay | In-order replay reaches the same final state | A count of 2 at any step |
+| Nothing silently corrected | Every extracted value against its source line | A planted bad value stays bad and goes to review | A value that differs from its line |
+| Deterministic diff then model classification beats asking the model to compare | Change recall, severity accuracy and false findings on seeded revision pairs with planted, labelled changes | The model comparing directly | Lower recall than the model alone (PR 3, ADR 0019) |
+| Rules are good enough for intake | Classification and extraction accuracy on a held-out document set written after the rules are frozen | The development set | Rules below the model challenger on held-out documents |
+
+### Decisions needed
+
+The open questions in section 23 stand. Two more came out of building the first part:
+1. **Revision for uncontrolled records.** Certificates, complaints and emails state no revision; the key defaults to `/01`. Recommendation: confirm with Quality whether a reissued certificate is a new revision or a new document.
+2. **Free-text personal data.** The rules stand-in misses names written in prose (10 of 10 planted). Recommendation: a PII service is needed before complaints are indexed, and its recall measured on the same planted set.

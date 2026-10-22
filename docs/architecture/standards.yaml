@@ -120,7 +120,6 @@ standards:
         - 14_knowledge_graph/tests/test_netgraph.py::test_held_out_3_was_scored_by_the_retriever_as_it_is_now
         - 14_knowledge_graph/tests/test_netgraph.py::test_the_published_numbers_are_what_the_code_produces_now
 
-
   - id: AI-08
     domain: AI
     title: "Memory is selected, bounded, and never widens a check"
@@ -172,7 +171,7 @@ standards:
     statement: "Unknown permissions, missing ancestors, unpriced models and unverifiable inputs are refused, not defaulted to open."
     rationale: "Every default-open path is a leak waiting for its input."
     adr: ["0008"]
-    applies_to: ["07", "11", "12", "14"]
+    applies_to: ["07", "11", "12", "14", "15"]
     evidence:
       "07":
         - 07_rag/tests/test_permissions.py::test_unknown_space_fails_closed
@@ -185,6 +184,9 @@ standards:
         - 14_knowledge_graph/tests/test_netgraph.py::test_the_vector_filter_is_built_from_checked_group_names
         - 14_knowledge_graph/tests/test_netgraph.py::test_an_index_made_for_another_model_is_refused_before_indexing
         - 14_knowledge_graph/tests/test_netgraph.py::test_someone_in_no_group_gets_nothing
+      "15":
+        - 15_document_control/tests/test_document_control.py::test_below_the_threshold_a_document_goes_to_intake_review
+        - 15_document_control/tests/test_document_control.py::test_the_model_path_accepts_only_a_reply_that_fits_the_schema
 
   - id: APP-04
     domain: Application
@@ -192,7 +194,7 @@ standards:
     statement: "Every suite runs with no API key. A test that proves something never happens is paired with a run where it does (the control), so a zero means the check works, not that it is blind."
     rationale: "A zero without a control is indistinguishable from a broken test."
     adr: ["0013"]
-    applies_to: ["06", "07", "08", "09", "10", "11", "12", "13", "14"]
+    applies_to: ["06", "07", "08", "09", "10", "11", "12", "13", "14", "15"]
     evidence:
       "06":
         - tests/test_scripted_model.py::test_a_call_with_no_step_left_raises
@@ -212,6 +214,9 @@ standards:
         - 13_paved_road/tests/test_paved_road.py::test_the_gate_catches_a_regression_in_shared_code
       "14":
         - 14_knowledge_graph/tests/test_netgraph.py::test_the_permission_check_sees_forbidden_items_when_the_filter_is_widened
+      "15":
+        - 15_document_control/tests/test_document_control.py::test_personal_data_is_redacted_and_approvers_are_kept
+        - 15_document_control/tests/test_document_control.py::test_a_record_that_breaks_its_contract_is_quarantined_and_the_rest_flow
 
   - id: APP-05
     domain: Application
@@ -224,7 +229,6 @@ standards:
     checks: [model_construction]
 
   # ---------------------------------------------------------------- Observability and cost (AI operations)
-
 
   - id: APP-06
     domain: Application
@@ -373,11 +377,13 @@ standards:
     statement: "Events from every source are converted at the edge into one envelope with a source-unique id; consumers never parse a vendor's format."
     rationale: "Consumers then depend on one contract, not on every source."
     adr: ["0015"]
-    applies_to: ["12"]
+    applies_to: ["12", "15"]
     evidence:
       "12":
         - 12_integration/tests/test_adapters.py::test_a_service_alert_is_already_event_shaped
         - 12_integration/tests/test_adapters.py::test_the_envelope_refuses_what_it_cannot_identify
+      "15":
+        - 15_document_control/tests/test_document_control.py::test_every_source_record_becomes_one_envelope_or_a_named_rejection
 
   - id: INT-02
     domain: Integration
@@ -385,12 +391,16 @@ standards:
     statement: "Consumers assume at-least-once delivery. Duplicates are detected by event, and the work itself is keyed on the business entity, so two sources reporting one thing cause one action."
     rationale: "Broker deduplication works within a time window and per source; a business key has neither limit."
     adr: ["0010"]
-    applies_to: ["12"]
+    applies_to: ["12", "15"]
     evidence:
       "12":
         - 12_integration/tests/test_delivery.py::test_duplicates_are_handled_once
         - 12_integration/tests/test_triage.py::test_one_outage_from_two_sources_is_triaged_once
         - 12_integration/tests/test_integration_check.py::test_keyed_on_events_two_sources_double_the_work_for_people_and_jira
+      "15":
+        - 15_document_control/tests/test_document_control.py::test_shuffled_duplicated_and_crashed_delivery_reaches_the_same_outcome
+        - 15_document_control/tests/test_document_control.py::test_without_the_processed_store_the_work_repeats_but_the_outcome_holds
+        - 15_document_control/tests/test_document_control.py::test_copies_in_a_second_system_are_one_record_conflicts_are_kept_apart
 
   - id: INT-03
     domain: Integration
@@ -411,12 +421,15 @@ standards:
     statement: "Invalid messages and policy halts go to the dead-letter queue at once with their reason; other failures retry with exponential backoff, then dead-letter. One bad message never blocks the rest, and a dead letter can be replayed once."
     rationale: "Retrying a message that cannot succeed only delays the ones behind it."
     adr: ["0015"]
-    applies_to: ["12"]
+    applies_to: ["12", "15"]
     evidence:
       "12":
         - 12_integration/tests/test_delivery.py::test_a_message_that_keeps_failing_is_dead_lettered_and_the_rest_still_flow
         - 12_integration/tests/test_delivery.py::test_an_invalid_event_is_dead_lettered_at_once
         - 12_integration/tests/test_delivery.py::test_a_dead_letter_is_replayed_once_its_cause_is_fixed
+      "15":
+        - 15_document_control/tests/test_document_control.py::test_a_record_that_breaks_its_contract_is_quarantined_and_the_rest_flow
+        - 15_document_control/tests/test_document_control.py::test_a_file_that_will_not_parse_is_quarantined_with_its_reason
 
   - id: INT-05
     domain: Integration

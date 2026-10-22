@@ -197,7 +197,7 @@ Unknown permissions, missing ancestors, unpriced models and unverifiable inputs 
 
 *Why:* Every default-open path is a leak waiting for its input.
 
-*Applies to:* 07, 11, 12, 14 · *ADRs:* [0008](adr/0008-prices-from-a-sourced-file.md)
+*Applies to:* 07, 11, 12, 14, 15 · *ADRs:* [0008](adr/0008-prices-from-a-sourced-file.md)
 
 *Enforced by:*
 
@@ -205,6 +205,7 @@ Unknown permissions, missing ancestors, unpriced models and unverifiable inputs 
 - 11: [`test_an_unpriced_model_is_refused_before_it_is_called`](../../11_finops/tests/test_budget.py)
 - 12: [`test_an_unsigned_or_forged_webhook_is_refused`](../../12_integration/tests/test_adapters.py)
 - 14: [`test_the_vector_filter_is_built_from_checked_group_names`](../../14_knowledge_graph/tests/test_netgraph.py), [`test_an_index_made_for_another_model_is_refused_before_indexing`](../../14_knowledge_graph/tests/test_netgraph.py), [`test_someone_in_no_group_gets_nothing`](../../14_knowledge_graph/tests/test_netgraph.py)
+- 15: [`test_below_the_threshold_a_document_goes_to_intake_review`](../../15_document_control/tests/test_document_control.py), [`test_the_model_path_accepts_only_a_reply_that_fits_the_schema`](../../15_document_control/tests/test_document_control.py)
 
 ### APP-04 · Tests run offline, and every control has a positive control
 
@@ -212,7 +213,7 @@ Every suite runs with no API key. A test that proves something never happens is 
 
 *Why:* A zero without a control is indistinguishable from a broken test.
 
-*Applies to:* 06, 07, 08, 09, 10, 11, 12, 13, 14 · *ADRs:* [0013](adr/0013-offline-tests-measured-live-runs.md)
+*Applies to:* 06, 07, 08, 09, 10, 11, 12, 13, 14, 15 · *ADRs:* [0013](adr/0013-offline-tests-measured-live-runs.md)
 
 *Enforced by:*
 
@@ -225,6 +226,7 @@ Every suite runs with no API key. A test that proves something never happens is 
 - 12: [`test_without_the_marker_one_lost_response_posts_twice`](../../12_integration/tests/test_integration_check.py)
 - 13: [`test_the_gate_catches_a_regression_in_shared_code`](../../13_paved_road/tests/test_paved_road.py)
 - 14: [`test_the_permission_check_sees_forbidden_items_when_the_filter_is_widened`](../../14_knowledge_graph/tests/test_netgraph.py)
+- 15: [`test_personal_data_is_redacted_and_approvers_are_kept`](../../15_document_control/tests/test_document_control.py), [`test_a_record_that_breaks_its_contract_is_quarantined_and_the_rest_flow`](../../15_document_control/tests/test_document_control.py)
 
 ### APP-05 · One way to choose a model
 
@@ -323,11 +325,12 @@ Events from every source are converted at the edge into one envelope with a sour
 
 *Why:* Consumers then depend on one contract, not on every source.
 
-*Applies to:* 12 · *ADRs:* [0015](adr/0015-in-process-stand-ins.md)
+*Applies to:* 12, 15 · *ADRs:* [0015](adr/0015-in-process-stand-ins.md)
 
 *Enforced by:*
 
 - 12: [`test_a_service_alert_is_already_event_shaped`](../../12_integration/tests/test_adapters.py), [`test_the_envelope_refuses_what_it_cannot_identify`](../../12_integration/tests/test_adapters.py)
+- 15: [`test_every_source_record_becomes_one_envelope_or_a_named_rejection`](../../15_document_control/tests/test_document_control.py)
 
 ### INT-02 · Handled exactly once, keyed on the business entity
 
@@ -335,11 +338,12 @@ Consumers assume at-least-once delivery. Duplicates are detected by event, and t
 
 *Why:* Broker deduplication works within a time window and per source; a business key has neither limit.
 
-*Applies to:* 12 · *ADRs:* [0010](adr/0010-idempotency-on-the-business-key.md)
+*Applies to:* 12, 15 · *ADRs:* [0010](adr/0010-idempotency-on-the-business-key.md)
 
 *Enforced by:*
 
 - 12: [`test_duplicates_are_handled_once`](../../12_integration/tests/test_delivery.py), [`test_one_outage_from_two_sources_is_triaged_once`](../../12_integration/tests/test_triage.py), [`test_keyed_on_events_two_sources_double_the_work_for_people_and_jira`](../../12_integration/tests/test_integration_check.py)
+- 15: [`test_shuffled_duplicated_and_crashed_delivery_reaches_the_same_outcome`](../../15_document_control/tests/test_document_control.py), [`test_without_the_processed_store_the_work_repeats_but_the_outcome_holds`](../../15_document_control/tests/test_document_control.py), [`test_copies_in_a_second_system_are_one_record_conflicts_are_kept_apart`](../../15_document_control/tests/test_document_control.py)
 
 ### INT-03 · Writes to external systems are idempotent
 
@@ -360,11 +364,12 @@ Invalid messages and policy halts go to the dead-letter queue at once with their
 
 *Why:* Retrying a message that cannot succeed only delays the ones behind it.
 
-*Applies to:* 12 · *ADRs:* [0015](adr/0015-in-process-stand-ins.md)
+*Applies to:* 12, 15 · *ADRs:* [0015](adr/0015-in-process-stand-ins.md)
 
 *Enforced by:*
 
 - 12: [`test_a_message_that_keeps_failing_is_dead_lettered_and_the_rest_still_flow`](../../12_integration/tests/test_delivery.py), [`test_an_invalid_event_is_dead_lettered_at_once`](../../12_integration/tests/test_delivery.py), [`test_a_dead_letter_is_replayed_once_its_cause_is_fixed`](../../12_integration/tests/test_delivery.py)
+- 15: [`test_a_record_that_breaks_its_contract_is_quarantined_and_the_rest_flow`](../../15_document_control/tests/test_document_control.py), [`test_a_file_that_will_not_parse_is_quarantined_with_its_reason`](../../15_document_control/tests/test_document_control.py)
 
 ### INT-05 · Batch files are checked against their control totals
 

@@ -1,0 +1,4 @@
+# Fixtures are compared byte for byte by a test: never let git rewrite them.
+*.pdf binary
+*.xlsx binary
+*.eml binary

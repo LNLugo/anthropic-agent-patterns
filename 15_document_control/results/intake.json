@@ -1,0 +1,312 @@
+{
+  "arrivals": {
+    "document_records": {
+      "qdms": 121,
+      "sap": 22,
+      "sharepoint": 23
+    },
+    "status_events": 524
+  },
+  "classification": {
+    "by": "rules",
+    "by_type": {
+      "CC": {
+        "correct": 15,
+        "documents": 15,
+        "to_review": 0
+      },
+      "CMP": {
+        "correct": 9,
+        "documents": 9,
+        "to_review": 0
+      },
+      "COA": {
+        "correct": 22,
+        "documents": 22,
+        "to_review": 0
+      },
+      "COR": {
+        "correct": 8,
+        "documents": 8,
+        "to_review": 0
+      },
+      "DEV": {
+        "correct": 14,
+        "documents": 14,
+        "to_review": 0
+      },
+      "SOP": {
+        "correct": 70,
+        "documents": 73,
+        "to_review": 3
+      },
+      "SPEC": {
+        "correct": 18,
+        "documents": 18,
+        "to_review": 0
+      }
+    },
+    "correct": 156,
+    "documents": 159,
+    "review_by_format": {
+      "scan": 3
+    },
+    "to_intake_review": 3,
+    "wrong": [],
+    "wrong_type_filed": 0
+  },
+  "contracts": {
+    "by_source": {
+      "qdms": 1,
+      "sap": 2,
+      "sharepoint": 3
+    },
+    "owners": {
+      "qdms": "Quality systems",
+      "sap": "ERP document management",
+      "sharepoint": "Collaboration platform team",
+      "status": "Quality systems"
+    },
+    "planted": 6,
+    "planted_caught": 6,
+    "quarantined": 6
+  },
+  "delivery": {
+    "control_without_processed_store": {
+      "duplicates_skipped": 0,
+      "handler_runs": 213,
+      "same_outcome_as_in_order": true
+    },
+    "documents": 160,
+    "in_order_handler_runs": 170,
+    "shuffled_with_duplicates_and_a_crash": [
+      {
+        "duplicates_skipped": 170,
+        "events_handled": 694,
+        "same_outcome_as_in_order": true,
+        "seed": 1
+      },
+      {
+        "duplicates_skipped": 178,
+        "events_handled": 694,
+        "same_outcome_as_in_order": true,
+        "seed": 2
+      },
+      {
+        "duplicates_skipped": 185,
+        "events_handled": 694,
+        "same_outcome_as_in_order": true,
+        "seed": 3
+      }
+    ]
+  },
+  "extraction": {
+    "by_field": {
+      "affected_documents": {
+        "correct": 15,
+        "of": 15
+      },
+      "approved_by": {
+        "correct": 117,
+        "of": 117
+      },
+      "doc_number": {
+        "correct": 156,
+        "of": 156
+      },
+      "effective_date": {
+        "correct": 88,
+        "of": 88
+      },
+      "limits": {
+        "correct": 18,
+        "of": 18
+      },
+      "lot": {
+        "correct": 36,
+        "of": 36
+      },
+      "manufactured": {
+        "correct": 22,
+        "of": 22
+      },
+      "material_id": {
+        "correct": 62,
+        "of": 63
+      },
+      "opened": {
+        "correct": 29,
+        "of": 29
+      },
+      "received": {
+        "correct": 9,
+        "of": 9
+      },
+      "results": {
+        "correct": 22,
+        "of": 22
+      },
+      "revision": {
+        "correct": 117,
+        "of": 117
+      },
+      "site": {
+        "correct": 125,
+        "of": 126
+      },
+      "supplier_id": {
+        "correct": 29,
+        "of": 30
+      },
+      "title": {
+        "correct": 146,
+        "of": 148
+      }
+    },
+    "by_format": {
+      "eml": {
+        "correct": 16,
+        "of": 16
+      },
+      "html": {
+        "correct": 150,
+        "of": 150
+      },
+      "pdf": {
+        "correct": 660,
+        "of": 660
+      },
+      "scan": {
+        "correct": 116,
+        "of": 121
+      },
+      "xlsx": {
+        "correct": 49,
+        "of": 49
+      }
+    },
+    "correct": 991,
+    "of": 996,
+    "values": 1013,
+    "values_with_a_page": 1013
+  },
+  "identity": {
+    "conflicting_copies": {
+      "canonical_is_system_of_record": true,
+      "found": 2,
+      "planted": 2,
+      "planted_found": 2
+    },
+    "held_in_two_systems": {
+      "found": 8,
+      "planted": 8,
+      "planted_found": 8
+    },
+    "records": 160,
+    "same_content_under_another_number": {
+      "keys": [
+        "SOP-QA-0026/03",
+        "SOP-QA-0099/03"
+      ],
+      "pairs_planted": 1,
+      "records_flagged": 2
+    }
+  },
+  "lifecycle": {
+    "by_status": {
+      "draft": 1,
+      "effective": 69,
+      "in_review": 5,
+      "obsolete": 3,
+      "superseded": 44
+    },
+    "documents_with_an_effective_revision": 69,
+    "illegal_transitions": {
+      "other": 0,
+      "planted": 2,
+      "planted_caught": 2,
+      "quarantined": 2
+    },
+    "most_effective_revisions_of_one_document_at_any_step": 1,
+    "revisions": 122,
+    "shuffled_replay_same_final_state": true,
+    "steps_checked": 655
+  },
+  "parsing_and_chunking": {
+    "attachments_planted": 10,
+    "attachments_reentered": 10,
+    "chunks": 871,
+    "documents_by_format": {
+      "eml": 8,
+      "html": 24,
+      "pdf": 98,
+      "scan": 22,
+      "xlsx": 7
+    },
+    "embeddings_computed": 525,
+    "embeddings_reused": 360,
+    "largest_chunk_tokens": 72,
+    "share_reused": 0.407,
+    "table_chunks": 114
+  },
+  "personal_data": {
+    "approver_names": 105,
+    "approver_names_kept": 105,
+    "by_kind": {
+      "consumer_name": {
+        "planted": 9,
+        "redacted": 9
+      },
+      "email": {
+        "planted": 9,
+        "redacted": 9
+      },
+      "employee_id": {
+        "planted": 14,
+        "redacted": 14
+      },
+      "employee_name": {
+        "planted": 14,
+        "redacted": 14
+      },
+      "name_in_text": {
+        "planted": 10,
+        "redacted": 0
+      },
+      "phone": {
+        "planted": 9,
+        "redacted": 9
+      }
+    },
+    "missed_by_kind": {
+      "name_in_text": 10
+    },
+    "planted": 65,
+    "redacted": 55,
+    "redactions_of_unplanted_text": 0
+  },
+  "validation": {
+    "caught_by_another_rule": [
+      {
+        "caught_as": [
+          "required_field_missing"
+        ],
+        "key": "COA-2005-L26-0742/01",
+        "planted": "supplier_not_approved"
+      }
+    ],
+    "caught_by_its_rule": 15,
+    "documents": 160,
+    "missed": 0,
+    "other_by_format": {
+      "scan": 3
+    },
+    "other_by_rule": {
+      "required_field_missing": 3
+    },
+    "other_failures": 3,
+    "other_on_born_digital_documents": [],
+    "planted": 16,
+    "to_review": 20
+  }
+}

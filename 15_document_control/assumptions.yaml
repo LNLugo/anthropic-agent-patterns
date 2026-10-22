@@ -1,0 +1,17 @@
+# SmartDMS planning assumptions (docs/designs/smartdms.md, section 1).
+# These are inputs to confirm in discovery, not measurements. Nothing in this module
+# measures them; sizing.py (PR 4) derives the design's sizing and cost figures from them.
+status: assumption
+source: docs/designs/smartdms.md#1-planning-assumptions
+documents_indexed: 600000          # effective plus retained superseded versions
+pages_per_document: 15
+chunks_per_page: 1                 # about one 500 to 800 token chunk per page
+tokens_per_chunk: 600
+new_or_revised_documents_per_week: 5000
+pages_per_week: 75000
+users_named: 3000
+users_concurrent_peak: 300
+queries_per_day: 20000
+queries_per_second_peak: 5
+share_scanned: 0.30
+languages: ["en", "major market languages"]

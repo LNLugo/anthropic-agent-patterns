@@ -1,0 +1,55 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Length 626 >>
+stream
+BT
+/F1 10 Tf
+12 TL
+50 760 Td
+(Quality Release Report) Tj T*
+(Certificate No.: COA-2001-L26-0060) Tj T*
+(Supplier: Kestrel Ingredients \(fictional\) \(SUP-2001\)) Tj T*
+(Material: RM-10009) Tj T*
+(Lot: L26-0060) Tj T*
+(Manufactured: 2026-08-01) Tj T*
+() Tj T*
+(Statement) Tj T*
+(We certify that the lot below was tested and meets the stated results.) Tj T*
+() Tj T*
+(Results) Tj T*
+(Test               Result   Unit) Tj T*
+(Assay              100.3    %) Tj T*
+(Acid value         1.37     mg KOH/g) Tj T*
+(Refractive index   1.475    -) Tj T*
+() Tj T*
+(Release) Tj T*
+(Released by supplier QA on 2026-08-01.) Tj T*
+() Tj T*
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 4 0 R >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000210 00000 n 
+0000000887 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1013
+%%EOF

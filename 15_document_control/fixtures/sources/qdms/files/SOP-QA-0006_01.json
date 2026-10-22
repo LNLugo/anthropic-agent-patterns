@@ -1,0 +1,398 @@
+{
+ "apiVersion": "stand-in",
+ "modelId": "prebuilt-layout",
+ "pages": [
+  {
+   "pageNumber": 1,
+   "unit": "inch",
+   "lines": [
+    {
+     "content": "STANDARD OPERATING PROCEDURE",
+     "confidence": 0.96,
+     "polygon": [
+      1.0,
+      1.0,
+      7.5,
+      1.0,
+      7.5,
+      1.2,
+      1.0,
+      1.2
+     ]
+    },
+    {
+     "content": "Change control",
+     "confidence": 0.962,
+     "polygon": [
+      1.0,
+      1.25,
+      7.5,
+      1.25,
+      7.5,
+      1.45,
+      1.0,
+      1.45
+     ]
+    },
+    {
+     "content": "Document No.: SOP-QA-0006",
+     "confidence": 0.939,
+     "polygon": [
+      1.0,
+      1.5,
+      7.5,
+      1.5,
+      7.5,
+      1.7,
+      1.0,
+      1.7
+     ]
+    },
+    {
+     "content": "Revision: 01",
+     "confidence": 0.956,
+     "polygon": [
+      1.0,
+      1.75,
+      7.5,
+      1.75,
+      7.5,
+      1.95,
+      1.0,
+      1.95
+     ]
+    },
+    {
+     "content": "Effective date: 2023-10-02",
+     "confidence": 0.965,
+     "polygon": [
+      1.0,
+      2.0,
+      7.5,
+      2.0,
+      7.5,
+      2.2,
+      1.0,
+      2.2
+     ]
+    },
+    {
+     "content": "Site: Northfield",
+     "confidence": 0.956,
+     "polygon": [
+      1.0,
+      2.25,
+      7.5,
+      2.25,
+      7.5,
+      2.45,
+      1.0,
+      2.45
+     ]
+    },
+    {
+     "content": "Owner: Hugo Abara",
+     "confidence": 0.963,
+     "polygon": [
+      1.0,
+      2.5,
+      7.5,
+      2.5,
+      7.5,
+      2.7,
+      1.0,
+      2.7
+     ]
+    },
+    {
+     "content": "Approved by: Kira Rasmussen",
+     "confidence": 0.981,
+     "polygon": [
+      1.0,
+      2.75,
+      7.5,
+      2.75,
+      7.5,
+      2.95,
+      1.0,
+      2.95
+     ]
+    },
+    {
+     "content": "1. PURPOSE",
+     "confidence": 0.983,
+     "polygon": [
+      1.0,
+      3.25,
+      7.5,
+      3.25,
+      7.5,
+      3.45,
+      1.0,
+      3.45
+     ]
+    },
+    {
+     "content": "This procedure defines how change control is carried out at Northfield.",
+     "confidence": 0.937,
+     "polygon": [
+      1.0,
+      3.5,
+      7.5,
+      3.5,
+      7.5,
+      3.7,
+      1.0,
+      3.7
+     ]
+    },
+    {
+     "content": "2. 5COPE",
+     "confidence": 0.8,
+     "polygon": [
+      1.0,
+      4.0,
+      7.5,
+      4.0,
+      7.5,
+      4.2,
+      1.0,
+      4.2
+     ]
+    },
+    {
+     "content": "Applies to all change control activities in production and quality control at Northfield.",
+     "confidence": 0.99,
+     "polygon": [
+      1.0,
+      4.25,
+      7.5,
+      4.25,
+      7.5,
+      4.45,
+      1.0,
+      4.45
+     ]
+    },
+    {
+     "content": "3. RESPONSIBILITIES",
+     "confidence": 0.975,
+     "polygon": [
+      1.0,
+      4.75,
+      7.5,
+      4.75,
+      7.5,
+      4.95,
+      1.0,
+      4.95
+     ]
+    },
+    {
+     "content": "The process owner, Hugo Abara, maintains this procedure. Quality approves it.",
+     "confidence": 0.98,
+     "polygon": [
+      1.0,
+      5.0,
+      7.5,
+      5.0,
+      7.5,
+      5.2,
+      1.0,
+      5.2
+     ]
+    },
+    {
+     "content": "4. PROCEDURE",
+     "confidence": 0.971,
+     "polygon": [
+      1.0,
+      5.5,
+      7.5,
+      5.5,
+      7.5,
+      5.7,
+      1.0,
+      5.7
+     ]
+    },
+    {
+     "content": "5tep 1: Record the result against the acceptance criterion.",
+     "confidence": 0.784,
+     "polygon": [
+      1.0,
+      5.75,
+      7.5,
+      5.75,
+      7.5,
+      5.95,
+      1.0,
+      5.95
+     ]
+    },
+    {
+     "content": "5tep 2: Inspect the second-person check.",
+     "confidence": 0.724,
+     "polygon": [
+      1.0,
+      6.0,
+      7.5,
+      6.0,
+      7.5,
+      6.2,
+      1.0,
+      6.2
+     ]
+    },
+    {
+     "content": "5tep 3: Confirm the batch number.",
+     "confidence": 0.774,
+     "polygon": [
+      1.0,
+      6.25,
+      7.5,
+      6.25,
+      7.5,
+      6.45,
+      1.0,
+      6.45
+     ]
+    },
+    {
+     "content": "Step 4: Clean the logbook entry.",
+     "confidence": 0.977,
+     "polygon": [
+      1.0,
+      6.5,
+      7.5,
+      6.5,
+      7.5,
+      6.7,
+      1.0,
+      6.7
+     ]
+    },
+    {
+     "content": "5tep 5: Document the equipment status label.",
+     "confidence": 0.732,
+     "polygon": [
+      1.0,
+      6.75,
+      7.5,
+      6.75,
+      7.5,
+      6.95,
+      1.0,
+      6.95
+     ]
+    },
+    {
+     "content": "5. RECORDS",
+     "confidence": 0.973,
+     "polygon": [
+      1.0,
+      7.25,
+      7.5,
+      7.25,
+      7.5,
+      7.45,
+      1.0,
+      7.45
+     ]
+    },
+    {
+     "content": "Records of change control are kept for five years after batch expiry.",
+     "confidence": 0.963,
+     "polygon": [
+      1.0,
+      7.5,
+      7.5,
+      7.5,
+      7.5,
+      7.7,
+      1.0,
+      7.7
+     ]
+    },
+    {
+     "content": "6. REVISION HISTORY",
+     "confidence": 0.944,
+     "polygon": [
+      1.0,
+      8.0,
+      7.5,
+      8.0,
+      7.5,
+      8.2,
+      1.0,
+      8.2
+     ]
+    },
+    {
+     "content": "Revision   Change",
+     "confidence": 0.937,
+     "polygon": [
+      1.0,
+      8.25,
+      7.5,
+      8.25,
+      7.5,
+      8.45,
+      1.0,
+      8.45
+     ]
+    },
+    {
+     "content": "01         Revision 01: first issue.",
+     "confidence": 0.958,
+     "polygon": [
+      1.0,
+      8.5,
+      7.5,
+      8.5,
+      7.5,
+      8.7,
+      1.0,
+      8.7
+     ]
+    }
+   ]
+  }
+ ],
+ "tables": [
+  {
+   "rowCount": 2,
+   "columnCount": 2,
+   "cells": [
+    {
+     "rowIndex": 0,
+     "columnIndex": 0,
+     "content": "Revision",
+     "kind": "columnHeader"
+    },
+    {
+     "rowIndex": 0,
+     "columnIndex": 1,
+     "content": "Change",
+     "kind": "columnHeader"
+    },
+    {
+     "rowIndex": 1,
+     "columnIndex": 0,
+     "content": "01"
+    },
+    {
+     "rowIndex": 1,
+     "columnIndex": 1,
+     "content": "Revision 01: first issue."
+    }
+   ],
+   "caption": "Revision history",
+   "boundingRegions": [
+    {
+     "pageNumber": 1
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,57 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Length 726 >>
+stream
+BT
+/F1 10 Tf
+12 TL
+50 760 Td
+(MATERIAL SPECIFICATION) Tj T*
+(Specification: Citric acid) Tj T*
+(Document No.: SPEC-RM-0012) Tj T*
+(Revision: 01) Tj T*
+(Effective date: 2023-07-09) Tj T*
+(Material: RM-10012) Tj T*
+(Site: Northfield) Tj T*
+(Approved by: Sami Dorsey) Tj T*
+() Tj T*
+(1. SCOPE) Tj T*
+(Acceptance specification for Citric acid \(RM-10012\) received at all sites.) Tj T*
+() Tj T*
+(2. LIMITS) Tj T*
+(Parameter      Limit          Unit   Method) Tj T*
+(Assay          98.0 - 101.0   %      Ph. Eur.) Tj T*
+(Water          0.00 - 0.50    %      Ph. Eur.) Tj T*
+(Heavy metals   0 - 10         ppm    In-house) Tj T*
+() Tj T*
+(3. SAMPLING) Tj T*
+(Sample per SOP-QA-0003. Test every lot before release.) Tj T*
+() Tj T*
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 4 0 R >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000210 00000 n 
+0000000987 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1113
+%%EOF
