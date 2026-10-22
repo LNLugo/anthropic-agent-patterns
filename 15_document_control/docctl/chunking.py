@@ -114,3 +114,7 @@ class EmbeddingCache:
         self.computed += len({c.chunk_hash for c in todo})
         self.reused += len(chunks) - len(todo)
         return [self._vectors[(c.chunk_hash, self.model_id)] for c in chunks]
+
+    def lookup(self, chunks: list[Chunk]) -> list[list[float]]:
+        """Vectors already computed, without counting them as reused (for building an index)."""
+        return [self._vectors[(c.chunk_hash, self.model_id)] for c in chunks]

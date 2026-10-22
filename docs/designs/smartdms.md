@@ -385,9 +385,9 @@ The repository's [design template](../templates/design-doc.md) asks for three th
 | Standard | How SmartDMS meets it | Proof |
 |---|---|---|
 | AI-01 · The simplest pattern that reliably works | Rules classify, extract and validate; a model is added only where a held-out measurement shows rules fall short | `15_document_control/results/intake.json`; the model path is plumbing only until then |
-| AI-04 · Answers are grounded or withheld | Every claim cites document, revision and section, or the system abstains | PR 2 |
+| AI-04 · Answers are grounded or withheld | Every sentence cites a chunk it was shown with an exact quote (07's validator), or it is removed; below half supported, or below the answerability threshold, the system abstains | `test_a_sentence_citing_something_it_was_not_shown_is_removed`, `test_without_evidence_the_assistant_abstains_without_calling_the_model` |
 | AI-06 · A write waits for a person | Review decisions are approved by a qualified person through 08's approval; write-back to the DMS only after | PR 3 |
-| APP-01 · Every call is made as a named identity | Retrieval filtered by the asker's groups before ranking, as 07 and 14 do | PR 2 |
+| APP-01 · Every call is made as a named identity | Retrieval is filtered by the asker's groups before ranking, and access is rechecked at answer time. Reader groups are replicated into the index, so this meets 07's filter-before-rank rule but not APP-01's delegated permissions; not claimed | `test_no_one_is_shown_a_document_they_may_not_open_and_the_control_sees_them`, `test_access_revoked_after_retrieval_is_applied_before_the_answer` |
 | APP-03 · Fail closed | A record outside its contract, a reply outside the schema or a score below threshold is quarantined or sent to review, never defaulted | `test_below_the_threshold_a_document_goes_to_intake_review`, `test_the_model_path_accepts_only_a_reply_that_fits_the_schema` |
 | APP-04 · Offline tests, with positive controls | 52 tests offline, no key; the redaction and contract checks each have a control | `test_personal_data_is_redacted_and_approvers_are_kept`, `test_a_record_that_breaks_its_contract_is_quarantined_and_the_rest_flow` |
 | INT-01, INT-02, INT-04 · One envelope, exactly once, dead-letter what cannot recover | 12's envelope, processed store and dead-letter queue; work keyed on document number, revision and content | `test_shuffled_duplicated_and_crashed_delivery_reaches_the_same_outcome` and the INT tests named in [standards](../architecture/standards.md) |
@@ -397,7 +397,7 @@ The repository's [design template](../templates/design-doc.md) asks for three th
 
 | Claim | Measured as | Control | Would prove the design wrong |
 |---|---|---|---|
-| Effective versions only | Superseded or obsolete content returned to a default query | The same queries asking for history do return them | Any superseded chunk in a default result |
+| Effective versions only | Superseded or obsolete content returned to a default query: 0 on development questions | The status filter switched off: 123 returned | Any superseded chunk in a default result |
 | At most one effective revision | Effective revisions per document number at every step of a shuffled, duplicated status replay | In-order replay reaches the same final state | A count of 2 at any step |
 | Nothing silently corrected | Every extracted value against its source line | A planted bad value stays bad and goes to review | A value that differs from its line |
 | Deterministic diff then model classification beats asking the model to compare | Change recall, severity accuracy and false findings on seeded revision pairs with planted, labelled changes | The model comparing directly | Lower recall than the model alone (PR 3, ADR 0019) |
