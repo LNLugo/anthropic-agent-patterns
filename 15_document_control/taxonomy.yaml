@@ -1,0 +1,94 @@
+# Quality's document taxonomy (s6): types, required fields and allowed values.
+# Owned by Quality and versioned like code: a change here is a pull request Quality approves,
+# and every count in results/intake.json is recomputed by the tests when it changes.
+owner: Quality
+version: 1.0.0
+
+classification:
+  threshold: 0.6               # below this, a document goes to intake review
+  weights:                     # how much each signal adds to a type's score (capped at 1.0)
+    number: 0.6                # a header value matching the type's number pattern
+    kind_line: 0.35            # the document says what it is ("STANDARD OPERATING PROCEDURE")
+    title: 0.25                # a title phrase the type uses
+    format: 0.9                # only email: correspondence by construction
+    metadata: 0.1              # the source's own type field: a weak signal, it is sometimes wrong
+
+types:
+  SOP:
+    name: Standard operating procedure
+    controlled: true
+    number: '^SOP-[A-Z]{2}-\d{4}$'
+    kind_line: STANDARD OPERATING PROCEDURE
+    titles: []
+    required: [doc_number, revision, title, site, effective_date, approved_by]
+  SPEC:
+    name: Material specification
+    controlled: true
+    number: '^SPEC-RM-\d{4}$'
+    kind_line: MATERIAL SPECIFICATION
+    titles: ["specification:"]
+    required: [doc_number, revision, title, site, effective_date, approved_by, material_id, limits]
+  CC:
+    name: Change control
+    controlled: true
+    number: '^CC-\d{4}-\d{3}$'
+    kind_line: CHANGE CONTROL
+    titles: ["change control"]
+    required: [doc_number, revision, site, opened, approved_by, affected_documents]
+  DEV:
+    name: Deviation report
+    controlled: true
+    number: '^DEV-\d{4}-\d{3}$'
+    kind_line: DEVIATION REPORT
+    titles: ["deviation"]
+    required: [doc_number, revision, site, opened, material_id, lot, approved_by]
+  CMP:
+    name: Complaint summary
+    controlled: false
+    number: '^CMP-\d{4}-\d{3}$'
+    kind_line: COMPLAINT SUMMARY
+    titles: ["complaint"]
+    required: [doc_number, site, received, material_id]
+  COA:
+    name: Certificate of analysis
+    controlled: false
+    number: '^COA-\d{4}-L\d{2}-\d{4}$'
+    kind_line: null
+    titles: ["certificate of analysis", "analysis certificate"]
+    required: [doc_number, supplier_id, material_id, lot, manufactured, results]
+  COR:
+    name: Supplier correspondence
+    controlled: false
+    number: null
+    kind_line: null
+    titles: []
+    format: eml
+    required: [doc_number, supplier_id]
+
+formats:
+  revision: '^\d{2}$'
+  dates: [effective_date, opened, received, manufactured]
+
+allowed:
+  site: [Northfield, Brookvale, Lakemoor]
+
+ocr_confidence_floor: 0.80
+
+# The range a value can physically take, per parameter: a limit or result outside it is an
+# error in the document, not a quality finding.
+parameter_ranges:
+  Assay: [0, 110.5]
+  Water: [0, 100]
+  pH: [0, 14]
+  Heavy metals: [0, 1000]
+  Acid value: [0, 100]
+  Melting point: [-50, 300]
+  Conductivity: [0, 10000]
+  Total organic carbon: [0, 100000]
+  Microbial count: [0, 1000000000]
+  Peroxide value: [0, 1000]
+  Loss on drying: [0, 100]
+  Viscosity: [0, 1000000]
+  Refractive index: [1.0, 2.0]
+  Specific gravity: [0.1, 5.0]
+  Flash point: [-100, 500]
