@@ -48,15 +48,63 @@ sections:
             tests/test_document_control.py::test_every_planted_validation_failure_goes_to_review,
             tests/test_document_control.py::test_nothing_is_silently_corrected]
     note: Rules make every decision. The model path is built and tested as plumbing; its quality is not claimed.
-  - {section: 7, title: Embeddings, status: Planned, pr: 2}
-  - {section: 8, title: "Indexing, ANN and sizing", status: Planned, pr: 2}
-  - {section: 9, title: Retrieval and reranking, status: Planned, pr: 2}
-  - {section: 10, title: Comparison engine, status: Planned, pr: 3}
-  - {section: 11, title: Prompt orchestration, status: Planned, pr: 2}
-  - {section: 12, title: Hallucination mitigation and safety, status: Planned, pr: 2,
-     note: "The prompt injection fixture is already in the corpus (COA-2004-L26-0689)."}
-  - {section: 13, title: Human in the loop and audit trail, status: Planned, pr: 3}
-  - {section: 14, title: Caching and freshness, status: Planned, pr: 2}
+  - section: 7
+    title: Embeddings
+    status: Built as in-process stand-in
+    pr: 2
+    proof: [docctl/index.py, tests/test_retrieval.py::test_every_vector_names_its_model_and_a_query_from_another_model_is_refused,
+            tests/test_retrieval.py::test_a_new_index_replaces_the_old_only_if_it_does_as_well_and_can_be_rolled_back]
+    note: "HashingEmbeddings stands in for text-embedding-3-large at 1,024 dimensions; the candidate model compared is a second stand-in. Title and summary vectors are not built: no gain has been measured to justify them."
+  - section: 8
+    title: "Indexing, ANN and sizing"
+    status: Built as in-process stand-in
+    pr: 2
+    proof: [docctl/index.py, tests/test_retrieval.py::test_queries_keep_using_the_old_index_until_the_flip,
+            tests/test_retrieval.py::test_a_new_effective_revision_replaces_the_old_in_one_write]
+    note: "Search is exact over every row. HNSW, int8 quantization and rescoring are the design's parameters (s8), not exercised here. Sizing is PR 4."
+  - section: 9
+    title: Retrieval and reranking
+    status: Built as in-process stand-in
+    pr: 2
+    proof: [docctl/retrieve.py, tests/test_retrieval.py::test_no_default_query_returns_a_superseded_revision_and_the_control_does,
+            tests/test_retrieval.py::test_no_one_is_shown_a_document_they_may_not_open_and_the_control_sees_them,
+            tests/test_retrieval.py::test_a_named_document_short_circuits_to_that_document_only,
+            tests/test_retrieval.py::test_the_answerability_threshold_is_the_calibrated_midpoint]
+    note: "07's fusion over BM25 and vectors. Not built: a reranker (07's needs a model download), conversation rewriting, language detection."
+  - section: 10
+    title: Comparison engine
+    status: Planned
+    pr: 3
+  - section: 11
+    title: Prompt orchestration
+    status: Built
+    pr: 2
+    proof: [docctl/assistant.py, tests/test_retrieval.py::test_every_development_question_is_routed_by_rules,
+            tests/test_retrieval.py::test_the_context_is_packed_labelled_and_within_budget,
+            tests/test_retrieval.py::test_a_tool_runs_only_from_the_question_and_only_from_the_allowlist]
+    note: "Routing is rules: every development question routes correctly, so 08's model router is not needed yet. Prompt registration in MLflow is not built."
+  - section: 12
+    title: Hallucination mitigation and safety
+    status: Built as in-process stand-in
+    pr: 2
+    proof: [tests/test_retrieval.py::test_a_sentence_citing_something_it_was_not_shown_is_removed,
+            tests/test_retrieval.py::test_an_answer_mostly_unsupported_becomes_an_abstention,
+            tests/test_retrieval.py::test_instructions_inside_a_supplier_document_never_trigger_a_tool,
+            tests/test_retrieval.py::test_access_revoked_after_retrieval_is_applied_before_the_answer,
+            tests/test_retrieval.py::test_personal_data_in_the_output_is_redacted]
+    note: "Rules stand in for Content Safety and Prompt Shields. Attribution is citation validity (07's validator), not a model judging support."
+  - section: 13
+    title: Human in the loop and audit trail
+    status: Planned
+    pr: 3
+  - section: 14
+    title: Caching and freshness
+    status: Built
+    pr: 2
+    proof: [docctl/cache.py, tests/test_retrieval.py::test_people_with_different_access_never_share_a_cached_answer,
+            tests/test_retrieval.py::test_a_status_change_purges_the_answers_that_cite_the_document,
+            tests/test_retrieval.py::test_retrieval_results_expire_after_fifteen_minutes]
+    note: "No rerank cache: there is no reranker. Document processing is keyed on content hash at intake, not yet on pipeline version."
   - {section: 15, title: Multilingual handling, status: Planned, pr: 4}
   - {section: 16, title: "Scalability, capacity and resilience", status: Planned, pr: 4,
      note: The event log that the rebuild-by-replay test will use is built (s5).}
@@ -77,4 +125,8 @@ stand_ins:
   - {service: Azure AI Language PII detection, stand_in: "rules for the forms the sources use (docctl/pii.py)"}
   - {service: Databricks Delta tables over SAP master data, stand_in: "fixtures/master/*.csv"}
   - {service: Azure OpenAI (classification, extraction), stand_in: "llm_provider; scripted in tests, plumbing only"}
-  - {service: Azure OpenAI embeddings, stand_in: "llm_provider's HashingEmbeddings, used only to count what needs embedding"}
+  - {service: Azure OpenAI embeddings, stand_in: "llm_provider's HashingEmbeddings: a lexical stand-in, so vector results are a word-matching baseline"}
+  - {service: Azure AI Search (BM25, HNSW vectors, filters), stand_in: "docctl/index.py: exact search over every row, BM25 from rank_bm25, the same filters"}
+  - {service: Semantic ranker or hosted cross-encoder, stand_in: "none: section collapse only (07's cross-encoder needs a model download)"}
+  - {service: "Azure AI Content Safety, Prompt Shields", stand_in: "rules: instruction-like text flagged at ingest, release and approval decisions refused, output scanned for personal data"}
+  - {service: Azure OpenAI (answers), stand_in: "llm_provider; ScriptedChatModel in tests, so answer quality is not measured"}

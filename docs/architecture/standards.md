@@ -49,13 +49,14 @@ An answer ships only with evidence that resolves to what the model was shown (a 
 
 *Why:* A confident wrong answer is the expensive failure.
 
-*Applies to:* 07, 08, 14 · *ADRs:* none
+*Applies to:* 07, 08, 14, 15 · *ADRs:* none
 
 *Enforced by:*
 
 - 07: [`test_graph_abstains_when_citation_is_fabricated`](../../07_rag/tests/test_citations_and_graph.py)
 - 08: [`test_the_coverage_check_stops_a_half_answer_in_the_main_path`](../../08_tools/tests/test_assistant_model_router.py), [`test_missing_project_asks_a_question_and_runs_nothing`](../../08_tools/tests/test_assistant.py)
 - 14: [`test_a_grounded_answer_cites_only_what_it_was_shown`](../../14_knowledge_graph/tests/test_netgraph.py), [`test_no_evidence_means_no_model_call`](../../14_knowledge_graph/tests/test_netgraph.py)
+- 15: [`test_a_sentence_citing_something_it_was_not_shown_is_removed`](../../15_document_control/tests/test_retrieval.py), [`test_an_answer_mostly_unsupported_becomes_an_abstention`](../../15_document_control/tests/test_retrieval.py), [`test_without_evidence_the_assistant_abstains_without_calling_the_model`](../../15_document_control/tests/test_retrieval.py)
 
 ### AI-05 · Guardrails return one of three behaviours, in a defined order
 

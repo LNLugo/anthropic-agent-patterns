@@ -62,7 +62,7 @@ with predictable workflows and progressing toward dynamic agent behavior.
 | **Applied** | **Network operations** | | |
 | 14 | Knowledge navigation | ✅ Complete | Firewall, VPN, auth and system logs and their runbooks as a graph in Upstash Redis, vectors in Upstash Vector; a PageRank walk with rarity, novelty and time-window priors. On a third held-out set it found 16 of 26 multi-hop evidence items against 13 for the same signals without a walk and 9 for vector search, and lost 2 of 4 single-hop items |
 | **Applied** | **Quality documents** | | |
-| 15 | Document control (SmartDMS) | 🟡 In progress (PR 1 of 4) | Quality and regulatory documents from three source systems: data contracts, a lifecycle mirror that never shows two effective revisions, one record per document across systems, parsing of five formats, redaction, and rules-first classification, extraction and validation. 156 of 159 classified correctly and 0 filed as the wrong type; every planted validation failure sent to review |
+| 15 | Document control (SmartDMS) | 🟡 In progress (PR 2 of 4) | Quality and regulatory documents from three source systems: data contracts, a lifecycle mirror that never shows two effective revisions, rules-first classification, extraction and validation; then retrieval that returns effective versions only (0 superseded sections by default, 123 with the filter off), only what the asker may open, every sentence cited or no answer, and instructions inside supplier documents treated as data |
 
 ---
 
@@ -157,7 +157,7 @@ replays every use case's golden set and fails below its threshold.
 
 | Suite | Run from | Tests | What stands in for the model |
 |---|---|---|---|
-| Phase 1 patterns, the explorer app, the architecture docs and conformance | repo root: `pytest` | 257 | `ScriptedChatModel` in [`llm_provider.py`](llm_provider.py) |
+| Phase 1 patterns, the explorer app, the architecture docs and conformance | repo root: `pytest` | 260 | `ScriptedChatModel` in [`llm_provider.py`](llm_provider.py) |
 | 07 Retrieval | `07_rag`: `pytest` | 63 | fixtures; no model call in the suite |
 | 08 Tools | `08_tools`: `pytest` | 150 | `ScriptedChatModel` and scripted tool calls |
 | 09 Memory | `09_memory`: `pytest` | 40 | `ScriptedChatModel`; no model call in the benchmark |
@@ -166,7 +166,7 @@ replays every use case's golden set and fails below its threshold.
 | 12 Integration | `12_integration`: `pytest` | 56 | the worker routes in code; synthetic sources, an in-process broker, the gateway over Starlette's test client |
 | 13 Paved road | `13_paved_road`: `pytest` | 45 | each golden case's reference call, replayed by `ScriptedChatModel` through the real pipeline |
 | 14 Knowledge navigation | `14_knowledge_graph`: `pytest` | 47 | `HashingEmbeddings` (a lexical stand-in) and in-memory stores for Upstash; `ScriptedChatModel` for answers |
-| 15 Document control | `15_document_control`: `pytest` | 52 | rules make every decision; `ScriptedChatModel` for the model path's schema checks; `HashingEmbeddings` to count what needs embedding |
+| 15 Document control | `15_document_control`: `pytest` | 84 | rules make intake decisions; `HashingEmbeddings` (a lexical stand-in) for vectors; `ScriptedChatModel` for answers, citations and the model path's schema checks |
 
 Phase 1 tests assert on the **path the graph took**, not on model prose: which
 nodes ran, in what order, and what each node was given. `LLM_PROVIDER=scripted`
@@ -317,7 +317,7 @@ Design documents and decision records follow the [templates](docs/templates/READ
 for teams building on these modules:
 - **[Reference architecture](docs/architecture/reference-architecture.md):** every layer, its control and the number that shows it works.
 - **[Standards](docs/architecture/standards.md):** 30 standards, 29 of them enforced by named tests or a static check.
-- **[Conformance scorecard](docs/architecture/scorecard.md):** computed from the repo. 77 of 85 standard-module pairs conform; the rest are 4 registered exceptions with owners and expiry dates, or are checked at design review. CI fails on an unregistered gap or an expired exception.
+- **[Conformance scorecard](docs/architecture/scorecard.md):** computed from the repo. 78 of 86 standard-module pairs conform; the rest are 4 registered exceptions with owners and expiry dates, or are checked at design review. CI fails on an unregistered gap or an expired exception.
 - **[Decision records](docs/architecture/adr/README.md):** 18 ADRs.
 - **[Design review checklist](docs/architecture/design-review-checklist.md)**, an exception register, and a **[COE charter](docs/architecture/coe-charter.md)**.
 
