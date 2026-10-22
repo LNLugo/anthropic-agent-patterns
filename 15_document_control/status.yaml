@@ -1,0 +1,80 @@
+# Build status of docs/designs/smartdms.md, one row per section. The module README's status
+# table and the app's "Build status" tab are both rendered from this file, and a test checks
+# that every file and test named here exists.
+#
+# status: Built | Built as in-process stand-in | Documented only | Planned
+statuses: [Built, Built as in-process stand-in, Documented only, Planned]
+sections:
+  - section: 1
+    title: Planning assumptions
+    status: Built
+    pr: 1
+    proof: [assumptions.yaml, tests/test_document_control.py::test_the_assumptions_are_the_designs]
+    note: The inputs only. sizing.py, which derives every sizing and cost figure from them, is PR 4.
+  - section: 2
+    title: Requirements and service levels
+    status: Planned
+    pr: 4
+  - section: 3
+    title: Architecture overview
+    status: Planned
+    pr: 4
+    note: The stand-in map below covers the parts built so far.
+  - section: 4
+    title: Document lifecycle and system of record
+    status: Built
+    pr: 1
+    proof: [docctl/lifecycle.py, docctl/identity.py,
+            tests/test_document_control.py::test_never_two_effective_revisions_at_any_step_in_any_order,
+            tests/test_document_control.py::test_illegal_transitions_are_quarantined_not_applied,
+            tests/test_document_control.py::test_the_system_of_records_copy_is_canonical_whatever_arrives_first]
+    note: Write-back of review decisions to the DMS moves to PR 3, where the decisions exist.
+  - section: 5
+    title: Ingestion, parsing and chunking
+    status: Built as in-process stand-in
+    pr: 1
+    proof: [docctl/contracts.py, docctl/eventlog.py, docctl/parse.py, docctl/chunking.py, docctl/pii.py,
+            tests/test_document_control.py::test_a_record_that_breaks_its_contract_is_quarantined_and_the_rest_flow,
+            tests/test_document_control.py::test_shuffled_duplicated_and_crashed_delivery_reaches_the_same_outcome,
+            tests/test_document_control.py::test_an_unchanged_section_is_not_embedded_again,
+            tests/test_document_control.py::test_personal_data_is_redacted_and_approvers_are_kept]
+    note: OCR is a layout-result stand-in; PII detection is rules; Event Hubs is an append-only log.
+  - section: 6
+    title: Classification, extraction and validation
+    status: Built
+    pr: 1
+    proof: [taxonomy.yaml, docctl/classify.py, docctl/extract.py, docctl/validate.py,
+            tests/test_document_control.py::test_no_document_is_filed_as_the_wrong_type,
+            tests/test_document_control.py::test_every_planted_validation_failure_goes_to_review,
+            tests/test_document_control.py::test_nothing_is_silently_corrected]
+    note: Rules make every decision. The model path is built and tested as plumbing; its quality is not claimed.
+  - {section: 7, title: Embeddings, status: Planned, pr: 2}
+  - {section: 8, title: "Indexing, ANN and sizing", status: Planned, pr: 2}
+  - {section: 9, title: Retrieval and reranking, status: Planned, pr: 2}
+  - {section: 10, title: Comparison engine, status: Planned, pr: 3}
+  - {section: 11, title: Prompt orchestration, status: Planned, pr: 2}
+  - {section: 12, title: Hallucination mitigation and safety, status: Planned, pr: 2,
+     note: "The prompt injection fixture is already in the corpus (COA-2004-L26-0689)."}
+  - {section: 13, title: Human in the loop and audit trail, status: Planned, pr: 3}
+  - {section: 14, title: Caching and freshness, status: Planned, pr: 2}
+  - {section: 15, title: Multilingual handling, status: Planned, pr: 4}
+  - {section: 16, title: "Scalability, capacity and resilience", status: Planned, pr: 4,
+     note: The event log that the rebuild-by-replay test will use is built (s5).}
+  - {section: 17, title: Observability and evaluation, status: Planned, pr: 4}
+  - {section: 18, title: Cost model and trade offs, status: Planned, pr: 4}
+  - {section: 19, title: Fallback strategies, status: Planned, pr: 4}
+  - {section: 20, title: Interfaces, status: Planned, pr: 4}
+  - {section: 21, title: Deployment and rollout, status: Planned, pr: 4}
+  - {section: 22, title: Partner delivery governance, status: Planned, pr: 4}
+  - {section: 23, title: Open questions for discovery, status: Documented only, pr: 1,
+     proof: [../docs/designs/smartdms.md]}
+
+# What stands in for each managed service in the parts built so far (ADR 0015).
+stand_ins:
+  - {service: Azure AI Document Intelligence (read and layout), stand_in: "pypdf for native PDFs; a layout-result JSON (lines with confidence, tables as cells) for scans"}
+  - {service: Event Grid and Event Hubs, stand_in: "12's envelope and in-process broker, plus an append-only event log for replay"}
+  - {service: Azure Blob Storage or ADLS Gen2 (landing), stand_in: "fixtures/sources/*/files and an in-memory blob store for attachments"}
+  - {service: Azure AI Language PII detection, stand_in: "rules for the forms the sources use (docctl/pii.py)"}
+  - {service: Databricks Delta tables over SAP master data, stand_in: "fixtures/master/*.csv"}
+  - {service: Azure OpenAI (classification, extraction), stand_in: "llm_provider; scripted in tests, plumbing only"}
+  - {service: Azure OpenAI embeddings, stand_in: "llm_provider's HashingEmbeddings, used only to count what needs embedding"}

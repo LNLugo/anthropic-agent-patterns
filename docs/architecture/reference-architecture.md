@@ -72,7 +72,7 @@ flowchart TB
 | Across | Costing | [11](../../11_finops/README.md) | Priced from a sourced file; unpriced is unknown, not $0 | Reproduces 9 recorded costs within 0.8% |
 | Capability | Graph retrieval over logs | [14](../../14_knowledge_graph/README.md) | Permissions filter the vector query and the graph before ranking; answers cite only what they were shown | 0 unreadable items returned on any question set, with a widened-filter control; held-out 3: 16/26 multi-hop against 13/26 without the walk |
 | Across | Paved road | [13](../../13_paved_road/README.md) | A use case is configuration on the platform; the build refuses a configuration that breaks a standard; an offline gate per use case blocks merges | Two use cases with 0 code lines each; the gate fails on a shared-code regression; 10 of 10 mutants killed |
-| Across | Standards | [standards](standards.md), [scorecard](scorecard.md) | Each standard names the tests or static check that enforce it, per module | 72 of 80 standard-module pairs conform; CI fails on an unregistered gap or an expired exception |
+| Across | Standards | [standards](standards.md), [scorecard](scorecard.md) | Each standard names the tests or static check that enforce it, per module | 77 of 85 standard-module pairs conform; CI fails on an unregistered gap or an expired exception |
 
 ## Who acts, and as whom
 
