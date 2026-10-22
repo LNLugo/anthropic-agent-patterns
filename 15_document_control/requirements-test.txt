@@ -1,0 +1,7 @@
+# Offline: the corpus, intake, lifecycle and the app tab. 12's integration package (envelope,
+# processed store, dead letters) is reused, so its requirements come with it.
+-r ../requirements.txt
+-r ../12_integration/requirements-test.txt
+pyyaml>=6.0
+pypdf>=5.0             # reads the native PDF fixtures (written by corpus.py's own small writer)
+openpyxl>=3.1          # reads the spreadsheet fixtures (written by corpus.py's own small writer)

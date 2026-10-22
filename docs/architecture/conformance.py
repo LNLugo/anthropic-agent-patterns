@@ -32,7 +32,8 @@ ROOT = HERE.parents[1]
 MODULES = {"01": "01_prompt_chaining", "02": "02_routing", "03": "03_parallelization",
            "04": "04_orchestrator_workers", "05": "05_evaluator_optimizer", "06": "06_agents",
            "07": "07_rag", "08": "08_tools", "09": "09_memory", "10": "10_observability", "11": "11_finops", "12": "12_integration",
-           "13": "13_paved_road", "14": "14_knowledge_graph"}
+           "13": "13_paved_road", "14": "14_knowledge_graph",
+           "15": "15_document_control"}
 
 
 # ---------------------------------------------------------------- static checks

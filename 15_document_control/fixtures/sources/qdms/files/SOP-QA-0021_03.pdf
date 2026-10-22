@@ -1,0 +1,70 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Length 1300 >>
+stream
+BT
+/F1 10 Tf
+12 TL
+50 760 Td
+(STANDARD OPERATING PROCEDURE) Tj T*
+(Filling line setup) Tj T*
+(Document No.: SOP-QA-0021) Tj T*
+(Revision: 03) Tj T*
+(Effective date: 2025-02-28) Tj T*
+(Site: Northfield) Tj T*
+(Owner: Ben Ishikawa) Tj T*
+(Approved by: Irene Jovanovic) Tj T*
+() Tj T*
+(1. PURPOSE) Tj T*
+(This procedure defines how filling line setup is carried out at Northfield.) Tj T*
+() Tj T*
+(2. SCOPE) Tj T*
+(Applies to all filling line setup activities in production and quality control at Northfield \(revised in revision 02\) \(revised in revision 03\).) Tj T*
+() Tj T*
+(3. RESPONSIBILITIES) Tj T*
+(The process owner, Ben Ishikawa, maintains this procedure. Quality approves it.) Tj T*
+() Tj T*
+(4. PROCEDURE) Tj T*
+(Step 1: Document the area is free of previous materials.) Tj T*
+(Step 2: Escalate the result against the acceptance criterion.) Tj T*
+(Step 3: Verify the second-person check.) Tj T*
+(Step 4: Record the batch number.) Tj T*
+(Step 5: Inspect the logbook entry.) Tj T*
+() Tj T*
+(5. RECORDS) Tj T*
+(Records of filling line setup are kept for five years after batch expiry.) Tj T*
+() Tj T*
+(6. REVISION HISTORY) Tj T*
+(Revision   Change) Tj T*
+(01         Revision 01: first issue.) Tj T*
+(02         Revision 02: updated.) Tj T*
+(03         Revision 03: updated.) Tj T*
+() Tj T*
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 4 0 R >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000210 00000 n 
+0000001562 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1688
+%%EOF

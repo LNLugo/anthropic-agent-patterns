@@ -1,0 +1,328 @@
+{
+ "apiVersion": "stand-in",
+ "modelId": "prebuilt-layout",
+ "pages": [
+  {
+   "pageNumber": 1,
+   "unit": "inch",
+   "lines": [
+    {
+     "content": "CERTIFICATE OF ANALYSIS",
+     "confidence": 0.942,
+     "polygon": [
+      1.0,
+      1.0,
+      7.5,
+      1.0,
+      7.5,
+      1.2,
+      1.0,
+      1.2
+     ]
+    },
+    {
+     "content": "Certificate No.: COA-2003-L26-0636",
+     "confidence": 0.993,
+     "polygon": [
+      1.0,
+      1.25,
+      7.5,
+      1.25,
+      7.5,
+      1.45,
+      1.0,
+      1.45
+     ]
+    },
+    {
+     "content": "Supplier: Ostrava Botanicals (fictional) (SUP-2003)",
+     "confidence": 0.978,
+     "polygon": [
+      1.0,
+      1.5,
+      7.5,
+      1.5,
+      7.5,
+      1.7,
+      1.0,
+      1.7
+     ]
+    },
+    {
+     "content": "Material: RM-10001",
+     "confidence": 0.989,
+     "polygon": [
+      1.0,
+      1.75,
+      7.5,
+      1.75,
+      7.5,
+      1.95,
+      1.0,
+      1.95
+     ]
+    },
+    {
+     "content": "Lot: L26-0636",
+     "confidence": 0.95,
+     "polygon": [
+      1.0,
+      2.0,
+      7.5,
+      2.0,
+      7.5,
+      2.2,
+      1.0,
+      2.2
+     ]
+    },
+    {
+     "content": "Manufactured: 2026-05-21",
+     "confidence": 0.979,
+     "polygon": [
+      1.0,
+      2.25,
+      7.5,
+      2.25,
+      7.5,
+      2.45,
+      1.0,
+      2.45
+     ]
+    },
+    {
+     "content": "5tatement",
+     "confidence": 0.776,
+     "polygon": [
+      1.0,
+      2.75,
+      7.5,
+      2.75,
+      7.5,
+      2.95,
+      1.0,
+      2.95
+     ]
+    },
+    {
+     "content": "We certify that the lot below was tested and meets the stated results.",
+     "confidence": 0.953,
+     "polygon": [
+      1.0,
+      3.0,
+      7.5,
+      3.0,
+      7.5,
+      3.2,
+      1.0,
+      3.2
+     ]
+    },
+    {
+     "content": "Results",
+     "confidence": 0.994,
+     "polygon": [
+      1.0,
+      3.5,
+      7.5,
+      3.5,
+      7.5,
+      3.7,
+      1.0,
+      3.7
+     ]
+    },
+    {
+     "content": "Test           Result   Unit",
+     "confidence": 0.984,
+     "polygon": [
+      1.0,
+      3.75,
+      7.5,
+      3.75,
+      7.5,
+      3.95,
+      1.0,
+      3.95
+     ]
+    },
+    {
+     "content": "Assay          100.0    %",
+     "confidence": 0.957,
+     "polygon": [
+      1.0,
+      4.0,
+      7.5,
+      4.0,
+      7.5,
+      4.2,
+      1.0,
+      4.2
+     ]
+    },
+    {
+     "content": "Water          0.21     %",
+     "confidence": 0.942,
+     "polygon": [
+      1.0,
+      4.25,
+      7.5,
+      4.25,
+      7.5,
+      4.45,
+      1.0,
+      4.45
+     ]
+    },
+    {
+     "content": "pH             6.9      -",
+     "confidence": 0.934,
+     "polygon": [
+      1.0,
+      4.5,
+      7.5,
+      4.5,
+      7.5,
+      4.7,
+      1.0,
+      4.7
+     ]
+    },
+    {
+     "content": "Heavy metals   4        ppm",
+     "confidence": 0.987,
+     "polygon": [
+      1.0,
+      4.75,
+      7.5,
+      4.75,
+      7.5,
+      4.95,
+      1.0,
+      4.95
+     ]
+    },
+    {
+     "content": "Release",
+     "confidence": 0.946,
+     "polygon": [
+      1.0,
+      5.25,
+      7.5,
+      5.25,
+      7.5,
+      5.45,
+      1.0,
+      5.45
+     ]
+    },
+    {
+     "content": "Released by supplier QA on 2026-05-21.",
+     "confidence": 0.964,
+     "polygon": [
+      1.0,
+      5.5,
+      7.5,
+      5.5,
+      7.5,
+      5.7,
+      1.0,
+      5.7
+     ]
+    }
+   ]
+  }
+ ],
+ "tables": [
+  {
+   "rowCount": 5,
+   "columnCount": 3,
+   "cells": [
+    {
+     "rowIndex": 0,
+     "columnIndex": 0,
+     "content": "Test",
+     "kind": "columnHeader"
+    },
+    {
+     "rowIndex": 0,
+     "columnIndex": 1,
+     "content": "Result",
+     "kind": "columnHeader"
+    },
+    {
+     "rowIndex": 0,
+     "columnIndex": 2,
+     "content": "Unit",
+     "kind": "columnHeader"
+    },
+    {
+     "rowIndex": 1,
+     "columnIndex": 0,
+     "content": "Assay"
+    },
+    {
+     "rowIndex": 1,
+     "columnIndex": 1,
+     "content": "100.0"
+    },
+    {
+     "rowIndex": 1,
+     "columnIndex": 2,
+     "content": "%"
+    },
+    {
+     "rowIndex": 2,
+     "columnIndex": 0,
+     "content": "Water"
+    },
+    {
+     "rowIndex": 2,
+     "columnIndex": 1,
+     "content": "0.21"
+    },
+    {
+     "rowIndex": 2,
+     "columnIndex": 2,
+     "content": "%"
+    },
+    {
+     "rowIndex": 3,
+     "columnIndex": 0,
+     "content": "pH"
+    },
+    {
+     "rowIndex": 3,
+     "columnIndex": 1,
+     "content": "6.9"
+    },
+    {
+     "rowIndex": 3,
+     "columnIndex": 2,
+     "content": "-"
+    },
+    {
+     "rowIndex": 4,
+     "columnIndex": 0,
+     "content": "Heavy metals"
+    },
+    {
+     "rowIndex": 4,
+     "columnIndex": 1,
+     "content": "4"
+    },
+    {
+     "rowIndex": 4,
+     "columnIndex": 2,
+     "content": "ppm"
+    }
+   ],
+   "caption": "Results",
+   "boundingRegions": [
+    {
+     "pageNumber": 1
+    }
+   ]
+  }
+ ]
+}

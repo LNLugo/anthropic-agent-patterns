@@ -1,0 +1,58 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Length 689 >>
+stream
+BT
+/F1 10 Tf
+12 TL
+50 760 Td
+(DEVIATION REPORT) Tj T*
+(Deviation: RM-10004 lot L25-0555) Tj T*
+(Deviation No.: DEV-2025-015) Tj T*
+(Revision: 01) Tj T*
+(Opened: 2025-08-17) Tj T*
+(Material: RM-10004) Tj T*
+(Lot: L25-0555) Tj T*
+(Site: Northfield) Tj T*
+(Approved by: Hugo Kowal) Tj T*
+() Tj T*
+(1. DESCRIPTION) Tj T*
+(During dispensing of lot L25-0555, operator Sami Quiroga \(E104305\) recorded a weight outside tolerance.) Tj T*
+() Tj T*
+(2. IMMEDIATE ACTION) Tj T*
+(The lot was placed on hold pending investigation.) Tj T*
+() Tj T*
+(3. ROOT CAUSE) Tj T*
+(Transcription error.) Tj T*
+() Tj T*
+(4. CAPA) Tj T*
+(Retrain on SOP-QA-0020. Verify balance calibration weekly.) Tj T*
+() Tj T*
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 4 0 R >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000210 00000 n 
+0000000950 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1076
+%%EOF

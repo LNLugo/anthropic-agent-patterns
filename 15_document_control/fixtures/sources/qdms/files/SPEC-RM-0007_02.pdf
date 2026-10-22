@@ -1,0 +1,57 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Length 744 >>
+stream
+BT
+/F1 10 Tf
+12 TL
+50 760 Td
+(MATERIAL SPECIFICATION) Tj T*
+(Specification: Sodium benzoate) Tj T*
+(Document No.: SPEC-RM-0007) Tj T*
+(Revision: 02) Tj T*
+(Effective date: 2024-01-07) Tj T*
+(Material: RM-10007) Tj T*
+(Site: Brookvale) Tj T*
+(Approved by: Irene Ferreira) Tj T*
+() Tj T*
+(1. SCOPE) Tj T*
+(Acceptance specification for Sodium benzoate \(RM-10007\) received at all sites.) Tj T*
+() Tj T*
+(2. LIMITS) Tj T*
+(Parameter        Limit          Unit   Method) Tj T*
+(Assay            98.0 - 100.7   %      Ph. Eur.) Tj T*
+(Loss on drying   0.00 - 1.00    %      In-house) Tj T*
+(pH               5.0 - 7.5      -      In-house) Tj T*
+() Tj T*
+(3. SAMPLING) Tj T*
+(Sample per SOP-QA-0003. Test every lot before release.) Tj T*
+() Tj T*
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 4 0 R >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000210 00000 n 
+0000001005 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1131
+%%EOF

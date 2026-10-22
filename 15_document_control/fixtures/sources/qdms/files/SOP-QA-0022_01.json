@@ -1,0 +1,370 @@
+{
+ "apiVersion": "stand-in",
+ "modelId": "prebuilt-layout",
+ "pages": [
+  {
+   "pageNumber": 1,
+   "unit": "inch",
+   "lines": [
+    {
+     "content": "STANDARD OPERATING PROCEDURE",
+     "confidence": 0.958,
+     "polygon": [
+      1.0,
+      1.0,
+      7.5,
+      1.0,
+      7.5,
+      1.2,
+      1.0,
+      1.2
+     ]
+    },
+    {
+     "content": "Warehouse temperature mapping",
+     "confidence": 0.958,
+     "polygon": [
+      1.0,
+      1.25,
+      7.5,
+      1.25,
+      7.5,
+      1.45,
+      1.0,
+      1.45
+     ]
+    },
+    {
+     "content": "Document No.: SOP-QA-0022",
+     "confidence": 0.951,
+     "polygon": [
+      1.0,
+      1.5,
+      7.5,
+      1.5,
+      7.5,
+      1.7,
+      1.0,
+      1.7
+     ]
+    },
+    {
+     "content": "Revision: 01",
+     "confidence": 0.96,
+     "polygon": [
+      1.0,
+      1.75,
+      7.5,
+      1.75,
+      7.5,
+      1.95,
+      1.0,
+      1.95
+     ]
+    },
+    {
+     "content": "Effective date: 2023-03-23",
+     "confidence": 0.963,
+     "polygon": [
+      1.0,
+      2.0,
+      7.5,
+      2.0,
+      7.5,
+      2.2,
+      1.0,
+      2.2
+     ]
+    },
+    {
+     "content": "Site: Brookvale",
+     "confidence": 0.953,
+     "polygon": [
+      1.0,
+      2.25,
+      7.5,
+      2.25,
+      7.5,
+      2.45,
+      1.0,
+      2.45
+     ]
+    },
+    {
+     "content": "Owner: Ana Lindqvist",
+     "confidence": 0.963,
+     "polygon": [
+      1.0,
+      2.5,
+      7.5,
+      2.5,
+      7.5,
+      2.7,
+      1.0,
+      2.7
+     ]
+    },
+    {
+     "content": "Approved by: Ana Quiroga",
+     "confidence": 0.982,
+     "polygon": [
+      1.0,
+      2.75,
+      7.5,
+      2.75,
+      7.5,
+      2.95,
+      1.0,
+      2.95
+     ]
+    },
+    {
+     "content": "Purpose",
+     "confidence": 0.946,
+     "polygon": [
+      1.0,
+      3.25,
+      7.5,
+      3.25,
+      7.5,
+      3.45,
+      1.0,
+      3.45
+     ]
+    },
+    {
+     "content": "This procedure defines how warehouse temperature mapping is carried out at Brookvale.",
+     "confidence": 0.974,
+     "polygon": [
+      1.0,
+      3.5,
+      7.5,
+      3.5,
+      7.5,
+      3.7,
+      1.0,
+      3.7
+     ]
+    },
+    {
+     "content": "Scope",
+     "confidence": 0.964,
+     "polygon": [
+      1.0,
+      4.0,
+      7.5,
+      4.0,
+      7.5,
+      4.2,
+      1.0,
+      4.2
+     ]
+    },
+    {
+     "content": "Applies to all warehouse temperature mapping activities in production and quality control at Brookvale.",
+     "confidence": 0.989,
+     "polygon": [
+      1.0,
+      4.25,
+      7.5,
+      4.25,
+      7.5,
+      4.45,
+      1.0,
+      4.45
+     ]
+    },
+    {
+     "content": "Responsibilities",
+     "confidence": 0.972,
+     "polygon": [
+      1.0,
+      4.75,
+      7.5,
+      4.75,
+      7.5,
+      4.95,
+      1.0,
+      4.95
+     ]
+    },
+    {
+     "content": "The process owner, Ana Lindqvist, maintains this procedure. Quality approves it.",
+     "confidence": 0.98,
+     "polygon": [
+      1.0,
+      5.0,
+      7.5,
+      5.0,
+      7.5,
+      5.2,
+      1.0,
+      5.2
+     ]
+    },
+    {
+     "content": "Procedure",
+     "confidence": 0.97,
+     "polygon": [
+      1.0,
+      5.5,
+      7.5,
+      5.5,
+      7.5,
+      5.7,
+      1.0,
+      5.7
+     ]
+    },
+    {
+     "content": "Step 1: Inspect deviations to Quality within one day.",
+     "confidence": 0.974,
+     "polygon": [
+      1.0,
+      5.75,
+      7.5,
+      5.75,
+      7.5,
+      5.95,
+      1.0,
+      5.95
+     ]
+    },
+    {
+     "content": "Step 2: Confirm the area is free of previous materials.",
+     "confidence": 0.964,
+     "polygon": [
+      1.0,
+      6.0,
+      7.5,
+      6.0,
+      7.5,
+      6.2,
+      1.0,
+      6.2
+     ]
+    },
+    {
+     "content": "Step 3: Clean the result against the acceptance criterion.",
+     "confidence": 0.949,
+     "polygon": [
+      1.0,
+      6.25,
+      7.5,
+      6.25,
+      7.5,
+      6.45,
+      1.0,
+      6.45
+     ]
+    },
+    {
+     "content": "Records",
+     "confidence": 0.982,
+     "polygon": [
+      1.0,
+      6.75,
+      7.5,
+      6.75,
+      7.5,
+      6.95,
+      1.0,
+      6.95
+     ]
+    },
+    {
+     "content": "Records of warehouse temperature mapping are kept for five years after batch expiry.",
+     "confidence": 0.989,
+     "polygon": [
+      1.0,
+      7.0,
+      7.5,
+      7.0,
+      7.5,
+      7.2,
+      1.0,
+      7.2
+     ]
+    },
+    {
+     "content": "Revision history",
+     "confidence": 0.94,
+     "polygon": [
+      1.0,
+      7.5,
+      7.5,
+      7.5,
+      7.5,
+      7.7,
+      1.0,
+      7.7
+     ]
+    },
+    {
+     "content": "Revision   Change",
+     "confidence": 0.991,
+     "polygon": [
+      1.0,
+      7.75,
+      7.5,
+      7.75,
+      7.5,
+      7.95,
+      1.0,
+      7.95
+     ]
+    },
+    {
+     "content": "01         Revision 01: first issue.",
+     "confidence": 0.972,
+     "polygon": [
+      1.0,
+      8.0,
+      7.5,
+      8.0,
+      7.5,
+      8.2,
+      1.0,
+      8.2
+     ]
+    }
+   ]
+  }
+ ],
+ "tables": [
+  {
+   "rowCount": 2,
+   "columnCount": 2,
+   "cells": [
+    {
+     "rowIndex": 0,
+     "columnIndex": 0,
+     "content": "Revision",
+     "kind": "columnHeader"
+    },
+    {
+     "rowIndex": 0,
+     "columnIndex": 1,
+     "content": "Change",
+     "kind": "columnHeader"
+    },
+    {
+     "rowIndex": 1,
+     "columnIndex": 0,
+     "content": "01"
+    },
+    {
+     "rowIndex": 1,
+     "columnIndex": 1,
+     "content": "Revision 01: first issue."
+    }
+   ],
+   "caption": "Revision history",
+   "boundingRegions": [
+    {
+     "pageNumber": 1
+    }
+   ]
+  }
+ ]
+}

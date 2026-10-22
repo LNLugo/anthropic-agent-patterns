@@ -1,0 +1,3510 @@
+documents:
+  CC-2025-001/01:
+    doc_type: CC
+    fields:
+      affected_documents:
+      - SOP-QA-0002
+      approved_by: Priya Rasmussen
+      doc_number: CC-2025-001
+      opened: '2025-01-23'
+      revision: '01'
+      site: Lakemoor
+      title: 'Change control: update equipment cleaning'
+    file: CC-2025-001_01.html
+    format: html
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  CC-2025-002/01:
+    doc_type: CC
+    fields:
+      affected_documents:
+      - SOP-QA-0003
+      approved_by: Chloe Nakamura
+      doc_number: CC-2025-002
+      opened: '2025-02-09'
+      revision: '01'
+      site: Northfield
+      title: 'Change control: update raw material sampling'
+    file: CC-2025-002_01.html
+    format: html
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  CC-2025-003/01:
+    doc_type: CC
+    fields:
+      affected_documents:
+      - SOP-QA-0006
+      approved_by: Hugo Petrov
+      doc_number: CC-2025-003
+      opened: '2025-02-26'
+      revision: '01'
+      site: Northfield
+      title: 'Change control: update change control'
+    file: CC-2025-003_01.html
+    format: html
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  CC-2025-004/01:
+    doc_type: CC
+    fields:
+      affected_documents:
+      - SOP-QA-0008
+      approved_by: Noor Hartmann
+      doc_number: CC-2025-004
+      opened: '2025-03-15'
+      revision: '01'
+      site: Lakemoor
+      title: 'Change control: update environmental monitoring'
+    file: CC-2025-004_01.html
+    format: html
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  CC-2025-005/01:
+    doc_type: CC
+    fields:
+      affected_documents:
+      - SOP-QA-0010
+      approved_by: Priya Moreau
+      doc_number: CC-2025-005
+      opened: '2025-04-01'
+      revision: '01'
+      site: Brookvale
+      title: 'Change control: update label reconciliation'
+    file: CC-2025-005_01.html
+    format: html
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  CC-2025-006/01:
+    doc_type: CC
+    fields:
+      affected_documents:
+      - SOP-QA-0011
+      approved_by: Farid Castell
+      doc_number: CC-2025-006
+      opened: '2025-04-18'
+      revision: '01'
+      site: Lakemoor
+      title: 'Change control: update pest control'
+    file: CC-2025-006_01.html
+    format: html
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  CC-2025-007/01:
+    doc_type: CC
+    fields:
+      affected_documents:
+      - SOP-QA-0012
+      approved_by: Chloe Hartmann
+      doc_number: CC-2025-007
+      opened: '2025-05-05'
+      revision: '01'
+      site: Northfield
+      title: 'Change control: update gowning'
+    file: CC-2025-007_01.html
+    format: html
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  CC-2025-008/01:
+    doc_type: CC
+    fields:
+      affected_documents:
+      - SOP-QA-0013
+      approved_by: Farid Dorsey
+      doc_number: CC-2025-008
+      opened: '2025-05-22'
+      revision: '01'
+      site: Brookvale
+      title: 'Change control: update retained samples'
+    file: CC-2025-008_01.html
+    format: html
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  CC-2025-009/A:
+    doc_type: CC
+    fields:
+      affected_documents:
+      - SOP-QA-0014
+      approved_by: Noor Abara
+      doc_number: CC-2025-009
+      opened: '2025-06-08'
+      revision: A
+      site: Lakemoor
+      title: 'Change control: update supplier qualification'
+    file: CC-2025-009_A.html
+    format: html
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  CC-2025-010/01:
+    doc_type: CC
+    fields:
+      affected_documents:
+      - SOP-QA-0015
+      approved_by: Liam Kowal
+      doc_number: CC-2025-010
+      opened: '2025-06-25'
+      revision: '01'
+      site: Northfield
+      title: 'Change control: update complaint handling'
+    file: CC-2025-010_01.html
+    format: html
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  CC-2025-011/01:
+    doc_type: CC
+    fields:
+      affected_documents:
+      - SOP-QA-0016
+      approved_by: Grace Quiroga
+      doc_number: CC-2025-011
+      opened: '2025-07-12'
+      revision: '01'
+      site: Brookvale
+      title: 'Change control: update document control'
+    file: CC-2025-011_01.html
+    format: html
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  CC-2025-012/01:
+    doc_type: CC
+    fields:
+      affected_documents:
+      - SOP-QA-0017
+      approved_by: Quinn Lindqvist
+      doc_number: CC-2025-012
+      opened: '2025-07-29'
+      revision: '01'
+      site: Lakemoor
+      title: 'Change control: update stability testing'
+    file: CC-2025-012_01.html
+    format: html
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  CC-2025-013/01:
+    doc_type: CC
+    fields:
+      affected_documents:
+      - SOP-QA-0018
+      approved_by: Elena Castell
+      doc_number: CC-2025-013
+      opened: '2025-08-15'
+      revision: '01'
+      site: Northfield
+      title: 'Change control: update rework of bulk'
+    file: CC-2025-013_01.html
+    format: html
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  CC-2025-014/01:
+    doc_type: CC
+    fields:
+      affected_documents:
+      - SOP-QA-0020
+      approved_by: Grace Hartmann
+      doc_number: CC-2025-014
+      opened: '2025-09-01'
+      revision: '01'
+      site: Lakemoor
+      title: 'Change control: update weighing and dispensing'
+    file: CC-2025-014_01.html
+    format: html
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  CC-2025-015/01:
+    doc_type: CC
+    fields:
+      affected_documents:
+      - SOP-QA-0021
+      approved_by: Ana Ekwueme
+      doc_number: CC-2025-015
+      opened: '2025-09-18'
+      revision: '01'
+      site: Northfield
+      title: 'Change control: update filling line setup'
+    file: CC-2025-015_01.html
+    format: html
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  CMP-2026-001/01:
+    doc_type: CMP
+    fields:
+      doc_number: CMP-2026-001
+      material_id: RM-10006
+      received: '2026-01-31'
+      site: Brookvale
+      title: Complaint summary CMP-2026-001
+    file: CMP-2026-001_01.html
+    format: html
+    parent: null
+    readers:
+    - complaints
+    source: sharepoint
+  CMP-2026-002/01:
+    doc_type: CMP
+    fields:
+      doc_number: CMP-2026-002
+      material_id: RM-10011
+      received: '2026-02-19'
+      site: Lakemoor
+      title: Complaint summary CMP-2026-002
+    file: CMP-2026-002_01.html
+    format: html
+    parent: null
+    readers:
+    - complaints
+    source: sharepoint
+  CMP-2026-003/01:
+    doc_type: CMP
+    fields:
+      doc_number: CMP-2026-003
+      material_id: RM-10004
+      received: '2026-03-10'
+      site: Northfield
+      title: Complaint summary CMP-2026-003
+    file: CMP-2026-003_01.html
+    format: html
+    parent: null
+    readers:
+    - complaints
+    source: sharepoint
+  CMP-2026-004/01:
+    doc_type: CMP
+    fields:
+      doc_number: CMP-2026-004
+      material_id: RM-10009
+      received: '2026-03-29'
+      site: Brookvale
+      title: Complaint summary CMP-2026-004
+    file: CMP-2026-004_01.html
+    format: html
+    parent: null
+    readers:
+    - complaints
+    source: sharepoint
+  CMP-2026-005/01:
+    doc_type: CMP
+    fields:
+      doc_number: CMP-2026-005
+      material_id: RM-10002
+      received: '2026-04-17'
+      site: Lakemoor
+      title: Complaint summary CMP-2026-005
+    file: CMP-2026-005_01.html
+    format: html
+    parent: null
+    readers:
+    - complaints
+    source: sharepoint
+  CMP-2026-006/01:
+    doc_type: CMP
+    fields:
+      doc_number: CMP-2026-006
+      material_id: RM-10007
+      received: '2026-05-06'
+      site: Northfield
+      title: Complaint summary CMP-2026-006
+    file: CMP-2026-006_01.html
+    format: html
+    parent: null
+    readers:
+    - complaints
+    source: sharepoint
+  CMP-2026-007/01:
+    doc_type: CMP
+    fields:
+      doc_number: CMP-2026-007
+      material_id: RM-10012
+      received: '2026-05-25'
+      site: Brookvale
+      title: Complaint summary CMP-2026-007
+    file: CMP-2026-007_01.html
+    format: html
+    parent: null
+    readers:
+    - complaints
+    source: sharepoint
+  CMP-2026-008/01:
+    doc_type: CMP
+    fields:
+      doc_number: CMP-2026-008
+      material_id: RM-10005
+      received: '2026-06-13'
+      site: Lakemoor
+      title: Complaint summary CMP-2026-008
+    file: CMP-2026-008_01.html
+    format: html
+    parent: null
+    readers:
+    - complaints
+    source: sharepoint
+  CMP-2026-009/01:
+    doc_type: CMP
+    fields:
+      doc_number: CMP-2026-009
+      material_id: RM-10010
+      received: '2026-07-02'
+      site: Northfield
+      title: Complaint summary CMP-2026-009
+    file: CMP-2026-009_01.html
+    format: html
+    parent: null
+    readers:
+    - complaints
+    source: sharepoint
+  CMP-2026-010/01:
+    doc_type: CMP
+    fields:
+      doc_number: CMP-2026-010
+      material_id: RM-10003
+      received: '2026-07-21'
+      site: Brookvale
+      title: Complaint summary CMP-2026-010
+    file: CMP-2026-010_01.html
+    format: html
+    parent: null
+    readers:
+    - complaints
+    source: sharepoint
+  CMP-2026-011/01:
+    doc_type: CMP
+    fields:
+      doc_number: CMP-2026-011
+      material_id: RM-10008
+      received: '2026-08-09'
+      site: Lakemoor
+      title: Complaint summary CMP-2026-011
+    file: CMP-2026-011_01.html
+    format: html
+    parent: null
+    readers:
+    - complaints
+    source: sharepoint
+  CMP-2026-012/01:
+    doc_type: CMP
+    fields:
+      doc_number: CMP-2026-012
+      material_id: RM-10001
+      received: '2026-08-28'
+      site: Northfield
+      title: Complaint summary CMP-2026-012
+    file: CMP-2026-012_01.html
+    format: html
+    parent: null
+    readers:
+    - complaints
+    source: sharepoint
+  COA-2001-L26-0060/01:
+    doc_type: COA
+    fields:
+      doc_number: COA-2001-L26-0060
+      lot: L26-0060
+      manufactured: '2026-08-01'
+      material_id: RM-10009
+      results:
+        Acid value: 1.37
+        Assay: 100.3
+        Refractive index: 1.475
+      supplier_id: SUP-2001
+      title: Quality Release Report
+    file: COA-2001-L26-0060_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - supplier-quality
+    - quality-lmr
+    source: sap
+  COA-2001-L26-0265/01:
+    doc_type: COA
+    fields:
+      doc_number: COA-2001-L26-0265
+      lot: L26-0265
+      manufactured: '2026-03-19'
+      material_id: RM-10006
+      results:
+        Loss on drying: 0.3
+        Microbial count: 131.0
+        Viscosity: 1357.0
+        pH: 6.8
+      supplier_id: SUP-2001
+      title: Quality Release Report
+    file: COA-2001-L26-0265_01.json
+    format: scan
+    parent: null
+    readers:
+    - supplier-quality
+    - quality-lmr
+    source: sap
+  COA-2001-L26-0530/01:
+    doc_type: COA
+    fields:
+      doc_number: COA-2001-L26-0530
+      lot: L26-0530
+      manufactured: '2026-05-03'
+      material_id: RM-19999
+      results:
+        Acid value: 0.57
+        Peroxide value: 3.5
+        Water: 0.14
+      supplier_id: SUP-2001
+      title: Analysis Certificate
+    file: COA-2001-L26-0530_01.pdf
+    format: pdf
+    parent: COR-2026-007/01
+    readers:
+    - supplier-quality
+    - quality-brv
+    source: sap
+  COA-2001-L26-0795/01:
+    doc_type: COA
+    fields:
+      doc_number: COA-2001-L26-0795
+      lot: L26-0795
+      manufactured: '2026-06-17'
+      material_id: RM-10004
+      results:
+        Acid value: 37.65
+        Melting point: 51.2
+        Peroxide value: 4.0
+      supplier_id: SUP-2001
+      title: CERTIFICATE OF ANALYSIS
+    file: COA-2001-L26-0795_01.xlsx
+    format: xlsx
+    parent: COR-2026-008/01
+    readers:
+    - supplier-quality
+    - quality-nfd
+    source: sap
+  COA-2002-L26-0053/01:
+    doc_type: COA
+    fields:
+      doc_number: COA-2002-L26-0053
+      lot: L26-0053
+      manufactured: '2026-02-11'
+      material_id: RM-10002
+      results:
+        Acid value: 0.87
+        Assay: 99.9
+        Melting point: 53.1
+      supplier_id: SUP-2002
+      title: Analysis Certificate
+    file: COA-2002-L26-0053_01.pdf
+    format: pdf
+    parent: COR-2026-001/01
+    readers:
+    - supplier-quality
+    - quality-brv
+    source: sap
+  COA-2002-L26-0113/01:
+    doc_type: COA
+    fields:
+      doc_number: COA-2002-L26-0113
+      lot: L26-0113
+      manufactured: '2026-08-10'
+      material_id: RM-10010
+      results:
+        Heavy metals: 14.0
+        Loss on drying: 0.46
+        Microbial count: 35.0
+        pH: 5.8
+      supplier_id: SUP-2002
+      title: CERTIFICATE OF ANALYSIS
+    file: COA-2002-L26-0113_01.json
+    format: scan
+    parent: null
+    readers:
+    - supplier-quality
+    - quality-nfd
+    source: sap
+  COA-2002-L26-0318/01:
+    doc_type: COA
+    fields:
+      doc_number: COA-2002-L26-0318
+      lot: L26-0318
+      manufactured: '2026-03-28'
+      material_id: RM-10007
+      results:
+        Assay: 100.1
+        Loss on drying: 0.45
+        pH: 6.7
+      supplier_id: SUP-2002
+      title: CERTIFICATE OF ANALYSIS
+    file: COA-2002-L26-0318_01.xlsx
+    format: xlsx
+    parent: COR-2026-003/01
+    readers:
+    - supplier-quality
+    - quality-nfd
+    source: sap
+  COA-2002-L26-0583/01:
+    doc_type: COA
+    fields:
+      doc_number: COA-2002-L26-0583
+      lot: L26-0583
+      manufactured: '2026-05-12'
+      material_id: RM-10012
+      results:
+        Assay: 99.1
+        Heavy metals: 7.0
+        Water: 0.26
+      supplier_id: SUP-2002
+      title: Quality Release Report
+    file: COA-2002-L26-0583_01.pdf
+    format: pdf
+    parent: COR-2026-007/01
+    readers:
+    - supplier-quality
+    - quality-lmr
+    source: sap
+  COA-2002-L26-0848/01:
+    doc_type: COA
+    fields:
+      doc_number: COA-2002-L26-0848
+      lot: L26-0848
+      manufactured: '2026-06-26'
+      material_id: RM-10005
+      results:
+        Assay: 99.1
+        Heavy metals: 2.0
+        Loss on drying: 0.54
+      supplier_id: SUP-2002
+      title: Analysis Certificate
+    file: COA-2002-L26-0848_01.xlsx
+    format: xlsx
+    parent: COR-2026-008/01
+    readers:
+    - supplier-quality
+    - quality-brv
+    source: sap
+  COA-2003-L26-0106/01:
+    doc_type: COA
+    fields:
+      doc_number: COA-2003-L26-0106
+      lot: L26-0106
+      manufactured: '2026-02-20'
+      material_id: RM-10003
+      results:
+        Conductivity: 0.3
+        Microbial count: 71.0
+        Total organic carbon: 273.0
+      supplier_id: SUP-2003
+      title: Quality Release Report
+    file: COA-2003-L26-0106_01.pdf
+    format: pdf
+    parent: COR-2026-002/01
+    readers:
+    - supplier-quality
+    - quality-lmr
+    source: sap
+  COA-2003-L26-0166/01:
+    doc_type: COA
+    fields:
+      doc_number: COA-2003-L26-0166
+      lot: L26-0166
+      manufactured: '2026-08-19'
+      material_id: RM-10011
+      results:
+        Acid value: 1.2
+        Peroxide value: 4.5
+        Water: 0.16
+      supplier_id: SUP-2003
+      title: Analysis Certificate
+    file: COA-2003-L26-0166_01.json
+    format: scan
+    parent: null
+    readers:
+    - supplier-quality
+    - quality-brv
+    source: sap
+  COA-2003-L26-0371/01:
+    doc_type: COA
+    fields:
+      doc_number: COA-2003-L26-0371
+      lot: L26-0371
+      manufactured: '2026-04-06'
+      material_id: RM-10008
+      results:
+        Flash point: 96.0
+        Refractive index: 1.469
+        Specific gravity: 1.004
+      supplier_id: SUP-2003
+      title: Analysis Certificate
+    file: COA-2003-L26-0371_01.xlsx
+    format: xlsx
+    parent: COR-2026-004/01
+    readers:
+    - supplier-quality
+    - quality-brv
+    source: sap
+  COA-2003-L26-0636/01:
+    doc_type: COA
+    fields:
+      doc_number: COA-2003-L26-0636
+      lot: L26-0636
+      manufactured: '2026-05-21'
+      material_id: RM-10001
+      results:
+        Assay: 100.0
+        Heavy metals: 4.0
+        Water: 0.21
+        pH: 6.9
+      supplier_id: SUP-2003
+      title: CERTIFICATE OF ANALYSIS
+    file: COA-2003-L26-0636_01.json
+    format: scan
+    parent: null
+    readers:
+    - supplier-quality
+    - quality-nfd
+    source: sap
+  COA-2003-L26-0901/01:
+    doc_type: COA
+    fields:
+      doc_number: COA-2003-L26-0901
+      lot: L26-0901
+      manufactured: '2026-07-05'
+      material_id: RM-10006
+      results:
+        Loss on drying: 0.47
+        Microbial count: 29.0
+        Viscosity: 1382.0
+        pH: 6.4
+      supplier_id: SUP-2999
+      title: Quality Release Report
+    file: COA-2003-L26-0901_01.xlsx
+    format: xlsx
+    parent: null
+    readers:
+    - supplier-quality
+    - quality-lmr
+    source: sap
+  COA-2004-L26-0159/01:
+    doc_type: COA
+    fields:
+      doc_number: COA-2004-L26-0159
+      lot: L26-0159
+      manufactured: '2026-03-01'
+      material_id: RM-10004
+      results:
+        Acid value: 39.45
+        Melting point: 51.8
+        Peroxide value: 3.7
+      supplier_id: SUP-2004
+      title: CERTIFICATE OF ANALYSIS
+    file: COA-2004-L26-0159_01.json
+    format: scan
+    parent: null
+    readers:
+    - supplier-quality
+    - quality-nfd
+    source: sap
+  COA-2004-L26-0219/01:
+    doc_type: COA
+    fields:
+      doc_number: COA-2004-L26-0219
+      lot: L26-0219
+      manufactured: '2026-08-28'
+      material_id: RM-10012
+      results:
+        Assay: 100.2
+        Heavy metals: 3.0
+        Water: 0.2
+      supplier_id: SUP-2004
+      title: Quality Release Report
+    file: COA-2004-L26-0219_01.json
+    format: scan
+    parent: null
+    readers:
+    - supplier-quality
+    - quality-lmr
+    source: sap
+  COA-2004-L26-0424/01:
+    doc_type: COA
+    fields:
+      doc_number: COA-2004-L26-0424
+      lot: L26-0424
+      manufactured: '2026-04-15'
+      material_id: RM-10009
+      results:
+        Acid value: 0.49
+        Assay: 99.7
+        Refractive index: 1.471
+      supplier_id: SUP-2004
+      title: Quality Release Report
+    file: COA-2004-L26-0424_01.xlsx
+    format: xlsx
+    parent: COR-2026-005/01
+    readers:
+    - supplier-quality
+    - quality-lmr
+    source: sap
+  COA-2004-L26-0689/01:
+    doc_type: COA
+    fields:
+      doc_number: COA-2004-L26-0689
+      lot: L26-0689
+      manufactured: '2026-05-30'
+      material_id: RM-10002
+      results:
+        Acid value: 1.05
+        Assay: 99.4
+        Melting point: 51.9
+      supplier_id: SUP-2004
+      title: Analysis Certificate
+    file: COA-2004-L26-0689_01.json
+    format: scan
+    parent: null
+    readers:
+    - supplier-quality
+    - quality-brv
+    source: sap
+  COA-2004-L26-0954/01:
+    doc_type: COA
+    fields:
+      doc_number: COA-2004-L26-0954
+      lot: L26-0954
+      manufactured: '2026-07-14'
+      material_id: RM-10007
+      results:
+        Assay: 99.8
+        Loss on drying: 0.48
+        pH: 6.9
+      supplier_id: SUP-2004
+      title: CERTIFICATE OF ANALYSIS
+    file: COA-2004-L26-0954_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - supplier-quality
+    - quality-nfd
+    source: sap
+  COA-2005-L26-0007/01:
+    doc_type: COA
+    fields:
+      doc_number: COA-2005-L26-0007
+      lot: L26-0007
+      manufactured: '2026-07-23'
+      material_id: RM-10008
+      results:
+        Flash point: 100.0
+        Refractive index: 1.466
+        Specific gravity: 0.981
+      supplier_id: SUP-2005
+      title: Analysis Certificate
+    file: COA-2005-L26-0007_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - supplier-quality
+    - quality-brv
+    source: sap
+  COA-2005-L26-0212/01:
+    doc_type: COA
+    fields:
+      doc_number: COA-2005-L26-0212
+      lot: L26-0212
+      manufactured: '2026-03-10'
+      material_id: RM-10005
+      results:
+        Assay: 98.9
+        Heavy metals: 8.0
+        Loss on drying: 0.59
+      supplier_id: SUP-2005
+      title: Analysis Certificate
+    file: COA-2005-L26-0212_01.json
+    format: scan
+    parent: null
+    readers:
+    - supplier-quality
+    - quality-brv
+    source: sap
+  COA-2005-L26-0272/01:
+    doc_type: COA
+    fields:
+      doc_number: COA-2005-L26-0272
+      lot: L26-0272
+      manufactured: '2026-09-06'
+      material_id: RM-10001
+      results:
+        Assay: 100.1
+        Heavy metals: 7.0
+        Water: 0.33
+        pH: 6.5
+      supplier_id: SUP-2005
+      title: CERTIFICATE OF ANALYSIS
+    file: COA-2005-L26-0272_01.xlsx
+    format: xlsx
+    parent: null
+    readers:
+    - supplier-quality
+    - quality-nfd
+    source: sap
+  COA-2005-L26-0477/01:
+    doc_type: COA
+    fields:
+      doc_number: COA-2005-L26-0477
+      lot: L26-0477
+      manufactured: '2026-04-24'
+      material_id: RM-10010
+      results:
+        Heavy metals: 3.0
+        Loss on drying: 0.34
+        Microbial count: 39.0
+        pH: 6.6
+      supplier_id: SUP-2005
+      title: CERTIFICATE OF ANALYSIS
+    file: COA-2005-L26-0477_01.pdf
+    format: pdf
+    parent: COR-2026-006/01
+    readers:
+    - supplier-quality
+    - quality-nfd
+    source: sap
+  COA-2005-L26-0742/01:
+    doc_type: COA
+    fields:
+      doc_number: COA-2005-L26-0742
+      lot: L26-0742
+      manufactured: '2026-06-08'
+      material_id: RM-10003
+      results:
+        Conductivity: 0.64
+        Microbial count: 131.0
+        Total organic carbon: 299.0
+      supplier_id: SUP-2005
+      title: Quality Release Report
+    file: COA-2005-L26-0742_01.json
+    format: scan
+    parent: null
+    readers:
+    - supplier-quality
+    - quality-lmr
+    source: sap
+  COR-2026-001/01:
+    doc_type: COR
+    fields:
+      attachments:
+      - COA-2002-L26-0053/01
+      doc_number: COR-2026-001
+      supplier_id: SUP-2002
+    file: COR-2026-001_01.eml
+    format: eml
+    parent: null
+    readers:
+    - supplier-quality
+    source: sap
+  COR-2026-002/01:
+    doc_type: COR
+    fields:
+      attachments:
+      - COA-2003-L26-0106/01
+      doc_number: COR-2026-002
+      supplier_id: SUP-2003
+    file: COR-2026-002_01.eml
+    format: eml
+    parent: null
+    readers:
+    - supplier-quality
+    source: sap
+  COR-2026-003/01:
+    doc_type: COR
+    fields:
+      attachments:
+      - COA-2002-L26-0318/01
+      doc_number: COR-2026-003
+      supplier_id: SUP-2002
+    file: COR-2026-003_01.eml
+    format: eml
+    parent: null
+    readers:
+    - supplier-quality
+    source: sap
+  COR-2026-004/01:
+    doc_type: COR
+    fields:
+      attachments:
+      - COA-2003-L26-0371/01
+      doc_number: COR-2026-004
+      supplier_id: SUP-2003
+    file: COR-2026-004_01.eml
+    format: eml
+    parent: null
+    readers:
+    - supplier-quality
+    source: sap
+  COR-2026-005/01:
+    doc_type: COR
+    fields:
+      attachments:
+      - COA-2004-L26-0424/01
+      doc_number: COR-2026-005
+      supplier_id: SUP-2004
+    file: COR-2026-005_01.eml
+    format: eml
+    parent: null
+    readers:
+    - supplier-quality
+    source: sap
+  COR-2026-006/01:
+    doc_type: COR
+    fields:
+      attachments:
+      - COA-2005-L26-0477/01
+      doc_number: COR-2026-006
+      supplier_id: SUP-2005
+    file: COR-2026-006_01.eml
+    format: eml
+    parent: null
+    readers:
+    - supplier-quality
+    source: sap
+  COR-2026-007/01:
+    doc_type: COR
+    fields:
+      attachments:
+      - COA-2001-L26-0530/01
+      - COA-2002-L26-0583/01
+      doc_number: COR-2026-007
+      supplier_id: SUP-2001
+    file: COR-2026-007_01.eml
+    format: eml
+    parent: null
+    readers:
+    - supplier-quality
+    source: sap
+  COR-2026-008/01:
+    doc_type: COR
+    fields:
+      attachments:
+      - COA-2001-L26-0795/01
+      - COA-2002-L26-0848/01
+      doc_number: COR-2026-008
+      supplier_id: SUP-2001
+    file: COR-2026-008_01.eml
+    format: eml
+    parent: null
+    readers:
+    - supplier-quality
+    source: sap
+  DEV-2025-001/01:
+    doc_type: DEV
+    fields:
+      approved_by: Quinn Jovanovic
+      doc_number: DEV-2025-001
+      lot: L25-0037
+      material_id: RM-10002
+      opened: '2025-02-16'
+      revision: '01'
+      site: Brookvale
+      title: 'Deviation: RM-10002 lot L25-0037'
+    file: DEV-2025-001_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  DEV-2025-002/01:
+    doc_type: DEV
+    fields:
+      approved_by: Chloe Galloway
+      doc_number: DEV-2025-002
+      lot: L25-0074
+      material_id: RM-10003
+      opened: '2025-03-01'
+      revision: '01'
+      site: Lakemoor
+      title: 'Deviation: RM-10003 lot L25-0074'
+    file: DEV-2025-002_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  DEV-2025-003/01:
+    doc_type: DEV
+    fields:
+      approved_by: Maya Castell
+      doc_number: DEV-2025-003
+      lot: L25-0111
+      material_id: RM-10004
+      opened: '2025-03-14'
+      revision: '01'
+      site: Northfield
+      title: 'Deviation: RM-10004 lot L25-0111'
+    file: DEV-2025-003_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  DEV-2025-004/01:
+    doc_type: DEV
+    fields:
+      approved_by: Maya Brandt
+      doc_number: DEV-2025-004
+      lot: L25-0148
+      material_id: RM-10005
+      opened: '2025-03-27'
+      revision: '01'
+      site: Brookvale
+      title: 'Deviation: RM-10005 lot L25-0148'
+    file: DEV-2025-004_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  DEV-2025-005/01:
+    doc_type: DEV
+    fields:
+      approved_by: Dev Castell
+      doc_number: DEV-2025-005
+      lot: L25-0185
+      material_id: RM-10006
+      opened: '2025-04-09'
+      revision: '01'
+      site: Lakemoor
+      title: 'Deviation: RM-10006 lot L25-0185'
+    file: DEV-2025-005_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  DEV-2025-006/01:
+    doc_type: DEV
+    fields:
+      approved_by: Noor Okafor
+      doc_number: DEV-2025-006
+      lot: L25-0222
+      material_id: RM-10007
+      opened: '2025-02-31'
+      revision: '01'
+      site: Northfield
+      title: 'Deviation: RM-10007 lot L25-0222'
+    file: DEV-2025-006_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  DEV-2025-007/01:
+    doc_type: DEV
+    fields:
+      approved_by: Dev Brandt
+      doc_number: DEV-2025-007
+      lot: L25-0259
+      material_id: RM-10008
+      opened: '2025-05-05'
+      revision: '01'
+      site: Brookvale
+      title: 'Deviation: RM-10008 lot L25-0259'
+    file: DEV-2025-007_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  DEV-2025-008/01:
+    doc_type: DEV
+    fields:
+      approved_by: Elena Ekwueme
+      doc_number: DEV-2025-008
+      lot: L25-0296
+      material_id: RM-10009
+      opened: '2025-05-18'
+      revision: '01'
+      site: Lakemoor
+      title: 'Deviation: RM-10009 lot L25-0296'
+    file: DEV-2025-008_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  DEV-2025-009/01:
+    doc_type: DEV
+    fields:
+      approved_by: Irene Lindqvist
+      doc_number: DEV-2025-009
+      lot: L25-0333
+      material_id: RM-10010
+      opened: '2025-05-31'
+      revision: '01'
+      site: Northfield
+      title: 'Deviation: RM-10010 lot L25-0333'
+    file: DEV-2025-009_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  DEV-2025-010/01:
+    doc_type: DEV
+    fields:
+      approved_by: Dev Hartmann
+      doc_number: DEV-2025-010
+      lot: L25-0370
+      material_id: RM-10011
+      opened: '2025-06-13'
+      revision: '01'
+      site: Brookvale
+      title: 'Deviation: RM-10011 lot L25-0370'
+    file: DEV-2025-010_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  DEV-2025-011/01:
+    doc_type: DEV
+    fields:
+      approved_by: Noor Brandt
+      doc_number: DEV-2025-011
+      lot: L25-0407
+      material_id: RM-10012
+      opened: '2025-06-26'
+      revision: '01'
+      site: Lakemoor
+      title: 'Deviation: RM-10012 lot L25-0407'
+    file: DEV-2025-011_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  DEV-2025-012/01:
+    doc_type: DEV
+    fields:
+      approved_by: Priya Hartmann
+      doc_number: DEV-2025-012
+      lot: L25-0444
+      material_id: RM-10001
+      opened: '2025-07-09'
+      revision: '01'
+      site: Northfield
+      title: 'Deviation: RM-10001 lot L25-0444'
+    file: DEV-2025-012_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  DEV-2025-013/01:
+    doc_type: DEV
+    fields:
+      approved_by: Sami Abara
+      doc_number: DEV-2025-013
+      lot: L25-0481
+      material_id: RM-10002
+      opened: '2025-07-22'
+      revision: '01'
+      site: Brookvale
+      title: 'Deviation: RM-10002 lot L25-0481'
+    file: DEV-2025-013_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  DEV-2025-014/01:
+    doc_type: DEV
+    fields:
+      approved_by: Tara Jovanovic
+      doc_number: DEV-2025-014
+      lot: L25-0518
+      material_id: RM-10003
+      opened: '2025-08-04'
+      revision: '01'
+      site: Lakemoor
+      title: 'Deviation: RM-10003 lot L25-0518'
+    file: DEV-2025-014_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  DEV-2025-015/01:
+    doc_type: DEV
+    fields:
+      approved_by: Hugo Kowal
+      doc_number: DEV-2025-015
+      lot: L25-0555
+      material_id: RM-10004
+      opened: '2025-08-17'
+      revision: '01'
+      site: Northfield
+      title: 'Deviation: RM-10004 lot L25-0555'
+    file: DEV-2025-015_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0001/01:
+    doc_type: SOP
+    fields:
+      approved_by: Ben Quiroga
+      doc_number: SOP-QA-0001
+      effective_date: '2023-10-28'
+      revision: '01'
+      site: Brookvale
+      title: Line clearance
+    file: SOP-QA-0001_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  SOP-QA-0001/02:
+    doc_type: SOP
+    fields:
+      approved_by: Ben Quiroga
+      doc_number: SOP-QA-0001
+      effective_date: '2024-07-09'
+      revision: '02'
+      site: Brookvale
+      title: Line clearance
+    file: SOP-QA-0001_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  SOP-QA-0002/01:
+    doc_type: SOP
+    fields:
+      approved_by: Priya Kowal
+      doc_number: SOP-QA-0002
+      effective_date: '2023-05-20'
+      revision: '01'
+      site: Lakemoor
+      title: Equipment cleaning
+    file: SOP-QA-0002_01.json
+    format: scan
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0002/02:
+    doc_type: SOP
+    fields:
+      approved_by: Priya Kowal
+      doc_number: SOP-QA-0002
+      effective_date: '2023-11-16'
+      revision: '02'
+      site: Lakemoor
+      title: Equipment cleaning
+    file: SOP-QA-0002_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0002/03:
+    doc_type: SOP
+    fields:
+      approved_by: Priya Kowal
+      doc_number: SOP-QA-0002
+      effective_date: '2024-07-19'
+      revision: '03'
+      site: Lakemoor
+      title: Equipment cleaning
+    file: SOP-QA-0002_03.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0002/04:
+    doc_type: SOP
+    fields:
+      approved_by: Priya Kowal
+      doc_number: SOP-QA-0002
+      effective_date: '2025-06-29'
+      revision: '04'
+      site: Lakemoor
+      title: Equipment cleaning
+    file: SOP-QA-0002_04.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0003/01:
+    doc_type: SOP
+    fields:
+      approved_by: Chloe Castell
+      doc_number: SOP-QA-0003
+      effective_date: '2023-10-22'
+      revision: '01'
+      site: Northfield
+      title: Raw material sampling
+    file: SOP-QA-0003_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0003/02:
+    doc_type: SOP
+    fields:
+      approved_by: Chloe Castell
+      doc_number: SOP-QA-0003
+      effective_date: '2024-05-27'
+      revision: '02'
+      site: Northfield
+      title: Raw material sampling
+    file: SOP-QA-0003_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0004/01:
+    doc_type: SOP
+    fields:
+      approved_by: Liam Nakamura
+      doc_number: SOP-QA-0004
+      effective_date: '2023-05-22'
+      revision: '01'
+      site: Brookvale
+      title: Batch record review
+    file: SOP-QA-0004_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  SOP-QA-0005/01:
+    doc_type: SOP
+    fields:
+      approved_by: Noor Kowal
+      doc_number: SOP-QA-0005
+      effective_date: '2023-01-28'
+      revision: '01'
+      site: Lakemoor
+      title: Deviation handling
+    file: SOP-QA-0005_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0006/01:
+    doc_type: SOP
+    fields:
+      approved_by: Kira Rasmussen
+      doc_number: SOP-QA-0006
+      effective_date: '2023-10-02'
+      revision: '01'
+      site: Northfield
+      title: Change control
+    file: SOP-QA-0006_01.json
+    format: scan
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0006/02:
+    doc_type: SOP
+    fields:
+      approved_by: Kira Rasmussen
+      doc_number: SOP-QA-0006
+      effective_date: '2024-05-14'
+      revision: '02'
+      site: Northfield
+      title: Change control
+    file: SOP-QA-0006_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0006/03:
+    doc_type: SOP
+    fields:
+      approved_by: Kira Rasmussen
+      doc_number: SOP-QA-0006
+      effective_date: '2024-10-28'
+      revision: '03'
+      site: Northfield
+      title: Change control
+    file: SOP-QA-0006_03.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0007/01:
+    doc_type: SOP
+    fields:
+      approved_by: Sami Ferreira
+      doc_number: SOP-QA-0007
+      effective_date: '2024-01-24'
+      revision: '01'
+      site: Brookvale
+      title: Calibration of balances
+    file: SOP-QA-0007_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  SOP-QA-0008/01:
+    doc_type: SOP
+    fields:
+      approved_by: Liam Lindqvist
+      doc_number: SOP-QA-0008
+      effective_date: '2023-08-10'
+      revision: '01'
+      site: Lakemoor
+      title: Environmental monitoring
+    file: SOP-QA-0008_01.json
+    format: scan
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0008/02:
+    doc_type: SOP
+    fields:
+      approved_by: Liam Lindqvist
+      doc_number: SOP-QA-0008
+      effective_date: '2024-01-15'
+      revision: '02'
+      site: Lakemoor
+      title: Environmental monitoring
+    file: SOP-QA-0008_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0008/03:
+    doc_type: SOP
+    fields:
+      approved_by: Liam Lindqvist
+      doc_number: SOP-QA-0008
+      effective_date: '2024-07-09'
+      revision: '03'
+      site: Lakemoor
+      title: Environmental monitoring
+    file: SOP-QA-0008_03.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0009/01:
+    doc_type: SOP
+    fields:
+      approved_by: Maya Ferreira
+      doc_number: SOP-QA-0009
+      effective_date: '2024-01-25'
+      revision: '01'
+      site: Northfield
+      title: Water system sanitisation
+    file: SOP-QA-0009_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0010/01:
+    doc_type: SOP
+    fields:
+      approved_by: Quinn Okafor
+      doc_number: SOP-QA-0010
+      effective_date: '2023-07-11'
+      revision: '01'
+      site: Brookvale
+      title: Label reconciliation
+    file: SOP-QA-0010_01.json
+    format: scan
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  SOP-QA-0010/02:
+    doc_type: SOP
+    fields:
+      approved_by: Quinn Okafor
+      doc_number: SOP-QA-0010
+      effective_date: '2024-01-02'
+      revision: '02'
+      site: Brookvale
+      title: Label reconciliation
+    file: SOP-QA-0010_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  SOP-QA-0010/03:
+    doc_type: SOP
+    fields:
+      approved_by: Quinn Okafor
+      doc_number: SOP-QA-0010
+      effective_date: '2024-05-18'
+      revision: '03'
+      site: Brookvale
+      title: Label reconciliation
+    file: SOP-QA-0010_03.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  SOP-QA-0011/01:
+    doc_type: SOP
+    fields:
+      approved_by: Ana Moreau
+      doc_number: SOP-QA-0011
+      effective_date: '2023-08-22'
+      revision: '01'
+      site: Lakemoor
+      title: Pest control
+    file: SOP-QA-0011_01.json
+    format: scan
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0011/02:
+    doc_type: SOP
+    fields:
+      approved_by: Ana Moreau
+      doc_number: SOP-QA-0011
+      effective_date: '2024-01-22'
+      revision: '02'
+      site: Lakemoor
+      title: Pest control
+    file: SOP-QA-0011_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0011/03:
+    doc_type: SOP
+    fields:
+      approved_by: Ana Moreau
+      doc_number: SOP-QA-0011
+      effective_date: '2024-10-07'
+      revision: '03'
+      site: Lakemoor
+      title: Pest control
+    file: SOP-QA-0011_03.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0012/01:
+    doc_type: SOP
+    fields:
+      approved_by: Dev Nakamura
+      doc_number: SOP-QA-0012
+      effective_date: '2023-12-23'
+      revision: '01'
+      site: Northfield
+      title: Gowning
+    file: SOP-QA-0012_01.json
+    format: scan
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0012/02:
+    doc_type: SOP
+    fields:
+      approved_by: Dev Nakamura
+      doc_number: SOP-QA-0012
+      effective_date: '2024-07-24'
+      revision: '02'
+      site: Northfield
+      title: Gowning
+    file: SOP-QA-0012_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0012/03:
+    doc_type: SOP
+    fields:
+      approved_by: Dev Nakamura
+      doc_number: SOP-QA-0012
+      effective_date: '2025-04-18'
+      revision: '03'
+      site: Northfield
+      title: Gowning
+    file: SOP-QA-0012_03.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0012/04:
+    doc_type: SOP
+    fields:
+      approved_by: Dev Nakamura
+      doc_number: SOP-QA-0012
+      effective_date: '2025-11-21'
+      revision: '04'
+      site: Northfield
+      title: Gowning
+    file: SOP-QA-0012_04.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0013/01:
+    doc_type: SOP
+    fields:
+      approved_by: Kira Petrov
+      doc_number: SOP-QA-0013
+      effective_date: '2023-07-31'
+      revision: '01'
+      site: Brookvale
+      title: Retained samples
+    file: SOP-QA-0013_01.json
+    format: scan
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  SOP-QA-0013/02:
+    doc_type: SOP
+    fields:
+      approved_by: Kira Petrov
+      doc_number: SOP-QA-0013
+      effective_date: '2024-03-10'
+      revision: '02'
+      site: Brookvale
+      title: Retained samples
+    file: SOP-QA-0013_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  SOP-QA-0013/03:
+    doc_type: SOP
+    fields:
+      approved_by: Kira Petrov
+      doc_number: SOP-QA-0013
+      effective_date: '2024-12-04'
+      revision: '03'
+      site: Brookvale
+      title: Retained samples
+    file: SOP-QA-0013_03.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  SOP-QA-0014/01:
+    doc_type: SOP
+    fields:
+      approved_by: Farid Ferreira
+      doc_number: SOP-QA-0014
+      effective_date: '2023-05-13'
+      revision: '01'
+      site: Lakemoor
+      title: Supplier qualification
+    file: SOP-QA-0014_01.json
+    format: scan
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0014/02:
+    doc_type: SOP
+    fields:
+      approved_by: Farid Ferreira
+      doc_number: SOP-QA-0014
+      effective_date: '2023-12-05'
+      revision: '02'
+      site: Lakemoor
+      title: Supplier qualification
+    file: SOP-QA-0014_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0014/03:
+    doc_type: SOP
+    fields:
+      approved_by: Farid Ferreira
+      doc_number: SOP-QA-0014
+      effective_date: '2024-05-19'
+      revision: '03'
+      site: Lakemoor
+      title: Supplier qualification
+    file: SOP-QA-0014_03.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0015/01:
+    doc_type: SOP
+    fields:
+      approved_by: Owen Nakamura
+      doc_number: SOP-QA-0015
+      effective_date: '2023-12-17'
+      revision: '01'
+      site: Northfield
+      title: Complaint handling
+    file: SOP-QA-0015_01.json
+    format: scan
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0015/02:
+    doc_type: SOP
+    fields:
+      approved_by: Owen Nakamura
+      doc_number: SOP-QA-0015
+      effective_date: '2024-08-17'
+      revision: '02'
+      site: Northfield
+      title: Complaint handling
+    file: SOP-QA-0015_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0015/03:
+    doc_type: SOP
+    fields:
+      approved_by: Owen Nakamura
+      doc_number: SOP-QA-0015
+      effective_date: '2025-03-19'
+      revision: '03'
+      site: Northfield
+      title: Complaint handling
+    file: SOP-QA-0015_03.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0016/01:
+    doc_type: SOP
+    fields:
+      approved_by: Chloe Jovanovic
+      doc_number: SOP-QA-0016
+      effective_date: '2023-03-07'
+      revision: '01'
+      site: Brookvale
+      title: Document control
+    file: SOP-QA-0016_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  SOP-QA-0016/02:
+    doc_type: SOP
+    fields:
+      approved_by: Chloe Jovanovic
+      doc_number: SOP-QA-0016
+      effective_date: '2023-09-10'
+      revision: '02'
+      site: Brookvale
+      title: Document control
+    file: SOP-QA-0016_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  SOP-QA-0017/01:
+    doc_type: SOP
+    fields:
+      approved_by: Priya Nakamura
+      doc_number: SOP-QA-0017
+      effective_date: '2023-11-01'
+      revision: '01'
+      site: Lakemoor
+      title: Stability testing
+    file: SOP-QA-0017_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0017/02:
+    doc_type: SOP
+    fields:
+      approved_by: Priya Nakamura
+      doc_number: SOP-QA-0017
+      effective_date: '2024-05-24'
+      revision: '02'
+      site: Lakemoor
+      title: Stability testing
+    file: SOP-QA-0017_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0018/01:
+    doc_type: SOP
+    fields:
+      approved_by: Dev Moreau
+      doc_number: SOP-QA-0018
+      effective_date: '2023-03-19'
+      revision: '01'
+      site: Northfield
+      title: Rework of bulk
+    file: SOP-QA-0018_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0018/02:
+    doc_type: SOP
+    fields:
+      approved_by: Dev Moreau
+      doc_number: SOP-QA-0018
+      effective_date: '2023-11-06'
+      revision: '02'
+      site: Northfield
+      title: Rework of bulk
+    file: SOP-QA-0018_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0019/01:
+    doc_type: SOP
+    fields:
+      approved_by: Elena Brandt
+      doc_number: SOP-QA-0019
+      effective_date: '2023-06-28'
+      revision: '01'
+      site: Brookvale
+      title: Training records
+    file: SOP-QA-0019_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  SOP-QA-0020/01:
+    doc_type: SOP
+    fields:
+      approved_by: Grace Nakamura
+      doc_number: SOP-QA-0020
+      effective_date: '2023-10-23'
+      revision: '01'
+      site: Lakemoor
+      title: Weighing and dispensing
+    file: SOP-QA-0020_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0020/02:
+    doc_type: SOP
+    fields:
+      approved_by: Grace Nakamura
+      doc_number: SOP-QA-0020
+      effective_date: '2024-06-21'
+      revision: '02'
+      site: Lakemoor
+      title: Weighing and dispensing
+    file: SOP-QA-0020_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0021/01:
+    doc_type: SOP
+    fields:
+      approved_by: Irene Jovanovic
+      doc_number: SOP-QA-0021
+      effective_date: '2023-11-10'
+      revision: '01'
+      site: Northfield
+      title: Filling line setup
+    file: SOP-QA-0021_01.json
+    format: scan
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0021/02:
+    doc_type: SOP
+    fields:
+      approved_by: Irene Jovanovic
+      doc_number: SOP-QA-0021
+      effective_date: '2024-04-29'
+      revision: '02'
+      site: Northfield
+      title: Filling line setup
+    file: SOP-QA-0021_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0021/03:
+    doc_type: SOP
+    fields:
+      approved_by: Irene Jovanovic
+      doc_number: SOP-QA-0021
+      effective_date: '2025-02-28'
+      revision: '03'
+      site: Northfield
+      title: Filling line setup
+    file: SOP-QA-0021_03.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0021/04:
+    doc_type: SOP
+    fields:
+      approved_by: Irene Jovanovic
+      doc_number: SOP-QA-0021
+      effective_date: '2025-09-12'
+      revision: '04'
+      site: Northfield
+      title: Filling line setup
+    file: SOP-QA-0021_04.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0022/01:
+    doc_type: SOP
+    fields:
+      approved_by: Ana Quiroga
+      doc_number: SOP-QA-0022
+      effective_date: '2023-03-23'
+      revision: '01'
+      site: Brookvale
+      title: Warehouse temperature mapping
+    file: SOP-QA-0022_01.json
+    format: scan
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  SOP-QA-0022/02:
+    doc_type: SOP
+    fields:
+      approved_by: Ana Quiroga
+      doc_number: SOP-QA-0022
+      effective_date: '2023-11-15'
+      revision: '02'
+      site: Brookvale
+      title: Warehouse temperature mapping
+    file: SOP-QA-0022_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  SOP-QA-0022/03:
+    doc_type: SOP
+    fields:
+      approved_by: Ana Quiroga
+      doc_number: SOP-QA-0022
+      effective_date: '2024-02-16'
+      revision: '03'
+      site: Brookvale
+      title: Warehouse temperature mapping
+    file: SOP-QA-0022_03.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  SOP-QA-0023/01:
+    doc_type: SOP
+    fields:
+      approved_by: Tara Abara
+      doc_number: SOP-QA-0023
+      effective_date: '2023-06-19'
+      revision: '01'
+      site: Lakemoor
+      title: Recall procedure
+    file: SOP-QA-0023_01.json
+    format: scan
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0023/02:
+    doc_type: SOP
+    fields:
+      approved_by: Tara Abara
+      doc_number: SOP-QA-0023
+      effective_date: '2024-01-10'
+      revision: '02'
+      site: Lakemoor
+      title: Recall procedure
+    file: SOP-QA-0023_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0023/03:
+    doc_type: SOP
+    fields:
+      approved_by: Tara Abara
+      doc_number: SOP-QA-0023
+      effective_date: '2024-04-24'
+      revision: '03'
+      site: Lakemoor
+      title: Recall procedure
+    file: SOP-QA-0023_03.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0024/01:
+    doc_type: SOP
+    fields:
+      approved_by: Maya Jovanovic
+      doc_number: SOP-QA-0024
+      effective_date: '2023-10-16'
+      revision: '01'
+      site: Northfield
+      title: Internal audit
+    file: SOP-QA-0024_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0024/02:
+    doc_type: SOP
+    fields:
+      approved_by: Maya Jovanovic
+      doc_number: SOP-QA-0024
+      effective_date: '2024-05-06'
+      revision: '02'
+      site: Northfield
+      title: Internal audit
+    file: SOP-QA-0024_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0025/01:
+    doc_type: SOP
+    fields:
+      approved_by: Kira Lindqvist
+      doc_number: SOP-QA-0025
+      effective_date: '2023-02-26'
+      revision: '01'
+      site: Brookvale
+      title: Out of specification results
+    file: SOP-QA-0025_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  SOP-QA-0025/02:
+    doc_type: SOP
+    fields:
+      approved_by: Kira Lindqvist
+      doc_number: SOP-QA-0025
+      effective_date: '2023-09-04'
+      revision: '02'
+      site: Brookvale
+      title: Out of specification results
+    file: SOP-QA-0025_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  SOP-QA-0026/01:
+    doc_type: SOP
+    fields:
+      approved_by: Dev Quiroga
+      doc_number: SOP-QA-0026
+      effective_date: '2024-01-08'
+      revision: '01'
+      site: Lakemoor
+      title: Cleaning validation
+    file: SOP-QA-0026_01.json
+    format: scan
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0026/02:
+    doc_type: SOP
+    fields:
+      approved_by: Dev Quiroga
+      doc_number: SOP-QA-0026
+      effective_date: '2024-06-11'
+      revision: '02'
+      site: Lakemoor
+      title: Cleaning validation
+    file: SOP-QA-0026_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0026/03:
+    doc_type: SOP
+    fields:
+      approved_by: Dev Quiroga
+      doc_number: SOP-QA-0026
+      effective_date: '2024-12-11'
+      revision: '03'
+      site: Lakemoor
+      title: Cleaning validation
+    file: SOP-QA-0026_03.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0026/04:
+    doc_type: SOP
+    fields:
+      approved_by: Dev Quiroga
+      doc_number: SOP-QA-0026
+      effective_date: '2025-10-08'
+      revision: '04'
+      site: Lakemoor
+      title: Cleaning validation
+    file: SOP-QA-0026_04.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0027/01:
+    doc_type: SOP
+    fields:
+      approved_by: Tara Castell
+      doc_number: SOP-QA-0027
+      effective_date: '2023-06-22'
+      revision: '01'
+      site: Northfield
+      title: Preventive maintenance
+    file: SOP-QA-0027_01.json
+    format: scan
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0027/02:
+    doc_type: SOP
+    fields:
+      approved_by: Tara Castell
+      doc_number: SOP-QA-0027
+      effective_date: '2024-01-16'
+      revision: '02'
+      site: Northfield
+      title: Preventive maintenance
+    file: SOP-QA-0027_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0027/03:
+    doc_type: SOP
+    fields:
+      approved_by: Tara Castell
+      doc_number: SOP-QA-0027
+      effective_date: '2024-07-04'
+      revision: '03'
+      site: Northfield
+      title: Preventive maintenance
+    file: SOP-QA-0027_03.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0028/01:
+    doc_type: SOP
+    fields:
+      approved_by: Chloe Moreau
+      doc_number: SOP-QA-0028
+      effective_date: '2023-11-28'
+      revision: '01'
+      site: Brookvale
+      title: Data integrity
+    file: SOP-QA-0028_01.json
+    format: scan
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  SOP-QA-0028/02:
+    doc_type: SOP
+    fields:
+      approved_by: Chloe Moreau
+      doc_number: SOP-QA-0028
+      effective_date: '2024-05-30'
+      revision: '02'
+      site: Brookvale
+      title: Data integrity
+    file: SOP-QA-0028_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  SOP-QA-0028/03:
+    doc_type: SOP
+    fields:
+      approved_by: Chloe Moreau
+      doc_number: SOP-QA-0028
+      effective_date: '2025-01-13'
+      revision: '03'
+      site: Brookvale
+      title: Data integrity
+    file: SOP-QA-0028_03.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-brv
+    source: qdms
+  SOP-QA-0029/01:
+    doc_type: SOP
+    fields:
+      approved_by: Maya Petrov
+      doc_number: SOP-QA-0029
+      effective_date: '2023-07-23'
+      revision: '01'
+      site: Lakemoor
+      title: Laboratory reagents
+    file: SOP-QA-0029_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-lmr
+    source: qdms
+  SOP-QA-0030/01:
+    doc_type: SOP
+    fields:
+      approved_by: Ana Nakamura
+      doc_number: SOP-QA-0030
+      effective_date: '2023-07-19'
+      revision: '01'
+      site: Northfield
+      title: Release of finished goods
+    file: SOP-QA-0030_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SOP-QA-0030/02:
+    doc_type: SOP
+    fields:
+      approved_by: Ana Nakamura
+      doc_number: SOP-QA-0030
+      effective_date: '2024-01-17'
+      revision: '02'
+      site: Northfield
+      title: Release of finished goods
+    file: SOP-QA-0030_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - quality-nfd
+    source: qdms
+  SPEC-RM-0001/01:
+    doc_type: SPEC
+    fields:
+      approved_by: Tara Quiroga
+      doc_number: SPEC-RM-0001
+      effective_date: '2023-09-02'
+      limits:
+        Assay:
+        - 98.0
+        - 101.0
+        Heavy metals:
+        - 0.0
+        - 10.0
+        Water:
+        - 0.0
+        - 0.5
+        pH:
+        - 5.0
+        - 7.5
+      material_id: RM-10001
+      revision: '01'
+      site: Brookvale
+      title: 'Specification: Glycerin 99.5%'
+    file: SPEC-RM-0001_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - supplier-quality
+    source: qdms
+  SPEC-RM-0002/01:
+    doc_type: SPEC
+    fields:
+      approved_by: Tara Ishikawa
+      doc_number: SPEC-RM-0002
+      effective_date: '2023-08-01'
+      limits:
+        Acid value:
+        - 0.0
+        - 2.0
+        Assay:
+        - 98.0
+        - 101.0
+        Melting point:
+        - 48.0
+        - 55.0
+      material_id: RM-10002
+      revision: '01'
+      site: Lakemoor
+      title: 'Specification: Cetearyl alcohol'
+    file: SPEC-RM-0002_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - supplier-quality
+    source: qdms
+  SPEC-RM-0003/01:
+    doc_type: SPEC
+    fields:
+      approved_by: Maya Moreau
+      doc_number: SPEC-RM-0003
+      effective_date: '2023-08-01'
+      limits:
+        Conductivity:
+        - 0.0
+        - 1.3
+        Microbial count:
+        - 0.0
+        - 100.0
+        Total organic carbon:
+        - 0.0
+        - 500.0
+      material_id: RM-10003
+      revision: '01'
+      site: Northfield
+      title: 'Specification: Purified water'
+    file: SPEC-RM-0003_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - supplier-quality
+    source: qdms
+  SPEC-RM-0003/02:
+    doc_type: SPEC
+    fields:
+      approved_by: Maya Moreau
+      doc_number: SPEC-RM-0003
+      effective_date: '2024-02-27'
+      limits:
+        Conductivity:
+        - 0.0
+        - 1.17
+        Microbial count:
+        - 0.0
+        - 100.0
+        Total organic carbon:
+        - 0.0
+        - 500.0
+      material_id: RM-10003
+      revision: '02'
+      site: Northfield
+      title: 'Specification: Purified water'
+    file: SPEC-RM-0003_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - supplier-quality
+    source: qdms
+  SPEC-RM-0004/01:
+    doc_type: SPEC
+    fields:
+      approved_by: Rosa Okafor
+      doc_number: SPEC-RM-0004
+      effective_date: '2023-03-05'
+      limits:
+        Acid value:
+        - 0.0
+        - 115.0
+        Melting point:
+        - 48.0
+        - 55.0
+        Peroxide value:
+        - 0.0
+        - 10.0
+      material_id: RM-10004
+      revision: '01'
+      site: Brookvale
+      title: 'Specification: Shea butter, refined'
+    file: SPEC-RM-0004_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - supplier-quality
+    source: qdms
+  SPEC-RM-0005/01:
+    doc_type: SPEC
+    fields:
+      approved_by: Farid Rasmussen
+      doc_number: SPEC-RM-0005
+      effective_date: '2023-05-15'
+      limits:
+        Assay:
+        - 98.0
+        - 101.0
+        Heavy metals:
+        - 0.0
+        - 10.0
+        Loss on drying:
+        - 0.0
+        - 1.0
+      material_id: RM-10005
+      revision: '01'
+      site: Lakemoor
+      title: 'Specification: Titanium dioxide'
+    file: SPEC-RM-0005_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - supplier-quality
+    source: qdms
+  SPEC-RM-0005/02:
+    doc_type: SPEC
+    fields:
+      approved_by: Farid Rasmussen
+      doc_number: SPEC-RM-0005
+      effective_date: '2023-12-11'
+      limits:
+        Assay:
+        - 98.0
+        - 100.7
+        Heavy metals:
+        - 0.0
+        - 10.0
+        Loss on drying:
+        - 0.0
+        - 1.0
+      material_id: RM-10005
+      revision: '02'
+      site: Lakemoor
+      title: 'Specification: Titanium dioxide'
+    file: SPEC-RM-0005_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - supplier-quality
+    source: qdms
+  SPEC-RM-0006/01:
+    doc_type: SPEC
+    fields:
+      approved_by: Maya Abara
+      doc_number: SPEC-RM-0006
+      effective_date: '2023-04-01'
+      limits:
+        Loss on drying:
+        - 0.0
+        - 1.0
+        Microbial count:
+        - 0.0
+        - 100.0
+        Viscosity:
+        - 1200.0
+        - 1600.0
+        pH:
+        - 5.0
+        - 7.5
+      material_id: RM-10006
+      revision: '01'
+      site: Northfield
+      title: 'Specification: Xanthan gum'
+    file: SPEC-RM-0006_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - supplier-quality
+    source: qdms
+  SPEC-RM-0006/02:
+    doc_type: SPEC
+    fields:
+      approved_by: Maya Abara
+      doc_number: SPEC-RM-0006
+      effective_date: '2023-10-28'
+      limits:
+        Loss on drying:
+        - 0.0
+        - 1.0
+        Microbial count:
+        - 0.0
+        - 100.0
+        Viscosity:
+        - 1200.0
+        - 1560.0
+        pH:
+        - 5.0
+        - 7.5
+      material_id: RM-10006
+      revision: '02'
+      site: Northfield
+      title: 'Specification: Xanthan gum'
+    file: SPEC-RM-0006_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - supplier-quality
+    source: qdms
+  SPEC-RM-0007/01:
+    doc_type: SPEC
+    fields:
+      approved_by: Irene Ferreira
+      doc_number: SPEC-RM-0007
+      effective_date: '2023-06-11'
+      limits:
+        Assay:
+        - 98.0
+        - 101.0
+        Loss on drying:
+        - 0.0
+        - 1.0
+        pH:
+        - 5.0
+        - 7.5
+      material_id: RM-10007
+      revision: '01'
+      site: Brookvale
+      title: 'Specification: Sodium benzoate'
+    file: SPEC-RM-0007_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - supplier-quality
+    source: qdms
+  SPEC-RM-0007/02:
+    doc_type: SPEC
+    fields:
+      approved_by: Irene Ferreira
+      doc_number: SPEC-RM-0007
+      effective_date: '2024-01-07'
+      limits:
+        Assay:
+        - 98.0
+        - 100.7
+        Loss on drying:
+        - 0.0
+        - 1.0
+        pH:
+        - 5.0
+        - 7.5
+      material_id: RM-10007
+      revision: '02'
+      site: Brookvale
+      title: 'Specification: Sodium benzoate'
+    file: SPEC-RM-0007_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - supplier-quality
+    source: qdms
+  SPEC-RM-0008/01:
+    doc_type: SPEC
+    fields:
+      approved_by: Maya Quiroga
+      doc_number: SPEC-RM-0008
+      effective_date: '2023-04-11'
+      limits:
+        Flash point:
+        - 60.0
+        - 120.0
+        Refractive index:
+        - 1.46
+        - 1.48
+        Specific gravity:
+        - 0.95
+        - 1.02
+      material_id: RM-10008
+      revision: '01'
+      site: Lakemoor
+      title: 'Specification: Fragrance blend F-22'
+    file: SPEC-RM-0008_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - supplier-quality
+    source: qdms
+  SPEC-RM-0008/02:
+    doc_type: SPEC
+    fields:
+      approved_by: Maya Quiroga
+      doc_number: SPEC-RM-0008
+      effective_date: '2023-11-07'
+      limits:
+        Flash point:
+        - 60.0
+        - 120.0
+        Refractive index:
+        - 1.46
+        - 1.478
+        Specific gravity:
+        - 0.95
+        - 1.02
+      material_id: RM-10008
+      revision: '02'
+      site: Lakemoor
+      title: 'Specification: Fragrance blend F-22'
+    file: SPEC-RM-0008_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - supplier-quality
+    source: qdms
+  SPEC-RM-0009/01:
+    doc_type: SPEC
+    fields:
+      approved_by: Hugo Lindqvist
+      doc_number: SPEC-RM-0009
+      effective_date: '2023-05-17'
+      limits:
+        Acid value:
+        - 0.0
+        - 2.0
+        Assay:
+        - 98.0
+        - 101.0
+        Refractive index:
+        - 1.46
+        - 1.48
+      material_id: RM-10009
+      revision: '01'
+      site: Northfield
+      title: 'Specification: Tocopherol acetate'
+    file: SPEC-RM-0009_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - supplier-quality
+    source: qdms
+  SPEC-RM-0009/02:
+    doc_type: SPEC
+    fields:
+      approved_by: Hugo Lindqvist
+      doc_number: SPEC-RM-0009
+      effective_date: '2023-12-13'
+      limits:
+        Acid value:
+        - 0.0
+        - 2.0
+        Assay:
+        - 98.0
+        - 100.7
+        Refractive index:
+        - 1.46
+        - 1.48
+      material_id: RM-10009
+      revision: '02'
+      site: Northfield
+      title: 'Specification: Tocopherol acetate'
+    file: SPEC-RM-0009_02.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - supplier-quality
+    source: qdms
+  SPEC-RM-0010/01:
+    doc_type: SPEC
+    fields:
+      approved_by: Grace Brandt
+      doc_number: SPEC-RM-0010
+      effective_date: '2023-06-25'
+      limits:
+        Heavy metals:
+        - 0.0
+        - 10.0
+        Loss on drying:
+        - 0.0
+        - 1.0
+        Microbial count:
+        - 0.0
+        - 100.0
+        pH:
+        - 5.0
+        - 7.5
+      material_id: RM-10010
+      revision: '01'
+      site: Brookvale
+      title: 'Specification: Kaolin clay'
+    file: SPEC-RM-0010_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - supplier-quality
+    source: qdms
+  SPEC-RM-0011/01:
+    doc_type: SPEC
+    fields:
+      approved_by: Kira Quiroga
+      doc_number: SPEC-RM-0011
+      effective_date: '2023-05-29'
+      limits:
+        Acid value:
+        - 0.0
+        - 2.0
+        Peroxide value:
+        - 0.0
+        - 10.0
+        Water:
+        - 0.0
+        - 0.5
+      material_id: RM-10011
+      revision: '01'
+      site: Lakemoor
+      title: 'Specification: Caprylic triglyceride'
+    file: SPEC-RM-0011_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - supplier-quality
+    source: qdms
+  SPEC-RM-0012/01:
+    doc_type: SPEC
+    fields:
+      approved_by: Sami Dorsey
+      doc_number: SPEC-RM-0012
+      effective_date: '2023-07-09'
+      limits:
+        Assay:
+        - 98.0
+        - 101.0
+        Heavy metals:
+        - 0.0
+        - 10.0
+        Water:
+        - 0.0
+        - 0.5
+      material_id: RM-10012
+      revision: '01'
+      site: Northfield
+      title: 'Specification: Citric acid'
+    file: SPEC-RM-0012_01.pdf
+    format: pdf
+    parent: null
+    readers:
+    - quality-all
+    - supplier-quality
+    source: qdms
+planted:
+  conflicting_copies:
+  - key: SOP-QA-0017/01
+  - key: SOP-QA-0003/02
+  contract_failures:
+  - id: sp-0010
+    reason: DocNumber missing
+    source: sharepoint
+  - id: sp-0011
+    reason: DocNumber missing
+    source: sharepoint
+  - id: sp-0012
+    reason: DocNumber missing
+    source: sharepoint
+  - id: COA-2001-L26-0265/01
+    reason: MATNR missing
+    source: sap
+  - id: COA-2003-L26-0636/01
+    reason: MATNR missing
+    source: sap
+  - id: DEV-2025-011
+    reason: Revision missing
+    source: qdms
+  identical_copies:
+  - key: SOP-QA-0021/04
+  - key: SOP-QA-0012/03
+  - key: SOP-QA-0030/02
+  - key: SOP-QA-0012/04
+  - key: SOP-QA-0014/03
+  - key: SOP-QA-0002/02
+  - key: SOP-QA-0007/01
+  - key: SOP-QA-0018/01
+  illegal_transitions:
+  - doc_number: SOP-QA-0019
+    event: qdms-00198
+    from: obsolete
+    revision: '01'
+    to: effective
+  - doc_number: SPEC-RM-0007
+    event: qdms-00374
+    from: draft
+    revision: '03'
+    to: effective
+  injection:
+  - key: COA-2004-L26-0689/01
+  misfiled_copies:
+  - filed_as: SOP-QA-0099/03
+    key: SOP-QA-0026/03
+  misleading_metadata:
+  - is: CMP
+    key: CMP-2026-003/01
+    says: SOP
+  - is: CMP
+    key: CMP-2026-008/01
+    says: SOP
+  out_of_spec:
+  - key: COA-2001-L26-0265/01
+    parameter: Microbial count
+    spec: SPEC-RM-0006/01
+  - key: COA-2005-L26-0742/01
+    parameter: Microbial count
+    spec: SPEC-RM-0003/01
+  - key: COA-2002-L26-0113/01
+    parameter: Heavy metals
+    spec: SPEC-RM-0010/01
+  pii:
+  - key: DEV-2025-001/01
+    kind: employee_id
+    text: E104207
+  - key: DEV-2025-001/01
+    kind: employee_name
+    text: Rosa Brandt
+  - key: DEV-2025-002/01
+    kind: employee_id
+    text: E104214
+  - key: DEV-2025-002/01
+    kind: employee_name
+    text: Quinn Rasmussen
+  - key: DEV-2025-003/01
+    kind: employee_id
+    text: E104221
+  - key: DEV-2025-003/01
+    kind: employee_name
+    text: Kira Okafor
+  - key: DEV-2025-004/01
+    kind: employee_id
+    text: E104228
+  - key: DEV-2025-004/01
+    kind: employee_name
+    text: Rosa Petrov
+  - key: DEV-2025-005/01
+    kind: employee_id
+    text: E104235
+  - key: DEV-2025-005/01
+    kind: employee_name
+    text: Grace Ishikawa
+  - key: DEV-2025-006/01
+    kind: employee_id
+    text: E104242
+  - key: DEV-2025-006/01
+    kind: employee_name
+    text: Ben Rasmussen
+  - key: DEV-2025-007/01
+    kind: employee_id
+    text: E104249
+  - key: DEV-2025-007/01
+    kind: employee_name
+    text: Rosa Ekwueme
+  - key: DEV-2025-008/01
+    kind: employee_id
+    text: E104256
+  - key: DEV-2025-008/01
+    kind: employee_name
+    text: Priya Lindqvist
+  - key: DEV-2025-009/01
+    kind: employee_id
+    text: E104263
+  - key: DEV-2025-009/01
+    kind: employee_name
+    text: Sami Okafor
+  - key: DEV-2025-010/01
+    kind: employee_id
+    text: E104270
+  - key: DEV-2025-010/01
+    kind: employee_name
+    text: Dev Galloway
+  - key: DEV-2025-011/01
+    kind: employee_id
+    text: E104277
+  - key: DEV-2025-011/01
+    kind: employee_name
+    text: Owen Hartmann
+  - key: DEV-2025-012/01
+    kind: employee_id
+    text: E104284
+  - key: DEV-2025-012/01
+    kind: employee_name
+    text: Owen Moreau
+  - key: DEV-2025-013/01
+    kind: employee_id
+    text: E104291
+  - key: DEV-2025-013/01
+    kind: employee_name
+    text: Farid Galloway
+  - key: DEV-2025-014/01
+    kind: employee_id
+    text: E104298
+  - key: DEV-2025-014/01
+    kind: employee_name
+    text: Owen Galloway
+  - key: DEV-2025-015/01
+    kind: employee_id
+    text: E104305
+  - key: DEV-2025-015/01
+    kind: employee_name
+    text: Sami Quiroga
+  - key: CMP-2026-001/01
+    kind: consumer_name
+    text: Tara Kowal
+  - key: CMP-2026-001/01
+    kind: phone
+    text: +1 555 0101 4013
+  - key: CMP-2026-001/01
+    kind: email
+    text: tara.kowal@example.org
+  - key: CMP-2026-002/01
+    kind: consumer_name
+    text: Chloe Rasmussen
+  - key: CMP-2026-002/01
+    kind: phone
+    text: +1 555 0102 4026
+  - key: CMP-2026-002/01
+    kind: email
+    text: chloe.rasmussen@example.org
+  - key: CMP-2026-003/01
+    kind: consumer_name
+    text: Hugo Moreau
+  - key: CMP-2026-003/01
+    kind: phone
+    text: +1 555 0103 4039
+  - key: CMP-2026-003/01
+    kind: email
+    text: hugo.moreau@example.org
+  - key: CMP-2026-004/01
+    kind: consumer_name
+    text: Irene Abara
+  - key: CMP-2026-004/01
+    kind: phone
+    text: +1 555 0104 4052
+  - key: CMP-2026-004/01
+    kind: email
+    text: irene.abara@example.org
+  - key: CMP-2026-004/01
+    kind: name_in_text
+    text: Grace Ekwueme
+  - key: CMP-2026-005/01
+    kind: consumer_name
+    text: Maya Ekwueme
+  - key: CMP-2026-005/01
+    kind: phone
+    text: +1 555 0105 4065
+  - key: CMP-2026-005/01
+    kind: email
+    text: maya.ekwueme@example.org
+  - key: CMP-2026-006/01
+    kind: consumer_name
+    text: Elena Galloway
+  - key: CMP-2026-006/01
+    kind: phone
+    text: +1 555 0106 4078
+  - key: CMP-2026-006/01
+    kind: email
+    text: elena.galloway@example.org
+  - key: CMP-2026-007/01
+    kind: consumer_name
+    text: Ben Castell
+  - key: CMP-2026-007/01
+    kind: phone
+    text: +1 555 0107 4091
+  - key: CMP-2026-007/01
+    kind: email
+    text: ben.castell@example.org
+  - key: CMP-2026-008/01
+    kind: consumer_name
+    text: Hugo Castell
+  - key: CMP-2026-008/01
+    kind: phone
+    text: +1 555 0108 4104
+  - key: CMP-2026-008/01
+    kind: email
+    text: hugo.castell@example.org
+  - key: CMP-2026-008/01
+    kind: name_in_text
+    text: Dev Ekwueme
+  - key: CMP-2026-009/01
+    kind: consumer_name
+    text: Owen Ishikawa
+  - key: CMP-2026-009/01
+    kind: phone
+    text: +1 555 0109 4117
+  - key: CMP-2026-009/01
+    kind: email
+    text: owen.ishikawa@example.org
+  - key: CMP-2026-010/01
+    kind: consumer_name
+    text: Grace Ferreira
+  - key: CMP-2026-010/01
+    kind: phone
+    text: +1 555 0110 4130
+  - key: CMP-2026-010/01
+    kind: email
+    text: grace.ferreira@example.org
+  - key: CMP-2026-011/01
+    kind: consumer_name
+    text: Tara Okafor
+  - key: CMP-2026-011/01
+    kind: phone
+    text: +1 555 0111 4143
+  - key: CMP-2026-011/01
+    kind: email
+    text: tara.okafor@example.org
+  - key: CMP-2026-012/01
+    kind: consumer_name
+    text: Chloe Quiroga
+  - key: CMP-2026-012/01
+    kind: phone
+    text: +1 555 0112 4156
+  - key: CMP-2026-012/01
+    kind: email
+    text: chloe.quiroga@example.org
+  - key: CMP-2026-012/01
+    kind: name_in_text
+    text: Maya Hartmann
+  - key: COR-2026-001/01
+    kind: name_in_text
+    text: Ana Rasmussen
+  - key: COR-2026-002/01
+    kind: name_in_text
+    text: Jonas Ferreira
+  - key: COR-2026-003/01
+    kind: name_in_text
+    text: Dev Abara
+  - key: COR-2026-004/01
+    kind: name_in_text
+    text: Quinn Petrov
+  - key: COR-2026-005/01
+    kind: name_in_text
+    text: Noor Dorsey
+  - key: COR-2026-006/01
+    kind: name_in_text
+    text: Priya Abara
+  - key: COR-2026-007/01
+    kind: name_in_text
+    text: Quinn Galloway
+  - key: COR-2026-008/01
+    kind: name_in_text
+    text: Tara Brandt
+  pii_kept:
+  - key: SOP-QA-0001/01
+    name: Ben Quiroga
+  - key: SOP-QA-0001/02
+    name: Ben Quiroga
+  - key: SOP-QA-0002/01
+    name: Priya Kowal
+  - key: SOP-QA-0002/02
+    name: Priya Kowal
+  - key: SOP-QA-0002/03
+    name: Priya Kowal
+  - key: SOP-QA-0002/04
+    name: Priya Kowal
+  - key: SOP-QA-0003/01
+    name: Chloe Castell
+  - key: SOP-QA-0003/02
+    name: Chloe Castell
+  - key: SOP-QA-0004/01
+    name: Liam Nakamura
+  - key: SOP-QA-0005/01
+    name: Noor Kowal
+  - key: SOP-QA-0006/01
+    name: Kira Rasmussen
+  - key: SOP-QA-0006/02
+    name: Kira Rasmussen
+  - key: SOP-QA-0006/03
+    name: Kira Rasmussen
+  - key: SOP-QA-0007/01
+    name: Sami Ferreira
+  - key: SOP-QA-0008/01
+    name: Liam Lindqvist
+  - key: SOP-QA-0008/02
+    name: Liam Lindqvist
+  - key: SOP-QA-0008/03
+    name: Liam Lindqvist
+  - key: SOP-QA-0009/01
+    name: Maya Ferreira
+  - key: SOP-QA-0010/01
+    name: Quinn Okafor
+  - key: SOP-QA-0010/02
+    name: Quinn Okafor
+  - key: SOP-QA-0010/03
+    name: Quinn Okafor
+  - key: SOP-QA-0011/01
+    name: Ana Moreau
+  - key: SOP-QA-0011/02
+    name: Ana Moreau
+  - key: SOP-QA-0011/03
+    name: Ana Moreau
+  - key: SOP-QA-0012/01
+    name: Dev Nakamura
+  - key: SOP-QA-0012/02
+    name: Dev Nakamura
+  - key: SOP-QA-0012/03
+    name: Dev Nakamura
+  - key: SOP-QA-0012/04
+    name: Dev Nakamura
+  - key: SOP-QA-0013/01
+    name: Kira Petrov
+  - key: SOP-QA-0013/02
+    name: Kira Petrov
+  - key: SOP-QA-0013/03
+    name: Kira Petrov
+  - key: SOP-QA-0014/01
+    name: Farid Ferreira
+  - key: SOP-QA-0014/02
+    name: Farid Ferreira
+  - key: SOP-QA-0014/03
+    name: Farid Ferreira
+  - key: SOP-QA-0015/01
+    name: Owen Nakamura
+  - key: SOP-QA-0015/02
+    name: Owen Nakamura
+  - key: SOP-QA-0015/03
+    name: Owen Nakamura
+  - key: SOP-QA-0016/01
+    name: Chloe Jovanovic
+  - key: SOP-QA-0016/02
+    name: Chloe Jovanovic
+  - key: SOP-QA-0017/01
+    name: Priya Nakamura
+  - key: SOP-QA-0017/02
+    name: Priya Nakamura
+  - key: SOP-QA-0018/01
+    name: Dev Moreau
+  - key: SOP-QA-0018/02
+    name: Dev Moreau
+  - key: SOP-QA-0019/01
+    name: Elena Brandt
+  - key: SOP-QA-0020/01
+    name: Grace Nakamura
+  - key: SOP-QA-0020/02
+    name: Grace Nakamura
+  - key: SOP-QA-0021/01
+    name: Irene Jovanovic
+  - key: SOP-QA-0021/02
+    name: Irene Jovanovic
+  - key: SOP-QA-0021/03
+    name: Irene Jovanovic
+  - key: SOP-QA-0021/04
+    name: Irene Jovanovic
+  - key: SOP-QA-0022/01
+    name: Ana Quiroga
+  - key: SOP-QA-0022/02
+    name: Ana Quiroga
+  - key: SOP-QA-0022/03
+    name: Ana Quiroga
+  - key: SOP-QA-0023/01
+    name: Tara Abara
+  - key: SOP-QA-0023/02
+    name: Tara Abara
+  - key: SOP-QA-0023/03
+    name: Tara Abara
+  - key: SOP-QA-0024/01
+    name: Maya Jovanovic
+  - key: SOP-QA-0024/02
+    name: Maya Jovanovic
+  - key: SOP-QA-0025/01
+    name: Kira Lindqvist
+  - key: SOP-QA-0025/02
+    name: Kira Lindqvist
+  - key: SOP-QA-0026/01
+    name: Dev Quiroga
+  - key: SOP-QA-0026/02
+    name: Dev Quiroga
+  - key: SOP-QA-0026/03
+    name: Dev Quiroga
+  - key: SOP-QA-0026/04
+    name: Dev Quiroga
+  - key: SOP-QA-0027/01
+    name: Tara Castell
+  - key: SOP-QA-0027/02
+    name: Tara Castell
+  - key: SOP-QA-0027/03
+    name: Tara Castell
+  - key: SOP-QA-0028/01
+    name: Chloe Moreau
+  - key: SOP-QA-0028/02
+    name: Chloe Moreau
+  - key: SOP-QA-0028/03
+    name: Chloe Moreau
+  - key: SOP-QA-0029/01
+    name: Maya Petrov
+  - key: SOP-QA-0030/01
+    name: Ana Nakamura
+  - key: SOP-QA-0030/02
+    name: Ana Nakamura
+  - key: SPEC-RM-0001/01
+    name: Tara Quiroga
+  - key: SPEC-RM-0002/01
+    name: Tara Ishikawa
+  - key: SPEC-RM-0003/01
+    name: Maya Moreau
+  - key: SPEC-RM-0003/02
+    name: Maya Moreau
+  - key: SPEC-RM-0004/01
+    name: Rosa Okafor
+  - key: SPEC-RM-0005/01
+    name: Farid Rasmussen
+  - key: SPEC-RM-0005/02
+    name: Farid Rasmussen
+  - key: SPEC-RM-0006/01
+    name: Maya Abara
+  - key: SPEC-RM-0006/02
+    name: Maya Abara
+  - key: SPEC-RM-0007/01
+    name: Irene Ferreira
+  - key: SPEC-RM-0007/02
+    name: Irene Ferreira
+  - key: SPEC-RM-0008/01
+    name: Maya Quiroga
+  - key: SPEC-RM-0008/02
+    name: Maya Quiroga
+  - key: SPEC-RM-0009/01
+    name: Hugo Lindqvist
+  - key: SPEC-RM-0009/02
+    name: Hugo Lindqvist
+  - key: SPEC-RM-0010/01
+    name: Grace Brandt
+  - key: SPEC-RM-0011/01
+    name: Kira Quiroga
+  - key: SPEC-RM-0012/01
+    name: Sami Dorsey
+  - key: DEV-2025-001/01
+    name: Quinn Jovanovic
+  - key: DEV-2025-002/01
+    name: Chloe Galloway
+  - key: DEV-2025-003/01
+    name: Maya Castell
+  - key: DEV-2025-004/01
+    name: Maya Brandt
+  - key: DEV-2025-005/01
+    name: Dev Castell
+  - key: DEV-2025-006/01
+    name: Noor Okafor
+  - key: DEV-2025-007/01
+    name: Dev Brandt
+  - key: DEV-2025-008/01
+    name: Elena Ekwueme
+  - key: DEV-2025-009/01
+    name: Irene Lindqvist
+  - key: DEV-2025-010/01
+    name: Dev Hartmann
+  - key: DEV-2025-011/01
+    name: Noor Brandt
+  - key: DEV-2025-012/01
+    name: Priya Hartmann
+  - key: DEV-2025-013/01
+    name: Sami Abara
+  - key: DEV-2025-014/01
+    name: Tara Jovanovic
+  - key: DEV-2025-015/01
+    name: Hugo Kowal
+  validation_failures:
+  - key: SPEC-RM-0004/01
+    rule: value_out_of_allowed_range
+  - key: CC-2025-009/A
+    rule: bad_revision_format
+  - key: DEV-2025-006/01
+    rule: bad_date
+  - key: CMP-2026-003/01
+    rule: type_disagrees_with_metadata
+  - key: CMP-2026-008/01
+    rule: type_disagrees_with_metadata
+  - key: COA-2005-L26-0212/01
+    rule: supplier_not_approved
+  - key: COA-2005-L26-0212/01
+    rule: ocr_confidence_below_floor
+  - key: COA-2005-L26-0477/01
+    rule: supplier_not_approved
+  - key: COA-2001-L26-0530/01
+    rule: unknown_material
+  - key: COA-2005-L26-0742/01
+    rule: supplier_not_approved
+  - key: COA-2003-L26-0901/01
+    rule: unknown_supplier
+  - key: COA-2005-L26-0007/01
+    rule: supplier_not_approved
+  - key: COA-2003-L26-0166/01
+    rule: ocr_confidence_below_floor
+  - key: COA-2005-L26-0272/01
+    rule: supplier_not_approved
+  - key: COR-2026-006/01
+    rule: supplier_not_approved
+  - key: SOP-QA-0099/03
+    rule: disagrees_with_metadata

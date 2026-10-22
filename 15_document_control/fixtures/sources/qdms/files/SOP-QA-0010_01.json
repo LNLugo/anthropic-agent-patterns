@@ -1,0 +1,412 @@
+{
+ "apiVersion": "stand-in",
+ "modelId": "prebuilt-layout",
+ "pages": [
+  {
+   "pageNumber": 1,
+   "unit": "inch",
+   "lines": [
+    {
+     "content": "STANDARD OPERATING PROCEDURE",
+     "confidence": 0.992,
+     "polygon": [
+      1.0,
+      1.0,
+      7.5,
+      1.0,
+      7.5,
+      1.2,
+      1.0,
+      1.2
+     ]
+    },
+    {
+     "content": "Label reconciliation",
+     "confidence": 0.944,
+     "polygon": [
+      1.0,
+      1.25,
+      7.5,
+      1.25,
+      7.5,
+      1.45,
+      1.0,
+      1.45
+     ]
+    },
+    {
+     "content": "Document No.: SOP-QA-0010",
+     "confidence": 0.985,
+     "polygon": [
+      1.0,
+      1.5,
+      7.5,
+      1.5,
+      7.5,
+      1.7,
+      1.0,
+      1.7
+     ]
+    },
+    {
+     "content": "Revision: 01",
+     "confidence": 0.973,
+     "polygon": [
+      1.0,
+      1.75,
+      7.5,
+      1.75,
+      7.5,
+      1.95,
+      1.0,
+      1.95
+     ]
+    },
+    {
+     "content": "Effective date: 2023-07-11",
+     "confidence": 0.978,
+     "polygon": [
+      1.0,
+      2.0,
+      7.5,
+      2.0,
+      7.5,
+      2.2,
+      1.0,
+      2.2
+     ]
+    },
+    {
+     "content": "Site: Brookvale",
+     "confidence": 0.963,
+     "polygon": [
+      1.0,
+      2.25,
+      7.5,
+      2.25,
+      7.5,
+      2.45,
+      1.0,
+      2.45
+     ]
+    },
+    {
+     "content": "Owner: Sami Brandt",
+     "confidence": 0.982,
+     "polygon": [
+      1.0,
+      2.5,
+      7.5,
+      2.5,
+      7.5,
+      2.7,
+      1.0,
+      2.7
+     ]
+    },
+    {
+     "content": "Approved by: Quinn Okafor",
+     "confidence": 0.944,
+     "polygon": [
+      1.0,
+      2.75,
+      7.5,
+      2.75,
+      7.5,
+      2.95,
+      1.0,
+      2.95
+     ]
+    },
+    {
+     "content": "Purpose",
+     "confidence": 0.953,
+     "polygon": [
+      1.0,
+      3.25,
+      7.5,
+      3.25,
+      7.5,
+      3.45,
+      1.0,
+      3.45
+     ]
+    },
+    {
+     "content": "This procedure defines how label reconciliation is carried out at Brookvale.",
+     "confidence": 0.979,
+     "polygon": [
+      1.0,
+      3.5,
+      7.5,
+      3.5,
+      7.5,
+      3.7,
+      1.0,
+      3.7
+     ]
+    },
+    {
+     "content": "5cope",
+     "confidence": 0.849,
+     "polygon": [
+      1.0,
+      4.0,
+      7.5,
+      4.0,
+      7.5,
+      4.2,
+      1.0,
+      4.2
+     ]
+    },
+    {
+     "content": "Applies to all label reconciliation activities in production and quality control at Brookvale.",
+     "confidence": 0.977,
+     "polygon": [
+      1.0,
+      4.25,
+      7.5,
+      4.25,
+      7.5,
+      4.45,
+      1.0,
+      4.45
+     ]
+    },
+    {
+     "content": "Responsibilities",
+     "confidence": 0.983,
+     "polygon": [
+      1.0,
+      4.75,
+      7.5,
+      4.75,
+      7.5,
+      4.95,
+      1.0,
+      4.95
+     ]
+    },
+    {
+     "content": "The process owner, Sami Brandt, maintains this procedure. Quality approves it.",
+     "confidence": 0.94,
+     "polygon": [
+      1.0,
+      5.0,
+      7.5,
+      5.0,
+      7.5,
+      5.2,
+      1.0,
+      5.2
+     ]
+    },
+    {
+     "content": "Procedure",
+     "confidence": 0.97,
+     "polygon": [
+      1.0,
+      5.5,
+      7.5,
+      5.5,
+      7.5,
+      5.7,
+      1.0,
+      5.7
+     ]
+    },
+    {
+     "content": "Step 1: Verify the batch number.",
+     "confidence": 0.938,
+     "polygon": [
+      1.0,
+      5.75,
+      7.5,
+      5.75,
+      7.5,
+      5.95,
+      1.0,
+      5.95
+     ]
+    },
+    {
+     "content": "Step 2: Record the logbook entry.",
+     "confidence": 0.945,
+     "polygon": [
+      1.0,
+      6.0,
+      7.5,
+      6.0,
+      7.5,
+      6.2,
+      1.0,
+      6.2
+     ]
+    },
+    {
+     "content": "Step 3: Inspect the equipment status label.",
+     "confidence": 0.958,
+     "polygon": [
+      1.0,
+      6.25,
+      7.5,
+      6.25,
+      7.5,
+      6.45,
+      1.0,
+      6.45
+     ]
+    },
+    {
+     "content": "5tep 4: Confirm deviations to Quality within one day.",
+     "confidence": 0.705,
+     "polygon": [
+      1.0,
+      6.5,
+      7.5,
+      6.5,
+      7.5,
+      6.7,
+      1.0,
+      6.7
+     ]
+    },
+    {
+     "content": "Step 5: Clean the area is free of previous materials.",
+     "confidence": 0.94,
+     "polygon": [
+      1.0,
+      6.75,
+      7.5,
+      6.75,
+      7.5,
+      6.95,
+      1.0,
+      6.95
+     ]
+    },
+    {
+     "content": "Step 6: Document the result against the acceptance criterion.",
+     "confidence": 0.981,
+     "polygon": [
+      1.0,
+      7.0,
+      7.5,
+      7.0,
+      7.5,
+      7.2,
+      1.0,
+      7.2
+     ]
+    },
+    {
+     "content": "Records",
+     "confidence": 0.957,
+     "polygon": [
+      1.0,
+      7.5,
+      7.5,
+      7.5,
+      7.5,
+      7.7,
+      1.0,
+      7.7
+     ]
+    },
+    {
+     "content": "Records of label reconciliation are kept for five years after batch expiry.",
+     "confidence": 0.937,
+     "polygon": [
+      1.0,
+      7.75,
+      7.5,
+      7.75,
+      7.5,
+      7.95,
+      1.0,
+      7.95
+     ]
+    },
+    {
+     "content": "Revision history",
+     "confidence": 0.957,
+     "polygon": [
+      1.0,
+      8.25,
+      7.5,
+      8.25,
+      7.5,
+      8.45,
+      1.0,
+      8.45
+     ]
+    },
+    {
+     "content": "Revision   Change",
+     "confidence": 0.955,
+     "polygon": [
+      1.0,
+      8.5,
+      7.5,
+      8.5,
+      7.5,
+      8.7,
+      1.0,
+      8.7
+     ]
+    },
+    {
+     "content": "01         Revision 01: first issue.",
+     "confidence": 0.978,
+     "polygon": [
+      1.0,
+      8.75,
+      7.5,
+      8.75,
+      7.5,
+      8.95,
+      1.0,
+      8.95
+     ]
+    }
+   ]
+  }
+ ],
+ "tables": [
+  {
+   "rowCount": 2,
+   "columnCount": 2,
+   "cells": [
+    {
+     "rowIndex": 0,
+     "columnIndex": 0,
+     "content": "Revision",
+     "kind": "columnHeader"
+    },
+    {
+     "rowIndex": 0,
+     "columnIndex": 1,
+     "content": "Change",
+     "kind": "columnHeader"
+    },
+    {
+     "rowIndex": 1,
+     "columnIndex": 0,
+     "content": "01"
+    },
+    {
+     "rowIndex": 1,
+     "columnIndex": 1,
+     "content": "Revision 01: first issue."
+    }
+   ],
+   "caption": "Revision history",
+   "boundingRegions": [
+    {
+     "pageNumber": 1
+    }
+   ]
+  }
+ ]
+}
