@@ -2,17 +2,17 @@
 
 <!-- Written by conformance.py --write. Do not edit by hand. -->
 
-Computed from the repository: 30 standards, 85 standard-module pairs.
+Computed from the repository: 30 standards, 86 standard-module pairs.
 
 | Status | Pairs | Meaning |
 |---|---|---|
-| Tested | 69 | Named tests enforce it for that module |
+| Tested | 70 | Named tests enforce it for that module |
 | Checked | 8 | A static check over the module's code passes |
 | Excepted | 5 | Not met; a registered exception owns the gap |
 | Attested | 3 | Enforced by design review only |
 | Gap | 0 | Not met and not registered |
 
-**Conforming: 77 of 85 pairs (91%).** Attested pairs are not counted as conforming.
+**Conforming: 78 of 86 pairs (91%).** Attested pairs are not counted as conforming.
 
 ## By module
 
@@ -32,7 +32,7 @@ Computed from the repository: 30 standards, 85 standard-module pairs.
 | 12_integration | 20 | 19 (95%) | 0 | 1 | 0 |
 | 13_paved_road | 8 | 8 (100%) | 0 | 0 | 0 |
 | 14_knowledge_graph | 7 | 7 (100%) | 0 | 0 | 0 |
-| 15_document_control | 5 | 5 (100%) | 0 | 0 | 0 |
+| 15_document_control | 6 | 6 (100%) | 0 | 0 | 0 |
 
 ## By standard
 
@@ -41,7 +41,7 @@ Computed from the repository: 30 standards, 85 standard-module pairs.
 | AI-01 |  |  |  |  |  | review |  | review |  |  |  | review |  |  |  |
 | AI-02 |  |  |  |  |  |  |  | tested |  |  |  |  |  |  |  |
 | AI-03 |  |  |  |  |  | tested |  | tested |  |  |  |  |  |  |  |
-| AI-04 |  |  |  |  |  |  | tested | tested |  |  |  |  |  | tested |  |
+| AI-04 |  |  |  |  |  |  | tested | tested |  |  |  |  |  | tested | tested |
 | AI-05 |  |  |  |  |  |  |  | tested |  |  |  | tested | tested |  |  |
 | AI-06 |  |  |  |  |  |  |  | tested |  |  |  | tested | tested |  |  |
 | AI-07 |  |  |  |  |  |  | exception | tested |  |  |  |  |  | tested |  |

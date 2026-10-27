@@ -57,7 +57,7 @@ standards:
     statement: "An answer ships only with evidence that resolves to what the model was shown (a citation, or the words that named the query's scope); otherwise the system abstains or asks."
     rationale: "A confident wrong answer is the expensive failure."
     adr: []
-    applies_to: ["07", "08", "14"]
+    applies_to: ["07", "08", "14", "15"]
     evidence:
       "07":
         - 07_rag/tests/test_citations_and_graph.py::test_graph_abstains_when_citation_is_fabricated
@@ -67,6 +67,10 @@ standards:
       "14":
         - 14_knowledge_graph/tests/test_netgraph.py::test_a_grounded_answer_cites_only_what_it_was_shown
         - 14_knowledge_graph/tests/test_netgraph.py::test_no_evidence_means_no_model_call
+      "15":
+        - 15_document_control/tests/test_retrieval.py::test_a_sentence_citing_something_it_was_not_shown_is_removed
+        - 15_document_control/tests/test_retrieval.py::test_an_answer_mostly_unsupported_becomes_an_abstention
+        - 15_document_control/tests/test_retrieval.py::test_without_evidence_the_assistant_abstains_without_calling_the_model
 
   - id: AI-05
     domain: AI

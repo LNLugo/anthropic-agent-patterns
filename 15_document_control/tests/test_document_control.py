@@ -413,7 +413,7 @@ def test_every_proof_in_the_status_table_exists():
     data = status.load()
     assert [s["section"] for s in data["sections"]] == list(range(1, 24))
     assert all(s["status"] in data["statuses"] for s in data["sections"])
-    tests = (HERE / "tests" / "test_document_control.py").read_text()
+    tests = "".join(p.read_text() for p in (HERE / "tests").glob("test_*.py"))
     for s in data["sections"]:
         for p in s.get("proof", []):
             path, _, name = p.partition("::")
