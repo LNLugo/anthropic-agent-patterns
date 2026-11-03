@@ -42,7 +42,7 @@ def main() -> int:
         headline.record_live(llm, args.runs, model_name(llm), date.today().isoformat())
         print(f"recorded {args.runs} live runs in {headline.RECORDED}")
     s = summary()
-    OUT.write_text(json.dumps(s, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    OUT.write_text(json.dumps(s, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
     v, h = s["version_vs_version"], s["version_vs_version"]["rules"]
     print(f"rules: {h['found']} of {h['planted']} planted changes found, {h['type_correct']} typed and "
           f"{h['severity_correct']} graded correctly, {h['false_findings']} false findings")

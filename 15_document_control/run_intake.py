@@ -25,7 +25,7 @@ OUT = HERE / "results" / "intake.json"
 def main() -> int:
     s = summary()
     OUT.parent.mkdir(exist_ok=True)
-    OUT.write_text(json.dumps(s, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    OUT.write_text(json.dumps(s, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
     c, life, ids, v, pii, cls, ext = (s["contracts"], s["lifecycle"], s["identity"], s["validation"],
                                      s["personal_data"], s["classification"], s["extraction"])
     print(f"contracts: {c['quarantined']} records quarantined ({c['planted_caught']} of {c['planted']} planted)")

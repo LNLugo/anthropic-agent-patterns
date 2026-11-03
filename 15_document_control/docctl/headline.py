@@ -102,7 +102,7 @@ def record_live(llm, runs: int = 3, model: str = "unknown", measured: str = "") 
 
         run_model_arms(ps, llm_for)
         out["runs"].append({arm: {pid: r.replies for pid, r in d.items()} for arm, d in recs.items()})
-    RECORDED.write_text(json.dumps(out, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+    RECORDED.write_text(json.dumps(out, indent=1, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
     return out
 
 

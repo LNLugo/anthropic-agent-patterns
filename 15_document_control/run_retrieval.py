@@ -29,7 +29,7 @@ OUT = HERE / "results" / "retrieval.json"
 
 def main() -> int:
     s = summary(run_intake(), HashingEmbeddings())
-    OUT.write_text(json.dumps(s, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    OUT.write_text(json.dumps(s, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
     r, st, a, ans, m = s["recall"]["all"], s["stale_versions"], s["access"], s["answerability"], s["migration"]
     print(f"recall: {r['found']} of {r['expected']} expected sections across {r['questions']} questions")
     print(f"stale versions returned by default: {st['returned_by_default']} "

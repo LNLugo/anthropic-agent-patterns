@@ -40,7 +40,7 @@ def index(intake, emb):
 
 @pytest.fixture(scope="module")
 def recorded():
-    return json.loads((HERE / "results" / "retrieval.json").read_text())
+    return json.loads((HERE / "results" / "retrieval.json").read_text(encoding="utf-8"))
 
 
 def _model(*replies):
@@ -316,7 +316,7 @@ def test_the_recorded_retrieval_results_are_what_the_code_produces_now(intake, e
 
 
 def test_the_readme_quotes_the_recorded_retrieval_results(recorded):
-    readme = (HERE / "README.md").read_text()
+    readme = (HERE / "README.md").read_text(encoding="utf-8")
     r = recorded["recall"]["all"]
     for phrase in (f"{r['found']} of {r['expected']}",
                    f"{recorded['stale_versions']['control_without_the_status_filter']} superseded",

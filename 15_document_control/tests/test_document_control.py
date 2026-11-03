@@ -38,7 +38,7 @@ def base():
 
 @pytest.fixture(scope="module")
 def recorded():
-    return json.loads((HERE / "results" / "intake.json").read_text())
+    return json.loads((HERE / "results" / "intake.json").read_text(encoding="utf-8"))
 
 
 def _file(source, name):
@@ -59,14 +59,14 @@ def test_the_fixtures_are_exactly_what_the_generator_writes(tmp_path):
 def test_the_corpus_is_invented():
     """No real company names: every supplier is marked fictional and every domain is example.*."""
     assert all("(fictional)" in name for _, name, _ in corpus.SUPPLIERS)
-    domains = set(re.findall(r"@([\w.-]+)", "".join(p.read_text(errors="ignore") for p in F.rglob("*.eml"))))
+    domains = set(re.findall(r"@([\w.-]+)", "".join(p.read_text(encoding="utf-8", errors="ignore") for p in F.rglob("*.eml"))))
     assert domains and all(d.endswith(("example.com", "example.org")) for d in domains)
 
 
 def test_the_assumptions_are_the_designs():
     """assumptions.yaml carries the design's s1 table, labelled as assumptions."""
-    a = yaml.safe_load((HERE / "assumptions.yaml").read_text())
-    design = (HERE.parent / "docs" / "designs" / "smartdms.md").read_text()
+    a = yaml.safe_load((HERE / "assumptions.yaml").read_text(encoding="utf-8"))
+    design = (HERE.parent / "docs" / "designs" / "smartdms.md").read_text(encoding="utf-8")
     assert a["status"] == "assumption"
     for value, text in ((a["documents_indexed"], "600,000"), (a["pages_per_document"], "15"),
                         (a["new_or_revised_documents_per_week"], "5,000"), (a["pages_per_week"], "75,000"),
@@ -94,7 +94,7 @@ def test_a_record_that_breaks_its_contract_is_quarantined_and_the_rest_flow(base
         assert any(p["id"].split("/")[0] in k and "contract" in r for k, r in reasons.items()), p
     assert len(base.records()) == 160                       # every other document still arrived
     # the control: the same record with the field restored passes its contract
-    sp = next(json.loads(x) for x in (F / "sources" / "sharepoint" / "items.jsonl").read_text().splitlines()
+    sp = next(json.loads(x) for x in (F / "sources" / "sharepoint" / "items.jsonl").read_text(encoding="utf-8").splitlines()
               if json.loads(x)["id"] == "sp-0010")
     assert contracts.check("sharepoint", sp) == ["listItem.fields.DocNumber missing"]
     sp["listItem"]["fields"]["DocNumber"] = sp["listItem"]["fields"].pop("DocumentNo")
@@ -396,7 +396,7 @@ def test_the_recorded_results_are_what_the_code_produces_now(recorded):
 
 
 def test_the_readme_quotes_the_recorded_results(recorded):
-    readme = (HERE / "README.md").read_text()
+    readme = (HERE / "README.md").read_text(encoding="utf-8")
     p, c, v = recorded["personal_data"], recorded["classification"], recorded["validation"]
     for phrase in (f"{p['redacted']} of {p['planted']}", f"{c['correct']} of {c['documents']}",
                    f"{v['caught_by_its_rule']} of {v['planted']}",
@@ -405,7 +405,7 @@ def test_the_readme_quotes_the_recorded_results(recorded):
 
 
 def test_the_status_table_in_the_readme_is_rendered_from_status_yaml():
-    readme = (HERE / "README.md").read_text()
+    readme = (HERE / "README.md").read_text(encoding="utf-8")
     assert status.block() in readme
 
 
@@ -413,7 +413,7 @@ def test_every_proof_in_the_status_table_exists():
     data = status.load()
     assert [s["section"] for s in data["sections"]] == list(range(1, 24))
     assert all(s["status"] in data["statuses"] for s in data["sections"])
-    tests = "".join(p.read_text() for p in (HERE / "tests").glob("test_*.py"))
+    tests = "".join(p.read_text(encoding="utf-8") for p in (HERE / "tests").glob("test_*.py"))
     for s in data["sections"]:
         for p in s.get("proof", []):
             path, _, name = p.partition("::")

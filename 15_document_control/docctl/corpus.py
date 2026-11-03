@@ -813,7 +813,7 @@ def generate(folder: Path = FIXTURES, seed: int = SEED) -> dict:
     g.planted["contract_failures"].append({"source": "qdms", "id": "DEV-2025-011", "reason": "Revision missing"})
 
     def jsonl(path, rows):
-        path.write_text("".join(json.dumps(r, sort_keys=True) + "\n" for r in rows), encoding="utf-8")
+        path.write_text("".join(json.dumps(r, sort_keys=True) + "\n" for r in rows), encoding="utf-8", newline="\n")
 
     jsonl(folder / "sources" / "qdms" / "metadata.jsonl", records["qdms"])
     jsonl(folder / "sources" / "qdms" / "status_events.jsonl", g.events)
@@ -835,10 +835,10 @@ def generate(folder: Path = FIXTURES, seed: int = SEED) -> dict:
                       for d in g.docs},
         "planted": g.planted,
     }
-    (folder / "labels.yaml").write_text(yaml.safe_dump(labels, sort_keys=True, allow_unicode=True), encoding="utf-8")
+    (folder / "labels.yaml").write_text(yaml.safe_dump(labels, sort_keys=True, allow_unicode=True), encoding="utf-8", newline="\n")
     quarantined = {r["id"] for r in g.planted["contract_failures"]}
     (folder / "questions.yaml").write_text(yaml.safe_dump(questions(g, quarantined), sort_keys=False,
-                                                          allow_unicode=True), encoding="utf-8")
+                                                          allow_unicode=True), encoding="utf-8", newline="\n")
     from .pairs import generate_pairs
 
     generate_pairs(folder / "comparison", seed)
@@ -846,7 +846,7 @@ def generate(folder: Path = FIXTURES, seed: int = SEED) -> dict:
         "# Fixtures\n\nWritten by `python -m docctl.corpus` (seed 15). Do not edit by hand: "
         "`test_the_fixtures_are_exactly_what_the_generator_writes` fails if these differ from what the generator "
         "writes.\n\nEverything here is invented: sites, people, suppliers, materials and documents. `labels.yaml` "
-        "is the ground truth for every count the module reports.\n", encoding="utf-8")
+        "is the ground truth for every count the module reports.\n", encoding="utf-8", newline="\n")
     return labels
 
 

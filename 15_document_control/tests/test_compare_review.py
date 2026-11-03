@@ -23,7 +23,7 @@ from docctl.review import (SERVICE, AuditLog, MockDMS, Reviews, build_review, cl
 from llm_provider import ScriptedChatModel, Step
 
 HERE = Path(__file__).resolve().parents[1]
-PAIRS = yaml.safe_load((FIXTURES / "comparison" / "pairs.yaml").read_text())
+PAIRS = yaml.safe_load((FIXTURES / "comparison" / "pairs.yaml").read_text(encoding="utf-8"))
 
 
 @pytest.fixture(scope="module")
@@ -33,7 +33,7 @@ def records():
 
 @pytest.fixture(scope="module")
 def recorded():
-    return json.loads((HERE / "results" / "comparison.json").read_text())
+    return json.loads((HERE / "results" / "comparison.json").read_text(encoding="utf-8"))
 
 
 def _pair(pid):
@@ -264,7 +264,7 @@ def test_the_recorded_comparison_results_are_what_the_code_produces_now(recorded
 
 
 def test_the_readme_quotes_the_recorded_comparison_results(recorded):
-    readme = (HERE / "README.md").read_text()
+    readme = (HERE / "README.md").read_text(encoding="utf-8")
     r = recorded["version_vs_version"]["rules"]
     for phrase in (f"{r['found']} of {r['planted']} planted changes",
                    f"{recorded['review']['audit_records']} decisions"):

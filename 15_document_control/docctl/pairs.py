@@ -212,5 +212,5 @@ def generate_pairs(folder: Path, seed: int = 15) -> dict:
         (folder / f"{sid}.pdf").write_bytes(write_pdf(_lines(d["title"], hdr, secs, {})))
         out["standard_checks"].append({"id": sid, "file": f"{sid}.pdf", "breaks": clause, "expected": verdict,
                                        "what": what})
-    (folder / "pairs.yaml").write_text(yaml.safe_dump(out, sort_keys=False, allow_unicode=True), encoding="utf-8")
+    (folder / "pairs.yaml").write_text(yaml.safe_dump(out, sort_keys=False, allow_unicode=True), encoding="utf-8", newline="\n")
     return out

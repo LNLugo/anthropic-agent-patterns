@@ -1,4 +1,6 @@
-# Fixtures are compared byte for byte by a test: never let git rewrite them.
+# Fixtures are compared byte for byte by a test: never let git rewrite them, on any platform
+# (core.autocrlf on Windows would otherwise turn LF into CRLF on checkout).
+fixtures/** -text
 *.pdf binary
 *.xlsx binary
 *.eml binary

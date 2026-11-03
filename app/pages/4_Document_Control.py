@@ -26,11 +26,11 @@ st.caption("Quality and regulatory documents from three invented source systems:
            "[docs/designs/smartdms.md](https://github.com/LNLugo/anthropic-agent-patterns/blob/main/docs/designs/"
            "smartdms.md); this page shows what of it is built and what intake measured.")
 
-R = json.loads((MOD / "results" / "intake.json").read_text())
+R = json.loads((MOD / "results" / "intake.json").read_text(encoding="utf-8"))
 
 
-RR = json.loads((MOD / "results" / "retrieval.json").read_text())
-RC = json.loads((MOD / "results" / "comparison.json").read_text())
+RR = json.loads((MOD / "results" / "retrieval.json").read_text(encoding="utf-8"))
+RC = json.loads((MOD / "results" / "comparison.json").read_text(encoding="utf-8"))
 
 
 @st.cache_resource
