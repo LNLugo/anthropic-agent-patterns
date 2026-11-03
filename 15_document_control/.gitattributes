@@ -4,3 +4,6 @@ fixtures/** -text
 *.pdf binary
 *.xlsx binary
 *.eml binary
+# The runners write results with LF on every platform; check them out with LF too, so a rerun
+# that reproduces a result leaves git status clean on Windows.
+results/*.json text eol=lf
