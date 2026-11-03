@@ -47,7 +47,7 @@ sections:
             tests/test_document_control.py::test_no_document_is_filed_as_the_wrong_type,
             tests/test_document_control.py::test_every_planted_validation_failure_goes_to_review,
             tests/test_document_control.py::test_nothing_is_silently_corrected]
-    note: Rules make every decision. The model path is built and tested as plumbing; its quality is not claimed.
+    note: "Rules make every decision. The model path is built and tested as plumbing; its quality is not claimed. Not built: cited summaries per document type (purpose, scope, key requirements, changes since the last revision)."
   - section: 7
     title: Embeddings
     status: Built as in-process stand-in
