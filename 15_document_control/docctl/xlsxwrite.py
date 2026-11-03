@@ -65,8 +65,12 @@ def write_xlsx(sheets: list[tuple[str, list[list]]]) -> bytes:
     for i, (_, rows) in enumerate(sheets, 1):
         files[f"xl/worksheets/sheet{i}.xml"] = _sheet(rows)
     buf = io.BytesIO()
-    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
+    # Byte for byte on every platform: stored, not deflated (deflate output depends on the zlib
+    # build), and the creating system fixed (ZipInfo records Windows as 0 and Unix as 3).
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_STORED) as z:
         for name, body in files.items():
-            z.writestr(zipfile.ZipInfo(name, date_time=(2026, 1, 1, 0, 0, 0)), body.encode("utf-8"),
-                       compress_type=zipfile.ZIP_DEFLATED)
+            info = zipfile.ZipInfo(name, date_time=(2026, 1, 1, 0, 0, 0))
+            info.create_system = 3
+            info.external_attr = 0o644 << 16
+            z.writestr(info, body.encode("utf-8"), compress_type=zipfile.ZIP_STORED)
     return buf.getvalue()
