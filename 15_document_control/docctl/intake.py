@@ -20,6 +20,7 @@ import hashlib
 import json
 import random
 import tempfile
+import weakref
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -81,11 +82,17 @@ class Landing:
         return h
 
 
+def _close(conns) -> None:
+    for c in conns:
+        c.close()
+
+
 class Intake:
     def __init__(self, folder: Path = FIXTURES, workdir: str | Path | None = None, embedder=None, dedup=True):
         from llm_provider import HashingEmbeddings
 
-        self._tmp = tempfile.TemporaryDirectory() if workdir is None else None
+        # ignore_cleanup_errors: on Windows an open SQLite file cannot be deleted at exit
+        self._tmp = tempfile.TemporaryDirectory(ignore_cleanup_errors=True) if workdir is None else None
         work = Path(workdir or self._tmp.name)
         self.folder = folder
         self.broker = Broker(Clock())
@@ -95,6 +102,8 @@ class Intake:
         self.consumer = Consumer(self.broker, {"document.upserted": self.on_document,
                                                "document.status_changed": self.on_status},
                                  self.processed, self.dead)
+        # Close the databases before the temporary folder is removed (finalizers run newest first).
+        weakref.finalize(self, _close, [db.conn for db in (self.dead, self.processed) if db is not None])
         self.landing = Landing(folder)
         self.registry = Registry()
         self.mirror = LifecycleMirror()

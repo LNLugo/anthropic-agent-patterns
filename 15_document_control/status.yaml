@@ -81,8 +81,9 @@ sections:
             tests/test_compare_review.py::test_rewrapped_text_extra_spaces_and_a_moved_page_break_are_not_changes,
             tests/test_compare_review.py::test_out_of_specification_results_are_caught_and_nothing_else_is,
             tests/test_compare_review.py::test_each_planted_break_of_the_standard_is_found_and_none_is_passed,
-            tests/test_compare_review.py::test_a_recording_replays_to_the_same_scores]
-    note: "All three modes. The headline result's two model arms are built, and recording and replay are tested, but they have not been run live: that needs a key (ADR 0019 is Proposed until then)."
+            tests/test_compare_review.py::test_a_recording_replays_to_the_same_scores,
+            tests/test_compare_review.py::test_the_recorded_live_runs_replay_to_the_reported_scores]
+    note: "All three modes. The headline result's model arms ran live three times: both found 51 of 51, so neither of ADR 0019's rules fired. The test revisions are a paragraph long; ADR 0019 stays Proposed until pairs of realistic length are measured (PR 4a)."
   - section: 11
     title: Prompt orchestration
     status: Built

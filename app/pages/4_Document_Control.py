@@ -160,6 +160,9 @@ with compare_tab:
         st.dataframe([{"run": i + 1, "arm": arm, **{k: x[k] for k in ("found", "planted", "type_correct",
                                                                         "severity_correct", "false_findings")}}
                       for i, run in enumerate(v["model_arms"]["runs"]) for arm, x in run.items()], hide_index=True)
+        st.caption(f"Recorded live on {v['model_arms']['model']}, {v['model_arms']['measured']}. These revisions are a "
+                   "paragraph or two long, too short to test whether a model misses a change in a long procedure, "
+                   "so ADR 0019 stays Proposed.")
     else:
         st.info("The headline's two model arms (diff + model, and the model comparing directly) have not been run "
                 "live yet: `python run_comparison.py --live` with a key. ADR 0019 is Proposed until then.")

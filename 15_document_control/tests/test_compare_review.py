@@ -127,6 +127,23 @@ def test_without_a_recording_the_model_arms_are_reported_as_not_run(recorded):
     assert str(recorded["version_vs_version"]["model_arms"]).startswith("not run")
 
 
+def test_the_recorded_live_runs_replay_to_the_reported_scores(recorded):
+    """The figures in results/comparison.json, the README and ADR 0019 come from replaying the
+    recording, not from a hand-copied table."""
+    if not headline.RECORDED.exists():
+        pytest.skip("no live recording yet")
+    assert headline.replay_recorded() == recorded["version_vs_version"]["model_arms"]
+    runs = recorded["version_vs_version"]["model_arms"]["runs"]
+    row = lambda arm: " | ".join(", ".join(str(r[arm][k]) for r in runs)                     # noqa: E731
+                                 for k in ("found", "type_correct", "severity_correct", "false_findings"))
+    readme = (HERE / "README.md").read_text(encoding="utf-8")
+    adr = (HERE.parent / "docs" / "architecture" / "adr" / "0019-diff-finds-changes-model-classifies.md").read_text(
+        encoding="utf-8")
+    for arm, label in (("diff_model", "Diff + model"), ("direct", "Model directly")):
+        line = f"| {label}, runs 1 to 3 | " + row(arm) + " |"
+        assert line in readme and line in adr, line
+
+
 def test_a_recording_replays_to_the_same_scores(tmp_path, monkeypatch):
     """Record against a scripted model standing in for the live one, then replay the file."""
     class Echo:                                  # classifies like the rules, and compares by listing nothing

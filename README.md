@@ -166,7 +166,7 @@ replays every use case's golden set and fails below its threshold.
 | 12 Integration | `12_integration`: `pytest` | 56 | the worker routes in code; synthetic sources, an in-process broker, the gateway over Starlette's test client |
 | 13 Paved road | `13_paved_road`: `pytest` | 45 | each golden case's reference call, replayed by `ScriptedChatModel` through the real pipeline |
 | 14 Knowledge navigation | `14_knowledge_graph`: `pytest` | 47 | `HashingEmbeddings` (a lexical stand-in) and in-memory stores for Upstash; `ScriptedChatModel` for answers |
-| 15 Document control | `15_document_control`: `pytest` | 116 | rules make intake decisions; `HashingEmbeddings` (a lexical stand-in) for vectors; `ScriptedChatModel` for answers, citations and the model path's schema checks |
+| 15 Document control | `15_document_control`: `pytest` | 117 | rules make intake decisions; `HashingEmbeddings` (a lexical stand-in) for vectors; `ScriptedChatModel` for answers, citations and the model path's schema checks |
 
 Phase 1 tests assert on the **path the graph took**, not on model prose: which
 nodes ran, in what order, and what each node was given. `LLM_PROVIDER=scripted`
