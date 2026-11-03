@@ -30,6 +30,7 @@ R = json.loads((MOD / "results" / "intake.json").read_text())
 
 
 RR = json.loads((MOD / "results" / "retrieval.json").read_text())
+RC = json.loads((MOD / "results" / "comparison.json").read_text())
 
 
 @st.cache_resource
@@ -48,7 +49,8 @@ def search_index():
     return build(intake(), emb), emb
 
 
-build_tab, intake_tab, ask_tab, doc_tab = st.tabs(["Build status", "Intake", "Ask", "A document"])
+build_tab, intake_tab, ask_tab, compare_tab, review_tab, doc_tab = st.tabs(
+    ["Build status", "Intake", "Ask", "Compare", "Review", "A document"])
 
 with build_tab:
     data = status.load()
@@ -139,6 +141,67 @@ with ask_tab:
                        "status": h.label, "flagged": "instruction-like text" if h.row.suspected_injection else "",
                        "text": h.row.text.replace("\n", " ")[:100]} for h in r.hits], width="stretch",
                      hide_index=True)
+
+with compare_tab:
+    from docctl import headline
+    from docctl.compare import classify_rules, diff, match
+
+    v = RC["version_vs_version"]
+    st.markdown("A deterministic diff finds every change; something else only says what kind of change it is. "
+                f"{v['pairs']} revision pairs with {v['planted_changes']} planted changes, plus formatting noise "
+                "that must not count.")
+    r = v["rules"]
+    a, b, c3, d = st.columns(4)
+    a.metric("Planted changes found (diff + rules)", f"{r['found']} of {r['planted']}")
+    b.metric("Typed correctly", f"{r['type_correct']} of {r['found']}")
+    c3.metric("Graded correctly", f"{r['severity_correct']} of {r['found']}")
+    d.metric("False findings", str(r["false_findings"]))
+    if isinstance(v["model_arms"], dict):
+        st.dataframe([{"run": i + 1, "arm": arm, **{k: x[k] for k in ("found", "planted", "type_correct",
+                                                                        "severity_correct", "false_findings")}}
+                      for i, run in enumerate(v["model_arms"]["runs"]) for arm, x in run.items()], hide_index=True)
+    else:
+        st.info("The headline's two model arms (diff + model, and the model comparing directly) have not been run "
+                "live yet: `python run_comparison.py --live` with a key. ADR 0019 is Proposed until then.")
+    ps = headline.pairs()
+    pid = st.selectbox("Revision pair", [p["id"] for p in ps], key="pair")
+    p = next(x for x in ps if x["id"] == pid)
+    da, db = headline.load(p)
+    fs = [classify_rules(ch) for ch in diff(da, db, p["a"], p["b"])]
+    matched = {id(f) for _, f in match(fs, p["changes"])[0]}
+    st.dataframe([{"section": f.change.section, "change": f.change.kind, "before": f.change.before[:70],
+                   "after": f.change.after[:70], "type": f.type, "severity": f.severity,
+                   "planted": "✓" if id(f) in matched else "false finding"} for f in fs],
+                 width="stretch", hide_index=True)
+    cc, ds = RC["certificate_vs_specification"], RC["document_vs_standard"]
+    left, right = st.columns(2)
+    left.metric("Out-of-specification results caught", f"{cc['planted_caught']} of {cc['planted_arrived']}",
+                help="Of those that reached intake; the third was quarantined at its contract")
+    right.metric("Planted breaks of the standard found", f"{ds['planted_caught']} of {ds['planted']}",
+                 help=f"Passed wrongly: {ds['planted_passed_wrongly']}")
+    st.dataframe(ds["planted_checks"], hide_index=True)
+
+with review_tab:
+    from docctl.review import route
+
+    rv = RC["review"]
+    st.markdown("The AI recommends; a qualified person approves. High-risk types always go to a person, and a "
+                "share of automatic approvals is reviewed blind.")
+    a, b, c3, d = st.columns(4)
+    a.metric("Decisions recorded", str(rv["audit_records"]))
+    b.metric("Edited by a reviewer", str(rv["decisions"].get("edit", 0)))
+    c3.metric("Sampled for blind review", str(rv["blind_sampled"]))
+    d.metric("Audit chain", "verifies" if rv["audit_chain_verifies"] else "broken",
+             help=f"A changed record is found at its position ({rv['tampered_record_found_at']})")
+    st.caption(f"Written back to the DMS once each, including after a lost response; without a request id the "
+               f"control wrote {rv['written_back_without_request_id_after_a_lost_response']} times. The service "
+               "and the requester cannot approve their own output.")
+    recs = intake().records()
+    st.dataframe([{"document": k, "type": r.doc_type or "unclassified", "risk": (rt := route(r)).risk,
+                   "goes to": "blind review" if rt.blind else rt.to, "why": "; ".join(rt.reasons)}
+                  for k, r in recs.items()], width="stretch", hide_index=True, height=400)
+    st.subheader("Override rates")
+    st.dataframe([{"type": t, **x} for t, x in rv["override_rates"]["by_type"].items()], hide_index=True)
 
 with doc_tab:
     i = intake()

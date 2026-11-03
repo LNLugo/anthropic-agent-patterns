@@ -95,15 +95,31 @@ H_PLAIN = re.compile(r"^[A-Z][a-z]+(?: [a-zA-Z]+){0,3}$")
 COLUMNS = re.compile(r"\S(?:.*?\S)?(?=\s{2,}|$)")
 
 
-def _heading(text: str) -> str | None:
+def _heading(text: str, style: str | None = None) -> str | None:
+    """A heading in one of the three styles. Once a document's style is known, only that style
+    counts: otherwise half of a re-wrapped sentence ("This procedure describes sample") reads
+    as a bare heading in a numbered document. The style is the one most candidate headings in
+    the document use, not the first one, so a damaged title on a scan cannot set it."""
     t = text.strip()
+    found = None
     if m := H_NUMBERED.match(t):
-        return m.group(2).capitalize()      # "REVISION HISTORY" reads as the other styles do
-    if m := H_DECIMAL.match(t):
-        return m.group(2)
-    if H_PLAIN.match(t) and ":" not in t and not t.endswith("."):
-        return t
-    return None
+        found = ("numbered", m.group(2).capitalize())   # "REVISION HISTORY" reads as the other styles do
+    elif m := H_DECIMAL.match(t):
+        found = ("decimal", m.group(2))
+    elif H_PLAIN.match(t) and ":" not in t and not t.endswith("."):
+        found = ("plain", t)
+    if found is None or (style is not None and found[0] != style):
+        return None
+    return found[1]
+
+
+def _style(text: str) -> str | None:
+    t = text.strip()
+    if H_NUMBERED.match(t):
+        return "numbered"
+    if H_DECIMAL.match(t):
+        return "decimal"
+    return "plain" if _heading(t) else None
 
 
 def _cells(text: str) -> list[str] | None:
@@ -140,11 +156,15 @@ def _from_lines(fmt: str, lines: list[Line], ocr_tables: list[dict] | None = Non
             current.lines += [ln for ln, _ in pending_table]
         pending_table = []
 
+    from collections import Counter
+
+    votes = Counter(st for st in (_style(ln.text) for ln in lines[i:] if ln.text.strip()) if st)
+    style = max(votes, key=lambda k: (votes[k], k != "plain")) if votes else None
     for ln in lines[i:]:
         if not ln.text.strip():
             flush_table()
             continue
-        h = _heading(ln.text)
+        h = _heading(ln.text, style)
         if h is not None:
             flush_table()
             current = Section(len(sections) + 1, h)

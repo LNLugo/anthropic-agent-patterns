@@ -23,3 +23,4 @@ strongest objection with its answer. Standards cite these by number ([standards]
 | [0016](0016-memory-retrieved-and-pinned.md) | Memory is retrieved by relevance, with standing instructions pinned | AI-08, APP-06 |
 | [0017](0017-paved-road-configuration-over-copies.md) | A new use case is configuration on a paved road, gated offline | ENB-01, ENB-02 |
 | [0018](0018-graph-walk-kept-on-held-out-evidence.md) | Graph-expanded retrieval over logs, kept on held-out evidence only | AI-07, AI-04, APP-01 |
+| [0019](0019-diff-finds-changes-model-classifies.md) | Proposed: a deterministic diff finds changes; a model only classifies them | AI-01, AI-07, AI-04 |

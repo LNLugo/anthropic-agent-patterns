@@ -1,0 +1,144 @@
+{
+  "certificate_vs_specification": {
+    "by_kind": {
+      "no_specification": 2,
+      "out_of_specification": 2
+    },
+    "certificates": 22,
+    "no_specification": [
+      "COA-2001-L26-0530/01",
+      "COA-2004-L26-0689/01"
+    ],
+    "not_arrived": [
+      "COA-2001-L26-0265/01"
+    ],
+    "other_findings": 0,
+    "planted": 3,
+    "planted_arrived": 2,
+    "planted_caught": 2
+  },
+  "document_vs_standard": {
+    "clauses": 6,
+    "corpus": {
+      "note": "every corpus SOP meets every clause by construction; any verdict other than covered is a false alarm, never a false pass",
+      "sops": 73,
+      "verdicts": {
+        "covered": 433,
+        "uncertain": 5
+      }
+    },
+    "planted": 3,
+    "planted_caught": 3,
+    "planted_checks": [
+      {
+        "breaks": "STD-4",
+        "expected": "missing",
+        "got": "missing",
+        "id": "S01",
+        "others_covered": true
+      },
+      {
+        "breaks": "STD-6",
+        "expected": "missing",
+        "got": "missing",
+        "id": "S02",
+        "others_covered": true
+      },
+      {
+        "breaks": "STD-3",
+        "expected": "uncertain",
+        "got": "uncertain",
+        "id": "S03",
+        "others_covered": true
+      }
+    ],
+    "planted_passed_wrongly": 0
+  },
+  "review": {
+    "audit_chain_verifies": true,
+    "audit_records": 75,
+    "blind_sampled": 12,
+    "decisions": {
+      "accept": 68,
+      "edit": 7
+    },
+    "gold_examples_added": 7,
+    "high_risk_to_review": true,
+    "override_rates": {
+      "by_reviewer": {
+        "Grace Okafor": {
+          "decisions": 38,
+          "overridden": 5
+        },
+        "Hugo Lindqvist": {
+          "decisions": 37,
+          "overridden": 2
+        }
+      },
+      "by_type": {
+        "CC": {
+          "decisions": 6,
+          "overridden": 0
+        },
+        "CMP": {
+          "decisions": 4,
+          "overridden": 0
+        },
+        "COA": {
+          "decisions": 22,
+          "overridden": 3
+        },
+        "COR": {
+          "decisions": 2,
+          "overridden": 0
+        },
+        "DEV": {
+          "decisions": 14,
+          "overridden": 0
+        },
+        "SOP": {
+          "decisions": 8,
+          "overridden": 3
+        },
+        "SPEC": {
+          "decisions": 18,
+          "overridden": 0
+        },
+        "unclassified": {
+          "decisions": 1,
+          "overridden": 1
+        }
+      }
+    },
+    "routed": {
+      "high:review": 55,
+      "low:auto": 7,
+      "low:review": 1,
+      "medium:auto": 90,
+      "medium:review": 7
+    },
+    "service_cannot_approve": true,
+    "tampered_record_found_at": 3,
+    "written_back": 75,
+    "written_back_without_request_id_after_a_lost_response": 2
+  },
+  "version_vs_version": {
+    "model_arms": "not run: needs run_comparison.py --live with a key",
+    "pairs": 16,
+    "planted_by_type": {
+      "editorial": 8,
+      "procedural": 24,
+      "safety_relevant": 5,
+      "specification_or_limit": 14
+    },
+    "planted_changes": 51,
+    "rules": {
+      "false_findings": 0,
+      "found": 51,
+      "planted": 51,
+      "recall": 1.0,
+      "severity_correct": 51,
+      "type_correct": 51
+    }
+  }
+}

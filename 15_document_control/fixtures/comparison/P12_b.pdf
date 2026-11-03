@@ -1,0 +1,72 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R 7 0 R] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Length 687 >>
+stream
+BT
+/F1 10 Tf
+12 TL
+50 760 Td
+(MATERIAL SPECIFICATION) Tj T*
+(Specification: raw material RM-20011) Tj T*
+(Document No.: SPEC-RM-8011) Tj T*
+(Revision: 02) Tj T*
+(Effective date: 2026-02-02) Tj T*
+(Approved by: Grace Okafor) Tj T*
+() Tj T*
+(1. SCOPE) Tj T*
+(Acceptance specification for this raw material at all sites.) Tj T*
+() Tj T*
+(2. LIMITS) Tj T*
+(Parameter         Limit          Unit     Method) Tj T*
+(Microbial count   0 - 100        cfu/mL   Plate count) Tj T*
+(Viscosity         1200 - 1600    mPa.s    Brookfield) Tj T*
+(Water             0.00 - 0.50    %        Karl Fischer \(in-house\)) Tj T*
+(Assay             98.0 - 101.0   %        HPLC \(in-house\)) Tj T*
+() Tj T*
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 4 0 R >>
+endobj
+6 0 obj
+<< /Length 143 >>
+stream
+BT
+/F1 10 Tf
+12 TL
+50 760 Td
+(3. SAMPLING) Tj T*
+(Sample every lot before release and test) Tj T*
+(against the limits below.) Tj T*
+() Tj T*
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 6 0 R >>
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000121 00000 n 
+0000000216 00000 n 
+0000000954 00000 n 
+0000001080 00000 n 
+0000001274 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R >>
+startxref
+1400
+%%EOF

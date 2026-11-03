@@ -15,6 +15,8 @@ cd 15_document_control
 python -m docctl.corpus       # rewrite the fixtures (a test checks they reproduce)
 python run_intake.py          # intake over every fixture; writes results/intake.json
 python run_retrieval.py       # retrieval on the development questions; writes results/retrieval.json
+python run_comparison.py      # comparison, the certificate and standard checks, review; writes results/comparison.json
+python run_comparison.py --live   # the headline's two model arms, three runs, recorded (needs OPENAI_API_KEY)
 python -m pytest -q           # offline, no key
 streamlit run ../app/Agent_Patterns.py   # then "Document Control" in the sidebar
 ```
@@ -29,16 +31,16 @@ One row per section of the specification. Rendered from [status.yaml](status.yam
 | 1 | Planning assumptions | Built | 1 | `assumptions.yaml`, `test_the_assumptions_are_the_designs` | The inputs only. sizing.py, which derives every sizing and cost figure from them, is PR 4. |
 | 2 | Requirements and service levels | Planned | 4 |  |  |
 | 3 | Architecture overview | Planned | 4 |  | The stand-in map below covers the parts built so far. |
-| 4 | Document lifecycle and system of record | Built | 1 | `docctl/lifecycle.py`, `docctl/identity.py`, `test_never_two_effective_revisions_at_any_step_in_any_order`, `test_illegal_transitions_are_quarantined_not_applied`, `test_the_system_of_records_copy_is_canonical_whatever_arrives_first` | Write-back of review decisions to the DMS moves to PR 3, where the decisions exist. |
+| 4 | Document lifecycle and system of record | Built | 1 | `docctl/lifecycle.py`, `docctl/identity.py`, `test_never_two_effective_revisions_at_any_step_in_any_order`, `test_illegal_transitions_are_quarantined_not_applied`, `test_the_system_of_records_copy_is_canonical_whatever_arrives_first`, `test_a_lost_response_writes_the_decision_once_and_the_control_writes_it_twice` | Review decisions are written back to the DMS through its API with a request id, so a retry after a lost response writes once (PR 3). |
 | 5 | Ingestion, parsing and chunking | Built as in-process stand-in | 1 | `docctl/contracts.py`, `docctl/eventlog.py`, `docctl/parse.py`, `docctl/chunking.py`, `docctl/pii.py`, `test_a_record_that_breaks_its_contract_is_quarantined_and_the_rest_flow`, `test_shuffled_duplicated_and_crashed_delivery_reaches_the_same_outcome`, `test_an_unchanged_section_is_not_embedded_again`, `test_personal_data_is_redacted_and_approvers_are_kept` | OCR is a layout-result stand-in; PII detection is rules; Event Hubs is an append-only log. |
 | 6 | Classification, extraction and validation | Built | 1 | `taxonomy.yaml`, `docctl/classify.py`, `docctl/extract.py`, `docctl/validate.py`, `test_no_document_is_filed_as_the_wrong_type`, `test_every_planted_validation_failure_goes_to_review`, `test_nothing_is_silently_corrected` | Rules make every decision. The model path is built and tested as plumbing; its quality is not claimed. Not built: cited summaries per document type (purpose, scope, key requirements, changes since the last revision). |
 | 7 | Embeddings | Built as in-process stand-in | 2 | `docctl/index.py`, `test_every_vector_names_its_model_and_a_query_from_another_model_is_refused`, `test_a_new_index_replaces_the_old_only_if_it_does_as_well_and_can_be_rolled_back` | HashingEmbeddings stands in for text-embedding-3-large at 1,024 dimensions; the candidate model compared is a second stand-in. Title and summary vectors are not built: no gain has been measured to justify them. |
 | 8 | Indexing, ANN and sizing | Built as in-process stand-in | 2 | `docctl/index.py`, `test_queries_keep_using_the_old_index_until_the_flip`, `test_a_new_effective_revision_replaces_the_old_in_one_write` | Search is exact over every row. HNSW, int8 quantization and rescoring are the design's parameters (s8), not exercised here. Sizing is PR 4. |
 | 9 | Retrieval and reranking | Built as in-process stand-in | 2 | `docctl/retrieve.py`, `test_no_default_query_returns_a_superseded_revision_and_the_control_does`, `test_no_one_is_shown_a_document_they_may_not_open_and_the_control_sees_them`, `test_a_named_document_short_circuits_to_that_document_only`, `test_the_answerability_threshold_is_the_calibrated_midpoint` | 07's fusion over BM25 and vectors. Not built: a reranker (07's needs a model download), conversation rewriting, language detection. |
-| 10 | Comparison engine | Planned | 3 |  |  |
+| 10 | Comparison engine | Built | 3 | `docctl/compare.py`, `docctl/conformance_checks.py`, `docctl/headline.py`, `test_the_diff_finds_every_planted_change_and_nothing_else`, `test_rewrapped_text_extra_spaces_and_a_moved_page_break_are_not_changes`, `test_out_of_specification_results_are_caught_and_nothing_else_is`, `test_each_planted_break_of_the_standard_is_found_and_none_is_passed`, `test_a_recording_replays_to_the_same_scores` | All three modes. The headline result's two model arms are built, and recording and replay are tested, but they have not been run live: that needs a key (ADR 0019 is Proposed until then). |
 | 11 | Prompt orchestration | Built | 2 | `docctl/assistant.py`, `test_every_development_question_is_routed_by_rules`, `test_the_context_is_packed_labelled_and_within_budget`, `test_a_tool_runs_only_from_the_question_and_only_from_the_allowlist` | Routing is rules: every development question routes correctly, so 08's model router is not needed yet. Prompt registration in MLflow is not built. |
 | 12 | Hallucination mitigation and safety | Built as in-process stand-in | 2 | `test_a_sentence_citing_something_it_was_not_shown_is_removed`, `test_an_answer_mostly_unsupported_becomes_an_abstention`, `test_instructions_inside_a_supplier_document_never_trigger_a_tool`, `test_access_revoked_after_retrieval_is_applied_before_the_answer`, `test_personal_data_in_the_output_is_redacted` | Rules stand in for Content Safety and Prompt Shields. Attribution is citation validity (07's validator), not a model judging support. |
-| 13 | Human in the loop and audit trail | Planned | 3 |  |  |
+| 13 | Human in the loop and audit trail | Built | 3 | `docctl/review.py`, `test_high_risk_documents_always_go_to_a_person_and_some_automatic_approvals_are_sampled`, `test_a_review_waits_for_a_person_across_a_restart`, `test_the_service_and_the_requester_cannot_approve_their_own_output`, `test_an_edit_becomes_a_gold_example_with_the_reviewers_label`, `test_the_audit_chain_shows_where_a_record_was_changed` | Approval is ADR 0005's mechanism (a LangGraph interrupt on a SQLite checkpoint) in a graph of its own: 08's is built into its Jira assistant. Not built: a workbench where a person edits values in place, and lineage in Unity Catalog. |
 | 14 | Caching and freshness | Built | 2 | `docctl/cache.py`, `test_people_with_different_access_never_share_a_cached_answer`, `test_a_status_change_purges_the_answers_that_cite_the_document`, `test_retrieval_results_expire_after_fifteen_minutes` | No rerank cache: there is no reranker. Document processing is keyed on content hash at intake, not yet on pipeline version. |
 | 15 | Multilingual handling | Planned | 4 |  |  |
 | 16 | Scalability, capacity and resilience | Planned | 4 |  | The event log that the rebuild-by-replay test will use is built (s5). |
@@ -63,6 +65,8 @@ One row per section of the specification. Rendered from [status.yaml](status.yam
 | Azure OpenAI embeddings | llm_provider's HashingEmbeddings: a lexical stand-in, so vector results are a word-matching baseline |
 | Azure AI Search (BM25 | docctl/index.py: exact search over every row, BM25 from rank_bm25, the same filters |
 | Semantic ranker or hosted cross-encoder | none: section collapse only (07's cross-encoder needs a model download) |
+| Immutable storage for audit records | a hash-chained, append-only log in memory (docctl/review.py) |
+| The source DMS's decision API | MockDMS: stores decisions by request id, and can lose a response on purpose |
 | Azure AI Content Safety, Prompt Shields | rules: instruction-like text flagged at ingest, release and approval decisions refused, output scanned for personal data |
 | Azure OpenAI (answers) | llm_provider; ScriptedChatModel in tests, so answer quality is not measured |
 <!-- status:end -->
@@ -102,13 +106,13 @@ Delivery was tested three times, each with a shuffled arrival order, a quarter o
 
 **Identity.** All 8 SOPs copied unchanged to a team site are one record with two locations. Both edited copies are kept apart as conflicts, with the quality DMS's copy canonical whichever arrives first. The copy filed under the wrong number is flagged as having the same content as the original.
 
-**Parsing and chunking.** 160 documents produced 871 chunks, 114 of them tables kept whole. All 10 email attachments re-entered intake as documents of their own. 41% of chunks were unchanged from an earlier revision and were not embedded again.
+**Parsing and chunking.** 160 documents produced 869 chunks, 114 of them tables kept whole. All 10 email attachments re-entered intake as documents of their own. 40% of chunks were unchanged from an earlier revision and were not embedded again.
 
 **Personal data.** 55 of 65 planted items were redacted, with no redactions of anything else, and 105 of 105 approver names were kept, as the controlled record requires. The 10 misses are all names written in free text ("her neighbour ..."), outside the forms the rules know. That is the limit of a rules stand-in, and a test pins it.
 
-**Classification.** 156 of 159 documents were classified correctly and 3 went to intake review. 0 were filed as the wrong type. The three are scans where OCR misread the document number and the line naming the type. Two complaints that their team site had filed as SOPs were classified by their content and flagged.
+**Classification.** 158 of 159 documents were classified correctly and 1 went to intake review. 0 were filed as the wrong type. The one is a scan where OCR misread both the document number and the line naming the type. (Until PR 3 the figure was 156: two other damaged scans had their titles read as headings. The comparison fixtures exposed that fault, and the fix is described below.) Two complaints that their team site had filed as SOPs were classified by their content and flagged.
 
-**Extraction and validation.** 991 of 996 values were extracted correctly, every one with the page it came from. All 875 on born-digital documents are correct, and 116 of 121 on scans. Of 16 planted validation failures, 15 of 16 were caught by the rule written for them. The other one (an unapproved supplier) was caught as a missing field, because OCR misread the label. None were missed. The only other failures are 3 on damaged scans, and none on born-digital documents. No value is ever changed: validation records the failure and sends the document to review.
+**Extraction and validation.** 1001 of 1008 values were extracted correctly, every one with the page it came from. All 875 on born-digital documents are correct, and 126 of 133 on scans. Of 16 planted validation failures, 15 of 16 were caught by the rule written for them. The other one (an unapproved supplier) was caught as a missing field, because OCR misread the label. None were missed. The only other failures are 3 on damaged scans, and none on born-digital documents. No value is ever changed: validation records the failure and sends the document to review.
 
 **Controls checked by breaking them.** Six controls were broken one at a time:
 - the same-update supersede;
@@ -137,7 +141,7 @@ The vector half of the search is the hashing stand-in, so these numbers test the
 
 **Finding the evidence.** 29 of 29 expected sections were found. 13 questions name a document and go straight to it. The others are found by BM25 and vectors fused with 07's reciprocal rank fusion. Two changes were needed on the way, each found by a question that failed:
 - **A document context line.** Every chunk is indexed with its document's number, title, material, supplier and lot, so a results table that never names its lot is still found by the lot.
-- **Revision left out of that line.** This keeps an unchanged section's indexed text identical across revisions. 147 of 871 chunks were not embedded again.
+- **Revision left out of that line.** This keeps an unchanged section's indexed text identical across revisions. 147 of 869 chunks were not embedded again.
 
 **Knowing when not to answer.** 38 of 38 questions were correctly answered or declined. The test is how much of the question's distinctive vocabulary the best sections contain. On development questions the lowest answerable scored 0.681 and the highest unanswerable 0.316. The threshold is the midpoint, 0.5, and a test keeps it equal to the measured midpoint. The raw BM25 score was tried first and failed to separate the two before the context line was added; it separates them now too.
 
@@ -168,13 +172,63 @@ The suite caught all eight.
 **Read with care.**
 - **Development questions only.** All 43 questions were written by the same hand that built the retriever, and the threshold was calibrated on them. A held-out set written after this retriever is frozen is what will test it, as in 14.
 
+## What comparison and review measured
+
+All figures are from [results/comparison.json](results/comparison.json). The comparison fixtures are 16 seeded revision pairs with 51 planted, labelled changes:
+- 24 procedural;
+- 14 specification or limit;
+- 8 editorial;
+- 5 safety-relevant.
+
+Every newer revision also carries formatting noise that is not a change: a re-wrapped paragraph, doubled spaces and a page break in a new place.
+
+**Version against version.** The deterministic diff with the rules classifier found 51 of 51 planted changes. It typed 51 and graded 51 correctly, with 0 false findings. That is an upper bound: the same hand wrote the planted changes and the rules.
+
+The first run found two real faults, both of the kind the noise was planted to expose:
+- **A re-wrapped half sentence read as a heading.** "This procedure describes sample" became a new section. A document's heading style is now chosen by majority over its candidate headings. The same fix corrected two scans from PR 1, whose titles had been read as headings.
+- **A removed step paired with its reworded neighbour.** The pair read as "step 2 became step 3". Changes in a block are now paired by similarity.
+
+**The headline result is not in yet.** It compares the diff followed by model classification with a model comparing the two revisions directly. Both arms are built, and recording and replay are tested. They run with `python run_comparison.py --live`, three times, and every reply is kept in `results/comparison_live.json` so the offline tests replay them. Until then, [ADR 0019](../docs/architecture/adr/0019-diff-finds-changes-model-classifies.md) is Proposed.
+
+**Certificate against specification.** Each certificate is checked against the specification in force on the day its lot was made, by rules. 2 of 2 planted out-of-specification results that reached intake were caught, with 0 other findings. The third planted one never arrived: intake quarantined it for a missing material number. Two certificates had no specification to check against: one names a material that does not exist (planted), and on the other OCR misread the material's label. Both go to a person.
+
+**Document against standard.** An invented document-control standard has 6 clauses. All 3 planted breaks were found, and 0 were passed:
+- a procedure with no records section;
+- one with no approver;
+- one with responsibilities left as "TBD", which is reported uncertain, not covered.
+
+Across the corpus's 73 SOPs, which meet every clause by construction, 433 clauses were covered and 5 uncertain. The uncertain ones are on scans where OCR misread a heading. On a shaky scan, an absent heading is reported uncertain rather than missing, because the check cannot know it is absent. A model's "covered" verdict counts only with a quote that is really in the document.
+
+**Review and audit.**
+- **Routing.** All 55 high-risk documents went to a person. 12 automatic approvals were sampled for blind review.
+- **Decisions.** Two reviewers made 75 decisions through the review graph: 68 accepted and 7 edited. They corrected only what intake got wrong: a correctly flagged validation failure is accepted, not overridden. Each edit became a gold example.
+- **Self-approval.** Neither the service nor the requester can approve its own output.
+- **Restarts.** A pending review survives a restart.
+- **The audit log** is hash-chained. Changing one record is found at exactly that record (position 3).
+- **Write-back.** Every decision was written back to the source DMS once, including after a lost response. The control, without a request id, wrote the same decision 2 times.
+
+**Controls checked by breaking them.** Ten PR 3 controls were broken one at a time:
+- one-for-one pairing of replacements;
+- pairing by similarity;
+- the heading-style rule;
+- the quote check on a model's "covered" verdict;
+- uncertain-on-a-shaky-scan;
+- the self-approval refusal;
+- the write-back request id;
+- the audit chain;
+- high-risk routing;
+- the specification limit check.
+
+The suite caught all ten.
+
 ## Not built yet
 
 These are named so nobody assumes they exist:
 - **The model path for classification and extraction.** It is tested for schema, unknown types and confidence. Its quality is not measured.
 - **Cited summaries per document type** (s6): purpose, scope, key requirements and changes since the last revision. Missed in PR 1, and listed in the status table since.
-- **Write-back of review decisions** to the source DMS (PR 3).
 - **Real OCR.** Scans are layout results with planted noise.
 - **A reranker, conversation rewriting, language detection** (s9), and prompt registration in MLflow (s11).
 - **A held-out question set for retrieval**, and any live measurement of answers.
+- **The headline result's live runs** (needs a key), and so ADR 0019's decision.
+- **A review workbench** where a person edits values in place: the app's Review tab shows the queue and the audit trail, read-only.
 - **Free-text name detection.**

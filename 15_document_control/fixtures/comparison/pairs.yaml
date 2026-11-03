@@ -1,0 +1,406 @@
+pairs:
+- id: P01
+  doc_number: SOP-QA-8000
+  kind: SOP
+  a: P01_a.pdf
+  b: P01_b.pdf
+  changes:
+  - section: Procedure
+    type: procedural
+    severity: medium
+    before: 'Step 2: Ensure that the second-person check is signed.'
+    after: ''
+  - section: Procedure
+    type: editorial
+    severity: low
+    before: 'Step 4: The operator must be trained on this procedure before starting.'
+    after: 'Step 4: The operator shall be trained on this procedure before starting.'
+  - section: Responsibilities
+    type: procedural
+    severity: medium
+    before: Quality owns this procedure; Quality approves it.
+    after: Quality owns this procedure; the area supervisor approves it.
+  - section: Procedure
+    type: procedural
+    severity: medium
+    before: ''
+    after: 'Step 6: Return unused material to the warehouse with its status label.'
+- id: P02
+  doc_number: SOP-QA-8001
+  kind: SOP
+  a: P02_a.pdf
+  b: P02_b.pdf
+  changes:
+  - section: Procedure
+    type: editorial
+    severity: low
+    before: 'Step 3: Verify the result in accordance to the acceptance criterion.'
+    after: 'Step 3: Verify the result in accordance with the acceptance criterion.'
+  - section: Safety
+    type: safety_relevant
+    severity: high
+    before: Work under local exhaust ventilation; the vapour is flammable.
+    after: Keep the container closed when not in use.
+  - section: Procedure
+    type: procedural
+    severity: medium
+    before: 'Step 2: Record the batch number in the logbook.'
+    after: ''
+  - section: Procedure
+    type: procedural
+    severity: medium
+    before: ''
+    after: 'Step 6: Return unused material to the warehouse with its status label.'
+- id: P03
+  doc_number: SPEC-RM-8002
+  kind: SPEC
+  a: P03_a.pdf
+  b: P03_b.pdf
+  changes:
+  - section: Limits
+    type: specification_or_limit
+    severity: medium
+    before: Water | 0.00 - 0.50 | % | Karl Fischer
+    after: Water | 0.00 - 0.40 | % | Karl Fischer
+    row: Water
+  - section: Limits
+    type: specification_or_limit
+    severity: medium
+    before: pH | 5.0 - 7.5 | - | Potentiometric
+    after: pH | 5.0 - 7.5 | - | Potentiometric (in-house)
+    row: pH
+- id: P04
+  doc_number: SOP-QA-8003
+  kind: SOP
+  a: P04_a.pdf
+  b: P04_b.pdf
+  changes:
+  - section: Safety
+    type: safety_relevant
+    severity: high
+    before: Wear nitrile gloves and safety glasses when handling the material.
+    after: Wear gloves when handling the material.
+  - section: Procedure
+    type: procedural
+    severity: medium
+    before: ''
+    after: 'Step 7: Return unused material to the warehouse with its status label.'
+  - section: Responsibilities
+    type: procedural
+    severity: medium
+    before: Production owns this procedure; Quality approves it.
+    after: Production owns this procedure; the area supervisor approves it.
+- id: P05
+  doc_number: SOP-QA-8004
+  kind: SOP
+  a: P05_a.pdf
+  b: P05_b.pdf
+  changes:
+  - section: Procedure
+    type: editorial
+    severity: low
+    before: 'Step 4: The operator must be trained on this procedure before starting.'
+    after: 'Step 4: The operator shall be trained on this procedure before starting.'
+  - section: Responsibilities
+    type: procedural
+    severity: medium
+    before: Quality owns this procedure; Quality approves it.
+    after: Quality owns this procedure; the area supervisor approves it.
+  - section: Procedure
+    type: procedural
+    severity: medium
+    before: ''
+    after: 'Step 7: Return unused material to the warehouse with its status label.'
+  - section: Procedure
+    type: procedural
+    severity: medium
+    before: 'Step 2: Record the batch number in the logbook.'
+    after: ''
+- id: P06
+  doc_number: SPEC-RM-8005
+  kind: SPEC
+  a: P06_a.pdf
+  b: P06_b.pdf
+  changes:
+  - section: Limits
+    type: specification_or_limit
+    severity: high
+    before: Viscosity | 1200 - 1600 | mPa.s | Brookfield
+    after: Viscosity | 1200 - 1600 | cP | Brookfield
+    row: Viscosity
+  - section: Limits
+    type: specification_or_limit
+    severity: high
+    before: Assay | 98.0 - 101.0 | % | HPLC
+    after: Assay | 98.0 - 101.0 | % w/w | HPLC
+    row: Assay
+  - section: Limits
+    type: specification_or_limit
+    severity: high
+    before: Microbial count | 0 - 100 | cfu/g | Plate count
+    after: Microbial count | 0 - 100 | cfu/mL | Plate count
+    row: Microbial count
+- id: P07
+  doc_number: SOP-QA-8006
+  kind: SOP
+  a: P07_a.pdf
+  b: P07_b.pdf
+  changes:
+  - section: Procedure
+    type: editorial
+    severity: low
+    before: 'Step 2: Verify the result in accordance to the acceptance criterion.'
+    after: 'Step 2: Verify the result in accordance with the acceptance criterion.'
+  - section: Responsibilities
+    type: procedural
+    severity: medium
+    before: Quality owns this procedure; Quality approves it.
+    after: Quality owns this procedure; the area supervisor approves it.
+- id: P08
+  doc_number: SOP-QA-8007
+  kind: SOP
+  a: P08_a.pdf
+  b: P08_b.pdf
+  changes:
+  - section: Procedure
+    type: procedural
+    severity: medium
+    before: ''
+    after: 'Step 7: Return unused material to the warehouse with its status label.'
+  - section: Responsibilities
+    type: procedural
+    severity: medium
+    before: Production owns this procedure; Quality approves it.
+    after: Production owns this procedure; the area supervisor approves it.
+  - section: Procedure
+    type: editorial
+    severity: low
+    before: 'Step 3: The operator must be trained on this procedure before starting.'
+    after: 'Step 3: The operator shall be trained on this procedure before starting.'
+  - section: Procedure
+    type: procedural
+    severity: medium
+    before: 'Step 2: Check the area is clear of the previous product and its labels.'
+    after: ''
+- id: P09
+  doc_number: SPEC-RM-8008
+  kind: SPEC
+  a: P09_a.pdf
+  b: P09_b.pdf
+  changes:
+  - section: Limits
+    type: specification_or_limit
+    severity: high
+    before: pH | 5.0 - 7.5 | - | Potentiometric
+    after: pH | 5.0 - 7.5 | pH units | Potentiometric
+    row: pH
+  - section: Limits
+    type: specification_or_limit
+    severity: high
+    before: Assay | 98.0 - 101.0 | % | HPLC
+    after: Assay | 98.0 - 101.9 | % | HPLC
+    row: Assay
+  - section: Limits
+    type: specification_or_limit
+    severity: medium
+    before: Viscosity | 1200 - 1600 | mPa.s | Brookfield
+    after: Viscosity | 1200 - 1600 | mPa.s | Brookfield (in-house)
+    row: Viscosity
+- id: P10
+  doc_number: SOP-QA-8009
+  kind: SOP
+  a: P10_a.pdf
+  b: P10_b.pdf
+  changes:
+  - section: Procedure
+    type: procedural
+    severity: medium
+    before: ''
+    after: 'Step 7: Return unused material to the warehouse with its status label.'
+  - section: Safety
+    type: safety_relevant
+    severity: high
+    before: Wear nitrile gloves and safety glasses when handling the material.
+    after: Wear gloves when handling the material.
+  - section: Procedure
+    type: procedural
+    severity: medium
+    before: 'Step 2: Send the completed record to Quality by e-mail.'
+    after: ''
+  - section: Procedure
+    type: editorial
+    severity: low
+    before: 'Step 4: The operator must be trained on this procedure before starting.'
+    after: 'Step 4: The operator shall be trained on this procedure before starting.'
+- id: P11
+  doc_number: SOP-QA-8010
+  kind: SOP
+  a: P11_a.pdf
+  b: P11_b.pdf
+  changes:
+  - section: Procedure
+    type: editorial
+    severity: low
+    before: 'Step 3: The operator must be trained on this procedure before starting.'
+    after: 'Step 3: The operator shall be trained on this procedure before starting.'
+  - section: Responsibilities
+    type: procedural
+    severity: medium
+    before: Quality owns this procedure; Quality approves it.
+    after: Quality owns this procedure; the area supervisor approves it.
+- id: P12
+  doc_number: SPEC-RM-8011
+  kind: SPEC
+  a: P12_a.pdf
+  b: P12_b.pdf
+  changes:
+  - section: Limits
+    type: specification_or_limit
+    severity: medium
+    before: Assay | 98.0 - 101.0 | % | HPLC
+    after: Assay | 98.0 - 101.0 | % | HPLC (in-house)
+    row: Assay
+  - section: Limits
+    type: specification_or_limit
+    severity: medium
+    before: Water | 0.00 - 0.50 | % | Karl Fischer
+    after: Water | 0.00 - 0.50 | % | Karl Fischer (in-house)
+    row: Water
+  - section: Limits
+    type: specification_or_limit
+    severity: high
+    before: Microbial count | 0 - 100 | cfu/g | Plate count
+    after: Microbial count | 0 - 100 | cfu/mL | Plate count
+    row: Microbial count
+- id: P13
+  doc_number: SOP-QA-8012
+  kind: SOP
+  a: P13_a.pdf
+  b: P13_b.pdf
+  changes:
+  - section: Procedure
+    type: editorial
+    severity: low
+    before: 'Step 1: Send the completed record to Quality by e-mail.'
+    after: 'Step 1: Send the completed record to Quality by email.'
+  - section: Procedure
+    type: procedural
+    severity: medium
+    before: ''
+    after: 'Step 7: Return unused material to the warehouse with its status label.'
+- id: P14
+  doc_number: SOP-QA-8013
+  kind: SOP
+  a: P14_a.pdf
+  b: P14_b.pdf
+  changes:
+  - section: Safety
+    type: safety_relevant
+    severity: high
+    before: Work under local exhaust ventilation; the vapour is flammable.
+    after: Keep the container closed when not in use.
+  - section: Responsibilities
+    type: procedural
+    severity: medium
+    before: Production owns this procedure; Quality approves it.
+    after: Production owns this procedure; the area supervisor approves it.
+  - section: Procedure
+    type: procedural
+    severity: medium
+    before: 'Step 2: Record the batch number in the logbook.'
+    after: ''
+  - section: Procedure
+    type: procedural
+    severity: medium
+    before: ''
+    after: 'Step 6: Return unused material to the warehouse with its status label.'
+- id: P15
+  doc_number: SPEC-RM-8014
+  kind: SPEC
+  a: P15_a.pdf
+  b: P15_b.pdf
+  changes:
+  - section: Limits
+    type: specification_or_limit
+    severity: medium
+    before: Viscosity | 1200 - 1600 | mPa.s | Brookfield
+    after: Viscosity | 1200 - 1520 | mPa.s | Brookfield
+    row: Viscosity
+  - section: Limits
+    type: specification_or_limit
+    severity: medium
+    before: Water | 0.00 - 0.50 | % | Karl Fischer
+    after: Water | 0.00 - 0.40 | % | Karl Fischer
+    row: Water
+  - section: Limits
+    type: specification_or_limit
+    severity: medium
+    before: pH | 5.0 - 7.5 | - | Potentiometric
+    after: pH | 5.0 - 7.5 | - | Potentiometric (in-house)
+    row: pH
+- id: P16
+  doc_number: SOP-QA-8015
+  kind: SOP
+  a: P16_a.pdf
+  b: P16_b.pdf
+  changes:
+  - section: Responsibilities
+    type: procedural
+    severity: medium
+    before: Production owns this procedure; Quality approves it.
+    after: Production owns this procedure; the area supervisor approves it.
+  - section: Procedure
+    type: procedural
+    severity: medium
+    before: ''
+    after: 'Step 7: Return unused material to the warehouse with its status label.'
+  - section: Safety
+    type: safety_relevant
+    severity: high
+    before: Wear nitrile gloves and safety glasses when handling the material.
+    after: Wear gloves when handling the material.
+  - section: Procedure
+    type: procedural
+    severity: medium
+    before: 'Step 2: Check the area is clear of the previous product and its labels.'
+    after: ''
+standard:
+  id: STD-QA-001
+  title: Document control standard (invented)
+  clauses:
+  - id: STD-1
+    requirement: The procedure states its purpose.
+    heading: Purpose
+  - id: STD-2
+    requirement: The procedure defines its scope.
+    heading: Scope
+  - id: STD-3
+    requirement: The procedure names who is responsible.
+    heading: Responsibilities
+  - id: STD-4
+    requirement: The procedure states how long records are kept.
+    heading: Records
+    words:
+    - kept for
+  - id: STD-5
+    requirement: The procedure carries a revision history.
+    heading: Revision history
+  - id: STD-6
+    requirement: The procedure names who approved it.
+    header: Approved by
+standard_checks:
+- id: S01
+  file: S01.pdf
+  breaks: STD-4
+  expected: missing
+  what: no Records section
+- id: S02
+  file: S02.pdf
+  breaks: STD-6
+  expected: missing
+  what: no approver named
+- id: S03
+  file: S03.pdf
+  breaks: STD-3
+  expected: uncertain
+  what: responsibilities left as TBD

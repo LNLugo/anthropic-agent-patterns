@@ -839,6 +839,9 @@ def generate(folder: Path = FIXTURES, seed: int = SEED) -> dict:
     quarantined = {r["id"] for r in g.planted["contract_failures"]}
     (folder / "questions.yaml").write_text(yaml.safe_dump(questions(g, quarantined), sort_keys=False,
                                                           allow_unicode=True), encoding="utf-8")
+    from .pairs import generate_pairs
+
+    generate_pairs(folder / "comparison", seed)
     (folder / "README.md").write_text(
         "# Fixtures\n\nWritten by `python -m docctl.corpus` (seed 15). Do not edit by hand: "
         "`test_the_fixtures_are_exactly_what_the_generator_writes` fails if these differ from what the generator "
