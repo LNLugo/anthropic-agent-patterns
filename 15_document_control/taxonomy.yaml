@@ -92,3 +92,20 @@ parameter_ranges:
   Refractive index: [1.0, 2.0]
   Specific gravity: [0.1, 5.0]
   Flash point: [-100, 500]
+
+# Who reviews what (s13). High-risk types always go to a qualified person. Medium-risk types go
+# to a person when anything failed or confidence is short of the bar. Low-risk types are
+# approved automatically when clean, and a share of those is sampled for blind review so that
+# automatic approval is itself checked.
+review:
+  risk_class:
+    SPEC: high
+    COA: high
+    DEV: high
+    CC: medium
+    SOP: medium
+    CMP: medium
+    COR: low
+  medium_needs: 0.95           # medium risk: a person reviews below this confidence
+  low_needs: 0.9               # low risk: approved automatically at or above this, if nothing failed
+  blind_sample: 0.10           # share of automatic approvals sent to blind review

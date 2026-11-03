@@ -36,9 +36,9 @@
         "to_review": 0
       },
       "SOP": {
-        "correct": 70,
+        "correct": 72,
         "documents": 73,
-        "to_review": 3
+        "to_review": 1
       },
       "SPEC": {
         "correct": 18,
@@ -46,12 +46,12 @@
         "to_review": 0
       }
     },
-    "correct": 156,
+    "correct": 158,
     "documents": 159,
     "review_by_format": {
-      "scan": 3
+      "scan": 1
     },
-    "to_intake_review": 3,
+    "to_intake_review": 1,
     "wrong": [],
     "wrong_type_filed": 0
   },
@@ -107,16 +107,16 @@
         "of": 15
       },
       "approved_by": {
-        "correct": 117,
-        "of": 117
+        "correct": 119,
+        "of": 119
       },
       "doc_number": {
-        "correct": 156,
-        "of": 156
+        "correct": 158,
+        "of": 158
       },
       "effective_date": {
-        "correct": 88,
-        "of": 88
+        "correct": 90,
+        "of": 90
       },
       "limits": {
         "correct": 18,
@@ -147,12 +147,12 @@
         "of": 22
       },
       "revision": {
-        "correct": 117,
-        "of": 117
+        "correct": 119,
+        "of": 119
       },
       "site": {
-        "correct": 125,
-        "of": 126
+        "correct": 127,
+        "of": 128
       },
       "supplier_id": {
         "correct": 29,
@@ -160,7 +160,7 @@
       },
       "title": {
         "correct": 146,
-        "of": 148
+        "of": 150
       }
     },
     "by_format": {
@@ -177,18 +177,18 @@
         "of": 660
       },
       "scan": {
-        "correct": 116,
-        "of": 121
+        "correct": 126,
+        "of": 133
       },
       "xlsx": {
         "correct": 49,
         "of": 49
       }
     },
-    "correct": 991,
-    "of": 996,
-    "values": 1013,
-    "values_with_a_page": 1013
+    "correct": 1001,
+    "of": 1008,
+    "values": 1021,
+    "values_with_a_page": 1021
   },
   "identity": {
     "conflicting_copies": {
@@ -235,7 +235,7 @@
   "parsing_and_chunking": {
     "attachments_planted": 10,
     "attachments_reentered": 10,
-    "chunks": 871,
+    "chunks": 869,
     "documents_by_format": {
       "eml": 8,
       "html": 24,
@@ -243,10 +243,10 @@
       "scan": 22,
       "xlsx": 7
     },
-    "embeddings_computed": 525,
-    "embeddings_reused": 360,
+    "embeddings_computed": 530,
+    "embeddings_reused": 353,
     "largest_chunk_tokens": 72,
-    "share_reused": 0.407,
+    "share_reused": 0.4,
     "table_chunks": 114
   },
   "personal_data": {
@@ -307,6 +307,6 @@
     "other_failures": 3,
     "other_on_born_digital_documents": [],
     "planted": 16,
-    "to_review": 20
+    "to_review": 18
   }
 }

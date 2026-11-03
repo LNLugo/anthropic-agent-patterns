@@ -95,7 +95,7 @@ standards:
     statement: "Any action that changes data pauses for approval, survives a restart while waiting, and cannot be approved by the identity that asked for it. No agent-facing interface can approve."
     rationale: "Accountability for a change belongs to a person."
     adr: ["0005"]
-    applies_to: ["08", "12", "13"]
+    applies_to: ["08", "12", "13", "15"]
     evidence:
       "08":
         - 08_tools/tests/test_approval.py::test_the_requester_cannot_approve_their_own_write
@@ -106,6 +106,9 @@ standards:
       "13":
         - 13_paved_road/tests/test_paved_road.py::test_a_configuration_that_breaks_a_standard_is_a_build_error
         - 13_paved_road/tests/test_paved_road.py::test_an_approval_waits_across_a_restart
+      "15":
+        - 15_document_control/tests/test_compare_review.py::test_a_review_waits_for_a_person_across_a_restart
+        - 15_document_control/tests/test_compare_review.py::test_the_service_and_the_requester_cannot_approve_their_own_output
 
   - id: AI-07
     domain: AI
@@ -412,12 +415,14 @@ standards:
     statement: "A write to a system of record carries a key that lets a retry find its own earlier write, so a lost response never becomes a second write."
     rationale: "Retries are certain; duplicate writes are not acceptable."
     adr: ["0012"]
-    applies_to: ["08", "12"]
+    applies_to: ["08", "12", "15"]
     evidence:
       "08":
         - 08_tools/tests/test_approval.py::test_a_lost_response_and_a_retry_still_post_once
       "12":
         - 12_integration/tests/test_integration_check.py::test_without_the_marker_one_lost_response_posts_twice
+      "15":
+        - 15_document_control/tests/test_compare_review.py::test_a_lost_response_writes_the_decision_once_and_the_control_writes_it_twice
 
   - id: INT-04
     domain: Integration

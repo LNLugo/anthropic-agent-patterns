@@ -1,0 +1,65 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Length 1082 >>
+stream
+BT
+/F1 10 Tf
+12 TL
+50 760 Td
+(STANDARD OPERATING PROCEDURE) Tj T*
+(Batch reconciliation) Tj T*
+(Document No.: SOP-QA-9001) Tj T*
+(Revision: 01) Tj T*
+(Approved by: Grace Okafor) Tj T*
+() Tj T*
+(1. PURPOSE) Tj T*
+(This procedure describes batch reconciliation at the Northfield site.) Tj T*
+() Tj T*
+(2. SCOPE) Tj T*
+(Applies to production and warehouse staff.) Tj T*
+() Tj T*
+(3. RESPONSIBILITIES) Tj T*
+(Quality owns this procedure; Quality approves it.) Tj T*
+() Tj T*
+(4. SAFETY) Tj T*
+(Wear nitrile gloves and safety glasses when handling the material.) Tj T*
+() Tj T*
+(5. PROCEDURE) Tj T*
+(Step 1: Check the area is clear of the previous product and its labels.) Tj T*
+(Step 2: Send the completed record to Quality by e-mail.) Tj T*
+(Step 3: Verify the result in accordance to the acceptance criterion.) Tj T*
+(Step 4: Confirm the equipment status label shows clean and in date.) Tj T*
+(Step 5: Ensure that the second-person check is signed.) Tj T*
+(Step 6: Record the batch number in the logbook.) Tj T*
+() Tj T*
+(6. REVISION HISTORY) Tj T*
+(01 first issue.) Tj T*
+() Tj T*
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 4 0 R >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000210 00000 n 
+0000001344 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1470
+%%EOF

@@ -78,13 +78,14 @@ Any action that changes data pauses for approval, survives a restart while waiti
 
 *Why:* Accountability for a change belongs to a person.
 
-*Applies to:* 08, 12, 13 · *ADRs:* [0005](adr/0005-approval-as-interrupt.md)
+*Applies to:* 08, 12, 13, 15 · *ADRs:* [0005](adr/0005-approval-as-interrupt.md)
 
 *Enforced by:*
 
 - 08: [`test_the_requester_cannot_approve_their_own_write`](../../08_tools/tests/test_approval.py), [`test_resume_from_a_saved_checkpoint_after_a_restart`](../../08_tools/tests/test_approval.py), [`test_a_comment_over_mcp_waits_for_a_person_and_there_is_no_approve_tool`](../../08_tools/tests/test_mcp_server.py)
 - 12: [`test_the_service_cannot_approve_itself_and_a_person_posts_it_once`](../../12_integration/tests/test_triage.py)
 - 13: [`test_a_configuration_that_breaks_a_standard_is_a_build_error`](../../13_paved_road/tests/test_paved_road.py), [`test_an_approval_waits_across_a_restart`](../../13_paved_road/tests/test_paved_road.py)
+- 15: [`test_a_review_waits_for_a_person_across_a_restart`](../../15_document_control/tests/test_compare_review.py), [`test_the_service_and_the_requester_cannot_approve_their_own_output`](../../15_document_control/tests/test_compare_review.py)
 
 ### AI-07 · Measured on questions nobody tuned for
 
@@ -352,12 +353,13 @@ A write to a system of record carries a key that lets a retry find its own earli
 
 *Why:* Retries are certain; duplicate writes are not acceptable.
 
-*Applies to:* 08, 12 · *ADRs:* [0012](adr/0012-service-identity-and-idempotent-writes.md)
+*Applies to:* 08, 12, 15 · *ADRs:* [0012](adr/0012-service-identity-and-idempotent-writes.md)
 
 *Enforced by:*
 
 - 08: [`test_a_lost_response_and_a_retry_still_post_once`](../../08_tools/tests/test_approval.py)
 - 12: [`test_without_the_marker_one_lost_response_posts_twice`](../../12_integration/tests/test_integration_check.py)
+- 15: [`test_a_lost_response_writes_the_decision_once_and_the_control_writes_it_twice`](../../15_document_control/tests/test_compare_review.py)
 
 ### INT-04 · Retry what can recover; dead-letter what cannot
 

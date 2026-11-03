@@ -27,8 +27,9 @@ sections:
     proof: [docctl/lifecycle.py, docctl/identity.py,
             tests/test_document_control.py::test_never_two_effective_revisions_at_any_step_in_any_order,
             tests/test_document_control.py::test_illegal_transitions_are_quarantined_not_applied,
-            tests/test_document_control.py::test_the_system_of_records_copy_is_canonical_whatever_arrives_first]
-    note: Write-back of review decisions to the DMS moves to PR 3, where the decisions exist.
+            tests/test_document_control.py::test_the_system_of_records_copy_is_canonical_whatever_arrives_first,
+            tests/test_compare_review.py::test_a_lost_response_writes_the_decision_once_and_the_control_writes_it_twice]
+    note: "Review decisions are written back to the DMS through its API with a request id, so a retry after a lost response writes once (PR 3)."
   - section: 5
     title: Ingestion, parsing and chunking
     status: Built as in-process stand-in
@@ -47,7 +48,7 @@ sections:
             tests/test_document_control.py::test_no_document_is_filed_as_the_wrong_type,
             tests/test_document_control.py::test_every_planted_validation_failure_goes_to_review,
             tests/test_document_control.py::test_nothing_is_silently_corrected]
-    note: Rules make every decision. The model path is built and tested as plumbing; its quality is not claimed.
+    note: "Rules make every decision. The model path is built and tested as plumbing; its quality is not claimed. Not built: cited summaries per document type (purpose, scope, key requirements, changes since the last revision)."
   - section: 7
     title: Embeddings
     status: Built as in-process stand-in
@@ -73,8 +74,15 @@ sections:
     note: "07's fusion over BM25 and vectors. Not built: a reranker (07's needs a model download), conversation rewriting, language detection."
   - section: 10
     title: Comparison engine
-    status: Planned
+    status: Built
     pr: 3
+    proof: [docctl/compare.py, docctl/conformance_checks.py, docctl/headline.py,
+            tests/test_compare_review.py::test_the_diff_finds_every_planted_change_and_nothing_else,
+            tests/test_compare_review.py::test_rewrapped_text_extra_spaces_and_a_moved_page_break_are_not_changes,
+            tests/test_compare_review.py::test_out_of_specification_results_are_caught_and_nothing_else_is,
+            tests/test_compare_review.py::test_each_planted_break_of_the_standard_is_found_and_none_is_passed,
+            tests/test_compare_review.py::test_a_recording_replays_to_the_same_scores]
+    note: "All three modes. The headline result's two model arms are built, and recording and replay are tested, but they have not been run live: that needs a key (ADR 0019 is Proposed until then)."
   - section: 11
     title: Prompt orchestration
     status: Built
@@ -95,8 +103,14 @@ sections:
     note: "Rules stand in for Content Safety and Prompt Shields. Attribution is citation validity (07's validator), not a model judging support."
   - section: 13
     title: Human in the loop and audit trail
-    status: Planned
+    status: Built
     pr: 3
+    proof: [docctl/review.py, tests/test_compare_review.py::test_high_risk_documents_always_go_to_a_person_and_some_automatic_approvals_are_sampled,
+            tests/test_compare_review.py::test_a_review_waits_for_a_person_across_a_restart,
+            tests/test_compare_review.py::test_the_service_and_the_requester_cannot_approve_their_own_output,
+            tests/test_compare_review.py::test_an_edit_becomes_a_gold_example_with_the_reviewers_label,
+            tests/test_compare_review.py::test_the_audit_chain_shows_where_a_record_was_changed]
+    note: "Approval is ADR 0005's mechanism (a LangGraph interrupt on a SQLite checkpoint) in a graph of its own: 08's is built into its Jira assistant. Not built: a workbench where a person edits values in place, and lineage in Unity Catalog."
   - section: 14
     title: Caching and freshness
     status: Built
@@ -128,5 +142,7 @@ stand_ins:
   - {service: Azure OpenAI embeddings, stand_in: "llm_provider's HashingEmbeddings: a lexical stand-in, so vector results are a word-matching baseline"}
   - {service: Azure AI Search (BM25, HNSW vectors, filters), stand_in: "docctl/index.py: exact search over every row, BM25 from rank_bm25, the same filters"}
   - {service: Semantic ranker or hosted cross-encoder, stand_in: "none: section collapse only (07's cross-encoder needs a model download)"}
+  - {service: Immutable storage for audit records, stand_in: "a hash-chained, append-only log in memory (docctl/review.py)"}
+  - {service: The source DMS's decision API, stand_in: "MockDMS: stores decisions by request id, and can lose a response on purpose"}
   - {service: "Azure AI Content Safety, Prompt Shields", stand_in: "rules: instruction-like text flagged at ingest, release and approval decisions refused, output scanned for personal data"}
   - {service: Azure OpenAI (answers), stand_in: "llm_provider; ScriptedChatModel in tests, so answer quality is not measured"}

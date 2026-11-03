@@ -8,7 +8,7 @@
   "answerability": {
     "bm25": {
       "highest_unanswerable": 11.01,
-      "lowest_answerable": 14.52,
+      "lowest_answerable": 14.51,
       "separates": true
     },
     "correct": 38,
@@ -22,8 +22,8 @@
     "threshold_in_use": 0.5
   },
   "index": {
-    "chunks": 871,
-    "embedded": 724,
+    "chunks": 869,
+    "embedded": 722,
     "embedding_model_id": "hashing-4096",
     "flagged_as_instruction_like": 1,
     "reused_unchanged": 147
@@ -266,7 +266,7 @@
     },
     {
       "answerable": true,
-      "best_bm25": 14.52,
+      "best_bm25": 14.51,
       "coverage": 1.0,
       "expected": 1,
       "flagged_in_hits": 0,
@@ -351,7 +351,7 @@
     },
     {
       "answerable": true,
-      "best_bm25": 16.75,
+      "best_bm25": 16.74,
       "coverage": 1.0,
       "expected": 1,
       "flagged_in_hits": 0,
@@ -385,7 +385,7 @@
     },
     {
       "answerable": true,
-      "best_bm25": 17.13,
+      "best_bm25": 17.12,
       "coverage": 1.0,
       "expected": 1,
       "flagged_in_hits": 0,
@@ -419,7 +419,7 @@
     },
     {
       "answerable": false,
-      "best_bm25": 3.62,
+      "best_bm25": 3.61,
       "coverage": 0.0,
       "expected": 0,
       "flagged_in_hits": 0,
@@ -436,7 +436,7 @@
     },
     {
       "answerable": true,
-      "best_bm25": 25.95,
+      "best_bm25": 25.94,
       "coverage": 1.0,
       "expected": 1,
       "flagged_in_hits": 0,
@@ -453,7 +453,7 @@
     },
     {
       "answerable": false,
-      "best_bm25": 3.62,
+      "best_bm25": 3.61,
       "coverage": 0.0,
       "expected": 0,
       "flagged_in_hits": 0,
@@ -470,7 +470,7 @@
     },
     {
       "answerable": true,
-      "best_bm25": 25.95,
+      "best_bm25": 25.94,
       "coverage": 1.0,
       "expected": 1,
       "flagged_in_hits": 0,
@@ -487,7 +487,7 @@
     },
     {
       "answerable": false,
-      "best_bm25": 3.62,
+      "best_bm25": 3.61,
       "coverage": 0.0,
       "expected": 0,
       "flagged_in_hits": 0,
@@ -504,7 +504,7 @@
     },
     {
       "answerable": true,
-      "best_bm25": 25.95,
+      "best_bm25": 25.94,
       "coverage": 1.0,
       "expected": 1,
       "flagged_in_hits": 0,
@@ -521,7 +521,7 @@
     },
     {
       "answerable": false,
-      "best_bm25": 3.62,
+      "best_bm25": 3.61,
       "coverage": 0.0,
       "expected": 0,
       "flagged_in_hits": 0,
@@ -538,7 +538,7 @@
     },
     {
       "answerable": true,
-      "best_bm25": 25.86,
+      "best_bm25": 25.85,
       "coverage": 1.0,
       "expected": 1,
       "flagged_in_hits": 0,
@@ -555,7 +555,7 @@
     },
     {
       "answerable": true,
-      "best_bm25": 18.91,
+      "best_bm25": 18.9,
       "coverage": 0.681,
       "expected": 1,
       "flagged_in_hits": 0,
@@ -589,7 +589,7 @@
     },
     {
       "answerable": true,
-      "best_bm25": 18.91,
+      "best_bm25": 18.9,
       "coverage": 0.681,
       "expected": 1,
       "flagged_in_hits": 0,
@@ -606,7 +606,7 @@
     },
     {
       "answerable": true,
-      "best_bm25": 23.94,
+      "best_bm25": 23.93,
       "coverage": 0.842,
       "expected": 1,
       "flagged_in_hits": 1,
@@ -623,7 +623,7 @@
     },
     {
       "answerable": false,
-      "best_bm25": 9.12,
+      "best_bm25": 9.11,
       "coverage": 0.155,
       "expected": 0,
       "flagged_in_hits": 0,
@@ -657,7 +657,7 @@
     },
     {
       "answerable": false,
-      "best_bm25": 7.84,
+      "best_bm25": 7.83,
       "coverage": 0.127,
       "expected": 0,
       "flagged_in_hits": 0,
@@ -691,7 +691,7 @@
     },
     {
       "answerable": false,
-      "best_bm25": 4.28,
+      "best_bm25": 4.27,
       "coverage": 0.0,
       "expected": 0,
       "flagged_in_hits": 0,
