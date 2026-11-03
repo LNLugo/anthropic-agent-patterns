@@ -1,0 +1,417 @@
+{
+ "measured": "2026-11-03",
+ "model": "gpt-6-luna",
+ "runs": [
+  {
+   "diff_model": {
+    "P01": [
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor, so a different role must act.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Removing the step eliminates the requirement to ensure the second-person check is signed.\",\"confidence\":0.99}",
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"Changing \u201cmust\u201d to \u201cshall\u201d does not alter the training requirement or anyone\u2019s actions.\",\"confidence\":0.98}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label, changing what personnel must do.\",\"confidence\":0.99}"
+    ],
+    "P02": [
+     "{\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The change removes the instruction to use local exhaust ventilation and the flammability warning, weakening safety protections.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Removing the step means operators no longer record the batch number in the logbook.\",\"confidence\":0.99}",
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"The change corrects the wording from \u201cin accordance to\u201d to \u201cin accordance with\u201d without changing the verification step.\",\"confidence\":1}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label, changing what personnel must do.\",\"confidence\":0.98}"
+    ],
+    "P03": [
+     "{\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The maximum water limit was tightened from 0.50% to 0.40%, changing the acceptance specification.\",\"confidence\":0.99}",
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"Adding \u201cin-house\u201d clarifies the existing potentiometric method without changing the limit or requiring a different procedure.\",\"confidence\":0.93}"
+    ],
+    "P04": [
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor, changing who performs a required responsibility.\",\"confidence\":0.99}",
+     "{\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The instruction removes the specific requirements for nitrile gloves and safety glasses, weakening protective guidance.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label, changing what staff do.\",\"confidence\":0.98}"
+    ],
+    "P05": [
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor, so a different role performs an approval step.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Removing the step means personnel no longer record the batch number in the logbook.\",\"confidence\":0.99}",
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"Changing \u201cmust\u201d to \u201cshall\u201d does not alter the training requirement or what the operator does.\",\"confidence\":0.97}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label, changing what staff must do.\",\"confidence\":0.99}"
+    ],
+    "P06": [
+     "{\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The microbial count unit changed from cfu/g to cfu/mL, changing the specification basis.\",\"confidence\":0.99}",
+     "{\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The assay unit changed from % to % w/w, which is a changed unit and may alter interpretation of the specification.\",\"confidence\":0.99}",
+     "{\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The reported unit changed from mPa.s to cP, which is a specification unit change even though the values are numerically equivalent.\",\"confidence\":0.99}"
+    ],
+    "P07": [
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor, so a different person performs an approval action.\",\"confidence\":0.99}",
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"The change corrects the wording from \u201cin accordance to\u201d to \u201cin accordance with\u201d without changing the verification action or acceptance criterion.\",\"confidence\":1}"
+    ],
+    "P08": [
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor, changing who performs a responsibility.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Removing the step eliminates the required check that the area is clear of the previous product and its labels.\",\"confidence\":0.99}",
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"Changing \u201cmust\u201d to \u201cshall\u201d does not alter the training requirement or what anyone does.\",\"confidence\":0.96}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label, changing what personnel do.\",\"confidence\":0.98}"
+    ],
+    "P09": [
+     "{\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The assay upper limit widened from 101.0% to 101.9%, changing the acceptance specification.\",\"confidence\":1}",
+     "{\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The viscosity limits and unit are unchanged, but adding \u201cin-house\u201d narrows or clarifies the specified test method.\",\"confidence\":0.91}",
+     "{\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"Adding pH units changes the stated unit in the specification, which is classified as high severity.\",\"confidence\":0.99}"
+    ],
+    "P10": [
+     "{\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The instruction removes the specific requirements for nitrile gloves and safety glasses, weakening the protective guidance.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Removing the step eliminates the requirement to send the completed record to Quality by e-mail.\",\"confidence\":0.98}",
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"Changing \u201cmust\u201d to \u201cshall\u201d does not alter the training requirement or what anyone does.\",\"confidence\":0.98}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label, changing what personnel must do.\",\"confidence\":0.98}"
+    ],
+    "P11": [
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor, so a different role performs an action.\",\"confidence\":0.99}",
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"Changing \u201cmust\u201d to \u201cshall\u201d does not alter the training requirement or what anyone does.\",\"confidence\":0.97}"
+    ],
+    "P12": [
+     "{\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The unit changed from cfu/g to cfu/mL, altering the measurement basis for the microbial limit.\",\"confidence\":1}",
+     "{\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The test method is specified as in-house, narrowing the method designation without changing the limit or unit.\",\"confidence\":0.88}",
+     "{\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The assay test method is qualified as in-house, which changes the specified method without changing the limit or unit.\",\"confidence\":0.86}"
+    ],
+    "P13": [
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"Only the spelling of \u201ce-mail\u201d changed to \u201cemail\u201d; the procedure is unchanged.\",\"confidence\":1}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label, changing what personnel must do.\",\"confidence\":0.98}"
+    ],
+    "P14": [
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor, changing who performs an approval task.\",\"confidence\":0.98}",
+     "{\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The change removes the instruction to use local exhaust ventilation and the flammability warning, weakening protective safety guidance.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Removing the step eliminates the requirement to record the batch number in the logbook.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label.\",\"confidence\":0.99}"
+    ],
+    "P15": [
+     "{\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The maximum viscosity limit was narrowed from 1600 to 1520 mPa.s, changing the specification without widening the limit.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"low\",\"explanation\":\"The pH range and potentiometric method are unchanged, but specifying that the method is in-house clarifies who performs it without changing the limit.\",\"confidence\":0.89}",
+     "{\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The maximum water limit was tightened from 0.50% to 0.40%, while the unit and test method remain unchanged.\",\"confidence\":0.99}"
+    ],
+    "P16": [
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor, changing who performs an approval step.\",\"confidence\":0.99}",
+     "{\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The instruction removes the requirements for nitrile gloves and safety glasses, weakening the protective measures.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Removing the step eliminates the requirement to check that the area is clear of the previous product and its labels.\",\"confidence\":0.98}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label, changing what personnel do.\",\"confidence\":0.98}"
+    ]
+   },
+   "direct": {
+    "P01": [
+     "{\"findings\":[{\"section\":\"Responsibilities\",\"before\":\"Quality owns this procedure; Quality approves it.\",\"after\":\"Quality owns this procedure; the area\\nsupervisor approves it.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor.\"},{\"section\":\"Procedure\",\"before\":\"Step 2: Ensure that the second-person check is signed.\",\"after\":\"\",\"type\":\"procedural\",\"severity\":\"high\",\"explanation\":\"The required signed second-person check is removed.\"},{\"section\":\"Procedure\",\"before\":\"Step 4: The operator must be trained on this procedure before starting.\",\"after\":\"Step 4: The operator shall be trained on this procedure before starting.\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"\u201cMust\u201d is replaced with \u201cshall,\u201d without an apparent change to the training requirement.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 6: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new requirement is added to return unused material to the warehouse with its status label.\"}]}"
+    ],
+    "P02": [
+     "{\"findings\":[{\"section\":\"Safety\",\"before\":\"Work under local exhaust ventilation; the vapour is flammable.\",\"after\":\"Keep the container closed when not in use.\",\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The ventilation and flammability precautions were replaced with a container-closure instruction, changing the required safety controls.\"},{\"section\":\"Procedure\",\"before\":\"Step 2: Record the batch number in the logbook.\",\"after\":\"\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"The requirement to record the batch number in the logbook was removed.\"},{\"section\":\"Procedure\",\"before\":\"Step 3: Verify the result in accordance to the acceptance criterion.\",\"after\":\"Step 3: Verify the result in accordance with the acceptance criterion.\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"The wording was grammatically corrected without changing the verification requirement.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 6: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new instruction requires unused material to be returned to the warehouse with its status label.\"}]}"
+    ],
+    "P03": [
+     "{\"findings\":[{\"section\":\"Limits\",\"before\":\"Water | 0.00 - 0.50 | % | Karl Fischer\",\"after\":\"Water | 0.00 - 0.40 | % | Karl Fischer\",\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The maximum permitted water content is reduced from 0.50% to 0.40%.\"},{\"section\":\"Limits\",\"before\":\"pH | 5.0 - 7.5 | - | Potentiometric\",\"after\":\"pH | 5.0 - 7.5 | - | Potentiometric (in-house)\",\"type\":\"procedural\",\"severity\":\"low\",\"explanation\":\"The pH method is now specified as in-house potentiometric testing.\"}]}"
+    ],
+    "P04": [
+     "{\"findings\":[{\"section\":\"Responsibilities\",\"before\":\"Production owns this procedure; Quality approves it.\",\"after\":\"Production owns this procedure; the area supervisor approves it.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor.\"},{\"section\":\"Safety\",\"before\":\"Wear nitrile gloves and safety glasses when handling the material.\",\"after\":\"Wear gloves when handling the material.\",\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The specific requirements to wear nitrile gloves and safety glasses are removed.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 7: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires unused material to be returned to the warehouse with its status label.\"}]}"
+    ],
+    "P05": [
+     "{\"findings\":[{\"section\":\"Responsibilities\",\"before\":\"Quality owns this procedure; Quality approves it.\",\"after\":\"Quality owns this procedure; the area supervisor approves it.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility has changed from Quality to the area supervisor.\"},{\"section\":\"Procedure\",\"before\":\"Step 2: Record the batch number in the logbook.\",\"after\":\"\",\"type\":\"procedural\",\"severity\":\"high\",\"explanation\":\"The requirement to record the batch number in the logbook has been removed.\"},{\"section\":\"Procedure\",\"before\":\"Step 4: The operator must be trained on this procedure before starting.\",\"after\":\"Step 4: The operator shall be trained on this procedure before starting.\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"\u201cMust\u201d has been replaced with \u201cshall,\u201d without an apparent change to the training requirement.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 7: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new requirement has been added to return unused material to the warehouse with its status label.\"}]}"
+    ],
+    "P06": [
+     "{\"findings\":[{\"section\":\"Limits\",\"before\":\"Microbial count | 0 - 100 | cfu/g | Plate count\",\"after\":\"Microbial count | 0 - 100 | cfu/mL | Plate count\",\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The microbial-count unit changes from per gram to per milliliter, changing the basis for evaluating the limit.\"},{\"section\":\"Limits\",\"before\":\"Assay | 98.0 - 101.0 | % | HPLC\",\"after\":\"Assay | 98.0 - 101.0 | % w/w | HPLC\",\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The assay unit is clarified from percent to percent by weight, which may change how results are interpreted.\"},{\"section\":\"Limits\",\"before\":\"Viscosity | 1200 - 1600 | mPa.s | Brookfield\",\"after\":\"Viscosity | 1200 - 1600 | cP | Brookfield\",\"type\":\"specification_or_limit\",\"severity\":\"low\",\"explanation\":\"The viscosity unit changes from mPa\u00b7s to cP, which are numerically equivalent units.\"}]}"
+    ],
+    "P07": [
+     "{\"findings\":[{\"section\":\"Responsibilities\",\"before\":\"Quality owns this procedure; Quality approves it.\",\"after\":\"Quality owns this procedure; the area supervisor approves it.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor.\"},{\"section\":\"Procedure\",\"before\":\"Step 2: Verify the result in accordance to the acceptance criterion.\",\"after\":\"Step 2: Verify the result in accordance with the acceptance criterion.\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"The wording is grammatically corrected without changing the stated requirement.\"}]}"
+    ],
+    "P08": [
+     "{\"findings\":[{\"section\":\"Responsibilities\",\"before\":\"Production owns this procedure; Quality approves it.\",\"after\":\"Production owns this procedure; the\\narea supervisor approves it.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor.\"},{\"section\":\"Procedure\",\"before\":\"Step 2: Check the area is clear of the previous product and its labels.\",\"after\":\"\",\"type\":\"procedural\",\"severity\":\"high\",\"explanation\":\"The required check that the area is clear of the previous product and its labels has been removed.\"},{\"section\":\"Procedure\",\"before\":\"Step 3: The operator must be trained on this procedure before starting.\",\"after\":\"Step 3: The operator shall be trained on this procedure before starting.\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"The training requirement remains, with \u201cmust\u201d changed to \u201cshall.\u201d\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 7: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label.\"}]}"
+    ],
+    "P09": [
+     "{\"findings\":[{\"section\":\"Limits\",\"before\":\"Assay | 98.0 - 101.0 | % | HPLC\",\"after\":\"Assay | 98.0 - 101.9 | % | HPLC\",\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The upper assay limit increased from 101.0% to 101.9%.\"},{\"section\":\"Limits\",\"before\":\"Viscosity | 1200 - 1600 | mPa.s | Brookfield\",\"after\":\"Viscosity | 1200 - 1600 | mPa.s | Brookfield (in-house)\",\"type\":\"specification_or_limit\",\"severity\":\"low\",\"explanation\":\"The viscosity method now specifies an in-house Brookfield method.\"},{\"section\":\"Limits\",\"before\":\"pH | 5.0 - 7.5 | - | Potentiometric\",\"after\":\"pH | 5.0 - 7.5 | pH units | Potentiometric\",\"type\":\"specification_or_limit\",\"severity\":\"low\",\"explanation\":\"The pH unit is now explicitly stated as pH units instead of a dash.\"}]}"
+    ],
+    "P10": [
+     "{\"findings\":[{\"section\":\"Safety\",\"before\":\"Wear nitrile gloves and safety glasses when handling the material.\",\"after\":\"Wear gloves when handling the material.\",\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The specific requirements to wear nitrile gloves and safety glasses have been removed, weakening the stated protective measures.\"},{\"section\":\"Procedure\",\"before\":\"Step 2: Send the completed record to Quality by e-mail.\",\"after\":\"\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"The step requiring the completed record to be sent to Quality by e-mail has been removed.\"},{\"section\":\"Procedure\",\"before\":\"Step 4: The operator must be trained on this procedure before starting.\",\"after\":\"Step 4: The operator shall be trained on this procedure before starting.\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"\u201cMust\u201d was changed to \u201cshall,\u201d with no apparent change to the training requirement.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 7: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires unused material to be returned to the warehouse with its status label.\"}]}"
+    ],
+    "P11": [
+     "{\"findings\":[{\"section\":\"Responsibilities\",\"before\":\"Quality owns this procedure; Quality approves it.\",\"after\":\"Quality owns this procedure; the area supervisor approves it.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility has moved from Quality to the area supervisor.\"},{\"section\":\"Procedure\",\"before\":\"The operator must be trained on this procedure before starting.\",\"after\":\"The operator shall be trained on this procedure before starting.\",\"type\":\"procedural\",\"severity\":\"low\",\"explanation\":\"The requirement remains mandatory, but its wording has changed from \u201cmust\u201d to \u201cshall.\u201d\"}]}"
+    ],
+    "P12": [
+     "{\"findings\":[{\"section\":\"Limits\",\"before\":\"Microbial count | 0 - 100 | cfu/g | Plate count\",\"after\":\"Microbial count | 0 - 100 | cfu/mL | Plate count\",\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The microbial count unit changes from mass-based cfu/g to volume-based cfu/mL, changing how the limit is expressed.\"},{\"section\":\"Limits\",\"before\":\"Water | 0.00 - 0.50 | % | Karl Fischer\",\"after\":\"Water | 0.00 - 0.50 | % | Karl Fischer (in-house)\",\"type\":\"procedural\",\"severity\":\"low\",\"explanation\":\"The water test method is specified as in-house.\"},{\"section\":\"Limits\",\"before\":\"Assay | 98.0 - 101.0 | % | HPLC\",\"after\":\"Assay | 98.0 - 101.0 | % | HPLC (in-house)\",\"type\":\"procedural\",\"severity\":\"low\",\"explanation\":\"The assay test method is specified as in-house.\"}]}"
+    ],
+    "P13": [
+     "{\"findings\":[{\"section\":\"Procedure\",\"before\":\"Step 1: Send the completed record to Quality by e-mail.\",\"after\":\"Step 1: Send the completed record to Quality by email.\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"The spelling of \u201ce-mail\u201d was changed to \u201cemail\u201d without changing the instruction.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 7: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new instruction requires unused material to be returned to the warehouse with its status label.\"}]}"
+    ],
+    "P14": [
+     "{\"findings\":[{\"section\":\"Responsibilities\",\"before\":\"Production owns this procedure; Quality approves it.\",\"after\":\"Production owns this procedure; the\\narea supervisor approves it.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor.\"},{\"section\":\"Safety\",\"before\":\"Work under local exhaust ventilation; the vapour is flammable.\",\"after\":\"Keep the container closed when not in use.\",\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The ventilation and flammability precautions are removed and replaced with a container-handling instruction.\"},{\"section\":\"Procedure\",\"before\":\"Step 2: Record the batch number in the logbook.\",\"after\":\"\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"The requirement to record the batch number in the logbook is removed.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 6: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label.\"}]}"
+    ],
+    "P15": [
+     "{\"findings\":[{\"section\":\"Limits\",\"before\":\"Viscosity | 1200 - 1600 | mPa.s | Brookfield\",\"after\":\"Viscosity | 1200 - 1520 | mPa.s | Brookfield\",\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The maximum viscosity limit is reduced from 1600 to 1520 mPa.s, making the acceptance criterion stricter.\"},{\"section\":\"Limits\",\"before\":\"pH | 5.0 - 7.5 | - | Potentiometric\",\"after\":\"pH | 5.0 - 7.5 | - | Potentiometric (in-house)\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"The pH method now specifies an in-house potentiometric procedure, potentially narrowing how testing is performed.\"},{\"section\":\"Limits\",\"before\":\"Water | 0.00 - 0.50 | % | Karl Fischer\",\"after\":\"Water | 0.00 - 0.40 | % | Karl Fischer\",\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The maximum water limit is reduced from 0.50% to 0.40%, making the acceptance criterion stricter.\"}]}"
+    ],
+    "P16": [
+     "{\"findings\":[{\"section\":\"Responsibilities\",\"before\":\"Production owns this procedure; Quality approves it.\",\"after\":\"Production owns this procedure; the\\narea supervisor approves it.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor.\"},{\"section\":\"Safety\",\"before\":\"Wear nitrile gloves and safety glasses when handling the material.\",\"after\":\"Wear gloves when handling the material.\",\"type\":\"safety_relevant\",\"severity\":\"medium\",\"explanation\":\"The specific requirements for nitrile gloves and safety glasses are removed.\"},{\"section\":\"Procedure\",\"before\":\"Step 2: Check the area is clear of the previous product and its labels.\",\"after\":\"\",\"type\":\"procedural\",\"severity\":\"high\",\"explanation\":\"The required check that the area is clear of the previous product and its labels is removed.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 7: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new requirement is added to return unused material to the warehouse with its status label.\"}]}"
+    ]
+   }
+  },
+  {
+   "diff_model": {
+    "P01": [
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor, so a different role must perform the approval.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Removing the step eliminates the requirement to ensure the second-person check is signed.\",\"confidence\":0.98}",
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"Changing \u201cmust\u201d to \u201cshall\u201d does not change the training requirement or who is responsible.\",\"confidence\":0.94}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires unused material to be returned to the warehouse with its status label.\",\"confidence\":0.98}"
+    ],
+    "P02": [
+     "{\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The change removes the instruction to use local exhaust ventilation and the flammability warning, weakening safety protections.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Removing the step means operators no longer have to record the batch number in the logbook.\",\"confidence\":0.99}",
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"The change corrects the wording from \u201cin accordance to\u201d to \u201cin accordance with\u201d without changing the procedure.\",\"confidence\":1}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label.\",\"confidence\":0.98}"
+    ],
+    "P03": [
+     "{\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The maximum water limit was tightened from 0.50% to 0.40%, changing the acceptance specification.\",\"confidence\":0.99}",
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"The pH range and potentiometric method are unchanged; adding \u201cin-house\u201d clarifies wording without changing what anyone does.\",\"confidence\":0.94}"
+    ],
+    "P04": [
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor, changing who performs a responsibility.\",\"confidence\":0.99}",
+     "{\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The instruction removes the requirements for nitrile gloves and safety glasses, weakening the specified protective measures.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label, changing what personnel do.\",\"confidence\":0.99}"
+    ],
+    "P05": [
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changed from Quality to the area supervisor, so a different role must perform the approval.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Removing the step means operators no longer have to record the batch number in the logbook.\",\"confidence\":0.98}",
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"Changing \u201cmust\u201d to \u201cshall\u201d does not alter the training requirement or what the operator does.\",\"confidence\":0.98}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label, changing what personnel must do.\",\"confidence\":0.98}"
+    ],
+    "P06": [
+     "{\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The unit changed from cfu/g to cfu/mL, altering the basis of the microbial count limit.\",\"confidence\":0.99}",
+     "{\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The assay unit changed from % to % w/w, changing the specified unit.\",\"confidence\":0.99}",
+     "{\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The unit changed from mPa\u00b7s to cP, which changes the specified unit and is classified as high severity.\",\"confidence\":0.99}"
+    ],
+    "P07": [
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor, so a different role performs an approval step.\",\"confidence\":0.99}",
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"The change corrects wording without changing the verification step or acceptance criterion.\",\"confidence\":0.99}"
+    ],
+    "P08": [
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor, changing who performs an approval step.\",\"confidence\":0.98}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Removing the check changes the procedure by eliminating verification that the area is clear of the previous product and its labels.\",\"confidence\":0.99}",
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"Changing \u201cmust\u201d to \u201cshall\u201d does not change the training requirement or what anyone does.\",\"confidence\":0.98}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires personnel to return unused material to the warehouse with its status label.\",\"confidence\":0.98}"
+    ],
+    "P09": [
+     "{\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The upper assay limit increased from 101.0% to 101.9%, widening the specification.\",\"confidence\":1}",
+     "{\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The test method now specifies an in-house Brookfield procedure, which may change how viscosity is measured while leaving the limit and unit unchanged.\",\"confidence\":0.88}",
+     "{\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The specified unit was added, changing the recorded specification from unspecified units to pH units.\",\"confidence\":0.98}"
+    ],
+    "P10": [
+     "{\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The instruction removes the requirements for nitrile gloves and safety glasses, weakening protective guidance.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Removing the step eliminates the requirement to send the completed record to Quality by e-mail, changing the procedure.\",\"confidence\":0.98}",
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"Changing \u201cmust\u201d to \u201cshall\u201d does not alter the training requirement or who performs it.\",\"confidence\":0.98}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label.\",\"confidence\":0.98}"
+    ],
+    "P11": [
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changed from Quality to the area supervisor, so a different person performs an approval step.\",\"confidence\":0.99}",
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"Changing \u201cmust\u201d to \u201cshall\u201d does not alter the training requirement or who is responsible.\",\"confidence\":0.95}"
+    ],
+    "P12": [
+     "{\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The unit changed from cfu/g to cfu/mL, altering the basis of the microbial limit.\",\"confidence\":0.99}",
+     "{\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The test method is specified as in-house Karl Fischer, which may change how the measurement is performed without changing the limit or unit.\",\"confidence\":0.91}",
+     "{\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The test method designation changed from HPLC to HPLC (in-house), while the assay limit and unit remain unchanged.\",\"confidence\":0.98}"
+    ],
+    "P13": [
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"Only the spelling of \u201ce-mail\u201d changed to \u201cemail\u201d; the action and responsibility remain unchanged.\",\"confidence\":1}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"This adds a new step requiring unused material to be returned to the warehouse with its status label.\",\"confidence\":0.99}"
+    ],
+    "P14": [
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor.\",\"confidence\":0.98}",
+     "{\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The change removes instructions to use local exhaust ventilation and recognize the vapour\u2019s flammability, replacing them with a container-closure instruction and weakening the safety guidance.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Removing the step means operators no longer record the batch number in the logbook.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label, changing what personnel must do.\",\"confidence\":0.98}"
+    ],
+    "P15": [
+     "{\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The upper viscosity limit was lowered from 1600 to 1520 mPa.s, tightening the specification.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"low\",\"explanation\":\"The test method is clarified as in-house, with no change to the stated pH limit or measurement technique.\",\"confidence\":0.88}",
+     "{\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The maximum water limit was tightened from 0.50% to 0.40%, while the unit and test method remain unchanged.\",\"confidence\":0.99}"
+    ],
+    "P16": [
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor, changing who performs an approval action.\",\"confidence\":0.99}",
+     "{\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The instruction removes the specific requirements for nitrile gloves and safety glasses, weakening the protective guidance.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Removing the step eliminates the required check that the area is clear of the previous product and its labels.\",\"confidence\":0.98}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label.\",\"confidence\":0.99}"
+    ]
+   },
+   "direct": {
+    "P01": [
+     "{\"findings\":[{\"section\":\"Responsibilities\",\"before\":\"Quality owns this procedure; Quality approves it.\",\"after\":\"Quality owns this procedure; the area\\nsupervisor approves it.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor.\"},{\"section\":\"Procedure\",\"before\":\"Step 2: Ensure that the second-person check is signed.\",\"after\":\"\",\"type\":\"procedural\",\"severity\":\"high\",\"explanation\":\"The requirement for a signed second-person check has been removed.\"},{\"section\":\"Procedure\",\"before\":\"Step 4: The operator must be trained on this procedure before starting.\",\"after\":\"Step 4: The operator shall be trained on this procedure before starting.\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"\u201cMust\u201d is replaced with \u201cshall,\u201d with no apparent change to the training requirement.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 6: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires unused material to be returned to the warehouse with its status label.\"}]}"
+    ],
+    "P02": [
+     "{\"findings\":[{\"section\":\"Safety\",\"before\":\"Work under local exhaust ventilation; the vapour is flammable.\",\"after\":\"Keep the container closed when not in use.\",\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The ventilation and flammability precautions were removed and replaced with a container-closure instruction, changing the stated safety controls.\"},{\"section\":\"Procedure\",\"before\":\"Step 2: Record the batch number in the logbook.\",\"after\":\"\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"The requirement to record the batch number in the logbook was removed.\"},{\"section\":\"Procedure\",\"before\":\"Step 3: Verify the result in accordance to the acceptance criterion.\",\"after\":\"Step 3: Verify the result in accordance with the acceptance criterion.\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"The wording was grammatically corrected without changing the instruction.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 6: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new instruction requires returning unused material to the warehouse with its status label.\"}]}"
+    ],
+    "P03": [
+     "{\"findings\":[{\"section\":\"Limits\",\"before\":\"Water | 0.00 - 0.50 | % | Karl Fischer\",\"after\":\"Water | 0.00 - 0.40 | % | Karl Fischer\",\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The maximum permitted water content was reduced from 0.50% to 0.40%.\"},{\"section\":\"Limits\",\"before\":\"pH | 5.0 - 7.5 | - | Potentiometric\",\"after\":\"pH | 5.0 - 7.5 | - | Potentiometric (in-house)\",\"type\":\"procedural\",\"severity\":\"low\",\"explanation\":\"The pH measurement method now specifies that potentiometric testing is performed in-house.\"}]}"
+    ],
+    "P04": [
+     "{\"findings\":[{\"section\":\"Responsibilities\",\"before\":\"Production owns this procedure; Quality approves it.\",\"after\":\"Production owns this procedure; the\\narea supervisor approves it.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor.\"},{\"section\":\"Safety\",\"before\":\"Wear nitrile gloves and safety glasses when handling the material.\",\"after\":\"Wear gloves when handling the material.\",\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The specified nitrile glove type and requirement to wear safety glasses are removed.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 7: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires unused material to be returned to the warehouse with its status label.\"}]}"
+    ],
+    "P05": [
+     "{\"findings\":[{\"section\":\"Responsibilities\",\"before\":\"Quality owns this procedure; Quality approves it.\",\"after\":\"Quality owns this procedure; the area\\nsupervisor approves it.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility has changed from Quality to the area supervisor.\"},{\"section\":\"Procedure\",\"before\":\"Step 2: Record the batch number in the logbook.\",\"after\":\"\",\"type\":\"procedural\",\"severity\":\"high\",\"explanation\":\"The requirement to record the batch number in the logbook has been removed.\"},{\"section\":\"Procedure\",\"before\":\"Step 4: The operator must be trained on this procedure before starting.\",\"after\":\"Step 4: The operator shall be trained on this procedure before starting.\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"The wording changes from \u201cmust\u201d to \u201cshall\u201d without changing the stated training requirement.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 7: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires unused material to be returned to the warehouse with its status label.\"}]}"
+    ],
+    "P06": [
+     "{\"findings\":[{\"section\":\"Limits\",\"before\":\"Microbial count | 0 - 100 | cfu/g | Plate count\",\"after\":\"Microbial count | 0 - 100 | cfu/mL | Plate count\",\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The microbial-count unit changes from per gram to per millilitre, changing the basis of the acceptance limit.\"},{\"section\":\"Limits\",\"before\":\"Assay | 98.0 - 101.0 | % | HPLC\",\"after\":\"Assay | 98.0 - 101.0 | % w/w | HPLC\",\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The assay unit is specified as weight percentage rather than an unspecified percentage.\"},{\"section\":\"Limits\",\"before\":\"Viscosity | 1200 - 1600 | mPa.s | Brookfield\",\"after\":\"Viscosity | 1200 - 1600 | cP | Brookfield\",\"type\":\"specification_or_limit\",\"severity\":\"low\",\"explanation\":\"The viscosity unit changes from mPa.s to cP, which are numerically equivalent units.\"}]}"
+    ],
+    "P07": [
+     "{\"findings\":[{\"section\":\"Responsibilities\",\"before\":\"Quality owns this procedure; Quality approves it.\",\"after\":\"Quality owns this procedure; the area supervisor approves it.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor.\"},{\"section\":\"Procedure\",\"before\":\"Step 2: Verify the result in accordance to the acceptance criterion.\",\"after\":\"Step 2: Verify the result in accordance with the acceptance criterion.\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"The wording is corrected without changing the verification requirement.\"}]}"
+    ],
+    "P08": [
+     "{\"findings\":[{\"section\":\"Responsibilities\",\"before\":\"Production owns this procedure; Quality approves it.\",\"after\":\"Production owns this procedure; the\\narea supervisor approves it.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor.\"},{\"section\":\"Procedure\",\"before\":\"Step 2: Check the area is clear of the previous product and its labels.\",\"after\":\"\",\"type\":\"procedural\",\"severity\":\"high\",\"explanation\":\"The step requiring clearance of the previous product and its labels is removed.\"},{\"section\":\"Procedure\",\"before\":\"Step 3: The operator must be trained on this procedure before starting.\",\"after\":\"Step 3: The operator shall be trained on this procedure before starting.\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"The wording changes from \u201cmust\u201d to \u201cshall\u201d without changing the stated training requirement.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 7: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires unused material to be returned to the warehouse with its status label.\"}]}"
+    ],
+    "P09": [
+     "{\"findings\":[{\"section\":\"Limits\",\"before\":\"Assay | 98.0 - 101.0 | % | HPLC\",\"after\":\"Assay | 98.0 - 101.9 | % | HPLC\",\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The maximum permitted assay has increased from 101.0% to 101.9%.\"},{\"section\":\"Limits\",\"before\":\"Viscosity | 1200 - 1600 | mPa.s | Brookfield\",\"after\":\"Viscosity | 1200 - 1600 | mPa.s | Brookfield (in-house)\",\"type\":\"procedural\",\"severity\":\"low\",\"explanation\":\"The test method now specifies that the Brookfield method is in-house.\"},{\"section\":\"Limits\",\"before\":\"pH | 5.0 - 7.5 | - | Potentiometric\",\"after\":\"pH | 5.0 - 7.5 | pH units | Potentiometric\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"The pH unit is stated explicitly as pH units instead of a dash.\"}]}"
+    ],
+    "P10": [
+     "{\"findings\":[{\"section\":\"Safety\",\"before\":\"Wear nitrile gloves and safety glasses when handling the material.\",\"after\":\"Wear gloves when handling the material.\",\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The specific requirements to wear nitrile gloves and safety glasses have been removed.\"},{\"section\":\"Procedure\",\"before\":\"Step 2: Send the completed record to Quality by e-mail.\",\"after\":\"\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"The requirement to send the completed record to Quality by e-mail has been removed.\"},{\"section\":\"Procedure\",\"before\":\"Step 4: The operator must be trained on this procedure before starting.\",\"after\":\"Step 4: The operator shall be trained on this procedure before starting.\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"The training requirement is unchanged in substance, but \u201cmust\u201d has been changed to \u201cshall.\u201d\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 7: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new requirement has been added to return unused material to the warehouse with its status label.\"}]}"
+    ],
+    "P11": [
+     "{\"findings\":[{\"section\":\"Responsibilities\",\"before\":\"Quality owns this procedure; Quality approves it.\",\"after\":\"Quality owns this procedure; the area supervisor approves it.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor.\"},{\"section\":\"Procedure\",\"before\":\"The operator must be trained on this procedure before starting.\",\"after\":\"The operator shall be trained on this procedure before starting.\",\"type\":\"procedural\",\"severity\":\"low\",\"explanation\":\"The wording changes from \u201cmust\u201d to \u201cshall,\u201d without changing the stated training requirement.\"}]}"
+    ],
+    "P12": [
+     "{\"findings\":[{\"section\":\"Limits\",\"before\":\"Microbial count | 0 - 100 | cfu/g | Plate count\",\"after\":\"Microbial count | 0 - 100 | cfu/mL | Plate count\",\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The microbial-count unit changes from per gram to per milliliter, changing the basis of the acceptance limit.\"},{\"section\":\"Limits\",\"before\":\"Water | 0.00 - 0.50 | % | Karl Fischer\",\"after\":\"Water | 0.00 - 0.50 | % | Karl Fischer (in-house)\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"The water test method is now specified as in-house.\"},{\"section\":\"Limits\",\"before\":\"Assay | 98.0 - 101.0 | % | HPLC\",\"after\":\"Assay | 98.0 - 101.0 | % | HPLC (in-house)\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"The assay test method is now specified as in-house.\"}]}"
+    ],
+    "P13": [
+     "{\"findings\":[{\"section\":\"Procedure\",\"before\":\"Step 1: Send the completed record to Quality by e-mail.\",\"after\":\"Step 1: Send the completed record to Quality by email.\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"The spelling of \u201ce-mail\u201d changed to \u201cemail\u201d without changing the instruction.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 7: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires unused material to be returned to the warehouse with its status label.\"}]}"
+    ],
+    "P14": [
+     "{\"findings\":[{\"section\":\"Responsibilities\",\"before\":\"Production owns this procedure; Quality approves it.\",\"after\":\"Production owns this procedure; the\\narea supervisor approves it.\",\"type\":\"procedural\",\"severity\":\"high\",\"explanation\":\"Approval responsibility has changed from Quality to the area supervisor.\"},{\"section\":\"Safety\",\"before\":\"Work under local exhaust ventilation; the vapour is flammable.\",\"after\":\"Keep the container closed when not in use.\",\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The ventilation requirement and flammability warning are removed and replaced with a container-closure instruction.\"},{\"section\":\"Procedure\",\"before\":\"Step 2: Record the batch number in the logbook.\",\"after\":\"\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"The requirement to record the batch number in the logbook has been removed.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 6: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label.\"}]}"
+    ],
+    "P15": [
+     "{\"findings\":[{\"section\":\"Limits\",\"before\":\"Viscosity | 1200 - 1600 | mPa.s | Brookfield\",\"after\":\"Viscosity | 1200 - 1520 | mPa.s | Brookfield\",\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The maximum viscosity limit is reduced from 1600 to 1520 mPa.s, tightening the acceptance criterion.\"},{\"section\":\"Limits\",\"before\":\"pH | 5.0 - 7.5 | - | Potentiometric\",\"after\":\"pH | 5.0 - 7.5 | - | Potentiometric (in-house)\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"The pH method is now specified as in-house, potentially restricting which procedure is acceptable.\"},{\"section\":\"Limits\",\"before\":\"Water | 0.00 - 0.50 | % | Karl Fischer\",\"after\":\"Water | 0.00 - 0.40 | % | Karl Fischer\",\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The maximum water limit is reduced from 0.50% to 0.40%, tightening the acceptance criterion.\"}]}"
+    ],
+    "P16": [
+     "{\"findings\":[{\"section\":\"Responsibilities\",\"before\":\"Production owns this procedure; Quality approves it.\",\"after\":\"Production owns this procedure; the\\narea supervisor approves it.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor.\"},{\"section\":\"Safety\",\"before\":\"Wear nitrile gloves and safety glasses when handling the material.\",\"after\":\"Wear gloves when handling the material.\",\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The specific requirement for nitrile gloves and safety glasses is removed, leaving the required glove type and eye protection unspecified.\"},{\"section\":\"Procedure\",\"before\":\"Step 2: Check the area is clear of the previous product and its labels.\",\"after\":\"\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"The step requiring checks for the previous product and its labels is removed.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 7: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires unused material to be returned to the warehouse with its status label.\"}]}"
+    ]
+   }
+  },
+  {
+   "diff_model": {
+    "P01": [
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor, so a different role performs an action.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Removing the step eliminates the requirement to ensure the second-person check is signed.\",\"confidence\":0.98}",
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"Changing \u201cmust\u201d to \u201cshall\u201d does not change the training requirement or what the operator does.\",\"confidence\":0.94}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires unused material to be returned to the warehouse with its status label.\",\"confidence\":0.98}"
+    ],
+    "P02": [
+     "{\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The explicit ventilation and flammability warnings were replaced with a container-closure instruction, weakening the safety guidance.\",\"confidence\":0.98}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Removing the step means operators no longer have an instruction to record the batch number in the logbook.\",\"confidence\":0.98}",
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"The wording changes from \u201cin accordance to\u201d to \u201cin accordance with\u201d without changing the verification action or acceptance criterion.\",\"confidence\":1}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label.\",\"confidence\":0.98}"
+    ],
+    "P03": [
+     "{\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The maximum water limit was tightened from 0.50% to 0.40%, changing the acceptance specification.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"low\",\"explanation\":\"The pH limits and potentiometric method are unchanged, but specifying that the method is in-house changes where or how testing is performed.\",\"confidence\":0.78}"
+    ],
+    "P04": [
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changed from Quality to the area supervisor.\",\"confidence\":0.99}",
+     "{\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The instruction removes the requirements for nitrile gloves and safety glasses, weakening protective guidance.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label, changing what personnel must do.\",\"confidence\":0.98}"
+    ],
+    "P05": [
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor, changing who performs a procedure responsibility.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Removing the step means the batch number is no longer required to be recorded in the logbook.\",\"confidence\":0.99}",
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"Changing \u201cmust\u201d to \u201cshall\u201d does not alter the training requirement or what the operator does.\",\"confidence\":0.98}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"The added step requires returning unused material to the warehouse with its status label.\",\"confidence\":0.98}"
+    ],
+    "P06": [
+     "{\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The reported unit changed from cfu/g to cfu/mL, altering the specification basis.\",\"confidence\":0.99}",
+     "{\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The assay unit changed from % to % w/w, which changes the specified unit.\",\"confidence\":0.99}",
+     "{\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The viscosity unit changed from mPa\u00b7s to cP, which is a unit change under the classification criteria.\",\"confidence\":0.99}"
+    ],
+    "P07": [
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor, so a different person performs an approval step.\",\"confidence\":0.99}",
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"The change corrects the wording from \u201cin accordance to\u201d to \u201cin accordance with\u201d without changing the verification step.\",\"confidence\":1}"
+    ],
+    "P08": [
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Removing the step eliminates the requirement to check that the area is clear of the previous product and its labels.\",\"confidence\":0.99}",
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"Changing \u201cmust\u201d to \u201cshall\u201d does not change the training requirement or what anyone does.\",\"confidence\":0.98}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label, changing what personnel must do.\",\"confidence\":0.97}"
+    ],
+    "P09": [
+     "{\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The upper assay limit widened from 101.0% to 101.9%, changing the specification limit.\",\"confidence\":1}",
+     "{\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The test method now specifies an in-house Brookfield method, which may change how viscosity is measured, while the limit and unit remain unchanged.\",\"confidence\":0.92}",
+     "{\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The reported unit changed from unspecified to pH units, which is a unit change under the classification criteria.\",\"confidence\":0.98}"
+    ],
+    "P10": [
+     "{\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The instruction removes the specific requirements for nitrile gloves and safety glasses, weakening the protective guidance.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Removing the step eliminates the requirement to send the completed record to Quality by e-mail.\",\"confidence\":0.98}",
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"Changing \u201cmust\u201d to \u201cshall\u201d does not alter the training requirement or what anyone does.\",\"confidence\":0.96}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label.\",\"confidence\":0.98}"
+    ],
+    "P11": [
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor, so a different role performs an action.\",\"confidence\":0.99}",
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"Changing \u201cmust\u201d to \u201cshall\u201d does not change the training requirement or anyone\u2019s actions.\",\"confidence\":0.98}"
+    ],
+    "P12": [
+     "{\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The unit changed from cfu/g to cfu/mL, altering the basis of the microbial count specification.\",\"confidence\":0.99}",
+     "{\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The test method is specified as in-house Karl Fischer, narrowing or clarifying the method without changing the limit or unit.\",\"confidence\":0.84}",
+     "{\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The assay range and unit are unchanged, but specifying an in-house HPLC method changes the test method.\",\"confidence\":0.97}"
+    ],
+    "P13": [
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"Only the spelling changed from \u201ce-mail\u201d to \u201cemail\u201d; the action and responsibility are unchanged.\",\"confidence\":1}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label.\",\"confidence\":0.99}"
+    ],
+    "P14": [
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor.\",\"confidence\":0.99}",
+     "{\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The change removes instructions to use local exhaust ventilation and recognize the flammable vapour, weakening safety protections.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Removing the step means the batch number is no longer required to be recorded in the logbook.\",\"confidence\":0.98}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label.\",\"confidence\":0.98}"
+    ],
+    "P15": [
+     "{\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The upper viscosity limit was narrowed from 1600 to 1520 mPa.s, changing the acceptance specification.\",\"confidence\":0.99}",
+     "{\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"Adding \u201cin-house\u201d clarifies the source of the potentiometric method without changing the test method, limits, or required actions.\",\"confidence\":0.96}",
+     "{\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The maximum water limit was tightened from 0.50% to 0.40%, changing the acceptance specification.\",\"confidence\":0.99}"
+    ],
+    "P16": [
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor, so a different role performs the approval.\",\"confidence\":0.98}",
+     "{\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The instruction removes the specific requirements for nitrile gloves and safety glasses, weakening the protective guidance.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Removing the step eliminates the required check that the area is clear of the previous product and its labels.\",\"confidence\":0.99}",
+     "{\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label.\",\"confidence\":0.98}"
+    ]
+   },
+   "direct": {
+    "P01": [
+     "{\"findings\":[{\"section\":\"Responsibilities\",\"before\":\"Quality owns this procedure; Quality approves it.\",\"after\":\"Quality owns this procedure; the area\\nsupervisor approves it.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor.\"},{\"section\":\"Procedure\",\"before\":\"Step 2: Ensure that the second-person check is signed.\",\"after\":\"\",\"type\":\"procedural\",\"severity\":\"high\",\"explanation\":\"The requirement for a signed second-person check has been removed.\"},{\"section\":\"Procedure\",\"before\":\"Step 4: The operator must be trained on this procedure before starting.\",\"after\":\"Step 4: The operator shall be trained on this procedure before starting.\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"\u201cMust\u201d is changed to \u201cshall,\u201d with no apparent change to the training requirement.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 6: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires unused material to be returned to the warehouse with its status label.\"}]}"
+    ],
+    "P02": [
+     "{\"findings\":[{\"section\":\"Safety\",\"before\":\"Work under local exhaust ventilation; the vapour is flammable.\",\"after\":\"Keep the container closed when not in use.\",\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The ventilation and flammability precautions were replaced by a container-closure instruction, changing the specified controls for vapour exposure and fire risk.\"},{\"section\":\"Procedure\",\"before\":\"Step 2: Record the batch number in the logbook.\",\"after\":\"\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"The requirement to record the batch number in the logbook was removed.\"},{\"section\":\"Procedure\",\"before\":\"Step 3: Verify the result in accordance to the acceptance criterion.\",\"after\":\"Step 3: Verify the result in accordance with the acceptance criterion.\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"The wording was grammatically corrected without changing the verification requirement.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 6: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new instruction requires unused material to be returned to the warehouse with its status label.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 2:\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"Step numbering now skips Step 2 and repeats Step 6, creating ambiguity in references to procedure steps.\"}]}"
+    ],
+    "P03": [
+     "{\"findings\":[{\"section\":\"Limits\",\"before\":\"Water | 0.00 - 0.50 | % | Karl Fischer\",\"after\":\"Water | 0.00 - 0.40 | % | Karl Fischer\",\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The maximum permitted water content is tightened from 0.50% to 0.40%.\"},{\"section\":\"Limits\",\"before\":\"pH | 5.0 - 7.5 | - | Potentiometric\",\"after\":\"pH | 5.0 - 7.5 | - | Potentiometric (in-house)\",\"type\":\"procedural\",\"severity\":\"low\",\"explanation\":\"The pH measurement method is now specified as in-house potentiometric testing.\"}]}"
+    ],
+    "P04": [
+     "{\"findings\":[{\"section\":\"Responsibilities\",\"before\":\"Production owns this procedure; Quality approves it.\",\"after\":\"Production owns this procedure; the\\narea supervisor approves it.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor.\"},{\"section\":\"Safety\",\"before\":\"Wear nitrile gloves and safety glasses when handling the material.\",\"after\":\"Wear gloves when handling the material.\",\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The requirement for nitrile gloves and safety glasses is removed, and the type of gloves is no longer specified.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 7: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires returning unused material to the warehouse with its status label.\"}]}"
+    ],
+    "P05": [
+     "{\"findings\":[{\"section\":\"Responsibilities\",\"before\":\"Quality owns this procedure; Quality approves it.\",\"after\":\"Quality owns this procedure; the area\\nsupervisor approves it.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor.\"},{\"section\":\"Procedure\",\"before\":\"Step 2: Record the batch number in the logbook.\",\"after\":\"\",\"type\":\"procedural\",\"severity\":\"high\",\"explanation\":\"The requirement to record the batch number in the logbook is removed.\"},{\"section\":\"Procedure\",\"before\":\"Step 4: The operator must be trained on this procedure before starting.\",\"after\":\"Step 4: The operator shall be trained on this procedure before starting.\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"The wording changes from \u201cmust\u201d to \u201cshall\u201d without an apparent change in the training requirement.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 7: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new instruction requires unused material to be returned to the warehouse with its status label.\"}]}"
+    ],
+    "P06": [
+     "{\"findings\":[{\"section\":\"Limits\",\"before\":\"Microbial count | 0 - 100 | cfu/g | Plate count\",\"after\":\"Microbial count | 0 - 100 | cfu/mL | Plate count\",\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The microbial count unit changes from per gram to per milliliter, changing the basis for evaluating the limit.\"},{\"section\":\"Limits\",\"before\":\"Assay | 98.0 - 101.0 | % | HPLC\",\"after\":\"Assay | 98.0 - 101.0 | % w/w | HPLC\",\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The assay unit is specified as weight percent rather than an unspecified percent.\"},{\"section\":\"Limits\",\"before\":\"Viscosity | 1200 - 1600 | mPa.s | Brookfield\",\"after\":\"Viscosity | 1200 - 1600 | cP | Brookfield\",\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The viscosity unit changes from mPa.s to cP, which are numerically equivalent units but are a different stated unit.\"}]}"
+    ],
+    "P07": [
+     "{\"findings\":[{\"section\":\"Responsibilities\",\"before\":\"Quality owns this procedure; Quality approves it.\",\"after\":\"Quality owns this procedure; the area supervisor approves it.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor.\"},{\"section\":\"Procedure\",\"before\":\"Step 2: Verify the result in accordance to the acceptance criterion.\",\"after\":\"Step 2: Verify the result in accordance with the acceptance criterion.\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"Corrects the phrase \u201cin accordance to\u201d to \u201cin accordance with\u201d without changing the requirement.\"}]}"
+    ],
+    "P08": [
+     "{\"findings\":[{\"section\":\"Responsibilities\",\"before\":\"Production owns this procedure; Quality approves it.\",\"after\":\"Production owns this procedure; the\\narea supervisor approves it.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor.\"},{\"section\":\"Procedure\",\"before\":\"Step 2: Check the area is clear of the previous product and its labels.\",\"after\":\"\",\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The check that the area is clear of the previous product and its labels has been removed.\"},{\"section\":\"Procedure\",\"before\":\"Step 3: The operator must be trained on this procedure before starting.\",\"after\":\"Step 3: The operator shall be trained on this procedure before starting.\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"\u201cMust\u201d is changed to \u201cshall\u201d without an apparent change to the training requirement.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 7: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new requirement is added to return unused material to the warehouse with its status label.\"}]}"
+    ],
+    "P09": [
+     "{\"findings\":[{\"section\":\"Limits\",\"before\":\"Assay | 98.0 - 101.0 | % | HPLC\",\"after\":\"Assay | 98.0 - 101.9 | % | HPLC\",\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The upper assay limit increased from 101.0% to 101.9%, widening the acceptance range.\"},{\"section\":\"Limits\",\"before\":\"Viscosity | 1200 - 1600 | mPa.s | Brookfield\",\"after\":\"Viscosity | 1200 - 1600 | mPa.s | Brookfield (in-house)\",\"type\":\"specification_or_limit\",\"severity\":\"low\",\"explanation\":\"The viscosity test method is now specified as the in-house Brookfield method.\"},{\"section\":\"Limits\",\"before\":\"pH | 5.0 - 7.5 | - | Potentiometric\",\"after\":\"pH | 5.0 - 7.5 | pH units | Potentiometric\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"The pH unit label changed from a dash to \u201cpH units\u201d; the numeric limits and method are unchanged.\"}]}"
+    ],
+    "P10": [
+     "{\"findings\":[{\"section\":\"Safety\",\"before\":\"Wear nitrile gloves and safety glasses when handling the material.\",\"after\":\"Wear gloves when handling the material.\",\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The revision removes the specific requirements for nitrile gloves and safety glasses, weakening the stated protective measures.\"},{\"section\":\"Procedure\",\"before\":\"Step 2: Send the completed record to Quality by e-mail.\",\"after\":\"\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"The requirement to send the completed record to Quality by e-mail has been removed.\"},{\"section\":\"Procedure\",\"before\":\"Step 4: The operator must be trained on this procedure before starting.\",\"after\":\"Step 4: The operator shall be trained on this procedure before starting.\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"\u201cMust\u201d is replaced with \u201cshall,\u201d with no apparent change to the training requirement.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 7: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires unused material to be returned to the warehouse with its status label.\"}]}"
+    ],
+    "P11": [
+     "{\"findings\":[{\"section\":\"Responsibilities\",\"before\":\"Quality owns this procedure; Quality approves it.\",\"after\":\"Quality owns this procedure; the area supervisor approves it.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility has shifted from Quality to the area supervisor.\"},{\"section\":\"Procedure\",\"before\":\"Step 3: The operator must be trained on this procedure before starting.\",\"after\":\"Step 3: The operator shall be trained on this procedure before starting.\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"The wording changes from \u201cmust\u201d to \u201cshall\u201d without changing the stated training requirement.\"}]}"
+    ],
+    "P12": [
+     "{\"findings\":[{\"section\":\"Limits\",\"before\":\"Microbial count | 0 - 100 | cfu/g | Plate count\",\"after\":\"Microbial count | 0 - 100 | cfu/mL | Plate count\",\"type\":\"specification_or_limit\",\"severity\":\"high\",\"explanation\":\"The microbial count unit changes from per gram to per milliliter, changing the basis of the acceptance limit.\"},{\"section\":\"Limits\",\"before\":\"Water | 0.00 - 0.50 | % | Karl Fischer\",\"after\":\"Water | 0.00 - 0.50 | % | Karl Fischer (in-house)\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"The method is now specified as in-house, which may constrain how water content is tested.\"},{\"section\":\"Limits\",\"before\":\"Assay | 98.0 - 101.0 | % | HPLC\",\"after\":\"Assay | 98.0 - 101.0 | % | HPLC (in-house)\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"The method is now specified as in-house, which may constrain how assay is tested.\"}]}"
+    ],
+    "P13": [
+     "{\"findings\":[{\"section\":\"Procedure\",\"before\":\"Step 1: Send the completed record to Quality by e-mail.\",\"after\":\"Step 1: Send the completed record to Quality by email.\",\"type\":\"editorial\",\"severity\":\"low\",\"explanation\":\"The spelling of \u201ce-mail\u201d was changed to \u201cemail\u201d without changing the instruction.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 7: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires unused material to be returned to the warehouse with its status label.\"}]}"
+    ],
+    "P14": [
+     "{\"findings\":[{\"section\":\"Responsibilities\",\"before\":\"Production owns this procedure; Quality approves it.\",\"after\":\"Production owns this procedure; the\\narea supervisor approves it.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility has changed from Quality to the area supervisor.\"},{\"section\":\"Safety\",\"before\":\"Work under local exhaust ventilation; the vapour is flammable.\",\"after\":\"Keep the container closed when not in use.\",\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The ventilation and flammability precautions were removed and replaced with a container-closure instruction.\"},{\"section\":\"Procedure\",\"before\":\"Step 2: Record the batch number in the logbook.\",\"after\":\"\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"The requirement to record the batch number in the logbook was removed.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 6: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires unused material to be returned to the warehouse with its status label.\"}]}"
+    ],
+    "P15": [
+     "{\"findings\":[{\"section\":\"Limits\",\"before\":\"Viscosity | 1200 - 1600 | mPa.s | Brookfield\",\"after\":\"Viscosity | 1200 - 1520 | mPa.s | Brookfield\",\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The maximum viscosity limit is reduced from 1600 to 1520 mPa.s, making the acceptance criterion stricter.\"},{\"section\":\"Limits\",\"before\":\"pH | 5.0 - 7.5 | - | Potentiometric\",\"after\":\"pH | 5.0 - 7.5 | - | Potentiometric (in-house)\",\"type\":\"procedural\",\"severity\":\"low\",\"explanation\":\"The pH measurement method is specified as in-house, adding a method qualification.\"},{\"section\":\"Limits\",\"before\":\"Water | 0.00 - 0.50 | % | Karl Fischer\",\"after\":\"Water | 0.00 - 0.40 | % | Karl Fischer\",\"type\":\"specification_or_limit\",\"severity\":\"medium\",\"explanation\":\"The maximum water limit is reduced from 0.50% to 0.40%, making the acceptance criterion stricter.\"}]}"
+    ],
+    "P16": [
+     "{\"findings\":[{\"section\":\"Responsibilities\",\"before\":\"Production owns this procedure; Quality approves it.\",\"after\":\"Production owns this procedure; the area supervisor approves it.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"Approval responsibility changes from Quality to the area supervisor.\"},{\"section\":\"Safety\",\"before\":\"Wear nitrile gloves and safety glasses when handling the material.\",\"after\":\"Wear gloves when handling the material.\",\"type\":\"safety_relevant\",\"severity\":\"high\",\"explanation\":\"The revision no longer specifies nitrile gloves or safety glasses.\"},{\"section\":\"Procedure\",\"before\":\"Step 2: Check the area is clear of the previous product and its labels.\",\"after\":\"\",\"type\":\"procedural\",\"severity\":\"high\",\"explanation\":\"The requirement to check for the previous product and its labels has been removed.\"},{\"section\":\"Procedure\",\"before\":\"\",\"after\":\"Step 7: Return unused material to the warehouse with its status label.\",\"type\":\"procedural\",\"severity\":\"medium\",\"explanation\":\"A new step requires unused material to be returned to the warehouse with its status label.\"}]}"
+    ]
+   }
+  }
+ ]
+}

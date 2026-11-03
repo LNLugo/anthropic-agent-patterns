@@ -123,7 +123,66 @@
     "written_back_without_request_id_after_a_lost_response": 2
   },
   "version_vs_version": {
-    "model_arms": "not run: needs run_comparison.py --live with a key",
+    "model_arms": {
+      "measured": "2026-11-03",
+      "model": "gpt-6-luna",
+      "runs": [
+        {
+          "diff_model": {
+            "false_findings": 0,
+            "found": 51,
+            "planted": 51,
+            "recall": 1.0,
+            "severity_correct": 49,
+            "type_correct": 49
+          },
+          "direct": {
+            "false_findings": 0,
+            "found": 51,
+            "planted": 51,
+            "recall": 1.0,
+            "severity_correct": 36,
+            "type_correct": 46
+          }
+        },
+        {
+          "diff_model": {
+            "false_findings": 0,
+            "found": 51,
+            "planted": 51,
+            "recall": 1.0,
+            "severity_correct": 49,
+            "type_correct": 49
+          },
+          "direct": {
+            "false_findings": 0,
+            "found": 51,
+            "planted": 51,
+            "recall": 1.0,
+            "severity_correct": 39,
+            "type_correct": 44
+          }
+        },
+        {
+          "diff_model": {
+            "false_findings": 0,
+            "found": 51,
+            "planted": 51,
+            "recall": 1.0,
+            "severity_correct": 49,
+            "type_correct": 49
+          },
+          "direct": {
+            "false_findings": 1,
+            "found": 51,
+            "planted": 51,
+            "recall": 1.0,
+            "severity_correct": 40,
+            "type_correct": 45
+          }
+        }
+      ]
+    },
     "pairs": 16,
     "planted_by_type": {
       "editorial": 8,
